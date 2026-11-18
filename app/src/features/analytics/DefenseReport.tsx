@@ -7,12 +7,11 @@ import Panel from '../../components/ui/Panel';
 
 type Props = { deck: AnalyticsDeck; cardsByName: Map<string, Card> };
 const percent = (value: number) => `${Math.round(value * 100)}%`;
-const issue = (status: string) => status === 'missing' ? 'Card data incomplete' : 'Requires a supported Rai, Tonoris or Diao Chan lineage';
 export default function DefenseReport({ deck, cardsByName }: Props) {
   const report = useMemo(() => hasDefenseSources(deck) ? computeDefenseReport(deck, cardsByName) : null, [deck, cardsByName]);
-  if (!report) return null;
+  if (!report || report.status !== 'ready') return null;
   return <Panel data-component="DefenseReport"><h3 className="mb-1 text-lg font-semibold">Defense & recovery</h3><p className="mb-5 text-xs text-ctp-subtext1">Going first · one response window</p>
-    {report.status !== 'ready' ? <p role="status">{issue(report.status)}</p> : report.scenarios.filter(s => s.cards.length > 0).map(scenario => {
+    {report.scenarios.filter(s => s.cards.length > 0).map(scenario => {
       const names = new Set([...scenario.cards.map(line => line.name), ...scenario.points.flatMap(point => point.sources)]);
       const lines = [...names].map(name => ({ name, quantity: deck.main.filter(line => line.name === name).reduce((n, line) => n + line.quantity, 0) || 1, detail: name === 'Obelisk of Protection' ? 'Generated' : undefined }));
       const early = scenario.points[2], late = scenario.points[4];
@@ -26,10 +25,10 @@ export default function DefenseReport({ deck, cardsByName }: Props) {
 
 export function DefenseComparison({ baseline, target, cardsByName }: { baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card> }) {
   const report = useMemo(() => hasDefenseSources(baseline) || hasDefenseSources(target) ? compareDefenseReports(baseline, target, cardsByName) : null, [baseline, target, cardsByName]);
-  if (!report) return null;
+  if (!report || report.status !== 'ready') return null;
   return <section data-component="DefenseComparison" className="mt-4"><h4 className="font-semibold">Defense ready</h4>
     <p className="mt-1 text-xs text-ctp-subtext1">Going first · middle 80% · one response window</p>
-    {report.status !== 'ready' ? <p role="status" className="mt-3 text-sm">{issue(report.status)}</p> : <div className="mt-3 grid gap-3 lg:grid-cols-3">{report.scenarios.filter(scenario => scenario.cards.length > 0).map(scenario => {
+    {<div className="mt-3 grid gap-3 lg:grid-cols-3">{report.scenarios.filter(scenario => scenario.cards.length > 0).map(scenario => {
       const names = new Set([...scenario.cards.map(line => line.name), ...scenario.points.flatMap(point => [...point.before.sources, ...point.after.sources])]);
       return <section key={scenario.id} className="min-w-0 rounded-xl bg-ctp-mantle p-3"><h5 className="text-sm font-semibold">{scenario.label}</h5>
         <p className="mt-1 text-xs text-ctp-subtext1">{scenario.metric === 'prevention' ? 'Prevention' : 'Recovery'} capacity</p>

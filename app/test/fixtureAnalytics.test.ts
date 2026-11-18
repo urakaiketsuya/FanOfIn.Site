@@ -146,7 +146,7 @@ test('server rendering handles empty deck, missing catalog names and comparison 
   const { default: CardScenarios } = await import('../src/features/analytics/CardScenarios');
   const { default: FixtureComparison } = await import('../src/features/analytics/FixtureComparison');
   const render = (child: ReturnType<typeof createElement>) => renderToStaticMarkup(createElement(MemoryRouter, {}, child));
-  assert.match(render(createElement(CardScenarios, { deck: deck(), cardsByName: new Map() })), /No supported card findings/);
+  assert.equal(render(createElement(CardScenarios, { deck: deck(), cardsByName: new Map() })), '');
   const missing = render(createElement(CardScenarios, { deck: deck('Crosswind Cuts'), cardsByName: new Map() }));
   assert.match(missing, /Crosswind Cuts/); assert.match(missing, /Card data incomplete/);
   const empty = render(createElement(FixtureComparison, { baseline: deck(), target: deck(), cardsByName: new Map(), baselineLabel: 'A', targetLabel: 'B' }));

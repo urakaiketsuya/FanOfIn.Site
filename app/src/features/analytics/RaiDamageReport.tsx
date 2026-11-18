@@ -14,13 +14,13 @@ const METRICS = [{ key: 'damage', label: 'Champion' }, { key: 'allies', label: '
 
 export default function RaiDamageReport({ deck, cardsByName }: Props) {
   const report = useMemo(() => relevant(deck) ? computeRaiDamageReport(deck, cardsByName) : null, [deck, cardsByName]);
-  if (!report) return null;
+  if (!report || report.status !== 'ready') return null;
   const names = new Set(deck.main.filter(line => line.quantity > 0).map(line => line.name));
   const scenarios = report.status === 'ready' ? report.scenarios.filter(scenario => raiDamageScenarioRelevant(scenario.id, names)) : [];
   const scale = Math.max(1, ...scenarios.flatMap(scenario => scenario.points.flatMap(point => METRICS.map(metric => point[metric.key].high))));
   return <Panel data-component="RaiDamageReport"><h3 className="mb-1 text-lg font-semibold">Damage</h3>
     <p className="mb-5 text-xs text-ctp-subtext1">Paid spells · going first · before prevention</p>
-    {report.status !== 'ready' ? <p role="status" className="text-sm">{report.status === 'missing' ? 'Card data incomplete' : 'Requires a supported Rai lineage'}</p> : scenarios.map(scenario => <ForecastResult key={scenario.id} title={scenario.label} cards={scenario.damageSources} cardsByName={cardsByName}>
+    {scenarios.map(scenario => <ForecastResult key={scenario.id} title={scenario.label} cards={scenario.damageSources} cardsByName={cardsByName}>
       <div className="space-y-5">{METRICS.filter(metric => metric.key === 'damage' || scenario.points.some(p => p[metric.key].high > 0)).map(metric => <div key={metric.key}><p className="text-sm">{metric.label}</p><ForecastRange early={scenario.points[2][metric.key]} late={scenario.points[4][metric.key]} unit="damage" max={scale} /></div>)}</div>
     </ForecastResult>)}
   </Panel>;
@@ -30,12 +30,12 @@ export function RaiDamageComparison({ baseline, target, cardsByName, baselineLab
   baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card>; baselineLabel: string; targetLabel: string;
 }) {
   const report = useMemo(() => relevant(baseline) || relevant(target) ? compareRaiDamageReports(baseline, target, cardsByName) : null, [baseline, target, cardsByName]);
-  if (!report) return null;
+  if (!report || report.status !== 'ready') return null;
   const names = new Set([...baseline.main, ...target.main].filter(line => line.quantity > 0).map(line => line.name));
   return <section data-component="RaiDamageComparison" className="mt-4">
     <h4 className="font-semibold">Paid spell damage</h4>
     <p className="mt-1 break-words text-xs text-ctp-subtext1">{baselineLabel} → {targetLabel}</p>
-    {report.status !== 'ready' ? <p role="status" className="mt-3 text-sm">{report.status === 'missing' ? 'Card data incomplete' : 'Requires both supported Rai lineages'}</p> : <>
+    {<>
       <p className="mt-1 text-xs text-ctp-subtext1">Going first · middle 80% · before prevention</p>
       <div className="mt-4 grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
         <div className="grid min-w-0 gap-3 md:grid-cols-2">{report.scenarios.filter(scenario => raiDamageScenarioRelevant(scenario.id, names)).map(scenario => <section key={scenario.id} className="min-w-0 rounded-xl bg-ctp-mantle p-3">

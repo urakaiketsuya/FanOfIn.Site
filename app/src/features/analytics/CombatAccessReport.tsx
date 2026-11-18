@@ -14,10 +14,11 @@ export default function CombatAccessReport({ deck, cardsByName }: { deck: Analyt
   const different = points.some(point => point.printedPower !== point.boostedPower);
   const scale = Math.max(1, ...points.flatMap(point => [point.printedRange.high, point.boostedRange.high]));
   const models = different ? ['printedRange', 'boostedRange'] as const : ['printedRange'] as const;
+  if (points.some(point => point.unavailable) || !allies.size) return null;
   return <Panel data-component="CombatAccessReport">
     <h3 className="font-semibold">Ally attack potential</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">Sampled draws · before costs and resolution</p>
-    {points.some(point => point.unavailable) ? <p role="status" className="mt-3 text-sm text-ctp-yellow">Card data incomplete · attack report unavailable.</p> : !allies.size ? <p className="mt-3 text-sm">No attacking allies found.</p> : <>
+    {<>
       <p className="mt-1 text-xs text-ctp-subtext1">Median · middle 80% of draws</p>
       <div className="my-4 grid gap-4 xl:grid-cols-2">{models.map(model => <section key={model} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
         <div className="xl:min-h-14"><h4 className="text-sm font-semibold">{model === 'printedRange' ? 'Printed ally power' : 'With supported boosts'}</h4>

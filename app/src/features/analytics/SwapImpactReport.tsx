@@ -37,13 +37,12 @@ export default function SwapImpactReport({ baseline, target, cardsByName }: { ba
   }));
   // The same card may move between sections; keep both changes in one visible tile.
   const cards = [...new Set(changes.map(l => l.name))].map(name => ({ name, quantity: Math.max(...changes.filter(l => l.name === name).map(l => l.quantity)), detail: changes.filter(l => l.name === name).map(l => l.detail).join(' · ') }));
+  if (!selected) return null;
   return <section data-component="SwapImpactReport" aria-labelledby={`${baseId}-title`} className="@container mt-4 min-w-0">
     <h3 id={`${baseId}-title`} className="mb-4 text-lg font-semibold">Swap impact</h3>
     <div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
       <div className="min-w-0 max-w-md"><ReportCards lines={cards} cardsByName={cardsByName} /></div>
       <div className="min-w-0">
-        {report.unavailable.map(message => <p key={message} role="status" className="mb-3 text-sm">{message}</p>)}
-        {!selected && <p role="status" className="py-3 text-sm">{report.unavailable.length ? 'Comparison unavailable.' : report.supported ? 'No modeled changes.' : 'Forecast not supported.'}</p>}
         {selected && <>
           <div className="mb-3">
             <label htmlFor={`${baseId}-outcome`} className="mb-1 block text-sm font-medium">Focus outcome</label>

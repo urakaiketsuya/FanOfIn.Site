@@ -6,7 +6,7 @@ import ForecastResult, { ForecastRange, ForecastChance } from './ForecastResult'
 export default function TonorisDrawReport({ deck, cardsByName }: { deck: AnalyticsDeck; cardsByName: Map<string, Card> }) {
   const report = useMemo(() => computeTonorisDrawReport(deck, cardsByName), [deck, cardsByName]);
   if (!report) return null;
-  if (report.missing.length) return <Panel data-component="TonorisDrawReport"><h3 className="text-lg font-semibold">Draw & resources</h3><p role="status">Card data incomplete</p></Panel>;
+  if (report.missing.length) return null;
   const early = report.points[2], late = report.points[4];
   const cards = (names: string[]) => [...deck.main, ...deck.material].filter(line => line.quantity > 0 && names.includes(line.name));
   const detail = (label: string, before: string, after: string) => <div className="flex flex-wrap justify-between gap-2"><dt>{label}</dt><dd className="tabular-nums">{before} → {after}</dd></div>;

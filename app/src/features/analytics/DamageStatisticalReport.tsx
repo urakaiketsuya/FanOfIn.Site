@@ -5,12 +5,13 @@ import AssociatedCards from '../../components/AssociatedCards';
 /** Each interval comes from one distribution. Never join endpoints from different models. */
 export default function DamageStatisticalReport({ forecast, cardsByName }: { forecast: AggressionForecast; cardsByName: Map<string, Card> }) {
   const sources = forecast.audit.filter(row => row.status === 'modeled' || row.status === 'partial');
-  const missing = forecast.audit.filter(row => row.status === 'review' || row.status === 'partial');
+  const missing = forecast.audit.filter(row => cardsByName.has(row.name) && (row.status === 'review' || row.status === 'partial'));
   const quantified = forecast.points.some(point => point.expectedMax > 0 || point.expectedMin > 0);
-  const accessSources = forecast.audit.filter(row => row.section === 'Main' && row.status !== 'excluded');
+  const accessSources = forecast.audit.filter(row => row.section === 'Main' && row.status !== 'excluded' && cardsByName.has(row.name));
   const different = forecast.points.some(p => p.medianMin !== p.medianMax || p.low !== p.optimisticLow || p.conservativeHigh !== p.high || p.expectedMin !== p.expectedMax);
   const scale = Math.max(1, ...forecast.points.map(p => p.high), ...forecast.points.map(p => p.conservativeHigh));
   const models = different ? ['conservative', 'conditional'] as const : ['conservative'] as const;
+  if (!quantified && !accessSources.length && !missing.length && !forecast.recurringDamagePerTurn) return null;
   return <section data-component="DamageStatisticalReport" className="@container mt-4 space-y-4">
     <div><h3 className="font-semibold">Damage sources</h3>
       <p className="mt-1 text-xs text-ctp-subtext1">Direct damage · before costs/resolution</p>

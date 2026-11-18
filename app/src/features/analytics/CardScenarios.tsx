@@ -11,7 +11,7 @@ export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDe
   const missing = [...deck.main, ...deck.material].some(line => !cardsByName.has(line.name));
   const outsideFloating = deck.main.filter(line => /\*\*Floating Memory\*\*/i.test(cardsByName.get(line.name)?.effect ?? '') && !Object.hasOwn(FIXTURE_FLOATING, line.name)).reduce((sum, line) => sum + line.quantity, 0);
   const consumers = deck.main.filter(line => ['Strategem of Myriad Ice', 'Calculated Foresight'].includes(line.name));
-  if (!rows.length) return <Panel data-component="CardScenarios"><h3 className="text-sm font-semibold">Card effects report</h3><p role="status" className="mt-2 text-sm">{missing ? 'Card data incomplete · report unavailable' : 'No supported card findings in this deck.'}</p></Panel>;
+  if (!rows.length) return null;
   return <Panel data-component="CardScenarios">
     <h3 className="text-sm font-semibold">Card effects report</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">{controller.champion || 'No class bonus'} · conditional one-copy outcomes · {deck.main.reduce((sum, line) => sum + line.quantity, 0)}-card library</p>

@@ -28,7 +28,7 @@ test('observed preview prioritizes samples, retains cohort scope, and does not s
 test('empty opponent data remains distinct from the aggregate record', () => {
   const html = render({ ...result, matchups: [] });
   assert.match(html, /101/);
-  assert.match(html, /No recorded opponent matchups/);
+  assert.doesNotMatch(html, /Observed matchups|No recorded opponent matchups/);
   assert.doesNotMatch(html, /<article/);
 });
 
@@ -37,10 +37,8 @@ test('filtered results replace all-time totals, show cohort scope, and distingui
     result: { ...result, matchups: [] }, loading: false, cards: new Map(),
     observed: { winRate: null, results: 0, decks: 0, events: 0, matchups: [] }, observedLabel: '2026-10-01 – 2026-10-31 · All events',
   })));
-  assert.match(html, /2026-10-01 – 2026-10-31/);
-  assert.match(html, /No recorded matchups in this selection/);
+  assert.equal(html, '');
   assert.doesNotMatch(html, /101|Limited data|Historical win rate/);
-  assert.match(html, /—/);
 });
 
 test('previous periods use inclusive UTC days, preserve format, and reject incomplete or event scopes', async () => {
@@ -60,7 +58,7 @@ test('period comparison keeps empty samples distinct from zero performance', asy
   const current = { winRate: 0, results: 5, decks: 1, events: 1, matchups: [] };
   const html = renderToStaticMarkup(createElement(Comparison, { current, previous: { ...current, winRate: null, results: 0 }, scope: emptyMatchupScope, previousScope: emptyMatchupScope }));
   assert.match(html, /0%/); assert.match(html, /—/);
-  assert.match(html, /No comparison/); assert.doesNotMatch(html, /percentage points/);
+  assert.doesNotMatch(html, /No comparison/); assert.doesNotMatch(html, /percentage points/);
 });
 
 test('opponent comparisons retain both cohorts, rank combined samples, and distinguish absent from zero rates', async () => {

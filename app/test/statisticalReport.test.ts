@@ -56,7 +56,7 @@ test('deck reports expose all checkpoints without scenario inputs, including inc
   for (const seen of [7, 10, 15, 20]) assert.match(html, new RegExp(`${seen} seen`));
   assert.doesNotMatch(html, /<input|<select|<textarea|Adjust scenario/);
   assert.doesNotMatch(html, /data-component="DeckAccessSummary"/);
-  assert.match(html, /attack report unavailable/);
+  assert.doesNotMatch(html, /attack report unavailable|data-component="CombatAccessReport"/);
   assert.doesNotMatch(render([]), /NaN|Infinity/);
 });
 

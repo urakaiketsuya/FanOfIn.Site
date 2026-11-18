@@ -57,8 +57,8 @@ test('reports show removal comparisons, missing and empty states without inputs'
   assert.match(html, /0.0% to find/);
   assert.match(html, /Token producers/);
   assert.doesNotMatch(html, /<input|<select|NaN|Infinity/);
-  assert.match(render([]), /No reviewed effect sources/);
-  assert.match(render([{ name: 'Unknown', quantity: 1 }]), /report unavailable/);
+  assert.equal(render([]), '');
+  assert.equal(render([{ name: 'Unknown', quantity: 1 }]), '');
 });
 test('eligible boost access requires a drawn target and respects class/level gates', async () => {
   const { computeCombatAccessForecast } = await import('@gatcg/shared');

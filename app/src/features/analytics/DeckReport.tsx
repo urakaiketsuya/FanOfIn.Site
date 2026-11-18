@@ -23,7 +23,7 @@ export default function DeckReport({ deck, cardsByName }: {
     <RaiDamageReport deck={deck} cardsByName={cardsByName} />
     <DefenseReport deck={deck} cardsByName={cardsByName} />
     <RecursionReport deck={deck} cardsByName={cardsByName} />
-    <Panel><DamageStatisticalReport forecast={forecast} cardsByName={cardsByName} /></Panel>
+    {forecast.audit.some(row => row.status !== 'excluded' && cardsByName.has(row.name)) && <Panel><DamageStatisticalReport forecast={forecast} cardsByName={cardsByName} /></Panel>}
     <CombatAccessReport deck={deck} cardsByName={cardsByName} />
     <EffectAccessReport deck={deck} cardsByName={cardsByName} />
     <CardScenarios deck={deck} cardsByName={cardsByName} />

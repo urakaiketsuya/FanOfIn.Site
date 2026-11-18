@@ -17,6 +17,7 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
   const rows = useMemo(() => compareObservedMatchups(current, previous), [current, previous]);
   const visible = expanded ? rows : rows.slice(0, 3);
   const delta = current.winRate !== null && previous.winRate !== null ? (current.winRate - previous.winRate) * 100 : null;
+  if (!current.results && !previous.results) return null;
   return <Panel className="mt-4">
     <h2 className="font-semibold">Period comparison</h2>
     <p className="mt-1 text-sm text-ctp-subtext0">{scope.format || 'All formats'} · All events</p>
@@ -29,7 +30,7 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
         <p className="text-xs text-ctp-subtext0">{cohort.decks.toLocaleString()} {cohort.decks === 1 ? 'deck' : 'decks'} · {cohort.events.toLocaleString()} {cohort.events === 1 ? 'event' : 'events'}</p>
       </section>)}
     </div>
-    <p className="mt-3 text-sm">{delta === null ? 'No comparison · one period has no results' : `${delta > 0 ? '+' : ''}${delta.toFixed(1)} percentage points`}<span className="text-ctp-subtext0"> · Ties count ½</span></p>
+    {delta !== null && <p className="mt-3 text-sm">{`${delta > 0 ? '+' : ''}${delta.toFixed(1)} percentage points`}<span className="text-ctp-subtext0"> · Ties count ½</span></p>}
     <h3 className="mt-5 font-semibold">By opponent</h3>
     <p className="mt-1 text-xs text-ctp-subtext0">Largest combined samples first · Score rate 0–100%</p>
     {rows.length === 0 && <p role="status" className="mt-3 text-sm">No recorded opponents in either period.</p>}

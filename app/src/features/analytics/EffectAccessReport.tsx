@@ -7,10 +7,11 @@ export default function EffectAccessReport({ deck, cardsByName, baseline }: { de
   const report = useMemo(() => effectAccessReport(deck, cardsByName), [deck, cardsByName]);
   const before = useMemo(() => baseline ? effectAccessReport(baseline, cardsByName) : null, [baseline, cardsByName]);
   const ids = [...new Set([...report.rows, ...before?.rows ?? []].map(row => row.id))];
+  if (report.unavailable || before?.unavailable || !ids.length) return null;
   return <Panel data-component="EffectAccessReport">
     <h3 className="font-semibold">{baseline ? 'Effect access comparison' : 'Effects in your draws'}</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">Reviewed sources · median copies · middle 80% of draws{baseline ? ' · baseline → target' : ''}</p>
-    {report.unavailable || before?.unavailable ? <p role="status" className="mt-3 text-sm">Card data incomplete · report unavailable</p> : !ids.length ? <p className="mt-3 text-sm">No reviewed effect sources.</p> : <div className="mt-4 grid gap-4 lg:grid-cols-2">{ids.map(id => {
+    {<div className="mt-4 grid gap-4 lg:grid-cols-2">{ids.map(id => {
       const row = report.rows.find(r => r.id === id), previous = before?.rows.find(r => r.id === id);
       const source = row ?? previous!;
       const names = new Set([...row?.lines ?? [], ...previous?.lines ?? []].map(line => line.name));

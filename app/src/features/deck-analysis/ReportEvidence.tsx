@@ -12,6 +12,7 @@ export function ComparableBuildReport({ deck, references, cards, loading, error,
   const [selected, setSelected] = useState('');
   const [expanded, setExpanded] = useState(false);
   const reference = references.find(row => row.deckId === selected) ?? references[0];
+  if (!loading && !error && !reference) return null;
   const differences = reference ? referenceDifferences(deck, reference) : [];
   return <Panel>
     <h2 className="text-lg font-semibold">Similar builds</h2>
@@ -26,13 +27,15 @@ export function ComparableBuildReport({ deck, references, cards, loading, error,
 }
 export function MatchupCoverageReport({ deck, matchups, cards, loading, error, onRetry }: { deck: DeckWorkspace; matchups: ClusterMatchupImpact[]; cards: Map<string, Card>; loading: boolean; error?: string | null; onRetry: () => void }) {
   const [selected, setSelected] = useState('');
-  const matchup = matchups.find(row => row.opponentClusterId === selected) ?? matchups[0];
+  const available = matchups.filter(row => row.opponentCards.length > 0);
+  const matchup = available.find(row => row.opponentClusterId === selected) ?? available[0];
+  if (!loading && !error && !matchup) return null;
   const main = reportCounts(deck.main), material = reportCounts(deck.material);
   const size = [...main.values()].reduce((a, b) => a + b, 0);
   return <Panel>
     <h2 className="text-lg font-semibold">Matchup coverage</h2>
     {error ? <><p role="alert">Matchup data unavailable.</p><Button onClick={onRetry}>Retry matchup evidence</Button></> : loading ? <p role="status">Loading matchup evidence…</p> : !matchup ? <p className="mt-2">No matched-build evidence.</p> : <>
-      <label className="mt-3 block text-sm">Opponent<select className="mt-1 min-h-12 w-full rounded border border-ctp-surface1 bg-ctp-base p-2" value={matchup.opponentClusterId} onChange={event => setSelected(event.target.value)}>{matchups.map(row => <option key={row.opponentClusterId} value={row.opponentClusterId}>{row.opponentClusterName} · {row.games} games</option>)}</select></label>
+      <label className="mt-3 block text-sm">Opponent<select className="mt-1 min-h-12 w-full rounded border border-ctp-surface1 bg-ctp-base p-2" value={matchup.opponentClusterId} onChange={event => setSelected(event.target.value)}>{available.map(row => <option key={row.opponentClusterId} value={row.opponentClusterId}>{row.opponentClusterName} · {row.games} games</option>)}</select></label>
       
       {!matchup.opponentCards.length && <p className="mt-3">Insufficient card-level data.</p>}
       {matchup.opponentCards.slice(0, 3).map(threat => {

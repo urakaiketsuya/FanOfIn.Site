@@ -40,9 +40,9 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
   const cluster = classification.cluster;
   const ordered = [...matchups].sort((a, b) => b.games - a.games || a.opponentClusterName.localeCompare(b.opponentClusterName));
   const visible = expanded ? ordered : ordered.slice(0, preview ? 3 : 6);
-  if (!cluster) return <Panel className="mt-4"><h2 className="text-lg font-semibold">No matching archetype yet</h2><p className="mt-2 text-sm text-ctp-subtext1">No observed results for a similar build.</p></Panel>;
+  if (!cluster || (observed && !observed.results && !matchups.length)) return null;
   return <div className="mt-4 space-y-6" data-component="AnalysisMatchups">
-    <Panel>
+    {Boolean(observed ? observed.results : performance) && <Panel>
       <h2 className="text-lg font-semibold">Observed results · similar decks</h2>
       {observedLabel && <p className="mt-2 break-words text-sm text-ctp-subtext1">{observedLabel}</p>}
       <Link to={`/archetypes/${cluster.id}`} className="inline-flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{cluster.name}</Link>
@@ -61,8 +61,8 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
         </div>
         <p className="mt-3 text-sm text-ctp-subtext1">{performance.deckCount.toLocaleString()} decks · {performance.eventCount.toLocaleString()} events{performance.confidence === 'emerging' ? ' · Limited data' : ''}</p>
       </> : <p className="mt-3 text-sm text-ctp-subtext1">Historical win rate unavailable.</p>}
-    </Panel>
-    <section aria-labelledby={headingId}>
+    </Panel>}
+    {(matchups.length > 0 || matchupsLoading || matchupsError) && <section aria-labelledby={headingId}>
       <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · {observed ? 'score rate' : 'win rate'} 0–100%</p>
       {matchupsError && <div className="mt-3"><p role="alert" className="text-sm">{matchups.length ? 'Showing saved matchups. Updated results could not be loaded.' : 'Opponent matchups could not be loaded.'}</p>{onRetryMatchups && <Button className="mt-2" onClick={onRetryMatchups}>Retry matchups</Button>}</div>}
       {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : observed ? 'No recorded matchups in this selection.' : 'No recorded opponent matchups for this archetype yet.'}</p>}
@@ -86,7 +86,7 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
         </Panel>)}
       </div>
       {ordered.length > (preview ? 3 : 6) && <Button className="mt-3 flex items-center gap-2" aria-controls={`${headingId}-rows`} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Fewer matchups' : `All ${ordered.length} matchups`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
-    </section>
+    </section>}
     {!preview && winConditions.length > 0 && <section aria-labelledby="analysis-interactions-heading">
       <h2 id="analysis-interactions-heading" className="text-lg font-semibold">Your deck’s card interactions</h2>
       <div className="mt-3 space-y-4">{winConditions.map((interaction) => <Panel key={[interaction.anchorCard, ...interaction.memberCards].join('|')}>
