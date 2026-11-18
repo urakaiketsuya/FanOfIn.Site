@@ -596,6 +596,7 @@ the same page width as the loaded content.
 Collections add columns using available container width rather than stretching a fixed
 number of cards. Use CardLayoutControls for Grid / Rows / List. Compatible catalog and
 deck surfaces share useDecklistDisplayPrefs so layout and grid density survive navigation.
+Card browsing and spoilers use shared Large / Medium / Compact size buttons with pressed states and 48px targets. Their responsive minimum card widths are 12rem / 9rem / 6rem; retain the shared saved preference and readable names at every size.
 Preserve catalog filtering and deck-specific grouping/sorting in their feature controllers.
 Use fullScreen DialogSheet for expanded card/deck views, with controls outside the scrolling
 results, readable names, keyboard dismissal and focus restoration. Small screens may scroll;

@@ -1,8 +1,19 @@
 import type { CardGridSize } from "../lib/cardGridSize";
+import Button from "./ui/Button";
 
 export default function CardGridSizeControl({ value, onChange }: {
   value: CardGridSize;
   onChange: (value: CardGridSize) => void;
 }) {
-  return <label className="flex items-center gap-2 text-sm">Grid size<select value={value} onChange={event => onChange(event.target.value as CardGridSize)} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>;
+  return <div role="group" aria-label="Grid size" className="flex flex-wrap items-center gap-2">
+    <span className="text-sm">Grid size</span>
+    <div className="flex flex-wrap gap-1">
+      {(["large", "medium", "compact"] as const).map(size => <Button
+        key={size}
+        aria-pressed={value === size}
+        variant={value === size ? "primary" : "secondary"}
+        onClick={() => onChange(size)}
+      >{size === "large" ? "Large" : size === "medium" ? "Medium" : "Compact"}</Button>)}
+    </div>
+  </div>;
 }
