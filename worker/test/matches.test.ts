@@ -99,3 +99,27 @@ describe("match and deck ingestion", () => {
     expect(matchSubmissionV1Schema.safeParse(bo3).success).toBe(false);
   });
 });
+
+it("publishes isolated source aggregates with only known metric denominators", async () => {
+  await db.prepare("DELETE FROM submitted_matches").run();
+  const config = { MATCH_DB: db, INGESTION_API_KEY: "legacy", MATCH_INGESTION_KEYS: JSON.stringify({ gao: "a".repeat(32), clarent: "b".repeat(32) }) };
+  const gao = payload("source-summary-gao");
+  const clarent = payload("source-summary-clarent");
+  clarent.games[0].turns = 20;
+  clarent.games[0].firstPlayerSeat = 1;
+  await handler.fetch(request(gao), config);
+  await handler.fetch(request(clarent, "b".repeat(32)), config);
+  const unknown = payload("source-summary-unknown") as any;
+  delete unknown.games[0].turns;
+  delete unknown.games[0].firstPlayerSeat;
+  await handler.fetch(request(unknown), config);
+  const response = await handler.fetch(new Request("https://worker.test/v1/grand-archive/analytics/summary"), config);
+  const summary = await response.json() as any;
+  expect(summary.games).toBe(0);
+  expect(summary.matchSources).toEqual([
+    { sourceId: "gao", matches: 2, draws: 0, decks: 4, games: 2, gamesWithTurns: 1, avgTurns: 8, firstPlayer: { games: 1, wins: 0, winRate: 0 } },
+    { sourceId: "clarent", matches: 1, draws: 0, decks: 2, games: 1, gamesWithTurns: 1, avgTurns: 20, firstPlayer: { games: 1, wins: 1, winRate: 1 } },
+  ]);
+  expect(JSON.stringify(summary)).not.toContain("source-summary-gao");
+  expect(JSON.stringify(summary)).not.toContain("example-card");
+});

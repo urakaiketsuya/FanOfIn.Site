@@ -149,3 +149,11 @@ test("catalog enrichment resolves both matchup seats and preserves unknown ident
   assert.equal(enriched.champions[0].games, summary.champions[0].games);
   assert.equal(summary.champions[0].championName, null);
 });
+
+test("validates source aggregates while accepting older snapshots", () => {
+  const row = { sourceId: "gao", matches: 0, draws: 0, decks: 0, games: 0, gamesWithTurns: 0, avgTurns: null, firstPlayer: { games: 0, wins: 0, winRate: null } };
+  const summary = { ...validSummary(), matchSources: [row, { ...row, sourceId: "clarent" }] };
+  assert.doesNotThrow(() => assertSummary(summary));
+  assert.throws(() => assertSummary({ ...summary, matchSources: [row, row] }), /source aggregates/);
+  assert.throws(() => assertSummary({ ...summary, matchSources: [{ ...row, gamesWithTurns: 1 }, summary.matchSources[1]] }), /source aggregates/);
+});

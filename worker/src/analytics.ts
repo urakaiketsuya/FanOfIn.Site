@@ -137,7 +137,28 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
   const weaponsRows = weaponsResult.results as unknown as WeaponRow[];
   const turnStatsRows = turnStatsResult.results as unknown as TurnStatsRow[];
 
+  const matchSources = await Promise.all((["gao", "clarent"] as const).map(async sourceId => {
+    const [matches, games] = await env.MATCH_DB.batch([
+      env.MATCH_DB.prepare(`SELECT COUNT(*) AS matches,
+        COALESCE(SUM(outcome = 'draw'), 0) AS draws,
+        (SELECT COUNT(*) FROM submitted_match_decks d JOIN submitted_matches m ON m.id = d.match_id WHERE m.source_id = ?) AS decks
+        FROM submitted_matches WHERE source_id = ?`).bind(sourceId, sourceId),
+      env.MATCH_DB.prepare(`SELECT COUNT(*) AS games, COUNT(g.turns) AS games_with_turns,
+        AVG(g.turns) AS avg_turns, COUNT(g.first_player_seat) AS first_games,
+        COALESCE(SUM(g.winner_seat = g.first_player_seat), 0) AS first_wins
+        FROM submitted_match_games g JOIN submitted_matches m ON m.id = g.match_id
+        WHERE m.source_id = ?`).bind(sourceId),
+    ]);
+    const m = matches.results[0] as Record<string, number>;
+    const g = games.results[0] as Record<string, number | null>;
+    const known = Number(g.first_games);
+    return { sourceId, matches: Number(m.matches), draws: Number(m.draws), decks: Number(m.decks),
+      games: Number(g.games), gamesWithTurns: Number(g.games_with_turns), avgTurns: g.avg_turns,
+      firstPlayer: { games: known, wins: Number(g.first_wins), winRate: known ? Number(g.first_wins) / known : null } };
+  }));
+
   return {
+    matchSources,
     schemaVersion: 1,
     source: "GrandArchiveSim",
     generatedAt: new Date().toISOString(),

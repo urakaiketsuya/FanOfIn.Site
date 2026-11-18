@@ -7,6 +7,17 @@
  * identifier; Clarent supplies the corresponding display name when available.
  */
 export interface SimulatorSummary {
+  /** Source-scoped completed match submissions; absent on older published snapshots. */
+  matchSources?: Array<{
+    sourceId: "gao" | "clarent";
+    matches: number;
+    draws: number;
+    decks: number;
+    games: number;
+    firstPlayer: { games: number; wins: number; winRate: number | null };
+    avgTurns: number | null;
+    gamesWithTurns: number;
+  }>;
   schemaVersion: 1;
   source: "GrandArchiveSim";
   generatedAt: string;

@@ -24,6 +24,18 @@ export function assertSummary(value: unknown): asserts value is SimulatorSummary
   ) {
     throw new Error("simulator API summary is missing required metadata");
   }
+  if (summary.matchSources !== undefined) {
+    const rows = summary.matchSources;
+    const count = (n: unknown): n is number => typeof n === "number" && Number.isSafeInteger(n) && n >= 0;
+    if (!Array.isArray(rows) || rows.length !== 2 || new Set(rows.map(row => row?.sourceId)).size !== 2 || rows.some(row =>
+      !row || !["gao", "clarent"].includes(row.sourceId)
+      || ![row.matches, row.draws, row.decks, row.games, row.gamesWithTurns, row.firstPlayer?.games, row.firstPlayer?.wins].every(count)
+      || row.draws > row.matches || row.gamesWithTurns > row.games
+      || row.firstPlayer.games > row.games || row.firstPlayer.wins > row.firstPlayer.games
+      || (row.avgTurns !== null && !isFiniteNonNegative(row.avgTurns))
+      || row.firstPlayer.winRate !== (row.firstPlayer.games ? row.firstPlayer.wins / row.firstPlayer.games : null)
+    )) throw new Error("simulator API summary has invalid source aggregates");
+  }
   const firstPlayer = summary.firstPlayer;
   if (
     !firstPlayer

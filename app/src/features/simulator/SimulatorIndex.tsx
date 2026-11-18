@@ -5,7 +5,7 @@ import Button from "../../components/ui/Button";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useMemo } from "react";
 import { useSimulatorSummaryData } from "./data";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -31,8 +31,12 @@ function formatAvg(value: number): string {
 }
 
 export default function SimulatorIndex() {
-  useDocumentTitle("Simulator Data", "Experimental – anonymous match telemetry from Clarent, the community Grand Archive simulator.");
+  useDocumentTitle("Simulator Data", "Match statistics from GAO and Clarent.");
   const data = useSimulatorSummaryData();
+  const [params, setParams] = useSearchParams();
+  const source = params.get("source") === "gao" ? "gao" : "clarent";
+  const sourceLabel = source === "gao" ? "GAO" : "Clarent";
+  const submitted = data?.matchSources?.find(row => row.sourceId === source);
   const catalog = useCardCatalog();
   const cards = useMemo(() => {
     const result = new Map<string, Card>();
@@ -53,13 +57,15 @@ export default function SimulatorIndex() {
   return (
     <PageLayout data-component="SimulatorIndex">
       <h1 className="text-2xl font-bold text-ctp-blue">Simulator Data</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Anonymous match telemetry submitted by{" "}
-        <a href="https://clarent.net" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
-          Clarent
-        </a>
-        , the community's TCGEngine-based Grand Archive simulator – no player identity is collected.
-      </p>
+      <label className="mt-4 flex max-w-xs flex-col gap-1 text-sm text-ctp-text">
+        Source
+        <select aria-label="Source" value={source}
+          className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue"
+          onChange={event => { const next = new URLSearchParams(params); next.set("source", event.target.value); setParams(next); }}>
+          <option value="clarent">Clarent</option>
+          <option value="gao">GAO</option>
+        </select>
+      </label>
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
         <p className="font-semibold text-ctp-peach">Experimental – very early data</p>
@@ -72,10 +78,25 @@ export default function SimulatorIndex() {
       {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-red"><p>{data ? "Showing saved data. " : ""}{status.error}</p><Button className="mt-2" onClick={status.retry}>Retry loading</Button></div>}
       {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
 
-      {data && (
+      {data && (source === "gao" || (submitted?.matches ?? 0) > 0) && (
+        <Section className="mt-6" heading="dense" title={`${sourceLabel} match submissions`}>
+          {!submitted ? <InlineState>Source statistics are not available in this published snapshot yet.</InlineState>
+            : submitted.matches === 0 ? <InlineState>No {sourceLabel} matches submitted yet.</InlineState>
+            : <dl className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {[
+                ["Matches", submitted.matches], ["Drawn matches", submitted.draws],
+                ["Deck snapshots", submitted.decks], ["Games", submitted.games],
+                ["First-player win rate", `${formatPercent(submitted.firstPlayer.winRate)} (${submitted.firstPlayer.wins}/${submitted.firstPlayer.games} reported games)`],
+                ["Avg game length", submitted.avgTurns === null ? "–" : `${formatAvg(submitted.avgTurns)} turns (${submitted.gamesWithTurns} reported games)`],
+              ].map(([label, value]) => <div key={label}><dt className="text-sm text-ctp-subtext1">{label}</dt><dd className="font-medium text-ctp-text">{value}</dd></div>)}
+            </dl>}
+        </Section>
+      )}
+
+      {data && source === "clarent" && (
         <div className="mt-6 space-y-6">
           <div className="rounded-lg border border-ctp-surface1 p-4">
-            <Section heading="dense" title="Overview">
+            <Section heading="dense" title="Clarent game telemetry">
             <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
               <div>
                 <span className="text-ctp-subtext1">Games recorded: </span>
