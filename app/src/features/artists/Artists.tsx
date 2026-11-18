@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { matchesArtistSearch, artistDirectory, artistPagePath, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
+import DisclosureChevron from '../../components/DisclosureChevron';
 import ArtistAccountIcon from './ArtistAccountIcon';
 import { artistSharePreview } from './artistSharePreview';
 import PageLayout from '../../components/layout/PageLayout';
@@ -19,6 +20,8 @@ import { useDocumentTitle } from '../../lib/useDocumentTitle';
 function artworkCounts(cards: number, printings: number) {
   return `${cards} ${cards === 1 ? 'card' : 'cards'} · ${printings} ${printings === 1 ? 'printing' : 'printings'}`;
 }
+
+const accountPlatforms = [...new Set(artistDirectory.flatMap(artist => artist.links.map(link => link.platform)))].sort((a, b) => a === 'X' ? -1 : b === 'X' ? 1 : a.localeCompare(b));
 
 const linkClass = 'inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 
@@ -68,6 +71,14 @@ export default function Artists() {
   const [retrySucceeded, setRetrySucceeded] = useState(false);
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
+  const requestedAccount = params.get('account') ?? '';
+  const account = ['any', 'none', ...accountPlatforms].includes(requestedAccount) ? requestedAccount : '';
+  function setAccount(value: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set('account', value);
+    else next.delete('account');
+    setParams(next, { replace: true });
+  }
   const galleries = useMemo(() => buildArtistGalleries(cards, popularity?.cards), [cards, popularity]);
   const artist = galleries.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
   const identity = artist ?? artistDirectory.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
@@ -96,7 +107,11 @@ export default function Artists() {
     setRetryError(false);
     try { await syncCards(); setRetrySucceeded(true); } catch { setRetryError(true); } finally { setRetrying(false); }
   }
-  const visibleArtists = galleries.filter(candidate => matchesArtistSearch(candidate, query));
+  const visibleArtists = galleries.filter(candidate => matchesArtistSearch(candidate, query) && (
+    !account || (account === 'any' ? candidate.links.length > 0
+      : account === 'none' ? candidate.links.length === 0
+        : candidate.links.some(link => link.platform === account))
+  ));
   const visibleCards = artist?.cards.flatMap(entry => {
     const editions = searchCardPrintings(entry.card, cardSearch).filter(edition => entry.editions.some(printing => printing.uuid === edition.uuid));
     return editions.length ? [{ ...entry, editions }] : [];
@@ -133,6 +148,25 @@ export default function Artists() {
     </> : <>
       <p className="mt-3 text-ctp-subtext1">Browse Grand Archive artists and studios, explore their credited card artwork, and find official accounts.</p>
       <label className="mt-5 block max-w-lg text-sm">Search artists<input type="search" value={query} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
+      <div className="mt-4 flex flex-wrap items-end gap-3">
+        <label className="block w-full text-sm sm:w-64">Official account
+          <span className="relative mt-2 block">
+            <select value={account} onChange={event => setAccount(event.target.value)} className="min-h-12 w-full appearance-none rounded-lg border border-ctp-surface1 bg-ctp-mantle pl-3 pr-10 focus-visible:outline-2 focus-visible:outline-ctp-blue">
+              <option value="">All artists</option>
+              <option value="any">Any account</option>
+              <option value="none">No listed accounts</option>
+              {accountPlatforms.map(platform => <option key={platform} value={platform}>{platform === 'X' ? 'Twitter / X' : platform}</option>)}
+            </select>
+            <DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
+          </span>
+        </label>
+        {(query || account) && <Button onClick={() => {
+          const next = new URLSearchParams(params);
+          next.delete('q');
+          next.delete('account');
+          setParams(next, { replace: true });
+        }}>Clear filters</Button>}
+      </div>
       {galleries.length > 0 && <p role="status" className="mt-4 text-sm text-ctp-subtext1">{visibleArtists.length} {visibleArtists.length === 1 ? 'artist' : 'artists'}</p>}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleArtists.map(candidate => <Link key={candidate.id} to={`/artists/${encodeURIComponent(candidate.slug)}`} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
         <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold"><ArtistName artist={candidate} /></h2>{candidate.kind === 'studio' && <p className="mt-1 text-xs text-ctp-subtext1">Studio</p>}<p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
