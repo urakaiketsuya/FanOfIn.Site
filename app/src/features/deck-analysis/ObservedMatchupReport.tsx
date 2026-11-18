@@ -41,11 +41,11 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
   return <div aria-busy={pending}>
     <Panel className="mt-4">
       <h2 className="mb-3 text-sm font-semibold">Matchup filters</h2>
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,12em),1fr))] gap-3">
         <label className="min-w-0 text-sm">From<input type="date" className={inputClass} value={draft.from} max={draft.to || undefined} onChange={e => update({ from: e.target.value, event: '' })} /></label>
         <label className="min-w-0 text-sm">Through<input type="date" className={inputClass} value={draft.to} min={draft.from || undefined} onChange={e => update({ to: e.target.value, event: '' })} /></label>
-        <label className="col-span-2 min-w-0 text-sm sm:col-span-1">Format<select className={inputClass} value={draft.format} onChange={e => update({ format: e.target.value, event: '' })}><option value="">All formats</option>{[...new Set(data.events.map(e => e.format))].sort().map(f => <option key={f}>{f}</option>)}</select></label>
-        <label className="col-span-2 min-w-0 text-sm sm:col-span-1">Event<select className={inputClass} value={draft.event} onChange={e => update({ event: e.target.value })}><option value="">All events</option>{events.map(e => <option key={e.id} value={e.id}>{e.date} · {e.name}</option>)}</select></label>
+        <label className="min-w-0 text-sm">Format<select className={inputClass} value={draft.format} onChange={e => update({ format: e.target.value, event: '' })}><option value="">All formats</option>{[...new Set(data.events.map(e => e.format))].sort().map(f => <option key={f}>{f}</option>)}</select></label>
+        <label className="min-w-0 text-sm">Event<select className={inputClass} value={draft.event} onChange={e => update({ event: e.target.value })}><option value="">All events</option>{events.map(e => <option key={e.id} value={e.id}>{e.date} · {e.name}</option>)}</select></label>
       </div>
       {Object.values(draft).some(Boolean) && <Button className="mt-3" onClick={() => update(emptyMatchupScope)}>Reset filters</Button>}
       {priorScope && <Button className="mt-3 ml-2" aria-pressed={compare} onClick={() => onCompare(!compare)}>{compare ? 'Hide comparison' : 'Compare previous period'}</Button>}

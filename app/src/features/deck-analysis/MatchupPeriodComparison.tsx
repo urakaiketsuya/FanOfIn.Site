@@ -8,7 +8,7 @@ import RateTrack, { EventRangeLabel, rangeLegend } from './ObservedRateTrack';
 import Panel from '../../components/ui/Panel';
 
 type Cohort = ReturnType<typeof observedMatchupCohort>;
-const rate = (value: number | null) => value === null ? '—' : `${Math.round(value * 100)}%`;
+const rate = (value: number | null) => value === null ? <><span aria-hidden="true">—</span><span className="sr-only">No recorded matches</span></> : <><span className="sr-only">Score rate </span>{`${Math.round(value * 100)}%`}</>;
 export default function MatchupPeriodComparison({ current, previous, scope, previousScope, builds = {}, cards = new Map() }: {
   builds?: ObservedMatchupData['builds']; cards?: Map<string, Card>;
   current: Cohort; previous: Cohort; scope: ObservedMatchupScope; previousScope: ObservedMatchupScope;
@@ -41,9 +41,9 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
         <div className="min-w-0">
           <div className="flex min-w-0 items-center gap-3">
             <div className="w-20 shrink-0"><ChampionArt name={builds[row.id]?.champion ?? 'Opponent'} cards={cards} /></div>
-            <div className="min-w-0"><h4 className="font-semibold">{builds[row.id]?.champion ?? 'Opponent'}</h4><Link to={`/archetypes/${row.id}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{builds[row.id]?.name ?? `Build ${row.id}`}</Link></div>
+            <div className="min-w-0"><h4 className="break-words font-semibold">{builds[row.id]?.champion ?? 'Opponent'}</h4><Link to={`/archetypes/${row.id}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{builds[row.id]?.name ?? `Build ${row.id}`}</Link></div>
           </div>
-          <p className="mt-2 text-sm tabular-nums">{row.delta === null ? row.current ? 'Selected period only' : 'Previous period only' : `${row.delta > 0 ? '+' : ''}${row.delta.toFixed(1)} pp`}</p>
+          <p className="mt-2 text-sm tabular-nums">{row.delta === null ? row.current ? 'Selected period only' : 'Previous period only' : <>{`${row.delta > 0 ? '+' : ''}${row.delta.toFixed(1)}`}<span aria-hidden="true"> pp</span><span className="sr-only"> percentage points, selected minus previous</span></>}</p>
         </div>
         <div className="min-w-0 space-y-3">
           {[{ label: 'Previous', value: row.previous }, { label: 'Selected', value: row.current }].map(({ label, value }) => <div key={label}>

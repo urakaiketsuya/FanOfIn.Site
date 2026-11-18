@@ -7,8 +7,8 @@ export const rangeLegend = 'Dot: overall · band: middle 50% of events · line: 
 export function EventRangeLabel({ range }: { range?: EventRange }) {
   if (!range || range.events < 2) return null;
   return <p className="flex flex-wrap gap-x-2 text-xs text-ctp-subtext0 tabular-nums">
-    {range.middle && <span className="whitespace-nowrap">Middle 50% of events {percent(range.middle.low)}–{percent(range.middle.high)}</span>}
-    <span className="whitespace-nowrap">{range.middle ? 'Full range' : 'Event range'} {percent(range.low)}–{percent(range.high)}</span>
+    {range.middle && <span>Middle 50% of events <span className="whitespace-nowrap">{percent(range.middle.low)}–{percent(range.middle.high)}</span></span>}
+    <span>{range.middle ? 'Full range' : 'Event range'} <span className="whitespace-nowrap">{percent(range.low)}–{percent(range.high)}</span></span>
   </p>;
 }
 

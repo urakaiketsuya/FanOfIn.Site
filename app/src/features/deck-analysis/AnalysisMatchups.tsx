@@ -16,7 +16,7 @@ export function ChampionArt({ name, cards }: { name: string; cards: Map<string, 
   const card = cards.get(name)
     ?? [...cards.values()].find((candidate) => candidate.types.includes('CHAMPION') && candidate.name.startsWith(`${name}, `));
   const art = <CardArtTile card={card} name={card?.name ?? name} artworkOnly />;
-  return card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`View ${card.name}`} className="block min-h-12 min-w-12 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{art}</Link> : <div>{art}</div>;
+  return card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`View ${card.name} (opens in a new tab)`} className="block min-h-12 min-w-12 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{art}</Link> : <div>{art}</div>;
 }
 
 /** Historical archetype results, never an inferred prediction for the user's exact list. */
@@ -51,14 +51,14 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
       <Link to={`/archetypes/${cluster.id}`} className="inline-flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{cluster.name}</Link>
       <p className="text-xs text-ctp-subtext1">{percent(classification.similarity)} deck similarity{classification.status === 'borderline' ? ' · Loose match' : ''}</p>
       {observed ? <>
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,8em),1fr))] gap-4">
           <div><p className="text-4xl font-semibold tabular-nums">{observed.winRate === null ? '—' : percent(observed.winRate)}</p><p className="mt-1 text-sm">Observed score rate</p></div>
           <div><p className="text-4xl font-semibold tabular-nums">{observed.results.toLocaleString()}</p><p className="mt-1 text-sm">Deck results</p></div>
         </div>
         <p className="mt-3 text-sm text-ctp-subtext1">{observed.decks.toLocaleString()} {observed.decks === 1 ? 'deck' : 'decks'} · {observed.events.toLocaleString()} {observed.events === 1 ? 'event' : 'events'} · Ties count ½</p>
         <p className="mt-1 text-xs text-ctp-subtext1">Completed matches · classified opponents</p>
       </> : performance ? <>
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,8em),1fr))] gap-4">
           <div><p className="text-4xl font-semibold tabular-nums">{percent(performance.winRate)}</p><p className="mt-1 text-sm">Historical win rate</p></div>
           <div><p className="text-4xl font-semibold tabular-nums">{performance.interval95.matches.toLocaleString()}</p><p className="mt-1 text-sm">Recorded matches</p></div>
         </div>
@@ -77,13 +77,13 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
             <div className="flex min-w-0 items-center gap-3">
               <div className="w-20 shrink-0"><ChampionArt name={matchup.opponentChampionName} cards={cards} /></div>
               <div className="min-w-0">
-                <h3 className="font-semibold">{matchup.opponentChampionName}</h3>
+                <h3 className="break-words font-semibold">{matchup.opponentChampionName}</h3>
                 <Link to={`/archetypes/${matchup.opponentClusterId}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{matchup.opponentClusterName}</Link>
               </div>
             </div>
             <div className="min-w-0">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <strong className="text-2xl tabular-nums">{percent(matchup.baselineWinRate)}</strong>
+                <strong className="text-2xl tabular-nums"><span className="sr-only">{observed ? 'Score rate' : 'Win rate'} </span>{percent(matchup.baselineWinRate)}</strong>
                 <span className="text-xs text-ctp-subtext1 tabular-nums">{matchup.games.toLocaleString()} {observed ? matchup.games === 1 ? 'match' : 'matches' : matchup.games === 1 ? 'game' : 'games'}{range ? ` · ${range.events} ${range.events === 1 ? 'event' : 'events'}` : ''}</span>
               </div>
               <RateTrack value={matchup.baselineWinRate} range={range} />
