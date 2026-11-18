@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Card, observedMatchupCohort } from '@gatcg/shared';
+import RateTrack, { EventRangeLabel, rangeLegend } from './ObservedRateTrack';
 import CardArtTile from '../../components/CardArtTile';
 import CardResult from '../../components/CardResult';
 import DisclosureChevron from '../../components/DisclosureChevron';
@@ -66,13 +67,12 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
     </Panel>}
     {(matchups.length > 0 || matchupsLoading || matchupsError) && <section aria-labelledby={headingId}>
       <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · {observed ? 'score rate' : 'win rate'}</p>
-      {observed?.matchups.some(row => row.eventRange && row.eventRange.events > 1) && <p className="mt-1 text-xs text-ctp-subtext1">Dot: overall · line: event low–high</p>}
+      {observed?.matchups.some(row => row.eventRange && row.eventRange.events > 1) && <p className="mt-1 text-xs text-ctp-subtext1">{rangeLegend}</p>}
       {matchupsError && <div className="mt-3"><p role="alert" className="text-sm">{matchups.length ? 'Showing saved matchups. Updated results could not be loaded.' : 'Opponent matchups could not be loaded.'}</p>{onRetryMatchups && <Button className="mt-2" onClick={onRetryMatchups}>Retry matchups</Button>}</div>}
       {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : observed ? 'No recorded matchups in this selection.' : 'No recorded opponent matchups for this archetype yet.'}</p>}
       <div id={`${headingId}-rows`} className="mt-3 divide-y divide-ctp-surface1 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
         {visible.map((matchup) => {
           const range = observed?.matchups.find(row => row.id === matchup.opponentClusterId)?.eventRange;
-          const hasRange = range && range.events > 1;
           return <article key={matchup.opponentClusterId} className="grid min-w-0 gap-x-6 gap-y-2 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:px-4" aria-label={`Against ${matchup.opponentClusterName}`}>
             <div className="flex min-w-0 items-center gap-3">
               <div className="w-20 shrink-0"><ChampionArt name={matchup.opponentChampionName} cards={cards} /></div>
@@ -86,15 +86,9 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
                 <strong className="text-2xl tabular-nums">{percent(matchup.baselineWinRate)}</strong>
                 <span className="text-xs text-ctp-subtext1 tabular-nums">{matchup.games.toLocaleString()} {observed ? matchup.games === 1 ? 'match' : 'matches' : matchup.games === 1 ? 'game' : 'games'}{range ? ` · ${range.events} ${range.events === 1 ? 'event' : 'events'}` : ''}</span>
               </div>
-              <div className="relative" aria-hidden="true"><svg viewBox="0 0 300 28" className="h-7 w-full" preserveAspectRatio="none" aria-hidden="true">
-                <line x1="6" x2="294" y1="14" y2="14" className="stroke-ctp-surface2" />
-                <line x1="150" x2="150" y1="3" y2="25" className="stroke-ctp-overlay1" strokeDasharray="2 2" />
-                {hasRange && <>
-                  <line x1={6 + range.low * 288} x2={6 + range.high * 288} y1="14" y2="14" className="stroke-ctp-blue" strokeWidth="4" />
-                  {[range.low, range.high].map((value, index) => <line key={index} x1={6 + value * 288} x2={6 + value * 288} y1="8" y2="20" className="stroke-ctp-blue" strokeWidth="2" />)}
-                </>}
-              </svg><span className="absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ctp-text" style={{ left: `${2 + matchup.baselineWinRate * 96}%` }} /></div>
-              <div className="flex justify-between gap-2 text-xs text-ctp-subtext1 tabular-nums"><span>0%</span><span>{hasRange ? `Event range ${percent(range.low)}–${percent(range.high)}` : '50%'}</span><span>100%</span></div>
+              <RateTrack value={matchup.baselineWinRate} range={range} />
+              <EventRangeLabel range={range} />
+              <div aria-hidden="true" className="flex justify-between text-xs text-ctp-subtext1 tabular-nums"><span>0%</span><span>50%</span><span>100%</span></div>
             </div>
           </article>;
         })}

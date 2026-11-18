@@ -7443,3 +7443,14 @@ contribute. Date, format, and event filters apply before computing either value.
 The range describes observed event variation, not a confidence interval or predicted
 outcome. Event sizes may differ; pooled rates remain match-weighted. Counts show physical
 matches and contributing events; mirrors remain 50% with physical matches counted once.
+
+With at least four contributing events, a filled band shows the 25th–75th percentiles
+of event rates. Each event has equal weight; sorted sample quantiles use linear
+interpolation at index `(n - 1) × p` (type 7). Four is a display minimum, not a
+statistical reliability threshold. Smaller cohorts retain extrema only; one event
+has no range. This descriptive middle-50% band follows the quartile convention
+([NIST](https://www.itl.nist.gov/div898/handbook/eda/section3/boxplot.htm)); it is
+not a confidence interval. The dot is still the pooled, match-weighted score rate,
+not the event median. Thin lines retain the actual minimum and maximum, not Tukey
+whiskers. Identical quartiles render a narrow band. If quartiles themselves span
+0–100%, that spread remains visible; no observations are trimmed or suppressed.

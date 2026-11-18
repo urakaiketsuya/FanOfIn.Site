@@ -4,6 +4,7 @@ import Button from '../../components/ui/Button';
 import DisclosureChevron from '../../components/DisclosureChevron';
 import { ChampionArt } from './AnalysisMatchups';
 import { compareObservedMatchups, type Card, type ObservedMatchupData, type ObservedMatchupScope, type observedMatchupCohort } from '@gatcg/shared';
+import RateTrack, { EventRangeLabel, rangeLegend } from './ObservedRateTrack';
 import Panel from '../../components/ui/Panel';
 
 type Cohort = ReturnType<typeof observedMatchupCohort>;
@@ -34,7 +35,7 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
     {rows.length > 0 && <>
     <h3 className="mt-5 font-semibold">By opponent</h3>
     <p className="mt-1 text-xs text-ctp-subtext0">Largest combined samples first · Score rate 0–100%</p>
-    {rows.some(row => [row.current, row.previous].some(value => value?.eventRange && value.eventRange.events > 1)) && <p className="mt-1 text-xs text-ctp-subtext0">Dot: overall · line: event low–high</p>}
+    {rows.some(row => [row.current, row.previous].some(value => value?.eventRange && value.eventRange.events > 1)) && <p className="mt-1 text-xs text-ctp-subtext0">{rangeLegend}</p>}
     <div id={rowsId} className="mt-3 divide-y divide-ctp-surface1 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-base">
       {visible.map(row => <article key={row.id} aria-label={`Against ${builds[row.id]?.name ?? `Build ${row.id}`}`} className="grid min-w-0 gap-3 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:gap-6 sm:p-4">
         <div className="min-w-0">
@@ -48,7 +49,7 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
           {[{ label: 'Previous', value: row.previous }, { label: 'Selected', value: row.current }].map(({ label, value }) => <div key={label}>
             <div className="flex flex-wrap items-baseline justify-between gap-2"><span className="text-xs text-ctp-subtext0">{label} <strong className="ml-1 text-lg text-ctp-text tabular-nums">{rate(value?.winRate ?? null)}</strong></span><span className="text-xs text-ctp-subtext0 tabular-nums">{(value?.matches ?? 0).toLocaleString()} {value?.matches === 1 ? 'match' : 'matches'}{value?.eventRange ? ` · ${value.eventRange.events} ${value.eventRange.events === 1 ? 'event' : 'events'}` : ''}</span></div>
             <RateTrack value={value?.winRate ?? null} range={value?.eventRange} />
-            {value?.eventRange && value.eventRange.events > 1 && <p className="text-xs text-ctp-subtext0 tabular-nums">Event range {rate(value.eventRange.low)}–{rate(value.eventRange.high)}</p>}
+            <EventRangeLabel range={value?.eventRange} />
           </div>)}
           <div aria-hidden="true" className="flex justify-between text-xs text-ctp-subtext0"><span>0%</span><span>50%</span><span>100%</span></div>
         </div>
@@ -57,19 +58,4 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
     </>}
     {rows.length > 3 && <Button className="mt-3 flex items-center gap-2" aria-expanded={expanded} aria-controls={rowsId} onClick={() => setExpanded(value => !value)}>{expanded ? 'Fewer opponent comparisons' : `All ${rows.length} opponent comparisons`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
   </Panel>;
-}
-
-/** A shared scale for both periods; an absent sample has no mark. */
-function RateTrack({ value, range }: { value: number | null; range?: { low: number; high: number; events: number } }) {
-  return <div className="relative" aria-hidden="true">
-    <svg viewBox="0 0 300 24" preserveAspectRatio="none" className="h-6 w-full">
-      <line x1="6" x2="294" y1="12" y2="12" className="stroke-ctp-surface2" />
-      <line x1="150" x2="150" y1="2" y2="22" className="stroke-ctp-overlay1" strokeDasharray="2 2" />
-      {value !== null && range && range.events > 1 && <>
-        <line x1={6 + range.low * 288} x2={6 + range.high * 288} y1="12" y2="12" className="stroke-ctp-blue" strokeWidth="4" />
-        {[range.low, range.high].map((endpoint, i) => <line key={i} x1={6 + endpoint * 288} x2={6 + endpoint * 288} y1="6" y2="18" className="stroke-ctp-blue" strokeWidth="2" />)}
-      </>}
-    </svg>
-    {value !== null && <span data-rate-dot className="absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ctp-text" style={{ left: `${2 + value * 96}%` }} />}
-  </div>;
 }

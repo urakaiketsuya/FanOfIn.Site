@@ -11,7 +11,7 @@ export interface ObservedMatchupData { generatedAt: string; builds: Record<strin
 export interface ObservedMatchupRow {
   id: string; matches: number; winRate: number;
   /** Observed per-event extrema, not a confidence interval. */
-  eventRange?: { low: number; high: number; events: number };
+  eventRange?: { low: number; high: number; events: number; middle?: { low: number; high: number } };
 }
 export interface ObservedMatchupScope { from: string; to: string; event: string; format: string }
 export const emptyMatchupScope: ObservedMatchupScope = { from: '', to: '', event: '', format: '' };
@@ -39,9 +39,14 @@ export function observedMatchupCohort(data: ObservedMatchupData, cluster: string
   const rate = (r: RecordCount) => recordSize(r) ? (r.wins + r.ties / 2) / recordSize(r) : null;
   return { winRate: rate(record), results: recordSize(record), decks: events.reduce((n, e) => n + e.decks[cluster], 0), events: events.length,
     matchups: [...opponents].filter(([, row]) => row.matches > 0).map(([id, row]): ObservedMatchupRow => {
-      const rates = [...row.byEvent.values()].map(rate).filter((value): value is number => value !== null);
+      const rates = [...row.byEvent.values()].map(rate).filter((value): value is number => value !== null).sort((a, b) => a - b);
+      // Equal event weights; linearly interpolated sample quantiles (type 7).
+      const quantile = (p: number) => {
+        const index = (rates.length - 1) * p, lower = Math.floor(index);
+        return rates[lower] + (rates[Math.ceil(index)] - rates[lower]) * (index - lower);
+      };
       return { id, matches: row.matches, winRate: rate(row.record)!,
-        eventRange: { low: Math.min(...rates), high: Math.max(...rates), events: rates.length } };
+        eventRange: { low: Math.min(...rates), high: Math.max(...rates), events: rates.length, ...(rates.length >= 4 ? { middle: { low: quantile(.25), high: quantile(.75) } } : {}) } };
     }).sort((a, b) => b.matches - a.matches || a.id.localeCompare(b.id)) };
 }
 

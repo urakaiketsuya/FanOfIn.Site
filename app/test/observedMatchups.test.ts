@@ -140,3 +140,33 @@ test('single observations use singular units and card interactions start with a 
   assert.doesNotMatch(html, /Anchor 3|Anchor 4/);
   assert.match(html, /All 5 card interactions/);
 });
+
+test('event quartiles describe equal-weight events while pooled rates retain match weights', async () => {
+  const { observedMatchupCohort, emptyMatchupScope } = await import('@gatcg/shared');
+  const data: import('@gatcg/shared').ObservedMatchupData = { generatedAt: '', builds: {}, events: [
+    [0, 1], [4, 6], [5, 5], [6, 4], [1, 0],
+  ].map(([wins, losses], index) => ({ id: index, name: '', date: `2026-01-0${index + 1}`, format: 'Standard', decks: { mine: 1 }, rows: [['mine', 'other', wins, losses, 0]] })) };
+  const row = observedMatchupCohort(data, 'mine', emptyMatchupScope).matchups[0];
+  assert.deepEqual(row.eventRange, { low: 0, high: 1, events: 5, middle: { low: .4, high: .6 } });
+  assert.equal(row.matches, 32);
+  assert.equal(row.winRate, .5);
+  const four = observedMatchupCohort(data, 'mine', { ...emptyMatchupScope, to: '2026-01-04' }).matchups[0];
+  assert.ok(Math.abs(four.eventRange!.middle!.low - .3) < 1e-10);
+  assert.equal(four.eventRange!.middle!.high, .525);
+  assert.equal(observedMatchupCohort(data, 'mine', { ...emptyMatchupScope, to: '2026-01-03' }).matchups[0].eventRange?.middle, undefined);
+  const unequal = structuredClone(data);
+  unequal.events[4].rows[0][2] = 100;
+  const weighted = observedMatchupCohort(unequal, 'mine', emptyMatchupScope).matchups[0];
+  assert.deepEqual(weighted.eventRange, row.eventRange);
+  assert.equal(weighted.winRate, 115 / 131);
+});
+
+test('distribution tracks retain extremes, collapsed bands and absent observations', async () => {
+  const { default: Track, EventRangeLabel } = await import('../src/features/deck-analysis/ObservedRateTrack');
+  const range = { low: 0, high: 1, events: 8, middle: { low: .5, high: .5 } };
+  const html = renderToStaticMarkup(createElement(Track, { value: .5, range }));
+  assert.match(html, /data-event-middle/);
+  assert.match(html, /width="1"/);
+  assert.match(renderToStaticMarkup(createElement(EventRangeLabel, { range })).replace(/<[^>]*>/g, ' '), /Middle 50% of events 50%–50%.*Full range 0%–100%/);
+  assert.doesNotMatch(renderToStaticMarkup(createElement(Track, { value: null, range })), /data-event-middle|data-rate-dot/);
+});
