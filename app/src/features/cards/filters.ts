@@ -1,5 +1,5 @@
 import { previewCardSet, PREVIEW_SET } from "../../lib/previewCards";
-import { matchesSearchClauses, includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
+import { matchesSearchExpression, matchesNumericSearch, type ParsedFilterQuery, matchesSearchClauses, includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
 import { searchSetPrefix, type Card } from "@gatcg/shared";
 import type { CardTagLookup } from "./cardTags";
@@ -74,8 +74,25 @@ export function editionWithTag(card: Card, filters: CardFilterState, tagLookup: 
 }
 
 export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?: CardTagLookup): Card[] {
-  const parsed = parseFilterQuery(filters.name);
+  return filterParsedCards(cards, filters, parseFilterQuery(filters.name), tagLookup);
+}
+
+function filterParsedCards(cards: Card[], filters: CardFilterState, parsed: ParsedFilterQuery, tagLookup?: CardTagLookup): Card[] {
   if (parsed.error) return [];
+  if (parsed.expression) {
+    const leaves = new Map<string, ParsedFilterQuery>();
+    const base = { ...filters, name: '' };
+    const empty = parseFilterQuery('');
+    return cards.filter(card => {
+      const faces = card.editions.flatMap(edition => edition.other_orientations ?? []);
+      const candidates = card.editions.length ? card.editions.map(edition => ({ ...card, editions: [{ ...edition, other_orientations: faces }] })) : [card];
+      return candidates.some(candidate => filterParsedCards([candidate], base, empty, tagLookup).length > 0
+        && matchesSearchExpression(parsed.expression!, query => {
+          if (!leaves.has(query)) leaves.set(query, parseFilterQuery(query));
+          return filterParsedCards([candidate], emptyFilterState(), leaves.get(query)!, tagLookup).length > 0;
+        }));
+    });
+  }
   filters = { ...filters, ...Object.fromEntries(Object.entries(parsed.facets).map(([key, values]) => [key, new Set([...(filters[key as keyof CardFilterState] as Set<string> ?? []), ...values])])) };
   const textClauses = parsed.clauses.filter(clause => clause.field !== "artist");
   const artistClauses = parsed.clauses.filter(clause => clause.field === "artist");
@@ -83,6 +100,7 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
     && matchesSearchClauses({ name: [], effect: [], artist: [edition.illustrator ?? ""] }, artistClauses);
 
   return cards.filter((card) => {
+    if (!matchesNumericSearch(card, parsed.numeric ?? [])) return false;
     const faces = card.editions.flatMap(edition => edition.other_orientations ?? []);
     if (!matchesSearchClauses({
       name: [card.name, ...faces.map(face => face.name)].filter((value): value is string => Boolean(value)),

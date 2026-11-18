@@ -13,7 +13,7 @@ export default function FilterQuery({ text, facets, onChange, allowed = Object.v
   function submit() {
     const parsed = parseFilterQuery(draft);
     if (!allowText && parsed.text.trim()) { setError("Use a field such as subtype:harmony, or choose cards below."); return; }
-    const unsupported = Object.keys(parsed.facets).find(key => !allowed.includes(key as SearchFacet));
+    const unsupported = [...Object.keys(parsed.facets), ...parsed.usedFacets ?? []].find(key => !allowed.includes(key as SearchFacet));
     if (parsed.error || unsupported) { setError(parsed.error ?? `${unsupported} is not available in this view.`); return; }
     setError("");
     onChange(parsed.text, Object.fromEntries(allowed.map(key => [key, parsed.facets[key] ?? new Set()])));

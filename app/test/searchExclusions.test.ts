@@ -70,7 +70,7 @@ test('card text requires every term, with quoted phrases and facets preserved', 
 });
 
 test('strict syntax rejects incomplete and unsupported expressions atomically', () => {
- for (const query of ['"unfinished', 'name:"unfinished', 'name:', '-name:""', 'name:"a"tail', 'na"me"', 'draw OR damage', '(draw)', 'power>=3', 'name:/draw/', '-', '!', 'type:action wat:x', 'constructor:x', 'any:x', 't:action -type:action']) {
+ for (const query of ['"unfinished', 'name:"unfinished', 'name:', '-name:""', 'name:"a"tail', 'na"me"', 'draw OR', '(draw', 'power>=', 'name:/draw/', '-', '!', 'type:action wat:x', 'constructor:x', 'any:x', 't:action -type:action']) {
   const parsed = parseFilterQuery(query);
   assert.ok(parsed.error, query);
   assert.deepEqual(parsed.facets, {}, query);
@@ -121,4 +121,63 @@ test('quoted escapes round trip and fields include reverse faces', () => {
  assert.equal(filterCards([card], {...emptyFilterState(), name: '-n:reverse'}).length, 0);
  const facets = {tags: new Set(['a "quote"', 'a\\b', 'or'])};
  assert.deepEqual(parseFilterQuery(formatFilterQuery('', facets)).facets.tags, facets.tags);
+});
+
+
+test('Boolean precedence, nesting, explicit AND and negated groups', () => {
+ const pool = [harmony, melody, both];
+ const results = (name: string) => filterCards(pool, {...emptyFilterState(), name}).map(c => c.name);
+ assert.deepEqual(results('n:harmony OR n:melody AND subtype:melody'), [harmony.name, melody.name]);
+ assert.deepEqual(results('(n:harmony OR n:melody) subtype:melody'), [melody.name]);
+ assert.deepEqual(results('NOT (n:harmony or n:melody)'), [both.name]);
+ assert.deepEqual(results('-(n:harmony OR (n:melody))'), [both.name]);
+ assert.deepEqual(results('subtype:harmony AND subtype:melody'), [both.name]);
+ assert.deepEqual(results('subtype:harmony subtype:melody'), pool.map(c => c.name));
+ assert.deepEqual(results('subtype:harmony AND -subtype:harmony'), []);
+ assert.deepEqual(filterCatalog(pool, '(n:harmony or n:melody) -n:harmony', emptyCatalogFilters()), [melody]);
+ for (const query of ['()', 'OR draw', 'draw OR', 'draw AND OR life', '(draw))', 'draw NOT', 'draw || life', 'NOT', 'name:foo OR unknown:x']) {
+  const parsed = parseFilterQuery(query);
+  assert.ok(parsed.error, query);
+  assert.deepEqual(parsed.facets, {});
+ }
+});
+
+test('GA numeric comparisons cover boundaries, aliases and missing printed stats', () => {
+ const pool = [0, 2, 3, null, -1].map((power, i) => ({...make(String(i), []), power, life: power, level: power, durability: power, cost_memory: power, cost_reserve: power}));
+ const results = (name: string) => filterCards(pool, {...emptyFilterState(), name}).map(c => c.name);
+ for (const field of ['power', 'pow', 'life', 'hp', 'level', 'lv', 'durability', 'dur', 'memory', 'mem', 'cost_memory', 'reserve', 'res', 'cost_reserve']) {
+  assert.deepEqual(results(`${field}>=2`), ['1', '2'], field);
+  assert.deepEqual(results(`${field}:0`), ['0'], field);
+ }
+ for (const [op, expected] of [['=', ['1']], ['!=', ['0', '2']], ['>', ['2']], ['<', ['0']], ['<=', ['0', '1']]] as const) assert.deepEqual(results(`power${op}2`), expected);
+ assert.deepEqual(results('power>=2 power<3'), ['1']);
+ assert.deepEqual(results('-power>=2'), ['0', '3', '4']);
+ assert.deepEqual(results('power=0 OR (power>2 AND life=3)'), ['0', '2']);
+ assert.deepEqual(results('power>=2 t:action t:ally'), ['1', '2']);
+ for (const query of ['power>=', 'power=>2', 'power:NaN', 'power:Infinity', 'power>2foo', 'power>life', 'cost>2', 'power:"2"']) assert.ok(parseFilterQuery(query).error, query);
+});
+
+test('Boolean printing branches share an edition and combine with picker state', () => {
+ const card = {...harmony, editions: [{...harmony.editions[0], illustrator: 'First'}, {...harmony.editions[1], illustrator: 'Second'}]};
+ const matches = (name: string) => filterCards([card], {...emptyFilterState(), name}).length;
+ assert.equal(matches('(s:doa AND r:3) OR a:missing'), 0);
+ assert.equal(matches('s:doa AND (a:second OR r:1)'), 1);
+ assert.equal(matches('(s:doa OR s:mrc) AND a:second'), 1);
+ assert.equal(filterCards([card], {...emptyFilterState(), sets: new Set(['DOA']), name: 'a:second OR r:3'}).length, 0);
+ const text = 'n:harmony OR n:melody';
+ const query = formatFilterQuery(text, {subtypes: new Set(['MELODY'])});
+ assert.deepEqual(filterCards([harmony, melody], {...emptyFilterState(), name: query}), [melody]);
+ const parsed = parseFilterQuery(query);
+ assert.deepEqual(parseFilterQuery(formatFilterQuery(parsed.text, parsed.facets)), parsed);
+ assert.ok(parseFilterQuery('(tag:bird OR type:ally)').usedFacets?.includes('tags'));
+});
+
+
+test('grouped searches preserve reverse faces, tags and bounded parsing', () => {
+ const card = {...harmony, uuid: 'reverse', editions: [{...harmony.editions[0], other_orientations: [{name: 'Reverse', effect: 'Draw (two) cards.'}]}]} as Card;
+ assert.deepEqual(filterCards([card], {...emptyFilterState(), name: '(n:reverse AND o:"(two)") OR n:missing'}), [card]);
+ assert.deepEqual(filterCards([card], {...emptyFilterState(), name: '(n:reverse OR n:missing)', types: new Set(['ALLY'])}), []);
+ assert.deepEqual(filterCards([card], {...emptyFilterState(), name: 'NOT (tag:bird OR n:missing)'}, {cards: new Map([['reverse', new Set(['bird'])]]), editions: new Map()}), []);
+ assert.ok(parseFilterQuery('('.repeat(65) + 'draw' + ')'.repeat(65)).error);
+ assert.ok(parseFilterQuery(Array(260).fill('draw').join(' OR ')).error);
 });

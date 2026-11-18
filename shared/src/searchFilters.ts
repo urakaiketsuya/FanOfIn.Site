@@ -46,6 +46,9 @@ export interface ParsedFilterQuery {
   text: string;
   facets: SearchFacets;
   clauses: SearchTextClause[];
+  expression?: SearchExpression;
+  numeric?: NumericSearchClause[];
+  usedFacets?: SearchFacet[];
   error?: string;
 }
 const FIELD_ALIASES: Record<string, string> = {
@@ -64,7 +67,8 @@ export function matchesSearchClauses(fields: { name: readonly string[]; effect: 
 }
 
 /** Strict bounded grammar: whitespace ANDs text clauses; facet inclusions remain any-of. */
-export function parseFilterQuery(query: string): ParsedFilterQuery {
+function parseFlatQuery(query: string): ParsedFilterQuery {
+  const numeric: NumericSearchClause[] = [];
   const facets: SearchFacets = {}, plain: string[] = [], clauses: SearchTextClause[] = [];
   const fail = (error: string): ParsedFilterQuery => ({ text: query, facets: {}, clauses: [], error });
   // Consume every character: malformed syntax must never silently become a partial query.
@@ -82,6 +86,13 @@ export function parseFilterQuery(query: string): ParsedFilterQuery {
   for (const token of tokens) {
     const exclude = token.startsWith('-');
     const unsigned = exclude ? token.slice(1) : token;
+    const comparison = unsigned.match(/^([a-z_]+)(:|!=|>=|<=|=|>|<)(.*)$/i);
+    if (comparison && Object.hasOwn(NUMERIC_FIELDS, comparison[1].toLowerCase())) {
+      if (!/^-?\d+(?:\.\d+)?$/.test(comparison[3]) || !Number.isFinite(Number(comparison[3]))) return fail('Enter a finite numeric value.');
+      numeric.push({ field: NUMERIC_FIELDS[comparison[1].toLowerCase()], operator: comparison[2], value: Number(comparison[3]), exclude });
+      plain.push(token);
+      continue;
+    }
     const match = unsigned.match(/^([a-z]+):(.*)$/i);
     const inputField = match?.[1].toLowerCase() ?? 'any';
     const field = Object.hasOwn(FIELD_ALIASES, inputField) ? FIELD_ALIASES[inputField] : inputField;
@@ -95,7 +106,7 @@ export function parseFilterQuery(query: string): ParsedFilterQuery {
       try { value = JSON.parse(raw); } catch { return fail('Use a complete quoted value, separated by spaces.'); }
     } else {
       if (/^(AND|OR|NOT)$/i.test(raw) || /[():<>=!|&"\\]/.test(raw) || raw.startsWith('/')) {
-        return fail('Boolean expressions, comparisons and regular expressions are not supported. Quote literal text.');
+        return fail('Invalid search syntax. Quote literal text; regex is not supported.');
       }
       value = raw;
     }
@@ -111,11 +122,101 @@ export function parseFilterQuery(query: string): ParsedFilterQuery {
     if (values.has(exclude ? includeFilterValue(value) : `-${value}`)) return fail(`Choose include or exclude for ${value}.`);
     values.add(signed); facets[key] = values;
   }
-  return { text: plain.join(' '), facets, clauses };
+  return { text: plain.join(' '), facets, clauses, ...(numeric.length ? { numeric } : {}) };
 }
 export function formatFilterQuery(text: string, facets: SearchFacets): string {
-  return [text, ...Object.entries(SEARCH_FACETS).flatMap(([field, key]) => [...facets[key] ?? []].map(value => {
+  const prefix = text && Object.values(facets).some(values => values?.size) && parseFilterQuery(text).expression ? `(${text})` : text;
+  return [prefix, ...Object.entries(SEARCH_FACETS).flatMap(([field, key]) => [...facets[key] ?? []].map(value => {
     const raw = filterValue(value).toLowerCase();
     return `${value.startsWith('-') ? '-' : ''}${field}:${/^[a-z0-9_-]+$/i.test(raw) && !/^(and|or|not)$/i.test(raw) ? raw : JSON.stringify(raw)}`;
   }))].filter(Boolean).join(' ');
+}
+
+export const NUMERIC_FIELDS: Record<string, 'cost_memory' | 'cost_reserve' | 'power' | 'life' | 'level' | 'durability'> = {
+  memory: 'cost_memory', mem: 'cost_memory', cost_memory: 'cost_memory',
+  reserve: 'cost_reserve', res: 'cost_reserve', cost_reserve: 'cost_reserve',
+  power: 'power', pow: 'power', life: 'life', hp: 'life', level: 'level', lv: 'level', durability: 'durability', dur: 'durability',
+};
+export interface NumericSearchClause { field: typeof NUMERIC_FIELDS[string]; operator: string; value: number; exclude: boolean }
+export function matchesNumericSearch(fields: Partial<Record<NumericSearchClause['field'], number | null>>, clauses: readonly NumericSearchClause[]): boolean {
+  return clauses.every(({ field, operator, value, exclude }) => {
+    const actual = fields[field];
+    // The catalog uses negative sentinels for variable printed values.
+    const matches = actual != null && Number.isFinite(actual) && actual >= 0 && (
+      operator === '>' ? actual > value : operator === '>=' ? actual >= value :
+      operator === '<' ? actual < value : operator === '<=' ? actual <= value :
+      operator === '!=' ? actual !== value : actual === value);
+    return exclude ? !matches : matches;
+  });
+}
+export type SearchExpression = { kind: 'leaf'; query: string } | { kind: 'not'; child: SearchExpression } | { kind: 'and' | 'or'; left: SearchExpression; right: SearchExpression };
+export function matchesSearchExpression(expression: SearchExpression, match: (query: string) => boolean): boolean {
+  if (expression.kind === 'leaf') return match(expression.query);
+  if (expression.kind === 'not') return !matchesSearchExpression(expression.child, match);
+  return expression.kind === 'and'
+    ? matchesSearchExpression(expression.left, match) && matchesSearchExpression(expression.right, match)
+    : matchesSearchExpression(expression.left, match) || matchesSearchExpression(expression.right, match);
+}
+
+/** Explicit AND binds tighter than OR; adjacent flat terms retain legacy facet any-of. */
+export function parseFilterQuery(query: string): ParsedFilterQuery {
+  const tokens: string[] = [];
+  let token = '', quoted = false, escaped = false;
+  for (const char of query) {
+    if (escaped) { token += char; escaped = false; continue; }
+    if (quoted && char === '\\') { token += char; escaped = true; continue; }
+    if (char === '"') quoted = !quoted;
+    if (!quoted && (/\s/.test(char) || char === '(' || char === ')')) {
+      if (token) tokens.push(token);
+      token = '';
+      if (char === '(' || char === ')') tokens.push(char);
+    } else token += char;
+  }
+  if (token) tokens.push(token);
+  const fail = (error: string): ParsedFilterQuery => ({ text: query, facets: {}, clauses: [], error });
+  if (quoted || escaped) return fail('Close the quoted search value.');
+  if (!tokens.some(t => /^(AND|OR|NOT|\(|\))$/i.test(t))) return parseFlatQuery(query);
+  let index = 0, depth = 0;
+  const usedFacets = new Set<SearchFacet>();
+  const peek = () => tokens[index]?.toUpperCase();
+  const primary = (): SearchExpression => {
+    if (++depth > 64) throw new Error('Search groups are nested too deeply.');
+    try {
+      if (peek() === 'NOT' || (peek() === '-' && tokens[index + 1] === '(')) {
+        index++; return { kind: 'not', child: primary() };
+      }
+      if (peek() === '(') {
+        index++;
+        const result = or();
+        if (peek() !== ')') throw new Error('Close the search group.');
+        index++; return result;
+      }
+      const start = index;
+      while (index < tokens.length && !/^(AND|OR|NOT|\(|\))$/i.test(tokens[index]) && !(tokens[index] === '-' && tokens[index + 1] === '(')) index++;
+      if (index === start) throw new Error('Enter a search term between operators and groups.');
+      const text = tokens.slice(start, index).join(' '), parsed = parseFlatQuery(text);
+      if (parsed.error) throw new Error(parsed.error);
+      Object.keys(parsed.facets).forEach(key => usedFacets.add(key as SearchFacet));
+      return { kind: 'leaf', query: text };
+    } finally { depth--; }
+  };
+  const and = (): SearchExpression => {
+    let left = primary();
+    while (index < tokens.length && peek() !== ')' && peek() !== 'OR') {
+      if (peek() === 'AND') index++;
+      left = { kind: 'and', left, right: primary() };
+    }
+    return left;
+  };
+  const or = (): SearchExpression => {
+    let left = and();
+    while (peek() === 'OR') { index++; left = { kind: 'or', left, right: and() }; }
+    return left;
+  };
+  try {
+    if (tokens.length > 512) return fail('Search expression is too long.');
+    const expression = or();
+    if (index !== tokens.length) return fail('Unexpected closing parenthesis.');
+    return { text: query.trim(), facets: {}, clauses: [], expression, usedFacets: [...usedFacets] };
+  } catch (error) { return fail((error as Error).message); }
 }
