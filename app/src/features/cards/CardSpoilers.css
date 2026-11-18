@@ -1,0 +1,13 @@
+.spoiler-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.75rem;
+}
+.spoiler-grid--compact { gap: 0.5rem; }
+.spoiler-grid--large { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) {
+  .spoiler-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--spoiler-card-min)), 1fr));
+  }
+}

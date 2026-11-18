@@ -5,10 +5,12 @@ import { Select } from './ui/FormControl';
 import Button from './ui/Button';
 
 /** Groups the full filtered pool before applying each section's display limit. */
-export default function GroupedCardResults<T>({ items, cardFor, children, pageSize = 24, resultKey, grouping: controlledGrouping, onGrouping }: {
+export default function GroupedCardResults<T>({ items, cardFor, children, pageSize = 24, resultKey, grouping: controlledGrouping, onGrouping, arrangeGroups = groupCardResults, toolbar }: {
   items: readonly T[]; cardFor: (item: T) => Card | undefined;
   children: (items: T[]) => ReactNode; pageSize?: number;
   resultKey?: string;
+  arrangeGroups?: typeof groupCardResults<T>;
+  toolbar?: ReactNode;
   grouping?: CardGrouping; onGrouping?: (value: CardGrouping) => void;
 }) {
   const [localGrouping, setGrouping] = useState<CardGrouping>('none');
@@ -17,13 +19,16 @@ export default function GroupedCardResults<T>({ items, cardFor, children, pageSi
   // Reset paging without remounting grouping controls or feature-owned drafts.
   const limits = pagination.resultKey === resultKey ? pagination.limits : {};
   if (pagination.resultKey !== resultKey) setPagination({ resultKey, limits: {} });
-  const groups = groupCardResults(items, cardFor, grouping);
+  const groups = arrangeGroups(items, cardFor, grouping);
   return <div className="min-w-0">
-    <label className="my-3 flex flex-wrap items-center gap-2 text-sm">Group by
+    <div className="my-3 flex flex-wrap items-end gap-3">
+    <label className={toolbar ? "flex min-w-0 flex-col gap-1 text-sm" : "flex flex-wrap items-center gap-2 text-sm"}>Group by
       <Select aria-label="Group by" value={grouping} onChange={event => { setGrouping(event.target.value as CardGrouping); onGrouping?.(event.target.value as CardGrouping); setPagination({ resultKey, limits: {} }); }}>
         {Object.entries(CARD_GROUPS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
       </Select>
     </label>
+    {toolbar}
+    </div>
     {groups.map(group => {
       const limit = limits[group.label] ?? pageSize;
       return <section key={group.label} aria-label={group.label || 'Card results'} className="mb-4 min-w-0">

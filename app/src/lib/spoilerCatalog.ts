@@ -1,3 +1,4 @@
+import { groupCardResults, type CardGrouping } from "./cardResultGroups";
 import { parseFilterQuery } from "@gatcg/shared";
 import { searchCardPool } from "../features/cards/filters";
 import type { Card } from "@gatcg/shared";
@@ -41,5 +42,24 @@ export function groupSpoilers<T extends { name: string; setPrefix: string; added
     cards: sort === "newest" ? cards : [...cards].sort((a, b) => sort === "oldest"
       ? Date.parse(a.addedAt) - Date.parse(b.addedAt)
       : (sort === "name-desc" ? -1 : 1) * a.name.localeCompare(b.name)),
+  }));
+}
+
+
+export type SpoilerSort = "newest" | "oldest" | "name" | "name-desc";
+export function sortSpoilers<T extends { name: string; addedAt: string }>(cards: readonly T[], sort: SpoilerSort) {
+  return [...cards].sort((a, b) => sort === "name" || sort === "name-desc"
+    ? (sort === "name-desc" ? -1 : 1) * a.name.localeCompare(b.name)
+    : (sort === "oldest" ? 1 : -1) * (Date.parse(a.addedAt) - Date.parse(b.addedAt)));
+}
+
+/** Set membership belongs to the reveal, not all historical catalog editions. */
+export function groupSpoilerResults<T extends { name: string; setPrefix: string; addedAt: string }>(
+  items: readonly T[], cardFor: (item: T) => Card | undefined, grouping: CardGrouping,
+) {
+  if (grouping !== 'sets') return groupCardResults(items, cardFor, grouping);
+  return groupSpoilers(items).map(group => ({
+    label: group.name,
+    items: items.filter(item => spoilerSetKey(item.setPrefix) === group.prefix),
   }));
 }

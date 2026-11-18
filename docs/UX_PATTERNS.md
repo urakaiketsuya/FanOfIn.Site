@@ -360,7 +360,7 @@ a local draft; restore original remains available and survives reload. Account d
 are unchanged. Storage failure keeps the preview and reports the error. No generic
 strength score or automatic deck mutation is permitted.
 
-Compact card pickers, collection controls, profiles, binder searches, and deck-analysis card pools use the same GA query semantics. They filter live, show linked inline syntax errors, and never change selected cards while editing a query. Their eligible pools, ordering, quantities, ownership and destination restrictions remain independent. These differ from the explicit Search/Enter flow in the main browser and deck editor. The editor also supports exact `edition:` printing sets alongside set families. Artist and tag printing galleries evaluate printing predicates against each displayed edition while retaining reverse-face text; tag predicates retain their established card-level semantics. Spoilers retain broad bare-text matching for class, type and element words, but use the shared Search/Enter draft to preserve cursor placement. Their include/exclude pickers live in a filter sheet with active query chips outside; sorting beside the count orders cards within sets while preserving newest-set ordering. Query, set, and sort survive navigation in the URL. Searches for deck titles, artists, tag names, strategies and packages remain their own text searches.
+Compact card pickers, collection controls, profiles, binder searches, and deck-analysis card pools use the same GA query semantics. They filter live, show linked inline syntax errors, and never change selected cards while editing a query. Their eligible pools, ordering, quantities, ownership and destination restrictions remain independent. These differ from the explicit Search/Enter flow in the main browser and deck editor. The editor also supports exact `edition:` printing sets alongside set families. Artist and tag printing galleries evaluate printing predicates against each displayed edition while retaining reverse-face text; tag predicates retain their established card-level semantics. Spoilers retain broad bare-text matching for class, type and element words, but use the shared Search/Enter draft to preserve cursor placement. Their include/exclude pickers live in a filter sheet with active query chips outside; Group by and Sort are independent beside the results. Spoilers default to an ungrouped newest-first gallery; Set grouping uses the revealed printing and keeps newest-updated sets first. Query, set, sort, and grouping survive navigation in the URL. Searches for deck titles, artists, tag names, strategies and packages remain their own text searches.
 
 ## Deck search
 
@@ -1015,3 +1015,19 @@ and deck mutation tests passed, along with targeted lint. Native mobile keyboard
 and live authentication/backend persistence were not exercised.
 App typechecking also passed with the unrelated concurrent `jin-fuel-preview.tsx`
 verification file excluded; the initial full check reported errors in that file.
+
+
+## Spoiler reveal gallery
+
+Spoilers reuse grouped card results and per-group Show more, with independent set filtering,
+card sorting, and persisted visual sizing. View expands the shared grid-size control inline.
+Compact and Medium keep two columns on narrow phones; Large uses one. Desktop uses the
+shared size thresholds with auto-fill tracks so short groups never stretch their cards.
+Names and revealed artwork remain visible; grouping by Set uses the reveal's product rather
+than historical catalog editions. Other grouping memberships follow shared catalog semantics.
+
+Verification (2026-11-18): app typecheck, targeted lint, and four grouping/sorting tests passed.
+Browser checks at 360/390px and 1280px covered mobile sizes, short-group desktop alignment,
+set/name ordering, persisted URL/view choices, empty searches, invalid query recovery,
+48px controls, sheet Escape/focus restoration, and horizontal overflow. Initial route loading
+was observed. Native mobile keyboards and remote image failure simulation were not exercised.
