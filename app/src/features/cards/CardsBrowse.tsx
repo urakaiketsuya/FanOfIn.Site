@@ -17,13 +17,13 @@ import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import Button from "../../components/ui/Button";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
 import { editionWithTag, emptyFilterState, filterCards, matchesEdition } from "./filters";
 import { useCardTags } from "./cardTags";
-import FilterPanel from "../../components/filters/FilterPanel";
+import DialogSheet from "../../components/ui/DialogSheet";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
@@ -32,7 +32,6 @@ import { rarityOptions } from "./rarities";
 import CardGrid from "./CardGrid";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
-import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
 
@@ -51,6 +50,8 @@ export default function CardsBrowse() {
   const [tab, setTab] = useTabParam<TabMode>("tab", TABS, "browse");
   const [filters, setFilters] = useUrlFilters(emptyFilterState, "", CARD_FILTER_PARAMS);
 
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [exploreOpen, setExploreOpen] = useState(false);
   const [sort, setSort] = useState("name");
   const priceSort = sort === "price" || sort === "price-desc";
   const priceState = useDeckPriceByNameState(priceSort);
@@ -111,35 +112,19 @@ export default function CardsBrowse() {
     }, { preventScrollReset: true });
   }
 
-  // Only when the Set filter narrows to exactly one – a graceful no-op for any set outside the
-  // hand-authored Products dataset (old/obscure prefixes), not a broken image.
-  const bannerProduct = filters.sets.size === 1 ? PRODUCTS.find((p) => p.prefix === Array.from(filters.sets)[0] && p.banner) : undefined;
-
   return (
     <PageLayout width="fluid" data-component="CardsBrowse">
       <div className="[&_input]:min-h-12 [&_button]:min-h-12 [&_button]:min-w-12">
-      <PageHeader
-        title="Cards"
-        actions={
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <Link to="/cards/staples" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Card staples &rarr;</Link>
-            <Link to="/cards/tags" className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Tag galleries</Link>
-            <Link to="/cards/packages" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline">
-              Packages &rarr;
-            </Link>
-            <Link to="/cards/stats" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline">
-              Card stats &rarr;
-            </Link>
-          </div>
-        }
-      />
-
-      <div className="mt-4">
-        <Tabs variant="pill" tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
+      <PageHeader spacing="contained" title="Cards" actions={<Button aria-haspopup="dialog" onClick={event => { event.currentTarget.focus(); setExploreOpen(true); }}>Explore<DisclosureChevron /></Button>} />
+      {exploreOpen && <DialogSheet title="Explore cards" onDismiss={() => setExploreOpen(false)}>
+        <nav aria-label="Related card pages" className="grid gap-2">
+          {[["/cards/staples", "Card staples"], ["/cards/tags", "Tag galleries"], ["/cards/packages", "Packages"], ["/cards/stats", "Card stats"], ["/artists", "Browse artists"], ["/cards/search-reference", "Search reference"]].map(([to, label]) => <Link key={to} to={to} className="flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">{label}</Link>)}
+        </nav>
+      </DialogSheet>}
+      <div className="mt-2">
+        <Tabs baseId="cards-view" variant="pill" tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
       </div>
-
-      <Link to="/artists" className="mt-3 inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">Browse artists ↗</Link>
-
+      <TabPanel baseId="cards-view" tab={tab} active={tab}>
       {tab === "sets" ? (
         <div className="mt-6 space-y-8">
           <p className="text-sm text-ctp-subtext1">Browse expansions and the cards printed in each one.</p>
@@ -186,31 +171,35 @@ export default function CardsBrowse() {
         </div>
       ) : (
         <>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <div className="w-full"><FilterQuery text={filters.name} facets={filters} onChange={(name, facets) => setFilters(f => ({ ...f, name, ...facets }))} /></div>
+          <FilterQuery compact text={filters.name} facets={filters} onChange={(name, facets) => setFilters(f => ({ ...f, name, ...facets }))} />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button aria-haspopup="dialog" onClick={event => { event.currentTarget.focus(); setFiltersOpen(true); }}>Filters{activeFilterCount > 0 && <span className="ml-1">({activeFilterCount})</span>}<DisclosureChevron /></Button>
+            <label className="flex min-w-0 flex-1 items-center gap-2 text-sm sm:flex-none"><span className="sr-only">Sort cards</span><span className="relative w-full"><select aria-label="Sort cards" value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle appearance-none pl-3 pr-10!"><option value="name">Name A to Z</option><option value="win-rate">Win rate high to low</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
+            {activeFilterCount > 0 && <Button variant="ghost" onClick={() => setFilters(emptyFilterState())}>Clear filters</Button>}
+          </div>
+          {sort === "win-rate" && <WinRateSortStatus state={winRateState} />}
+          {priceSort && <PriceSortStatus state={priceState} />}
+          {filtersOpen && <DialogSheet title="Filters" onDismiss={() => setFiltersOpen(false)} footer={<Button variant="primary" className="w-full" onClick={() => setFiltersOpen(false)}>{!cards.length || (!!filters.tags?.size && !cardTags.data) ? "Show results" : `Show ${filtered.length} ${filtered.length === 1 ? "card" : "cards"}`}</Button>}>
+            <div className="space-y-3 [&_button]:min-h-12 [&_button]:min-w-12">
+            {activeFilterCount > 0 && <Button variant="ghost" onClick={() => setFilters(emptyFilterState())}>Clear filters</Button>}
+            <label htmlFor="browse-artist" className="block text-sm">Artist</label>
             <input
               type="text"
+              id="browse-artist"
               list="artist-options"
               aria-label="Search by artist"
               placeholder="Search by artist…"
               value={filters.artist}
               onChange={(e) => setFilters((f) => ({ ...f, artist: e.target.value }))}
-              className="w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+              className="min-h-12 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
             />
             <datalist id="artist-options">
               {artistOptions.map((a) => (
                 <option key={a} value={a} />
               ))}
             </datalist>
-          </div>
-
-          <label className="mt-3 flex flex-wrap items-center gap-2 text-sm">Sort cards<span className="relative max-w-full"><select value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle appearance-none pl-3 pr-10!"><option value="name">Name A to Z</option><option value="win-rate">Win rate high to low</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
-          {sort === "win-rate" && <WinRateSortStatus state={winRateState} />}
-          {priceSort && <PriceSortStatus state={priceState} />}
-          {priceSort && <p className="mt-2 text-xs text-ctp-subtext1">Card estimates across printings, in USD. Unpriced cards appear last. Printing filters change artwork, not the price estimate.</p>}
-
           {options.data && (
-            <FilterPanel activeCount={activeFilterCount} onClear={() => setFilters(emptyFilterState())}>
+            <>
               <MultiSelectFilter
                 label="Class"
                 options={options.data.class}
@@ -253,35 +242,21 @@ export default function CardsBrowse() {
                 </div>
               )}
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
-            </FilterPanel>
-          )}
-
-          {!!filters.tags?.size && cardTags.data && (
-            <p className="mt-3 text-xs text-ctp-subtext0">
-              Tags are community-sourced from the{" "}
-              <a href={cardTags.data.sourceUrl} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">silvie.gg Art Tagger</a>
-              {" "}with approved local contributions. Imported tags are mostly unreviewed. Matches any selected tag across printings. Gameplay labels are discovery hints; missing tags do not mean an effect is absent.
-            </p>
+            </>
           )}
 
           {cardTags.local.isError && <p role="status" className="mt-3 text-sm">Local contributions unavailable; showing imported tags. <button className="min-h-12 px-3 text-ctp-blue" onClick={() => void cardTags.local.refetch()}>Retry contributions</button></p>}
           {!cardTags.data && <p role="status" className="mt-3 text-sm text-ctp-subtext0">{cardTags.status.phase === "error" ? <>Community tags unavailable. <button type="button" onClick={cardTags.status.retry} className="min-h-12 px-3 text-ctp-blue focus-visible:outline-2">Retry tags</button></> : "Loading community tags…"}</p>}
 
-          {bannerProduct && (
-            <Link
-              to={`/products`}
-              className="relative mt-4 flex h-40 items-end overflow-hidden rounded-xl border border-ctp-surface0 bg-gradient-to-r from-ctp-crust via-ctp-crust/60 to-transparent"
-            >
-              <img src={bannerProduct.banner} alt="" className="absolute inset-y-0 right-0 h-full w-auto object-contain" />
-              <div className="relative z-10 p-4">
-                <img src={bannerProduct.logo} alt={bannerProduct.name} className="h-10 w-auto object-contain" />
-              </div>
-            </Link>
-          )}
-
-          {cards.length > 0 && <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle px-4 py-2"><p role="status" className="text-sm"><strong className="text-lg tabular-nums">{filtered.length}</strong> matching {filtered.length === 1 ? "card" : "cards"}{activeFilterCount > 0 && <span className="text-ctp-subtext1"> · {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}</span>}</p>{activeFilterCount > 0 && <Button variant="ghost" onClick={() => setFilters(emptyFilterState())}>Clear filters</Button>}</div>}
+          {options.isPending && <p role="status" className="text-sm">Loading filters…</p>}
           {options.isError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">Advanced filters could not load. You can still search by card name. <Button variant="ghost" onClick={() => void options.refetch()}>Retry filters</Button></p>}
 
+            <Link to="/cards/search-reference" className="flex min-h-12 items-center text-sm text-ctp-blue underline">Search reference</Link>
+            </div>
+          </DialogSheet>}
+          {!!filters.tags?.size && !cardTags.data && <p role="status" className="mt-3 text-sm">{cardTags.status.phase === "error" ? <>Community tags unavailable. <Button onClick={cardTags.status.retry}>Retry tags</Button></> : "Loading community tags…"}</p>}
+          {filters.artist && <Button variant="ghost" className="mt-2" onClick={() => setFilters(f => ({ ...f, artist: "" }))}>Artist: {filters.artist} ×</Button>}
+          {filters.speed !== "any" && <Button variant="ghost" className="mt-2" onClick={() => setFilters(f => ({ ...f, speed: "any" }))}>Speed: {filters.speed} ×</Button>}
           {syncProgress.phase !== "done" && filtered.length === 0 && <InlineState className="mt-6">Loading…</InlineState>}
           {syncProgress.phase === "done" && filtered.length === 0 && (!filters.tags?.size || !!cardTags.data) && (
             <div className="mt-6 rounded-xl border border-ctp-surface1 p-5"><h2 className="text-lg font-semibold">No matching cards</h2><p className="mt-2 text-sm text-ctp-subtext1">Try a different name or clear your filters to browse the catalog.</p><Button className="mt-3" onClick={() => setFilters(emptyFilterState())}>Browse all cards</Button></div>
@@ -291,6 +266,7 @@ export default function CardsBrowse() {
 
         </>
       )}
+      </TabPanel>
     </div>
     </PageLayout>
   );

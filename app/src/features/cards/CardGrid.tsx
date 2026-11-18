@@ -5,9 +5,11 @@ import { CARD_GRID_MINIMUM } from "../../lib/cardGridSize";
 import CardLayoutControls from "../../components/CardLayoutControls";
 import Button from "../../components/ui/Button";
 import DialogSheet from "../../components/ui/DialogSheet";
-import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import DisclosureChevron from "../../components/DisclosureChevron";
+import type { CardGridSize } from "../../lib/cardGridSize";
+import "./CardGrid.css";
 import { formatUsd } from "../../lib/format";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardEdition } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
@@ -23,26 +25,33 @@ interface CardGridProps {
 }
 
 export default function CardGrid({ cards, pickEdition, prices, winRates }: CardGridProps) {
-  const prefs = useDecklistDisplayPrefs();
+  const [view, setView] = useState<{ layout: "Grid" | "Rows" | "List"; size: CardGridSize }>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("catalog-card-view-v1") ?? "null");
+      if (saved && ["Grid", "Rows", "List"].includes(saved.layout) && ["large", "medium", "compact"].includes(saved.size)) return saved;
+    } catch { /* Use the browse defaults when storage is unavailable. */ }
+    return { layout: "Grid", size: "medium" };
+  });
+  useEffect(() => {
+    try { localStorage.setItem("catalog-card-view-v1", JSON.stringify(view)); } catch { /* Preferences remain usable in memory. */ }
+  }, [view]);
+  const [viewOpen, setViewOpen] = useState(false);
+  const viewId = useId();
   const [grouping, setGrouping] = useState<CardGrouping>("none");
   const [expanded, setExpanded] = useState(false);
-  const layout = prefs.displayMode === "detailed" ? "List" : prefs.visualCardSize === "rows" ? "Rows" : "Grid";
-  const controls = (showExpand: boolean) => <div className="flex flex-wrap items-center justify-between gap-3">
-    <CardLayoutControls value={layout} onChange={value => {
-      prefs.setDisplayMode(value === "List" ? "detailed" : "visual");
-      if (value === "Rows") prefs.setVisualCardSize("rows");
-      else if (value === "Grid" && prefs.visualCardSize === "rows") prefs.setVisualCardSize("medium");
-    }} />
-    {layout === "Grid" && <CardGridSizeControl value={prefs.visualCardSize === "rows" ? "large" : prefs.visualCardSize} onChange={prefs.setVisualCardSize} />}
-    {showExpand && <Button onClick={() => setExpanded(true)}>Expand cards</Button>}
+  const layout = view.layout;
+  const controls = (showExpand: boolean) => <div className="flex flex-wrap items-center gap-3">
+    <CardLayoutControls value={layout} onChange={layout => setView(current => ({ ...current, layout }))} />
+    {layout === "Grid" && <CardGridSizeControl value={view.size} onChange={size => setView(current => ({ ...current, size }))} />}
+    {showExpand && <Button onClick={event => { event.currentTarget.focus(); setExpanded(true); }}>Expand cards</Button>}
   </div>;
-  const minimum = layout === "Grid" ? CARD_GRID_MINIMUM[prefs.visualCardSize === "rows" ? "large" : prefs.visualCardSize] : "20rem";
-  const content = cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <GroupedCardResults resultKey={JSON.stringify(cards.map(card => card.uuid))} grouping={grouping} onGrouping={setGrouping} items={cards} cardFor={card => card} pageSize={60}>{visible => <div className="mt-4 grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${minimum}), 1fr))` }}>
+  const minimum = layout === "Grid" ? CARD_GRID_MINIMUM[view.size] : "20rem";
+  const content = (overview = false) => cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <GroupedCardResults resultKey={JSON.stringify(cards.map(card => card.uuid))} grouping={grouping} onGrouping={setGrouping} items={cards} cardFor={card => card} pageSize={60} toolbar={<><p role="status" className="mr-auto self-center text-sm tabular-nums">{cards.length} {cards.length === 1 ? "card" : "cards"}</p>{!overview && <Button aria-expanded={viewOpen} aria-controls={viewId} onClick={() => setViewOpen(open => !open)}>View<DisclosureChevron className={viewOpen ? "rotate-180" : ""} /></Button>}{!overview && viewOpen && <div id={viewId} className="w-full rounded-xl border border-ctp-surface1 p-3">{controls(true)}</div>}</>}>{visible => <div className={`catalog-card-grid ${layout === "Grid" ? `catalog-card-grid--${view.size}` : "catalog-card-grid--rows"}`} style={{ "--catalog-card-min": minimum } as CSSProperties}>
     {visible.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} winRates={winRates} layout={layout} />)}
   </div>}</GroupedCardResults>;
-  return <div data-component="CardGrid" className="mt-6 min-w-0">
-    {controls(true)}{content}
-    {expanded && <DialogSheet title={`Card overview · ${cards.length} cards`} fullScreen onDismiss={() => setExpanded(false)}><div className="flex h-full min-h-0 flex-col gap-3"><div className="shrink-0">{controls(false)}</div><div className="min-h-0 flex-1 overflow-y-auto">{content}</div></div></DialogSheet>}
+  return <div data-component="CardGrid" className="min-w-0">
+    {content()}
+    {expanded && <DialogSheet title={`Card overview · ${cards.length} cards`} fullScreen onDismiss={() => setExpanded(false)}><div className="flex h-full min-h-0 flex-col gap-3"><div className="shrink-0">{controls(false)}</div><div className="min-h-0 flex-1 overflow-y-auto">{content(true)}</div></div></DialogSheet>}
   </div>;
 }
 

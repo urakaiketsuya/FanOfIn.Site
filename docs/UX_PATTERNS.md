@@ -1031,3 +1031,20 @@ Browser checks at 360/390px and 1280px covered mobile sizes, short-group desktop
 set/name ordering, persisted URL/view choices, empty searches, invalid query recovery,
 48px controls, sheet Escape/focus restoration, and horizontal overflow. Initial route loading
 was observed. Native mobile keyboards and remote image failure simulation were not exercised.
+
+## Compact card catalog
+
+Card browsing leads with Cards, Browse/By Set, and a single search field. Explore
+contains related card destinations. Artist and optional tag availability belong in
+Filters; its persistent footer shows the matching-card count. Sort stays beside
+Filters, and grouping/count share a row with View. View expands layout, size, and
+full-screen controls inline. Catalog display choices persist independently of deck
+presentation; the default is Medium with two columns on narrow phones. Large is
+an explicit single-column choice. Keep product promotions out of the result path.
+
+Verification (2026-11-18): local checks at 360/390px and 1280px covered search and
+artist empty results/recovery, live filter counts, unavailable local tag contributions,
+View expansion, Large/Medium sizing, expanded grouping persistence, tab arrow keys,
+sheet focus containment and Escape restoration, 48px controls, and overflow. Initial
+route loading was observed. Native mobile keyboards, forced catalog/filter-service
+failures, and production deployment were not exercised.
