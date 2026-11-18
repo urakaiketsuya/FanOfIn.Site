@@ -13,6 +13,7 @@ const result = {
   winConditions: [],
 } as unknown as DeckTestResult;
 const render = (value: DeckTestResult) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(AnalysisMatchups, { result: value, loading: false, cards: new Map(), preview: true })));
+const renderedText = (html: string) => html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 
 test('observed preview prioritizes samples, retains cohort scope, and does not sum matchup samples', () => {
   const html = render(result);
@@ -112,9 +113,9 @@ test('compact rows expose ranges and samples as text, without inventing single-e
       matchups: [{ id: '20', matches: 20, winRate: .5, eventRange: { low: .25, high: .75, events: 2 } },
         { id: '1', matches: 1, winRate: 1, eventRange: { low: 1, high: 1, events: 1 } }] },
   })));
-  assert.match(html, /Event range 25%–75%/);
+  assert.match(renderedText(html), /Event range 25%–75%/);
   assert.match(html, /20.*matches.*2 events/);
-  assert.doesNotMatch(html, /Event range 100%–100%/);
+  assert.doesNotMatch(renderedText(html), /Event range 100%–100%/);
   assert.match(html, /1 event/);
 });
 
@@ -124,7 +125,7 @@ test('period rows show separate event ranges and do not mark absent observations
   const base: ReturnType<typeof import('@gatcg/shared').observedMatchupCohort> = { winRate: .5, results: 10, decks: 2, events: 2, matchups: [] };
   const renderComparison = (current: typeof base, previous: typeof base) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(Comparison, { current, previous, scope: emptyMatchupScope, previousScope: emptyMatchupScope })));
   const html = renderComparison({ ...base, matchups: [{ id: 'new', matches: 10, winRate: 0, eventRange: { low: 0, high: .2, events: 2 } }] }, base);
-  assert.match(html, /Event range 0%–20%/);
+  assert.match(renderedText(html), /Event range 0%–20%/);
   assert.match(html, /Selected period only/);
   assert.equal((html.match(/data-rate-dot/g) ?? []).length, 3); // Two aggregate dots, one observed opponent period.
   const emptyOpponents = renderComparison(base, base);
@@ -167,6 +168,6 @@ test('distribution tracks retain extremes, collapsed bands and absent observatio
   const html = renderToStaticMarkup(createElement(Track, { value: .5, range }));
   assert.match(html, /data-event-middle/);
   assert.match(html, /width="1"/);
-  assert.match(renderToStaticMarkup(createElement(EventRangeLabel, { range })).replace(/<[^>]*>/g, ' '), /Middle 50% of events 50%–50%.*Full range 0%–100%/);
+  assert.match(renderedText(renderToStaticMarkup(createElement(EventRangeLabel, { range }))), /Middle 50% of events 50%–50%.*Full range 0%–100%/);
   assert.doesNotMatch(renderToStaticMarkup(createElement(Track, { value: null, range })), /data-event-middle|data-rate-dot/);
 });
