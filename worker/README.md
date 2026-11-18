@@ -72,3 +72,12 @@ second player), so zero rows in `game_card_stats` for a seat doesn't distinguish
 deck had no cards" from "the sender didn't report per-card activity for this game" — whether
 TCGEngine reliably reports every deck card (including ones never drawn) is a producer question, not
 something the ingestion schema or these tables can confirm on their own.
+
+## Match results with complete decklists
+
+`POST /v1/grand-archive/matches` is a separate, source-authenticated contract for
+completed matches and both registered decklists. See [the integration guide](MATCH_SUBMISSIONS.md)
+for payload fields, example JSON, validation, retry behavior, and production secret
+setup. It requires `MATCH_INGESTION_KEYS`; absent configuration denies all requests.
+Migration `0007_match_deck_ingestion.sql` adds independent storage and leaves the
+legacy telemetry analytics unchanged.

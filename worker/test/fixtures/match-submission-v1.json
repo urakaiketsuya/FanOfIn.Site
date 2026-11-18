@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "submissionId": "example-match-123",
+  "source": {
+    "matchId": "example-match-123",
+    "version": "1.0.0"
+  },
+  "format": "standard",
+  "matchType": "casual",
+  "bestOf": 1,
+  "result": {
+    "outcome": "win",
+    "winnerSeat": 1,
+    "wins": {
+      "1": 1,
+      "2": 0
+    }
+  },
+  "players": [
+    {
+      "seat": 1,
+      "participantType": "human",
+      "deck": {
+        "sections": {
+          "main": [
+            {
+              "cardId": "example-card-a",
+              "quantity": 3
+            },
+            {
+              "cardId": "example-card-b",
+              "quantity": 2
+            }
+          ],
+          "material": [
+            {
+              "cardId": "example-champion",
+              "quantity": 1
+            }
+          ],
+          "sideboard": [],
+          "song": []
+        }
+      }
+    },
+    {
+      "seat": 2,
+      "participantType": "human",
+      "deck": {
+        "sections": {
+          "main": [
+            {
+              "cardId": "example-card-a",
+              "quantity": 3
+            },
+            {
+              "cardId": "example-card-b",
+              "quantity": 2
+            }
+          ],
+          "material": [
+            {
+              "cardId": "example-champion",
+              "quantity": 1
+            }
+          ],
+          "sideboard": [],
+          "song": []
+        }
+      }
+    }
+  ],
+  "games": [
+    {
+      "gameNumber": 1,
+      "outcome": "win",
+      "winnerSeat": 1,
+      "endReason": "normal",
+      "firstPlayerSeat": 2,
+      "turns": 8
+    }
+  ]
+}

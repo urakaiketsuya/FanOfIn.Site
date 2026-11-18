@@ -1,3 +1,5 @@
+import { matchSubmissionV1Schema } from "./match-schema";
+import { ingestMatch } from "./match-storage";
 import { gameSubmissionV1Schema } from "./schema";
 import { buildSimulatorSummary } from "./analytics";
 import { ingestSubmission, purgeExpiredRawPayloads, sha256Hex, type Env } from "./storage";
@@ -33,14 +35,30 @@ async function secretsEqual(provided: string, expected: string): Promise<boolean
 }
 
 async function handleSubmission(request: Request, env: Env, requestId: string): Promise<Response> {
+  const isMatch = new URL(request.url).pathname === "/v1/grand-archive/matches";
   const authorization = request.headers.get("Authorization") ?? "";
   const providedSecret = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
-  if (!env.INGESTION_API_KEY || !providedSecret || !(await secretsEqual(providedSecret, env.INGESTION_API_KEY))) {
+  let sourceId: string | undefined;
+  if (isMatch) {
+    // Dedicated secret JSON map: stable source ID -> independent bearer credential.
+    // Fail closed on malformed configuration; never print keys or request payloads.
+    let credentials: unknown;
+    try { credentials = JSON.parse(env.MATCH_INGESTION_KEYS ?? "{}"); } catch { credentials = null; }
+    if (credentials && typeof credentials === "object" && !Array.isArray(credentials)) {
+      const entries = Object.entries(credentials);
+      const valid = entries.length > 0 && entries.every(([id, key]) => /^[a-z0-9][a-z0-9_-]{0,63}$/.test(id) && typeof key === "string" && key.length >= 32)
+        && new Set(entries.map(([, key]) => key)).size === entries.length;
+      if (valid && providedSecret) for (const [id, key] of entries) {
+        if (await secretsEqual(providedSecret, key as string)) sourceId = id;
+      }
+    }
+    if (!sourceId) return errorResponse(requestId, 401, "unauthorized", "Invalid ingestion credential");
+  } else if (!env.INGESTION_API_KEY || !providedSecret || !(await secretsEqual(providedSecret, env.INGESTION_API_KEY))) {
     return errorResponse(requestId, 401, "unauthorized", "Invalid ingestion credential");
   }
 
   const contentType = request.headers.get("Content-Type") ?? "";
-  if (!contentType.toLowerCase().startsWith("application/json")) {
+  if (contentType.split(";", 1)[0].trim().toLowerCase() !== "application/json") {
     return errorResponse(requestId, 400, "bad_request", "Content-Type must be application/json");
   }
 
@@ -49,10 +67,25 @@ async function handleSubmission(request: Request, env: Env, requestId: string): 
     return errorResponse(requestId, 413, "payload_too_large", "Request body exceeds 1 MiB");
   }
 
-  const bytes = await request.arrayBuffer();
-  if (bytes.byteLength > MAX_BODY_BYTES) {
-    return errorResponse(requestId, 413, "payload_too_large", "Request body exceeds 1 MiB");
+  // Enforce the cap while reading, including requests without Content-Length.
+  const reader = request.body?.getReader();
+  const chunks: Uint8Array[] = [];
+  let length = 0;
+  if (reader) {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      length += value.byteLength;
+      if (length > MAX_BODY_BYTES) {
+        await reader.cancel();
+        return errorResponse(requestId, 413, "payload_too_large", "Request body exceeds 1 MiB");
+      }
+      chunks.push(value);
+    }
   }
+  const bytes = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
 
   let unknownPayload: unknown;
   try {
@@ -61,6 +94,14 @@ async function handleSubmission(request: Request, env: Env, requestId: string): 
     return errorResponse(requestId, 400, "bad_request", "Request body is not valid JSON");
   }
 
+  if (isMatch) {
+    const parsed = matchSubmissionV1Schema.safeParse(unknownPayload);
+    if (!parsed.success) return errorResponse(requestId, 422, "validation_failed", "Payload does not satisfy match schema version 1",
+      parsed.error.issues.slice(0, 20).map(issue => ({ path: issue.path.join("."), message: issue.message })));
+    const result = await ingestMatch(env, sourceId!, parsed.data);
+    if (result.outcome === "conflict") return errorResponse(requestId, 409, "submission_conflict", "Submission or source match ID already exists with different content");
+    return jsonResponse({ success: true, requestId, submissionId: parsed.data.submissionId, outcome: result.outcome }, result.outcome === "created" ? 201 : 200);
+  }
   const parsed = gameSubmissionV1Schema.safeParse(unknownPayload);
   if (!parsed.success) {
     const details = parsed.error.issues.slice(0, 20).map((issue) => ({
@@ -109,7 +150,7 @@ export default {
       }
     }
 
-    if (request.method !== "POST" || url.pathname !== "/v1/grand-archive/games") {
+    if (request.method !== "POST" || !["/v1/grand-archive/games", "/v1/grand-archive/matches"].includes(url.pathname)) {
       return errorResponse(requestId, 404, "bad_request", "Route not found");
     }
 
