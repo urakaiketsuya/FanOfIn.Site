@@ -45,7 +45,8 @@ test('curated identities have unique slugs and credits and HTTPS evidence', () =
   assert.equal(new Set(artistDirectory.map(artist => artist.slug)).size, artistDirectory.length);
   const credits = artistDirectory.flatMap(artist => artist.credits);
   assert.equal(new Set(credits).size, credits.length);
-  assert.equal(artistDirectory.flatMap(artist => artist.links).length, 66);
+  assert.equal(artistDirectory.flatMap(artist => artist.links).length, 99);
+  for (const artist of artistDirectory) assert.equal(new Set(artist.links.map(link => link.url)).size, artist.links.length, `${artist.id} repeats a link URL`);
   for (const link of artistDirectory.flatMap(artist => artist.links)) {
     assert.equal(new URL(link.url).protocol, 'https:');
     assert.equal(new URL(link.evidence).protocol, 'https:');

@@ -403,3 +403,9 @@ Verification: five artist tests cover usage ordering, renamed slug matching, nam
 Next: publish and verify the live order and previews. Artist Pages remains approximately 98% complete for the original release, with publication checks and real transport recovery testing outstanding; broader identity discovery remains open-ended.
 
 Final popularity-order checks: production build and app typecheck pass. Generated Dragonart HTML/structured data starts with Creative Shock, Censer of Restful Peace and Stifling Trap, and all 66 sharing image URLs resolve to generated local files.
+
+## Linked-account expansion 2026-11-18
+
+Followed every published website, hub and X bio link to find further accounts. Added 33 links (66 → 99 across 32 artists) from pages the artist controls: personal sites, Carrd, lit.link, lnk.bio, VGen, Patreon and X bio links. Each entry names the page where the link appears as its evidence. Skipped: other people's accounts that hubs list (friends, collaborators), Discord invites, a second unexplained Instagram for Rubi, and platform boilerplate links. Etsy shop for Hanh Chu was also left out (a shop, not a profile).
+
+Not checked: Instagram, Facebook and Pixiv bios (login walls; Pixiv is blocked by site-safety policy). Eleven artists with only a plain X profile showed no bio link. Added icons for Behance, DeviantArt and Twitch; Ko-fi, Skeb, BOOTH, FANBOX, Lnk.Bio and MOREMORE use the generic globe icon. Links were read on 2026-11-18 and not re-tested for ownership by direct contact.

@@ -1,13 +1,14 @@
 /*! Font Awesome Free by Fonticons, Inc. https://fontawesome.com
  * Brand icons licensed CC BY 4.0: https://creativecommons.org/licenses/by/4.0/ */
 import {
-  faArtstation, faFacebook, faInstagram, faLinktree, faPatreon,
-  faPixiv, faWeibo, faXTwitter, faYoutube,
+  faArtstation, faBehance, faDeviantart, faFacebook, faInstagram, faLinktree,
+  faPatreon, faPixiv, faTwitch, faWeibo, faXTwitter, faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
 
 const brands = {
-  ArtStation: faArtstation, Facebook: faFacebook, Instagram: faInstagram,
-  Linktree: faLinktree, Patreon: faPatreon, Pixiv: faPixiv,
+  ArtStation: faArtstation, Behance: faBehance, DeviantArt: faDeviantart,
+  Facebook: faFacebook, Instagram: faInstagram, Linktree: faLinktree,
+  Patreon: faPatreon, Pixiv: faPixiv, Twitch: faTwitch,
   Weibo: faWeibo, X: faXTwitter, YouTube: faYoutube,
 };
 

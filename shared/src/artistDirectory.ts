@@ -187,6 +187,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://hanhchu.carrd.co/",
         "evidence": "https://x.com/Hanh_R_A",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "Hanh Chu",
+        "url": "https://www.pixiv.net/en/users/4680672",
+        "evidence": "https://hanhchu.carrd.co/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -267,6 +274,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://linktr.ee/gyool",
         "evidence": "https://x.com/fruitysandwich",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "gyool",
+        "url": "https://www.pixiv.net/en/users/91426279",
+        "evidence": "https://www.gyool.info/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -293,6 +307,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://x.com/PinaxPinakes",
         "evidence": "https://www.pinakes.me/",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "Pinakes",
+        "url": "https://www.pixiv.net/en/users/1629467",
+        "evidence": "https://www.pinakes.me/",
+        "verifiedAt": "2026-11-18"
       }
     ],
     "portrait": {
@@ -351,6 +372,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://vgen.co/KhoaPhan96",
         "evidence": "https://x.com/KhoaPhan96",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Facebook",
+        "label": "KhoaPhan96Art",
+        "url": "https://www.facebook.com/KhoaPhan96Art/",
+        "evidence": "https://vgen.co/KhoaPhan96",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Ko-fi",
+        "label": "khoaphan96",
+        "url": "https://ko-fi.com/khoaphan96",
+        "evidence": "https://vgen.co/KhoaPhan96",
+        "verifiedAt": "2026-11-18"
       }
     ],
     "portrait": {
@@ -393,6 +428,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.liurachel.com/",
         "evidence": "https://www.liurachel.com/tcg",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "X",
+        "label": "@rat_chuuu",
+        "url": "https://x.com/rat_chuuu",
+        "evidence": "https://www.liurachel.com/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -550,6 +592,27 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.pixiv.net/en/users/6414018",
         "evidence": "https://www.pixiv.net/en/users/6414018",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Carrd",
+        "label": "Siriuf Long",
+        "url": "https://siriuflong.carrd.co/",
+        "evidence": "https://x.com/siriuflong",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Patreon",
+        "label": "siriufthebunnyman",
+        "url": "https://www.patreon.com/siriufthebunnyman",
+        "evidence": "https://siriuflong.carrd.co/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "DeviantArt",
+        "label": "siriuflong",
+        "url": "https://www.deviantart.com/siriuflong",
+        "evidence": "https://siriuflong.carrd.co/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -595,6 +658,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.patreon.com/cw/fang410693029",
         "evidence": "https://home.gamer.com.tw/artwork.php?sn=6272205",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Instagram",
+        "label": "@fang410693029",
+        "url": "https://www.instagram.com/fang410693029/",
+        "evidence": "https://www.patreon.com/cw/fang410693029",
+        "verifiedAt": "2026-11-18"
       }
     ],
     "portrait": {
@@ -723,6 +793,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.facebook.com/TaroTarou.art",
         "evidence": "https://lit.link/en/TaroTarou",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "芋太郎 TaroTarou",
+        "url": "https://www.pixiv.net/en/users/66490629",
+        "evidence": "https://lit.link/en/TaroTarou",
+        "verifiedAt": "2026-11-18"
       }
     ],
     "studioId": "a004"
@@ -911,6 +988,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.facebook.com/fuzichoco",
         "evidence": "https://www.fuzichoco.com/",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "X",
+        "label": "@fuzichoco",
+        "url": "https://x.com/fuzichoco",
+        "evidence": "https://www.fuzichoco.com/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "FANBOX",
+        "label": "fuzichoco",
+        "url": "https://fuzichoco.fanbox.cc/",
+        "evidence": "https://www.fuzichoco.com/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1051,6 +1142,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.instagram.com/reindeeya/",
         "evidence": "https://www.instagram.com/reindeeya/",
         "verifiedAt": "2026-10-15"
+      },
+      {
+        "platform": "Website",
+        "label": "Deeya Chaturvedi",
+        "url": "https://www.deeyachaturvedi.com/",
+        "evidence": "https://x.com/reindeeya",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Behance",
+        "label": "deeyachaturvedi1",
+        "url": "https://www.behance.net/deeyachaturvedi1",
+        "evidence": "https://www.deeyachaturvedi.com/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1142,6 +1247,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://x.com/minamixdrops",
         "evidence": "https://www.foriio.com/minamixdrops",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "BOOTH",
+        "label": "minamixdrops",
+        "url": "https://minamixdrops.booth.pm/",
+        "evidence": "https://x.com/minamixdrops",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1181,6 +1293,41 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.instagram.com/antilous_chao/",
         "evidence": "https://www.dragon-art.tw/gallery",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Facebook",
+        "label": "antilousart",
+        "url": "https://www.facebook.com/antilousart",
+        "evidence": "https://www.dragon-art.tw/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "ArtStation",
+        "label": "antilous",
+        "url": "https://www.artstation.com/antilous",
+        "evidence": "https://www.dragon-art.tw/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "Antilous",
+        "url": "https://www.pixiv.net/en/users/6270546",
+        "evidence": "https://www.dragon-art.tw/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "YouTube",
+        "label": "Antilous",
+        "url": "https://www.youtube.com/channel/UCWwGJ8ZBi0FZsbN4yJSEZzw",
+        "evidence": "https://www.dragon-art.tw/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Twitch",
+        "label": "antilousdragonart",
+        "url": "https://www.twitch.tv/antilousdragonart",
+        "evidence": "https://www.dragon-art.tw/",
+        "verifiedAt": "2026-11-18"
       }
     ],
     "studioId": "a004"
@@ -1348,6 +1495,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.instagram.com/polar_engine/",
         "evidence": "https://www.instagram.com/polar_engine/",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Behance",
+        "label": "stevenp",
+        "url": "https://www.behance.net/stevenp",
+        "evidence": "https://polarengine.com/",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Facebook",
+        "label": "polarengine",
+        "url": "https://www.facebook.com/polarengine",
+        "evidence": "https://polarengine.com/",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1381,6 +1542,34 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.instagram.com/rubimeoww_draws/",
         "evidence": "https://www.instagram.com/rubimeoww_draws/",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Lnk.Bio",
+        "label": "rubimeoww",
+        "url": "https://lnk.bio/rubimeoww",
+        "evidence": "https://x.com/rubimeoww_draws",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Threads",
+        "label": "@rubimeoww_draws",
+        "url": "https://www.threads.com/@rubimeoww_draws",
+        "evidence": "https://lnk.bio/rubimeoww",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "VGen",
+        "label": "meoww_draws",
+        "url": "https://vgen.co/meoww_draws",
+        "evidence": "https://lnk.bio/rubimeoww",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "MOREMORE",
+        "label": "rubimeoww_draws",
+        "url": "https://www.more-more.co/artist/rubimeoww_draws",
+        "evidence": "https://lnk.bio/rubimeoww",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1417,6 +1606,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://x.com/TEDDYPOCKY",
         "evidence": "https://x.com/TEDDYPOCKY",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "FANBOX",
+        "label": "TEDDYPOCKY",
+        "url": "https://teddypocky.fanbox.cc/",
+        "evidence": "https://x.com/TEDDYPOCKY",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Skeb",
+        "label": "@TEDDYPOCKY",
+        "url": "https://skeb.jp/@TEDDYPOCKY",
+        "evidence": "https://x.com/TEDDYPOCKY",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
@@ -1443,6 +1646,34 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://x.com/tori_mcct",
         "evidence": "https://lit.link/en/toritaro",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Lit.Link",
+        "label": "桃李タロ",
+        "url": "https://lit.link/en/toritaro",
+        "evidence": "https://x.com/tori_mcct",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Instagram",
+        "label": "@tori_mcct",
+        "url": "https://www.instagram.com/tori_mcct/",
+        "evidence": "https://lit.link/en/toritaro",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "桃李タロ",
+        "url": "https://www.pixiv.net/en/users/14368479",
+        "evidence": "https://lit.link/en/toritaro",
+        "verifiedAt": "2026-11-18"
+      },
+      {
+        "platform": "BOOTH",
+        "label": "misconception",
+        "url": "https://misconception.booth.pm/",
+        "evidence": "https://lit.link/en/toritaro",
+        "verifiedAt": "2026-11-18"
       }
     ]
   },
