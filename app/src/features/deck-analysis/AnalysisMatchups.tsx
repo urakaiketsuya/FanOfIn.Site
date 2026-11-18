@@ -33,6 +33,8 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
   onRetryMatchups?: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [interactionsExpanded, setInteractionsExpanded] = useState(false);
+  const interactionsId = useId();
   const headingId = useId();
   if (!result && error) return <Panel className="mt-4"><p role="alert">Historical results could not be loaded.</p>{onRetry && <Button className="mt-3" onClick={onRetry}>Try again</Button>}</Panel>;
   if (loading || !result) return <div role="status"><InlineState className="mt-4">Loading historical matchups…</InlineState></div>;
@@ -82,7 +84,7 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
             <div className="min-w-0">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <strong className="text-2xl tabular-nums">{percent(matchup.baselineWinRate)}</strong>
-                <span className="text-xs text-ctp-subtext1 tabular-nums">{matchup.games.toLocaleString()} {observed ? 'matches' : 'games'}{range ? ` · ${range.events} ${range.events === 1 ? 'event' : 'events'}` : ''}</span>
+                <span className="text-xs text-ctp-subtext1 tabular-nums">{matchup.games.toLocaleString()} {observed ? matchup.games === 1 ? 'match' : 'matches' : matchup.games === 1 ? 'game' : 'games'}{range ? ` · ${range.events} ${range.events === 1 ? 'event' : 'events'}` : ''}</span>
               </div>
               <div className="relative" aria-hidden="true"><svg viewBox="0 0 300 28" className="h-7 w-full" preserveAspectRatio="none" aria-hidden="true">
                 <line x1="6" x2="294" y1="14" y2="14" className="stroke-ctp-surface2" />
@@ -99,12 +101,13 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
       </div>
       {ordered.length > (preview ? 3 : 6) && <Button className="mt-3 flex items-center gap-2" aria-controls={`${headingId}-rows`} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Fewer matchups' : `All ${ordered.length} matchups`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
     </section>}
-    {!preview && winConditions.length > 0 && <section aria-labelledby="analysis-interactions-heading">
-      <h2 id="analysis-interactions-heading" className="text-lg font-semibold">Your deck’s card interactions</h2>
-      <div className="mt-3 space-y-4">{winConditions.map((interaction) => <Panel key={[interaction.anchorCard, ...interaction.memberCards].join('|')}>
+    {!preview && winConditions.length > 0 && <section aria-labelledby={`${interactionsId}-heading`}>
+      <h2 id={`${interactionsId}-heading`} className="text-lg font-semibold">Your deck’s card interactions</h2>
+      <div id={interactionsId} className="mt-3 space-y-4">{(interactionsExpanded ? winConditions : winConditions.slice(0, 3)).map((interaction) => <Panel key={[interaction.anchorCard, ...interaction.memberCards].join('|')}>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{[...new Set([interaction.anchorCard, ...interaction.memberCards])].map((name) => <CardResult key={name} card={cards.get(name)} name={name} newTab />)}</div>
         <p className="mt-3 text-xs text-ctp-subtext1">{interaction.confidence === null ? 'Detected from card text' : `${interaction.matchingDecks.toLocaleString()} supporting decks`}</p>
       </Panel>)}</div>
+      {winConditions.length > 3 && <Button className="mt-3 flex items-center gap-2" aria-expanded={interactionsExpanded} aria-controls={interactionsId} onClick={() => setInteractionsExpanded(value => !value)}>{interactionsExpanded ? 'Fewer card interactions' : `All ${winConditions.length} card interactions`}<DisclosureChevron className={interactionsExpanded ? 'rotate-180' : ''} /></Button>}
     </section>}
   </div>;
 }

@@ -7,8 +7,9 @@ import MatchupPeriodComparison from './MatchupPeriodComparison';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 
-export default function ObservedMatchupReport({ result, loading, cards, preview, scope, onScope, error, onRetry }: {
+export default function ObservedMatchupReport({ result, loading, cards, preview, scope, onScope, compare, onCompare, error, onRetry }: {
   result: DeckTestResult | null; loading: boolean; cards: Map<string, Card>; preview?: boolean;
+  compare: boolean; onCompare: (compare: boolean) => void;
   scope: ObservedMatchupScope; onScope: (scope: ObservedMatchupScope) => void; error?: string | null; onRetry?: () => void;
 }) {
   const data = usePublishedData<ObservedMatchupData>('analysis-observed-matchups', '/data/analysis/observed-matchups.json');
@@ -16,7 +17,6 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
   const [draft, setDraft] = useState(scope);
   useEffect(() => setDraft(scope), [scope]);
   const [pending, startTransition] = useTransition();
-  const [compare, setCompare] = useState(false);
   const priorScope = useMemo(() => previousMatchupScope(scope), [scope]);
   const cluster = result?.classification.cluster;
   const cohort = useMemo(() => data && cluster ? observedMatchupCohort(data, cluster.id, scope) : undefined, [data, cluster, scope]);
@@ -48,7 +48,7 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
         <label className="col-span-2 min-w-0 text-sm sm:col-span-1">Event<select className={inputClass} value={draft.event} onChange={e => update({ event: e.target.value })}><option value="">All events</option>{events.map(e => <option key={e.id} value={e.id}>{e.date} · {e.name}</option>)}</select></label>
       </div>
       {Object.values(draft).some(Boolean) && <Button className="mt-3" onClick={() => update(emptyMatchupScope)}>Reset filters</Button>}
-      {priorScope && <Button className="mt-3 ml-2" aria-pressed={compare} onClick={() => setCompare(value => !value)}>{compare ? 'Hide comparison' : 'Compare previous period'}</Button>}
+      {priorScope && <Button className="mt-3 ml-2" aria-pressed={compare} onClick={() => onCompare(!compare)}>{compare ? 'Hide comparison' : 'Compare previous period'}</Button>}
       {!priorScope && !invalid && <p className="mt-3 text-xs text-ctp-subtext0">Compare periods: choose both dates and All events.</p>}
       {invalid && <p role="alert" className="mt-3 text-sm">Choose an end date on or after the start.</p>}
       {pending && <p role="status" className="mt-3 text-sm">Updating results…</p>}

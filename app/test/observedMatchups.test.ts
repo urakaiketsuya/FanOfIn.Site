@@ -131,3 +131,12 @@ test('period rows show separate event ranges and do not mark absent observations
   assert.doesNotMatch(emptyOpponents, /By opponent|No recorded opponents/);
   assert.equal(renderComparison({ ...base, results: 0, winRate: null }, { ...base, results: 0, winRate: null }), '');
 });
+
+test('single observations use singular units and card interactions start with a bounded preview', () => {
+  const value = { ...result, winConditions: Array.from({ length: 5 }, (_, index) => ({ anchorCard: `Anchor ${index}`, memberCards: [`Partner ${index}`], confidence: null, matchingDecks: 1 })) } as unknown as DeckTestResult;
+  const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(AnalysisMatchups, { result: value, loading: false, cards: new Map() })));
+  assert.match(html.replace(/<[^>]*>/g, ''), /1 game/);
+  assert.match(html, /Anchor 2/);
+  assert.doesNotMatch(html, /Anchor 3|Anchor 4/);
+  assert.match(html, /All 5 card interactions/);
+});
