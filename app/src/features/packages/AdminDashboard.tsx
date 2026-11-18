@@ -59,6 +59,14 @@ export default function AdminDashboard() {
       <TabPanel baseId="admin" tab="overview" active={tab} className="py-4">
         {overview && <>
           <Panel className="mb-6"><h2 className="text-sm">Signed-up users</h2><p className="text-3xl font-semibold">{overview.users?.total.toLocaleString() ?? 'Unavailable'}</p></Panel>
+          <h2 className="mb-3 text-lg font-semibold">Card collection tracking</h2>
+          <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {([
+              ['Owned copies tracked', overview.collection?.ownedCopies],
+              ['Users tracking cards', overview.collection?.users],
+              ['Proxy copies tracked', overview.collection?.proxyCopies],
+            ] as const).map(([label, total]) => <Panel key={label}><h3 className="text-sm">{label}</h3><p className="break-words text-3xl font-semibold">{total?.toLocaleString() ?? 'Unavailable'}</p></Panel>)}
+          </div>
           <h2 className="mb-3 text-lg font-semibold">Saved decks</h2><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(overview.decks).map(([label, total]) => <Panel key={label}><p className="text-sm capitalize">{label}</p><p className="text-3xl font-semibold">{total.toLocaleString()}</p></Panel>)}</div><p className="mt-3 text-sm text-ctp-subtext1">Current deck lists, excluding site seed decks. Versions are not counted separately.</p><Button className="mt-3" disabled={loading} onClick={() => void refresh()}>Refresh totals</Button></>}
       </TabPanel>
     </>}

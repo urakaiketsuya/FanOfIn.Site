@@ -15,6 +15,7 @@ export interface EditorialPackage {
 }
 export interface AdminOverview {
   users: { total: number };
+  collection: { users: number; ownedCopies: number; proxyCopies: number };
   decks: { private: number; unlisted: number; public: number; total: number };
 }
 export interface EditorialPackageInput {

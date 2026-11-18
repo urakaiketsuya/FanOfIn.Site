@@ -14,7 +14,18 @@ export async function adminOverview(env: Env): Promise<AdminOverview> {
   const decks = { private: 0, unlisted: 0, public: 0, total: 0 };
   for (const row of rows.results) { decks[row.visibility] = Number(row.total); decks.total += Number(row.total); }
   const users = await env.ACCOUNT_DB.prepare('SELECT COUNT(*) AS total FROM users').first<{ total: number }>();
-  return { users: { total: Number(users!.total) }, decks };
+  // Printing and unspecified-printing rows are separate inventory pools. Locations,
+  // loans, and reservations describe those same copies and must not be added again.
+  const collection = await env.ACCOUNT_DB.prepare(`SELECT
+    COUNT(DISTINCT user_id) AS users,
+    COALESCE(SUM(owned_quantity), 0) AS ownedCopies,
+    COALESCE(SUM(proxy_quantity), 0) AS proxyCopies
+    FROM (
+      SELECT user_id, owned_quantity, proxy_quantity FROM collection_entries
+      UNION ALL
+      SELECT user_id, owned_quantity, proxy_quantity FROM collection_printing_entries
+    ) WHERE owned_quantity > 0 OR proxy_quantity > 0`).first<AdminOverview['collection']>();
+  return { users: { total: Number(users!.total) }, decks, collection: collection! };
 }
 interface PackageRow { research_json: string | null; id: string; definition_json: string; status: 'draft' | 'published'; revision: number; updated_at: string }
 function present(row: PackageRow): EditorialPackage {
