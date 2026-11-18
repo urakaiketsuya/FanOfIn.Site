@@ -10,7 +10,22 @@ const DAY = 86_400_000;
 
 export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<string, CardSignature>, generatedAt = new Date().toISOString()): CardStaplesData {
   const { observations, reference } = collectStapleObservations(bundles, Number.isFinite(Date.parse(generatedAt)) ? Date.parse(generatedAt) : Date.now());
-  return aggregateStaples(observations, catalog, generatedAt, reference === null ? null : new Date(reference).toISOString().slice(0, 10));
+  const throughDate = reference === null ? null : new Date(reference).toISOString().slice(0, 10);
+  const dated = observations.filter(o => o.date !== undefined && o.raw.main?.some(line => line.card.trim() && Number.isSafeInteger(line.quantity) && line.quantity > 0));
+  if (dated.length) {
+    const end = Math.floor(Math.max(...dated.map(o => o.date!)) / DAY) * DAY + DAY;
+    const recentStart = end - 30 * DAY, priorStart = end - 60 * DAY;
+    const iso = (date: number) => new Date(date).toISOString();
+    const historical = dated.filter(o => o.date! >= priorStart && o.date! < end).map(o => ({ ...o, periods: [o.date! >= recentStart ? "adoption-recent" : "adoption-prior"] as StaplePeriod[] }));
+    // Aggregate together so historical rows and presence patterns use the same dictionary.
+    const report = aggregateStaples([...observations, ...historical], catalog, generatedAt, throughDate);
+    report.adoptionPeriods = {
+      recent: { start: iso(recentStart), end: iso(end), decks: historical.filter(o => o.periods[0] === "adoption-recent").length },
+      prior: { start: iso(priorStart), end: iso(recentStart), decks: historical.filter(o => o.periods[0] === "adoption-prior").length },
+    };
+    return report;
+  }
+  return aggregateStaples(observations, catalog, generatedAt, throughDate);
 }
 
 /** One observation per completed event/player, latest event snapshot wins. Shared with package mining. */
@@ -40,13 +55,14 @@ export function collectStapleObservations(bundles: OmnidexEventBundle[], asOf = 
       if (entry.visible === false) continue;
       const raw = entry.decklist;
       if (!raw) continue;
-      observations.push({ raw, format: bundle.event.format || "Unknown format", periods, win: wins.get(entry.player) });
+      observations.push({ date: Date.parse(bundle.event.date), raw, format: bundle.event.format || "Unknown format", periods, win: wins.get(entry.player) });
     }
   }
   return { observations, reference };
 }
 
 export interface StapleObservation {
+  date?: number;
   raw: Partial<Record<StapleSection, { card: string; quantity: number }[]>>;
   format: string;
   periods: StaplePeriod[];

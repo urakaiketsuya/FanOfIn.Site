@@ -7388,3 +7388,31 @@ cohort, ordered by the combined physical-match count, then build ID. Each side
 retains its own rate and physical-match sample (mirrors count once here).
 An opponent absent from one period has zero recorded matches, a null rate, and
 no rate delta. The initial preview shows three opponents; expansion includes all.
+
+### Staples comparable-period adoption
+
+Tournament Staples publishes `adoption-recent` and `adoption-prior` cohorts plus
+`adoptionPeriods` boundaries. These are adjacent 30 UTC calendar-day windows,
+ending after the latest completed, non-future event with a visible positive named
+Main entry. Latest event snapshots and one event/player observation are retained.
+The older all/30/90 usage cohorts keep their existing semantics. Community and
+blended archives do not claim historical adoption.
+
+Historical cohorts use the same format, champion and highest-level champion-card
+build partitioning and shared card/presence dictionaries as usage. Require usable
+Main for historical membership; within it, an absent section is unknown and an
+explicit empty section is reported. Each window's denominator is independently
+computed by `staplePopulation`: the union of reported sections containing any card
+matching the selected card facets (or all reported sections with no facets).
+Minimum sample and sorting never alter that denominator. Counts are section-local;
+Main, Material and Sideboard are never pooled.
+
+`stapleAdoption` uses the union of cards from both windows, retaining disappeared
+cards. Minimum decks applies to the larger of the two card counts. A missing card
+row in a populated cohort means zero; a missing cohort, zero population, missing
+historical metadata, or unavailable filtered population means unavailable. Shared
+`cardAdoption` validates adjacent equal-length boundaries and counts. Display
+previous → recent inclusion percentages and signed percentage-point difference;
+rank by absolute change, then card name. These are descriptive changes, not
+significance or performance claims. `scripts/build-card-staples.ts` republishes
+only the tournament Staples artifact from cached events and catalog.

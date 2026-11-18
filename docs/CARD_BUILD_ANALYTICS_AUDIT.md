@@ -92,3 +92,12 @@ quantity choices remain distinguishable. The centroid merge explanation and aver
 copy tables are removed from build mode; route comparisons are unchanged.
 See BUILD_COPY_DISTRIBUTIONS.md for denominators and deterministic ranking.
 Next: comparable-period Card detail/Staples adoption and recorded-cohort package access.
+
+### 2026-11-17 — Staples adoption follow-through
+
+Tournament Staples now compares adjacent 30-day windows within matching format,
+champion, champion-card build, section and card-facet populations. Card rows retain
+both gains and disappearances; empty/missing populations remain unavailable.
+Community/blended adoption remains out of scope without comparable dated history.
+Next card/build work: package joint-access forecasts across actual cohorts, followed
+by champion/build concentration and construction stability.

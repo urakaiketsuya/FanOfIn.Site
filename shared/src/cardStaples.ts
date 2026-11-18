@@ -1,7 +1,9 @@
+import { cardAdoption } from "./cardAdoption.js";
+import type { CardAdoptionPeriods } from "./analysis-types.js";
 /** Section statistics are observations, independent of main + material deck identity. */
 export const STAPLE_SECTIONS = ["main", "material", "sideboard"] as const;
 export type StapleSection = typeof STAPLE_SECTIONS[number];
-export type StaplePeriod = "30" | "90" | "all";
+export type StaplePeriod = "30" | "90" | "all" | "adoption-recent" | "adoption-prior";
 export interface StapleCard {
   id: string;
   name: string;
@@ -34,6 +36,7 @@ export interface StapleCohort {
   sections: Record<StapleSection, StapleSectionStats>;
 }
 export interface CardStaplesData {
+  adoptionPeriods?: CardAdoptionPeriods;
   generatedAt: string;
   throughDate: string | null;
   cards: StapleCard[];
@@ -197,3 +200,24 @@ export interface ChampionPackagesData {
 export const CHAMPION_PACKAGE_SETTINGS = {
   minDecks: 100, minRecentDecks: 30, coreInclusion: 0.75, optionInclusion: 0.25, maxCore: 16, maxOptions: 12, minComplete: 25, maxVariants: 5,
 } as const;
+
+/** Matching section populations, including the union of card facets in each window. */
+export function stapleAdoption(data: CardStaplesData, section: StapleSection, filters: StapleFilters, format: string | null, champion: string | null, build: string | null) {
+  const recent = findStapleCohort(data, "adoption-recent", format, champion, build)?.sections[section];
+  const prior = findStapleCohort(data, "adoption-prior", format, champion, build)?.sections[section];
+  const recentPopulation = recent ? staplePopulation(data, recent, filters) : null;
+  const priorPopulation = prior ? staplePopulation(data, prior, filters) : null;
+  const periods = data.adoptionPeriods && recentPopulation !== null && priorPopulation !== null ? {
+    recent: { ...data.adoptionPeriods.recent, decks: recentPopulation }, prior: { ...data.adoptionPeriods.prior, decks: priorPopulation },
+  } : undefined;
+  const recentRows = new Map(recent?.rows.map(row => [row[0], row]) ?? []);
+  const priorRows = new Map(prior?.rows.map(row => [row[0], row]) ?? []);
+  const rows = [...new Set([...recentRows.keys(), ...priorRows.keys()])].flatMap(index => {
+    const now = recentRows.get(index), before = priorRows.get(index);
+    if (!matchesStapleCard(data.cards[index], filters) || Math.max(now?.[1] ?? 0, before?.[1] ?? 0) < filters.minDecks) return [];
+    const result = cardAdoption({ recentDeckCount: now?.[1] ?? 0, priorDeckCount: before?.[1] ?? 0 }, periods);
+    const row: StapleRow = now ?? [index, 0, 0, 0, 0, null];
+    return [{ row, result }];
+  }).sort((a, b) => Math.abs(b.result?.change ?? 0) - Math.abs(a.result?.change ?? 0) || data.cards[a.row[0]].name.localeCompare(data.cards[b.row[0]].name));
+  return { periods, rows, available: !!cardAdoption({ recentDeckCount: 0, priorDeckCount: 0 }, periods) };
+}

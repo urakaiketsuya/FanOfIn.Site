@@ -144,3 +144,45 @@ test("future-dated completed events cannot erase recent staples or enter all-tim
   }
   assert.equal(computeCardStaples([future], catalog, generatedAt).throughDate, null);
 });
+
+test("adoption uses adjacent calendar windows, matching sections and facet unions", async () => {
+  const { stapleAdoption } = await import("@gatcg/shared");
+  const other = { player: 2, decklist: { main: [{ card: "Other", quantity: 1 }], material: [{ card: "Alice, Champion", quantity: 1 }] } };
+  const data = computeCardStaples([
+    bundle(1, "2026-10-01T23:00:00Z", [deck(1), other]),
+    bundle(2, "2026-09-01", [deck(1)]),
+    bundle(3, "2026-08-02", [deck(1)]),
+    bundle(4, "2026-10-20", []),
+  ], catalog, "2026-10-31T00:00:00Z");
+  assert.equal(data.adoptionPeriods?.recent.end, "2026-10-02T00:00:00.000Z");
+  const report = stapleAdoption(data, "main", filters, "standard", "Alice", "Alice, Champion");
+  assert.equal(report.periods?.recent.decks, 2);
+  assert.equal(report.periods?.prior.decks, 1);
+  const shared = report.rows.find(r => data.cards[r.row[0]].name === "Shared")!;
+  assert.deepEqual(shared.result, { recent: 0.5, prior: 1, change: -0.5 });
+  const filtered = stapleAdoption(data, "main", { ...filters, elements: ["FIRE", "WATER"] }, "standard", "Alice", null);
+  assert.equal(filtered.periods?.recent.decks, 1);
+  assert.equal(filtered.rows[0].result?.change, 0);
+  const side = stapleAdoption(data, "sideboard", filters, "standard", "Alice", null);
+  assert.equal(side.periods?.recent.decks, 1); // Explicit empty counts; missing does not.
+  assert.equal(stapleAdoption({ ...data, adoptionPeriods: undefined }, "main", filters, null, null, null).available, false);
+  assert.equal(stapleAdoption(data, "main", filters, "absent", null, null).available, false);
+  const zero = report.rows.find(r => data.cards[r.row[0]].name === "Other")!;
+  assert.equal(zero.result?.prior, 0);
+});
+
+test("adoption retains disappeared cards and excludes unusable Main from both windows", async () => {
+  const { stapleAdoption } = await import("@gatcg/shared");
+  const data = computeCardStaples([
+    bundle(1, "2026-10-01", [{ player: 1, decklist: { main: [{ card: "Other", quantity: 1 }] } }]),
+    bundle(2, "2026-09-01", [deck(1)]),
+    bundle(3, "2026-10-20", [{ player: 1, decklist: { main: [], material: [{ card: "Shared", quantity: 1 }] } }]),
+  ], catalog, "2026-10-31T00:00:00Z");
+  const report = stapleAdoption(data, "main", filters, null, null, null);
+  const lost = report.rows.find(r => data.cards[r.row[0]].name === "Shared")!;
+  assert.deepEqual(lost.result, { prior: 1, recent: 0, change: -1 });
+  assert.equal(lost.row[1], 0);
+  assert.equal(data.adoptionPeriods?.recent.decks, 1);
+  const old = { ...data, sectionPatterns: undefined };
+  assert.equal(stapleAdoption(old, "main", { ...filters, elements: ["FIRE"] }, null, null, null).available, false);
+});

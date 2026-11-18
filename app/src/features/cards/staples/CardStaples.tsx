@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { blendCardStaples, findStapleCohort, stapleChampionBuilds, staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
+import { stapleAdoption, blendCardStaples, findStapleCohort, stapleChampionBuilds, staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
 import PublishedSourceStatus from "../../../components/PublishedSourceStatus";
 import PageLayout from "../../../components/layout/PageLayout";
 import PageHeader from "../../../components/ui/PageHeader";
@@ -37,6 +37,7 @@ export default function CardStaples() {
   const [pagination, setPagination] = useState({ key: "", count: PAGE_SIZE });
   const key = params.toString();
   const section: StapleSection = params.get("section") === "material" ? "material" : params.get("section") === "sideboard" ? "sideboard" : "main";
+  const adoptionView = !community && !blended && params.get("view") === "adoption";
   const period: StaplePeriod = community || blended || params.get("period") === "all" ? "all" : params.get("period") === "30" ? "30" : "90";
   const format = params.get("format") ?? "standard";
   const champion = params.get("champion") ?? "";
@@ -53,13 +54,16 @@ export default function CardStaples() {
   }), [params, community]);
   const cohort = data ? findStapleCohort(data, period, format || null, champion || null, build || null) : undefined;
   const stats = cohort?.sections[section];
-  const rows = useMemo(() => selectStapleRows(data?.cards ?? [], stats?.rows ?? [], filters), [data, stats, filters]);
+  const adoption = useMemo(() => data && adoptionView ? stapleAdoption(data, section, filters, format || null, champion || null, build || null) : undefined, [data, adoptionView, section, filters, format, champion, build]);
+  const adoptionByCard = useMemo(() => new Map(adoption?.rows.map(item => [item.row[0], item.result]) ?? []), [adoption]);
+  const rows = useMemo(() => adoption ? adoption.rows.map(item => item.row) : selectStapleRows(data?.cards ?? [], stats?.rows ?? [], filters), [data, stats, filters, adoption]);
   const population = useMemo(() => data && stats ? staplePopulation(data, stats, filters) : null, [data, stats, filters]);
   const count = pagination.key === key ? pagination.count : PAGE_SIZE;
   const visible = rows.slice(0, count);
   const art = useCardsByNames(visible.map(row => data!.cards[row[0]].name));
-  const champions = useMemo(() => [...new Set([...(data?.cohorts.flatMap(c => c.period === period && c.format === (format || null) && c.champion ? [c.champion] : []) ?? []), ...(champion ? [champion] : [])])].sort(), [data, period, format, champion]);
-  const builds = useMemo(() => data && champion ? stapleChampionBuilds(data, period, format || null, champion) : [], [data, period, format, champion]);
+  const optionPeriod = adoptionView ? "all" : period;
+  const champions = useMemo(() => [...new Set([...(data?.cohorts.flatMap(c => c.period === optionPeriod && c.format === (format || null) && c.champion ? [c.champion] : []) ?? []), ...(champion ? [champion] : [])])].sort(), [data, optionPeriod, format, champion]);
+  const builds = useMemo(() => data && champion ? stapleChampionBuilds(data, optionPeriod, format || null, champion) : [], [data, optionPeriod, format, champion]);
   const buildLabel = (name: string) => { const level = data?.cards.find(card => card.name === name)?.championLevel; return level == null ? name : `${name} · Level ${level}`; };
   const elements = useMemo(() => [...new Set([...(data?.cards.flatMap(card => card.elements) ?? []), ...filters.elements])].sort(), [data, filters.elements]);
   function change(name: string, value: string | string[]) {
@@ -87,13 +91,15 @@ export default function CardStaples() {
   ];
   function clearFilters() {
     const next = new URLSearchParams();
-    for (const name of ["source", "section", "period", "format", "sort"]) if (requestedParams.current.has(name)) next.set(name, requestedParams.current.get(name)!);
+    for (const name of ["source", "section", "period", "format", "sort", "view"]) if (requestedParams.current.has(name)) next.set(name, requestedParams.current.get(name)!);
     requestedParams.current = next;
     startTransition(() => setParams(next));
   }
   return <PageLayout width="wide" data-component="CardStaples">
     <PageHeader title="Card Staples" description="Find the cards players return to, across tournament and community decks." actions={<Link to="/cards/stats" className={linkClass}>Detailed card stats →</Link>} />
     <div className="mb-4 max-w-sm"><FilterField label="Deck source"><select className={fieldClass} value={blended ? "blended" : community ? "community" : "tournament"} onChange={e => change("source", e.target.value)}><option value="tournament">Tournament results</option><option value="community">Community decklists</option><option value="blended">Blended · Tournament + community</option></select></FilterField></div>
+    {!community && !blended && <div className="mb-4"><div className="flex flex-wrap gap-2" role="group" aria-label="Staples report"><Button variant={!adoptionView ? "primary" : "secondary"} aria-pressed={!adoptionView} onClick={() => change("view", "usage")}>Most played</Button><Button variant={adoptionView ? "primary" : "secondary"} aria-pressed={adoptionView} onClick={() => change("view", "adoption")}>Adoption change</Button></div></div>}
+    {adoptionView && <div className="mb-4 text-sm text-ctp-subtext1" role="status">{adoption?.available && adoption.periods ? <div className="grid gap-2 sm:grid-cols-2">{(["prior", "recent"] as const).map(key => <p key={key}>{key === "prior" ? "Previous" : "Recent"}: {adoption.periods![key].start.slice(0, 10)} – {new Date(Date.parse(adoption.periods![key].end) - 86400000).toISOString().slice(0, 10)} · {adoption.periods![key].decks.toLocaleString()} matching sections</p>)}</div> : data ? "Adoption data unavailable for this selection." : "Loading adoption…"}</div>}
     <Tabs tabs={sections} active={section} onChange={value => change("section", value)} baseId="staples" label="Deck section" variant="pill" wrap />
     <div className="mt-4 flex items-end gap-3">
       <div className="min-w-0 flex-1"><FilterField label="Find a card"><input type="search" className={fieldClass} value={filters.search} onChange={e => change("q", e.target.value)} placeholder="Card name" /></FilterField></div>
@@ -115,7 +121,7 @@ export default function CardStaples() {
     <div className="mt-3 grid grid-cols-1 items-end gap-3 sm:grid-cols-3">
       <div className="min-w-0 flex-1"><FilterField label="Champion"><select className={fieldClass} value={champion} onChange={e => change("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name} value={name}>{name}</option>)}</select></FilterField></div>
       {champion && <div className="min-w-0 flex-1"><FilterField label="Build"><select className={fieldClass} value={build} onChange={e => change("build", e.target.value)}><option value="">All {champion} builds</option>{builds.map(item => <option key={item.card} value={item.card}>{buildLabel(item.card)} ({item.decks.toLocaleString()})</option>)}{build && !builds.some(item => item.card === build) && <option value={build}>{buildLabel(build)}</option>}</select></FilterField></div>}
-      <div className="min-w-0 flex-1"><FilterField label="Rank by"><select className={fieldClass} value={filters.sort} onChange={e => change("sort", e.target.value)}><option value="usage">Most played</option>{!community && <option value="winning">Adjusted win rate</option>}<option value="quantity">Average copies</option></select></FilterField></div>
+      {!adoptionView && <div className="min-w-0 flex-1"><FilterField label="Rank by"><select className={fieldClass} value={filters.sort} onChange={e => change("sort", e.target.value)}><option value="usage">Most played</option>{!community && <option value="winning">Adjusted win rate</option>}<option value="quantity">Average copies</option></select></FilterField></div>}
     </div>
     {(chips.length > 0 || filters.search) && <div className="mt-3 flex flex-wrap gap-2" aria-label="Active filters">
       {chips.map(chip => <Button size="sm" key={`${chip.key}:${chip.value}`} aria-label={`Remove ${chip.label} filter`} onClick={() => change(chip.key, ["element", "keyword"].includes(chip.key) ? params.getAll(chip.key).filter(value => value !== chip.value) : "")}>{chip.label} ×</Button>)}
@@ -125,17 +131,17 @@ export default function CardStaples() {
     {(community || blended) && <PublishedSourceStatus label="Community staples" status={communityStatus} hasData={!!communityData} />}
     <TabPanel baseId="staples" tab={section} active={section} className="mt-5 focus-visible:outline-2 focus-visible:outline-ctp-blue">
       <div aria-live="polite" className="mb-4 text-sm text-ctp-subtext1">
-        {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${build ? buildLabel(build) : champion}` : ""}` : ""}
-        {data && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {blended ? "Tournament entries + unique community lists · Full archive" : community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
+        {pending ? "Recalculating…" : adoptionView ? `${rows.length} cards · ${format ? titleCase(format) : "All formats"} · Largest adoption changes` : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${build ? buildLabel(build) : champion}` : ""}` : ""}
+        {data && !adoptionView && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {blended ? "Tournament entries + unique community lists · Full archive" : community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
         {data && community && <span className="mt-1 block text-xs text-ctp-subtext0">ShoutAtYourDecks · Sleeved · TcgArchitect{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} lists report a sideboard` : ""}</span>}
-        {data?.throughDate && <span className="mt-1 block text-xs text-ctp-subtext0">Results through {data.throughDate}{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} decks report a sideboard` : ""}</span>}
+        {!adoptionView && data?.throughDate && <span className="mt-1 block text-xs text-ctp-subtext0">Results through {data.throughDate}{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} decks report a sideboard` : ""}</span>}
       </div>
       {data && rows.length === 0 && <div role="status" className="rounded-xl border border-ctp-surface1 p-5"><p>No cards match this selection.</p><Button className="mt-3" onClick={clearFilters}>Clear card filters</Button></div>}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-busy={pending}>
-        {data && <StapleCardGrid data={data} rows={visible} population={population} art={art} unit={community ? "unique lists" : "decks"} showCopies={!blended} />}
+        {data && <StapleCardGrid data={data} rows={visible} population={population} art={art} unit={community ? "unique lists" : "decks"} showCopies={!blended && !adoptionView} adoption={adoptionView ? adoptionByCard : undefined} />}
       </div>
       {rows.length > count && <Button className="mt-5 w-full" onClick={() => setPagination({ key, count: count + PAGE_SIZE })}>Show more cards</Button>}
     </TabPanel>
-    {showFilters && <StaplesFilters community={community || blended} data={data} filters={filters} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
+    {showFilters && <StaplesFilters community={community || blended || adoptionView} data={data} filters={filters} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
   </PageLayout>;
 }
