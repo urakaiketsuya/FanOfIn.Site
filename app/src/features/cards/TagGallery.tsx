@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPrintings } from "./filters";
 import { useMemo, useState, useTransition } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CARD_TAG_CATEGORIES, canonicalCardTag, cardTagCategory } from "@gatcg/shared";
@@ -21,8 +23,8 @@ export default function TagGallery() {
   const [pending, startTransition] = useTransition();
   const matches = useMemo(() => {
     if (!tag) return [];
-    return cards.filter(card => lookup?.cards.get(card.uuid)?.has(tag) && card.name.toLowerCase().includes(search.toLowerCase())).flatMap(card => {
-      const editions = card.editions.filter(edition => lookup?.editions.get(edition.uuid)?.has(tag) && (!set || edition.set.prefix === set));
+    return cards.filter(card => lookup?.cards.get(card.uuid)?.has(tag)).flatMap(card => {
+      const editions = searchCardPrintings(card, search, lookup).filter(edition => lookup?.editions.get(edition.uuid)?.has(tag) && (!set || edition.set.prefix === set));
       if (cardTagCategory(tag) === "Gameplay") return editions.slice(0, 1).map(edition => ({ card, edition }));
       return editions.map(edition => ({ card, edition }));
     });
@@ -35,7 +37,7 @@ export default function TagGallery() {
     <div className="my-3 flex flex-wrap gap-3"><Link to="/cards/tagging" className={`${tagControl} flex items-center text-ctp-blue`}>Contribute tags</Link>{tag && <Link to="/cards/tags" className={`${tagControl} flex items-center text-ctp-blue`}>All tag galleries</Link>}</div>
     {local.isError && <p role="status" className="my-3 text-sm">Local contributions are unavailable; showing imported tags. <button className={tagControl} onClick={() => void local.refetch()}>Retry contributions</button></p>}
     {!data ? <p role="status">{status.phase === "error" ? <>Tags unavailable. <button className={tagControl} onClick={status.retry}>Retry tags</button></> : "Loading tags…"}</p> : <>
-      <div className="flex flex-wrap gap-3"><label className="flex min-w-0 flex-col gap-1 text-sm">{tag ? "Find a card" : "Find a tag"}<input className={tagControl} value={search} onChange={event => { const value = event.target.value; startTransition(() => { setSearch(value); setLimit(36); }); }} /></label>
+      <div className="flex flex-wrap gap-3"><label className="flex min-w-0 flex-col gap-1 text-sm">{tag ? "Find a card" : "Find a tag"}{tag ? <CardQueryInput tagsAvailable className={tagControl} value={search} onChange={event => { const value = event.target.value; startTransition(() => { setSearch(value); setLimit(36); }); }} /> : <input className={tagControl} value={search} onChange={event => { const value = event.target.value; startTransition(() => { setSearch(value); setLimit(36); }); }} />}</label>
         {tag && <label className="flex flex-col gap-1 text-sm">Printing set<select className={tagControl} value={set} onChange={event => { setSet(event.target.value); setLimit(36); }}><option value="">All sets</option>{sets.map(prefix => <option key={prefix}>{prefix}</option>)}</select></label>}
       </div>
       {pending && <p role="status">Recalculating…</p>}

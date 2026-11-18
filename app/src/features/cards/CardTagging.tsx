@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPrintings } from "./filters";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
@@ -47,7 +49,7 @@ export default function CardTagging() {
     return [targetKey(value), value];
   })).values()], [draft.targets, gameplay]);
   const sets = useMemo(() => [...new Set(cards.flatMap(card => card.editions.map(edition => edition.set.prefix)))].sort(), [cards]);
-  const rows = useMemo(() => cards.filter(card => card.name.toLowerCase().includes(search.toLowerCase())).flatMap(card => card.editions.filter(edition => (!set || edition.set.prefix === set) && (!untagged || !(lookup?.editions.get(edition.uuid)?.size))).map(edition => ({ card, edition }))), [cards, search, set, untagged, lookup]);
+  const rows = useMemo(() => cards.flatMap(card => searchCardPrintings(card, search, lookup).filter(edition => (!set || edition.set.prefix === set) && (!untagged || !(lookup?.editions.get(edition.uuid)?.size))).map(edition => ({ card, edition }))), [cards, search, set, untagged, lookup]);
   useEffect(() => {
     try { sessionStorage.setItem(draftKey, JSON.stringify(draft)); setStorageError(false); }
     catch { setStorageError(true); }
@@ -80,7 +82,7 @@ export default function CardTagging() {
     {!data && <p role="status" className="mt-3">{status.phase === "error" ? <>Tags unavailable. <button className={tagControl} onClick={status.retry}>Retry tags</button></> : "Loading tags…"}</p>}
     {local.isError && <p role="status" className="mt-3">Local contributions are unavailable. Imported tags are still visible. <button className={tagControl} onClick={() => void local.refetch()}>Retry contributions</button></p>}
     <div className="my-4 flex flex-wrap gap-3">
-      <label className="flex min-w-0 flex-col gap-1 text-sm">Find cards<input className={tagControl} value={search} onChange={event => { const value = event.target.value; startTransition(() => { setSearch(value); setLimit(24); }); }} /></label>
+      <label className="flex min-w-0 flex-col gap-1 text-sm">Find cards<CardQueryInput tagsAvailable className={tagControl} value={search} onChange={event => { const value = event.target.value; startTransition(() => { setSearch(value); setLimit(24); }); }} /></label>
       <label className="flex flex-col gap-1 text-sm">Printing set<select className={tagControl} value={set} onChange={event => { setSet(event.target.value); setLimit(24); }}><option value="">All sets</option>{sets.map(prefix => <option key={prefix}>{prefix}</option>)}</select></label>
       <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={untagged} disabled={!data} onChange={event => { setUntagged(event.target.checked); setLimit(24); }} />Only untagged printings</label>
     </div>

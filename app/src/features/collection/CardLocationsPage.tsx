@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { CollectionCopyStatus, CollectionStatusHelp } from "./CollectionStatus";
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -91,8 +93,7 @@ export default function CardLocationsPage() {
     for (const card of cards) if (decksByCard.has(locationCardKey(card.name))) names.set(card.uuid,card.name);
     return [...names].map(([uuid,name]) => ({uuid,name,card:cardsById.get(uuid)})).sort((a,b)=>a.name.localeCompare(b.name));
   }, [entries,tracking.records,cards,cardsById,decksByCard]);
-  const matches = useMemo(()=>pool.filter(item => {
-    if (!item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())) return false;
+  const matches = useMemo(()=>searchCardPool(pool, new Map(pool.flatMap(item => item.card ? [[item.name, item.card] as const] : [])), query).filter(item => {
     const state = states.get(item.uuid) ?? cardLocationState(item.uuid, []);
     if (picker !== null) return state.owned > 0;
     if (focusedRequirements && !focusedRequirements.has(locationCardKey(item.name)) && !records.get(item.uuid)?.assignments?.some(row=>row.deckId===deckId)) return false;
@@ -101,7 +102,7 @@ export default function CardLocationsPage() {
   const selected = pool.find(item => item.uuid === editId) ?? (editId ? {uuid: editId, name: cards.find(card=>card.uuid===editId)?.name ?? editId, card: cards.find(card=>card.uuid===editId)} : undefined);
   const lent = tracking.records.reduce((sum,record)=>sum+record.loans.filter(loan=>!loan.returnedAt).reduce((total,loan)=>total+loan.quantity,0),0);
   const controls = "min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue";
-  const grid = <><input aria-label="Find a card location" value={query} onChange={event=>{setQuery(event.target.value);setLimit(24);}} placeholder="Find a card…" className="my-3 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base"/>
+  const grid = <><CardQueryInput aria-label="Find a card location" value={query} onChange={event=>{setQuery(event.target.value);setLimit(24);}} placeholder="Find a card…" className="my-3 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base"/>
     {picker === null && <select aria-label="Location status" value={filter} onChange={event=>{setFilter(event.target.value);setLimit(24);}} className={`${controls} mb-3 bg-ctp-base`}><option value="all">All matching cards</option><option value="assigned">In decks</option><option value="unassigned">Unassigned copies</option><option value="check">Needs checking</option></select>}
     {!matches.length && <div className="my-4 rounded-xl border border-ctp-surface1 p-4"><p role="status" className="font-semibold">{query || filter !== "all" ? "No cards match this search." : "Your card locations start here."}</p><p className="mt-1 text-sm text-ctp-subtext1">{query || filter !== "all" ? "Try a different name or clear your filters." : "Add owned copies to your collection, then record a deck location or loan."}</p>{query || filter !== "all" ? <Button className="mt-3" onClick={()=>{setQuery("");setFilter("all");setLimit(24);}}>Clear filters</Button> : <Link to="/collection" className="mt-3 inline-flex min-h-12 items-center text-ctp-blue underline">Open collection</Link>}</div>}
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matches.slice(0,limit).map(item=>{

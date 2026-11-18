@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { useMemo, useState } from "react";
 import { collectionEntryKey, finishLabel, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import CardResult from "../../components/CardResult";
@@ -26,12 +28,13 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
   const changed = rows.flatMap(row => row.entries.filter(entry => value(entry) !== String(entry.ownedQuantity)));
   const invalid = changed.some(entry => value(entry).trim() === "" || !Number.isInteger(Number(value(entry))) || Number(value(entry)) < 0 || Number(value(entry)) > 9999);
   const elements = [...new Set(rows.flatMap(row => cardsByName.get(row.required.cardName)?.elements ?? []))].sort();
+  const matchingNames = new Set(searchCardPool(rows.map(row => ({ name: row.required.cardName })), cardsByName, query).map(card => card.name));
   const visibleRows = rows.filter(row => {
     const total = row.entries.reduce((sum, entry) => sum + (Number(value(entry)) || 0), 0);
     const matchesOwnership = ownership === "all" || (ownership === "missing" && total < row.required.quantity)
       || (ownership === "complete" && total >= row.required.quantity)
       || (ownership === "changed" && row.entries.some(entry => value(entry) !== String(entry.ownedQuantity)));
-    return matchesOwnership && row.required.cardName.toLowerCase().includes(query.trim().toLowerCase())
+    return matchesOwnership && matchingNames.has(row.required.cardName)
       && (!element || cardsByName.get(row.required.cardName)?.elements.includes(element));
   });
   function field(entry: CollectionEntry, label: string) {
@@ -53,7 +56,7 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
     <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-ctp-subtext1">{changed.length} unsaved change{changed.length === 1 ? "" : "s"}</span><Button variant="primary" disabled={busy || invalid || !changed.length} onClick={() => void save()}>{busy ? "Saving…" : "Save changes"}</Button></div>
   </div>}>
     <p className="mb-3 text-sm text-ctp-subtext1">Edit the physical copies you own across your collection. Unspecified copies and recorded printings are added together. Proxies are kept separately.</p>
-    <input type="search" aria-label="Find a deck card to update" placeholder="Find a card…" value={query} onChange={event => setQuery(event.target.value)} className="mb-4 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue" />
+    <CardQueryInput type="search" aria-label="Find a deck card to update" placeholder="Find a card…" value={query} onChange={event => setQuery(event.target.value)} className="mb-4 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue" />
     <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
       <label className="text-sm">Ownership<select value={ownership} onChange={event => setOwnership(event.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="all">All cards</option><option value="missing">Missing copies</option><option value="complete">Own required copies</option><option value="changed">Unsaved changes</option></select></label>
       <label className="text-sm">Element<select value={element} onChange={event => setElement(event.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="">All elements</option>{elements.map(value => <option key={value} value={value}>{value}</option>)}</select></label>

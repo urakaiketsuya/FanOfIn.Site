@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { saveCuration, exportCuration } from "../../lib/curationStorage";
 import { useDeferredValue, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
@@ -115,8 +117,8 @@ export default function ReferenceStrategies({ published = false }: {
  <label className="my-3 block">Strategy description<textarea className={`${control} w-full`} value={edit.description} onChange={e => setEdit({ ...edit, description: e.target.value })}/></label>
  <details><summary className="flex min-h-12 cursor-pointer items-center gap-2"><DisclosureChevron />Find and add cards</summary>
  <label className="my-3 block">Add card to<select className={`${control} w-full`} value={cardTarget} onChange={e => setCardTarget(e.target.value as typeof cardTarget)}><option value="anyCards">Any-of rule</option><option value="allCards">All-of rule</option><option value="excludeCards">Exclusions</option><option value="preview">Preview cards</option></select></label>
- <label className="my-3 block">Search card catalog<input className={`${control} w-full`} value={cardQuery} onChange={e => setCardQuery(e.target.value)}/></label>
- <div className="grid grid-cols-2 gap-2">{cardQuery && cards.filter(c => c.name.toLowerCase().includes(cardQuery.toLowerCase())).slice(0, 8).map(c => <CardResult key={c.name} card={c} name={c.name} onSelect={() => { if (cardTarget === 'preview')
+ <label className="my-3 block">Search card catalog<CardQueryInput className={`${control} w-full`} value={cardQuery} onChange={e => setCardQuery(e.target.value)}/></label>
+ <div className="grid grid-cols-2 gap-2">{cardQuery && searchCardPool(cards, cards, cardQuery).slice(0, 8).map(c => <CardResult key={c.name} card={c} name={c.name} onSelect={() => { if (cardTarget === 'preview')
             setEdit({ ...edit, coreCards: [...new Set([...edit.coreCards, c.name])] });
         else
             changeRule({ ...edit.definition.rule, [cardTarget]: [...new Set([...edit.definition.rule[cardTarget], c.name])] }); setFieldVersion(v => v + 1); setCardQuery(''); }}/>)}</div></details>

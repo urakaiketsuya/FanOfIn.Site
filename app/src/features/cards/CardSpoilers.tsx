@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchSpoilers } from "../../lib/spoilerCatalog";
 import { PREVIEW_SET } from "../../lib/previewCards";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -18,8 +20,7 @@ export default function CardSpoilers() {
   const [params, setParams] = useSearchParams();
   const query = params.get("q") ?? "";
   const set = params.get("set") ?? "";
-  const shown = spoilers.cards.filter(card => (!set || set === "asphodel-cantabile" || card.setPrefix === set) &&
-    [card.name, card.effect, ...card.classes, ...card.types, ...card.subtypes, ...card.elements].join(" ").toLowerCase().includes(query.trim().toLowerCase()));
+  const shown = searchSpoilers(query).filter(card => !set || set === "asphodel-cantabile" || card.setPrefix === set);
   function update(key: string, value: string) {
     setParams(previous => {
       const next = new URLSearchParams(previous);
@@ -36,7 +37,7 @@ export default function CardSpoilers() {
     </div>
     <p className="mt-2 max-w-2xl text-sm text-ctp-subtext1">Transcribed from stream screenshots; names, rules text and printing details may change. </p>
     <div className="my-5 grid gap-3 sm:grid-cols-2">
-      <label className="text-sm">Find a spoiler<input type="search" className={controlClass} value={query} placeholder="Name, rules text, class or element" onChange={event => update("q", event.target.value)} /></label>
+      <label className="text-sm">Find a spoiler<CardQueryInput type="search" className={controlClass} value={query} placeholder="Name, effect:draw, or element:water" onChange={event => update("q", event.target.value)} /></label>
       <label className="text-sm">Set<select className={controlClass} value={set} onChange={event => update("set", event.target.value)}>
         <option value="">All sets</option>
         <option value="asphodel-cantabile">{PREVIEW_SET.name}</option>

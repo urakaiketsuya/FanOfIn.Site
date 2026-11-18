@@ -1,5 +1,6 @@
 import { CALCULATORS_ENABLED } from "./lib/archivedCalculators";
 import LegacyDeckEditorRedirect from "./features/deckbuilder/LegacyDeckEditorRedirect";
+const SearchReference = lazy(() => import("./features/cards/SearchReference"));
 const AdminDashboard = lazy(() => import("./features/packages/AdminDashboard"));
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
@@ -213,6 +214,7 @@ export default function AppRoutes() {
         <Route path="/cards/tags" element={<TagGallery />} />
         <Route path="/cards/tags/:tag" element={<TagGallery />} />
         <Route path="/cards/tagging" element={<CardTagging />} />
+        <Route path="/cards/search-reference" element={<SearchReference />} />
         <Route path="/cards/:slug" element={<CardDetail />} />
         <Route path="/sets" element={<SetsRedirect />} />
         <Route path="/sets/:prefix" element={<SetDetailRedirect />} />

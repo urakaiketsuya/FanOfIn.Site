@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { verifyShowcaseFavorites } from "../../lib/profileShowcaseSave";
 import { ProfileFavoritesEditor } from "./ProfileFavorites";
 import ProfileHeader from "./ProfileHeader";
@@ -84,7 +86,7 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
     finally { setBusy(false); }
   }
   const matchingTournamentDecks = tournamentDecks.filter(deck => `${deck.championName ?? ""} ${deck.title}`.toLowerCase().includes(deckQuery.trim().toLowerCase())).slice(0, 20);
-  const matches = (catalog ?? []).filter(card => card.name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 12);
+  const matches = searchCardPool(catalog ?? [], catalog ?? [], query).slice(0, 12);
   return <DialogSheet title="Edit profile" onDismiss={onDismiss} dirty={dirty} dismissible={!busy} footer={<><p className="mb-2 text-xs text-ctp-subtext1">{draft?.cardIds.length ?? 0}/6 cards · {(draft?.deckSlugs.length ?? 0) + (draft?.tournamentHashes?.length ?? 0)}/3 decks{dirty ? " · Unsaved changes" : ""}</p>{error && <InlineState tone="danger" className="mb-2">{error}</InlineState>}<div className="flex flex-wrap gap-2"><Button variant="primary" disabled={!draft || !dirty || busy} onClick={() => void save()}>{busy ? "Saving…" : "Save profile"}</Button>{(error || tournamentError) && <Button disabled={busy} onClick={() => { if (dirty && !confirmReload) { setConfirmReload(true); return; } setConfirmReload(false); setAttempt(value => value + 1); }}>{confirmReload ? "Discard draft and reload" : "Reload saved showcase"}</Button>}</div></>}>
     {!draft ? <InlineState>Loading showcase…</InlineState> : <fieldset disabled={busy}>
       <p className="mb-2 text-sm font-semibold">Profile preview</p>
@@ -96,7 +98,7 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
       <ProfileFavoritesEditor value={draft} onChange={favorites => setDraft({ ...draft, ...favorites })} />
       <h3 className="mt-5 text-lg font-semibold">Favorite cards</h3>
       <div className="mt-3 grid grid-cols-2 gap-3">{draft.cardIds.map((id, index) => { const card = catalog?.find(item => item.uuid === id); return <CardResult key={id} card={card} name={card?.name ?? "Card unavailable"} selected onSelect={() => toggle("cardIds", id, 6)}><p className="text-xs text-ctp-subtext1">Position {index + 1} of {draft.cardIds.length}</p>{orderControls("cardIds", id, card?.name ?? "Unavailable card", index, draft.cardIds.length)}{card && <Link className="flex min-h-control items-center text-sm text-ctp-blue underline" to={`/cards/${card.slug}`} target="_blank" rel="noreferrer">Card details<span className="sr-only"> in a new tab</span></Link>}</CardResult>; })}</div>
-      <label className="mt-3 block text-sm">Find a card<input className="mt-1 min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search card names" /></label>
+      <label className="mt-3 block text-sm">Find a card<CardQueryInput className="mt-1 min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search card names" /></label>
       {query.trim() && <><p className="mt-2 text-xs text-ctp-subtext1">Showing up to 12 matching cards. Refine your search to find more.</p><div className="mt-3 grid grid-cols-2 gap-3">{matches.map(card => <CardResult key={card.uuid} card={card} name={card.name} selected={draft.cardIds.includes(card.uuid)} onSelect={() => toggle("cardIds", card.uuid, 6)}><Link className="flex min-h-control items-center text-sm text-ctp-blue underline" to={`/cards/${card.slug}`} target="_blank" rel="noreferrer">Card details<span className="sr-only"> in a new tab</span></Link></CardResult>)}</div>{!matches.length && <InlineState>No matching cards in the loaded catalog.</InlineState>}</>}
       <h3 className="mt-6 text-lg font-semibold">Featured decks</h3><p className="mt-1 text-sm text-ctp-subtext1">Choose from your published decks and public community favorites, or tournament favorites. Tournament decks use their published champion name. Deck previews open in a new tab. Decks that become private are hidden automatically.</p>
       <ol className="mt-3 space-y-3">{(draft.deckOrder ?? [...draft.deckSlugs, ...(draft.tournamentHashes ?? [])]).map((id, index, order) => {

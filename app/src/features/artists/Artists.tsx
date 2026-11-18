@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPrintings } from "../cards/filters";
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { matchesArtistSearch, artistDirectory, artistPagePath, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
@@ -95,7 +97,10 @@ export default function Artists() {
     try { await syncCards(); setRetrySucceeded(true); } catch { setRetryError(true); } finally { setRetrying(false); }
   }
   const visibleArtists = galleries.filter(candidate => matchesArtistSearch(candidate, query));
-  const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
+  const visibleCards = artist?.cards.flatMap(entry => {
+    const editions = searchCardPrintings(entry.card, cardSearch).filter(edition => entry.editions.some(printing => printing.uuid === edition.uuid));
+    return editions.length ? [{ ...entry, editions }] : [];
+  }) ?? [];
   if (identity && slug !== identity.slug) {
     return <Navigate replace to={`${artistPagePath(identity)}${location.search}${location.hash}`} />;
   }
@@ -121,7 +126,7 @@ export default function Artists() {
       {artist && <>
         <p className="mt-4 text-ctp-subtext1">{artworkCounts(artist.cards.length, artist.printingCount)}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-ctp-subtext1"><p role="status">{popularity ? 'Most played first' : popularityStatus.phase === 'error' ? 'Popularity unavailable · Name A–Z' : 'Loading popularity…'}</p>{!popularity && popularityStatus.phase === 'error' && <Button onClick={popularityStatus.retry}>Retry popularity</Button>}</div>
-        <label className="mt-5 block max-w-lg text-sm">Search cards<input type="search" value={cardSearch} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
+        <label className="mt-5 block max-w-lg text-sm">Search cards<CardQueryInput type="search" value={cardSearch} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">{visibleCards.map(entry => <ArtistArtwork key={entry.card.uuid} entry={entry} />)}</div>
         {!visibleCards.length && <p role="status" className="mt-6">No cards match your search.</p>}
       </>}

@@ -77,6 +77,28 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
   return filterParsedCards(cards, filters, parseFilterQuery(filters.name), tagLookup);
 }
 
+/** Restrict displayed printings while retaining the card's full reverse-face text. */
+export function searchCardPrintings(card: Card, query: string, tagLookup?: CardTagLookup): Card['editions'] {
+  if (cardQueryError(query, !!tagLookup)) return [];
+  const parsed = parseFilterQuery(query);
+  const faces = card.editions.flatMap(edition => edition.other_orientations ?? []);
+  return card.editions.filter(edition => filterParsedCards([{ ...card, editions: [{ ...edition, other_orientations: faces }] }], emptyFilterState(), parsed, tagLookup).length > 0);
+}
+
+/** Search an existing result pool without changing its order, quantities or eligibility. */
+export function searchCardPool<T extends { name: string }>(pool: readonly T[], catalog: ReadonlyMap<string, Card> | Card[], query: string): T[] {
+  if (cardQueryError(query)) return [];
+  const byName = Array.isArray(catalog) ? new Map(catalog.map(card => [card.name, card])) : catalog;
+  const matches = new Set(filterCardNames(pool.map(item => item.name), byName, query));
+  return pool.filter(item => matches.has(item.name));
+}
+
+/** Metadata unavailable on these compact pickers must not silently satisfy a negation. */
+export function cardQueryError(query: string, tagsAvailable = false): string | undefined {
+  const parsed = parseFilterQuery(query);
+  return parsed.error ?? (!tagsAvailable && (parsed.facets.tags || parsed.usedFacets?.includes('tags')) ? 'Tag search is available in the card browser and tag galleries.' : undefined);
+}
+
 /** Match a named pool without losing entries whose catalog record is unavailable.
  * Unknown metadata stays unknown under NOT; a known name branch can still satisfy OR.
  */

@@ -12,6 +12,7 @@ export const NAV_ENTRIES: NavEntry[] = [
     paths: ["/cards", "/artists", "/card-discovery"],
     links: [
       { to: "/cards", label: "Browse Cards" },
+      { to: "/cards/search-reference", label: "Search Reference" },
       { to: "/cards/spoilers", label: "Spoilers" },
       { to: "/cards/banlist", label: "Banlist" },
       { to: "/cards/staples", label: "Card Staples" },

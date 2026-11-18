@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "./filters";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import CardResult from "../../components/CardResult";
@@ -27,7 +29,7 @@ export default function Banlist() {
   const bans = announcedBans(format);
   const unavailable = useMemo(() => otherUnavailableCards(cards, format), [cards, format]);
   const names = view === "bans" ? bans : unavailable.map(card => card.name);
-  const shown = names.filter(name => name.toLowerCase().includes(query.trim().toLowerCase()));
+  const shown = searchCardPool(names.map(name => ({ name })), byName, query).map(card => card.name);
   const loading = progress.phase === "idle" || progress.phase === "syncing";
   return <PageLayout width="wide">
     <PageHeader title="Banlist" />
@@ -41,7 +43,7 @@ export default function Banlist() {
         <option value="STANDARD">Standard · {announcedBans("STANDARD").length} bans</option>
         <option value="PANTHEON">Pantheon · {announcedBans("PANTHEON").length} bans</option>
       </select></label>
-      <label className="text-sm">Find a card<input type="search" value={query} onChange={event => update("q", event.target.value, true)} placeholder="Card name" className={controlClass} /></label>
+      <label className="text-sm">Find a card<CardQueryInput type="search" value={query} onChange={event => update("q", event.target.value, true)} placeholder="Card name" className={controlClass} /></label>
     </div>
     <Tabs baseId="banlist" label="Card availability" active={view} onChange={value => update("view", value)} wrap tabs={[{ key: "bans", label: `Banned (${bans.length})` }, { key: "unavailable", label: "Other unavailable cards" }]} />
     {progress.phase === "error" && <div role="alert" className="my-4 flex flex-wrap items-center gap-3 text-sm text-ctp-red">

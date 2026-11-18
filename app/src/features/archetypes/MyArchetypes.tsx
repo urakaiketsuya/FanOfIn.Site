@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { saveCuration, exportCuration } from "../../lib/curationStorage";
 import { useMemo, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -70,8 +72,8 @@ export default function MyArchetypes() {
       <label className="my-3 block">Display name<input className={`${control} w-full`} value={draft.name} onChange={e => setEdit({ ...draft, name: e.target.value })} /></label>
       <p className="text-sm">Named cards, in preview order. These identify the build; they are not an exact package rule.</p>
       {draft.namingCards.map((name, index) => <div key={name} className="flex flex-wrap items-center gap-2 py-1"><span className="min-w-0 flex-1 break-words">{name}</span><button className={control} disabled={!index} aria-label={`Move ${name} earlier`} onClick={() => { const names = [...draft.namingCards]; [names[index - 1], names[index]] = [names[index], names[index - 1]]; setEdit({ ...draft, namingCards: names }); }}>↑</button><button className={control} aria-label={`Remove ${name}`} onClick={() => setEdit({ ...draft, namingCards: draft.namingCards.filter(n => n !== name) })}>Remove</button></div>)}
-      <label className="my-3 block">Find a naming card<input className={`${control} w-full`} value={cardQuery} onChange={e => setCardQuery(e.target.value)} /></label>
-      <div className="grid grid-cols-2 gap-2">{cardQuery && cards.filter(c => c.name.toLowerCase().includes(cardQuery.toLowerCase()) && !draft.namingCards.includes(c.name)).slice(0, 8).map(c => <CardResult key={c.name} card={c} name={c.name} onSelect={() => { setEdit({ ...draft, namingCards: [...draft.namingCards, c.name] }); setCardQuery(""); }} />)}</div>
+      <label className="my-3 block">Find a naming card<CardQueryInput className={`${control} w-full`} value={cardQuery} onChange={e => setCardQuery(e.target.value)} /></label>
+      <div className="grid grid-cols-2 gap-2">{cardQuery && searchCardPool(cards, cards, cardQuery).filter(c => !draft.namingCards.includes(c.name)).slice(0, 8).map(c => <CardResult key={c.name} card={c} name={c.name} onSelect={() => { setEdit({ ...draft, namingCards: [...draft.namingCards, c.name] }); setCardQuery(""); }} />)}</div>
       <label className="my-3 block">Strategy description<textarea className={`${control} w-full`} value={draft.description} onChange={e => setEdit({ ...draft, description: e.target.value })} /></label>
       <details className="my-3"><summary className="flex min-h-12 cursor-pointer items-center gap-2"><DisclosureChevron />Concrete builds ({draft.buildIds.length})</summary>
       <p className="text-xs">Grouping builds preserves each build’s published statistics and URL.</p>

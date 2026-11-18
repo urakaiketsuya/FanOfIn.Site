@@ -1,4 +1,5 @@
-import { filterCardNames } from "../src/features/cards/filters";
+import { searchSpoilers } from "../src/lib/spoilerCatalog";
+import { filterCardNames, searchCardPool, searchCardPrintings, cardQueryError } from "../src/features/cards/filters";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { Card } from "@gatcg/shared";
@@ -59,4 +60,64 @@ test("named search uses reverse faces and preserves printing constraints", () =>
  assert.deepEqual(filterCardNames(['Front'], catalog, 'n:reverse AND o:recover'), ['Front']);
  assert.deepEqual(filterCardNames(['Front'], catalog, 's:doa AND a:bob'), []);
  assert.deepEqual(filterCardNames(['Front'], catalog, 's:ftc AND a:bob'), ['Front']);
+});
+
+test("secondary pickers preserve eligible row identity, ordering and duplicate quantities", () => {
+ const pool = [{ name: 'Guard', quantity: 2 }, { name: 'Singer', quantity: 1 }, { name: 'Guard', quantity: 3 }];
+ assert.deepEqual(searchCardPool(pool, cards, 'reserve>=3 OR o:recover'), pool);
+ assert.equal(searchCardPool(pool, cards, 'reserve>3')[1], pool[2]);
+ assert.deepEqual(searchCardPool(pool, cards, 'memory=0'), []);
+ assert.deepEqual(searchCardPool(pool, cards, '(n:guard OR)'), []);
+ assert.deepEqual(searchCardPool([{ name: 'Unknown' }], [], 'NOT power>0'), []);
+ assert.deepEqual(searchCardPool([{ name: 'Unknown' }], [], 'n:unknown'), [{ name: 'Unknown' }]);
+});
+
+test("compact queries report unsupported metadata even under Boolean negation", () => {
+ for (const query of ['tag:forest', '-tag:forest', 'NOT (tag:forest OR n:guard)']) {
+  assert.match(cardQueryError(query)!, /Tag search/);
+  assert.equal(cardQueryError(query, true), undefined);
+  assert.deepEqual(searchCardPool(cards, cards, query), []);
+ }
+ assert.match(cardQueryError('power>=')!, /finite numeric/);
+ assert.equal(cardQueryError('n:guard OR reserve>=2'), undefined);
+});
+
+test("printing galleries keep their printing scope and all reverse-face text", () => {
+ const dual = card('Front', { editions: [
+  { uuid: 'one', set: { prefix: 'DOA' }, rarity: 1, illustrator: 'Alice', other_orientations: [{ name: 'Reverse', effect: 'Recover 2.' }] },
+  { uuid: 'two', set: { prefix: 'FTC' }, rarity: 2, illustrator: 'Bob' },
+ ] as Card['editions'] });
+ assert.deepEqual(searchCardPrintings(dual, 'n:reverse AND a:bob').map(e => e.uuid), ['two']);
+ assert.deepEqual(searchCardPrintings(dual, 's:doa AND a:bob'), []);
+ assert.deepEqual(searchCardPrintings(dual, 'r:2 OR a:alice'), dual.editions);
+ assert.deepEqual(searchCardPrintings(dual, 'NOT tag:forest'), []);
+ const lookup = { cards: new Map([['Front', new Set(['Forest'])]]), editions: new Map([['one', new Set(['Forest'])]]) };
+ assert.deepEqual(searchCardPrintings(dual, 'tag:forest AND a:alice', lookup).map(e => e.uuid), ['one']);
+ // Tag predicates remain card-level, matching the established browser semantics.
+ assert.deepEqual(searchCardPrintings(dual, 'tag:forest AND a:bob', lookup).map(e => e.uuid), ['two']);
+});
+
+test("spoiler search preserves broad bare text and adds strict GA fields", () => {
+ const all = searchSpoilers('');
+ const expected = all.filter(card => [card.name, card.effect, ...card.classes, ...card.types, ...card.subtypes, ...card.elements].join(' ').toLowerCase().includes('water'));
+ assert.deepEqual(searchSpoilers('water'), expected);
+ assert.deepEqual(searchSpoilers('element:water'), all.filter(card => card.elements.includes('WATER')));
+ assert.deepEqual(searchSpoilers('power>='), []);
+ assert.ok(searchSpoilers('power>=1').every(card => card.power != null && card.power >= 1));
+});
+
+
+test("deck edit queries compose with printing, ownership, element and maximum cost controls", () => {
+ const printed = card('Singer', { elements: ['WATER'], cost_reserve: 2, effect: 'Recover 2.', editions: [
+  { uuid: 'one', set: { prefix: 'DOA' }, rarity: 1, illustrator: 'Alice' },
+  { uuid: 'two', set: { prefix: 'FTC' }, rarity: 2, illustrator: 'Bob' },
+ ] as Card['editions'] });
+ const filters = { ...emptyCatalogFilters(), edition: 'FTC', maxCost: '2', ownedOnly: true, availableElements: true };
+ const owned = new Map([['Singer', 1]]), elements = new Set(['WATER']);
+ const query = '(n:singer OR n:guard) reserve<=2 a:bob';
+ assert.deepEqual(filterCatalog([printed, ...cards.slice(1)], query, filters, owned, elements), [printed]);
+ assert.deepEqual(filterCatalog([printed], query, { ...filters, edition: 'DOA' }, owned, elements), []);
+ assert.deepEqual(filterCatalog([printed], query, filters, new Map(), elements), []);
+ assert.deepEqual(filterCatalog([printed], query, filters, owned, new Set(['FIRE'])), []);
+ assert.deepEqual(filterCatalog([printed], query, { ...filters, maxCost: '1' }, owned, elements), []);
 });

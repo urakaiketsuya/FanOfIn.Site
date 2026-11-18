@@ -57,8 +57,8 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     const missing = new Set(filterCardNames(pool.filter(name => !catalog.has(name)), new Map(), query));
     return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && missing.has(name))), catalog, sort === "recommended" && activeSuggestions === undefined ? "name" : sort, prices, winRates);
   }, [cards, query, filters, owned, identityElements, activeSuggestions, names, catalog, sort, prices, winRates, deck, destination]);
-  const active = Object.entries(filters).filter(([key, value]) => !["class", "set", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
-  const labels: Record<keyof CatalogFilters, string> = { class: "Class", set: "Set", rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
+  const active = Object.entries(filters).filter(([key, value]) => !["class", "set", "edition", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
+  const labels: Record<keyof CatalogFilters, string> = { class: "Class", set: "Set", edition: "Printing set", rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
   const quantityFor = (name: string) => (deck[sectionFor(name)] ?? []).find(line => line.card === name)?.quantity ?? 0;
   function toggleSelection(name: string) {
@@ -78,7 +78,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     setSelectionError("");
     onAdded?.();
   }
-  const facetKeys = { class: "classes", set: "sets", element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
+  const facetKeys = { class: "classes", set: "sets", edition: "printingSets", element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
   const facets = Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [facet, new Set(filters[key as keyof typeof facetKeys] ? filters[key as keyof typeof facetKeys]!.split("|") : [])]));
   return <>
     <FilterQuery text={query} facets={facets} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
@@ -95,8 +95,8 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     {statsControls}
       <div className="space-y-3 pb-3">
         {Object.entries(facetKeys).map(([key, facet]) => {
-          const props = { label: labels[key as keyof typeof facetKeys], options: key === "set" ? catalogSetOptions(cards) : key === "rarity" ? rarityOptions(cards) : options(facet as "classes" | "elements" | "types" | "subtypes").map(value => ({value, text:value})), selected: facets[facet], onToggle: (value: string) => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")})) };
-          return key === "set" || key === "subtype" ? <SearchSelectFilter key={key} {...props} /> : <MultiSelectFilter key={key} {...props} iconKind={facet === "classes" || facet === "elements" || facet === "types" ? facet : undefined} />;
+          const props = { label: labels[key as keyof typeof facetKeys], options: key === "set" ? catalogSetOptions(cards) : key === "edition" ? [...new Set(cards.flatMap(card => card.editions.map(edition => edition.set.prefix)))].sort().map(value => ({ value, text: value })) : key === "rarity" ? rarityOptions(cards) : options(facet as "classes" | "elements" | "types" | "subtypes").map(value => ({value, text:value})), selected: facets[facet], onToggle: (value: string) => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")})) };
+          return key === "set" || key === "edition" || key === "subtype" ? <SearchSelectFilter key={key} {...props} /> : <MultiSelectFilter key={key} {...props} iconKind={facet === "classes" || facet === "elements" || facet === "types" ? facet : undefined} />;
         })}
         <FilterGroup label="Cost"><div className="grid gap-3 sm:grid-cols-2">
         <label className="text-sm">Cost type<select value={filters.costType} onChange={e => setFilters(f=>({...f,costType:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option><option value="memory">Memory</option><option value="reserve">Reserve</option></select></label>

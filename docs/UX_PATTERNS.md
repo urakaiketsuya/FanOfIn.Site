@@ -360,6 +360,8 @@ a local draft; restore original remains available and survives reload. Account d
 are unchanged. Storage failure keeps the preview and reports the error. No generic
 strength score or automatic deck mutation is permitted.
 
+Compact card pickers, collection controls, profiles, binder searches, and deck-analysis card pools use the same GA query semantics. They filter live, show linked inline syntax errors, and never change selected cards while editing a query. Their eligible pools, ordering, quantities, ownership and destination restrictions remain independent. These differ from the explicit Search/Enter flow in the main browser and deck editor. The editor also supports exact `edition:` printing sets alongside set families. Artist and tag printing galleries evaluate printing predicates against each displayed edition while retaining reverse-face text; tag predicates retain their established card-level semantics. Spoilers retain broad bare-text matching for class, type and element words. Searches for deck titles, artists, tag names, strategies and packages remain their own text searches.
+
 ## Deck search
 
 Deck searches share Champion and Cards controls. Champion selects a family;

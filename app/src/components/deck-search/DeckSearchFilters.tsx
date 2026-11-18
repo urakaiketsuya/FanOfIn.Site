@@ -1,10 +1,11 @@
+import CardQueryInput from "../CardQueryInput";
+import { searchCardPool } from "../../features/cards/filters";
 import { useMemo, useState, useTransition, type ReactNode } from 'react';
 import { deckSearchChampion, filterValue } from '@gatcg/shared';
 import { useCardCatalog } from '../../features/cards/useCardCatalog';
 import ActiveDeckFilters, { type ActiveDeckFilter } from './ActiveDeckFilters';
 import CardResult from '../CardResult';
 import Button from '../ui/Button';
-import { TextInput } from '../ui/FormControl';
 import DialogSheet from '../ui/DialogSheet';
 
 /** Shared visual controls. Owners retain filters, result selection and pagination. */
@@ -24,12 +25,12 @@ export default function DeckSearchFilters({ cards, onCardsChange, champion, onCh
   const byName = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
   const options = useMemo(() => {
     const names = new Set<string>();
-    return catalog.filter(card => {
+    return searchCardPool(catalog, catalog, query).filter(card => {
       if (picker === 'champion' && (!card.types.includes('CHAMPION') || card.subtypes.includes('SPIRIT'))) return false;
       const key = picker === 'champion' ? deckSearchChampion(card.name) : card.name;
       if (names.has(key)) return false;
       names.add(key);
-      return card.name.toLowerCase().includes(query.trim().toLowerCase());
+      return true;
     }).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 24);
   }, [catalog, picker, query]);
   function open(next: 'cards' | 'champion') { setQuery(''); setPicker(next); }
@@ -42,7 +43,7 @@ export default function DeckSearchFilters({ cards, onCardsChange, champion, onCh
   const pickerBody = <>
       {picker === 'cards' && <><ActiveDeckFilters items={selectedCards} limit={3} />{cards.length > 0 && <Button variant="ghost" onClick={() => startTransition(() => onCardsChange([]))}>Clear cards</Button>}<p className="my-2 text-xs text-ctp-subtext0">Includes: match all{allowExclude && ' · Excludes: match none'}</p></>}
       {picker === 'champion' && champion && <Button variant="ghost" onClick={() => onChampionChange?.('')}>Clear champion</Button>}
-      <TextInput className="w-full" autoFocus aria-label={picker === 'champion' ? 'Find champion' : 'Find included card'} placeholder="Search by name" value={query} onChange={event => setQuery(event.target.value)} />
+      <CardQueryInput className="w-full" autoFocus aria-label={picker === 'champion' ? 'Find champion' : 'Find included card'} placeholder="Search by name" value={query} onChange={event => setQuery(event.target.value)} />
       {!catalog.length && <p role="status">Card catalog unavailable. Existing filters are kept.</p>}
       {catalog.length > 0 && !options.length && <p role="status">No matching cards.</p>}
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">{options.map(card => <CardResult key={card.name} name={card.name} card={card} selected={picker === 'champion' ? deckSearchChampion(champion) === deckSearchChampion(card.name) : cards.includes(card.name)} onSelect={() => startTransition(() => {

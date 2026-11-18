@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
@@ -8,10 +10,10 @@ import { countSelectedCopies, type CalculatorLine } from '../../lib/calculatorDa
 export default function CalculatorCardPool({ label, lines, catalog, selected, onChange }: { label: string; lines: CalculatorLine[]; catalog: Map<string, Card>; selected: string[]; onChange: (names: string[]) => void }) {
   const [query, setQuery] = useState('');
   const [limit, setLimit] = useState(6);
-  const matches = lines.filter((line) => line.name.toLowerCase().includes(query.trim().toLowerCase()));
+  const matches = searchCardPool(lines, catalog, query);
   return <fieldset className="min-w-0"><legend className="text-sm font-semibold">{label}</legend>
     <p className="mt-1 text-xs text-ctp-subtext1">{countSelectedCopies(lines, selected)} matching copies selected</p>
-    <input type="search" aria-label={`Search ${label}`} placeholder="Find a card" value={query} onChange={(event) => { setQuery(event.target.value); setLimit(6); }} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm" />
+    <CardQueryInput type="search" aria-label={`Search ${label}`} placeholder="Find a card" value={query} onChange={(event) => { setQuery(event.target.value); setLimit(6); }} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm" />
     <div className="mt-3 grid grid-cols-2 gap-2">{matches.slice(0, limit).map((line) => {
       const card = catalog.get(line.name);
       return <CardResult key={line.name} name={line.name} card={card} selected={selected.includes(line.name)} onSelect={() => onChange(selected.includes(line.name) ? selected.filter((name) => name !== line.name) : [...selected, line.name])}>

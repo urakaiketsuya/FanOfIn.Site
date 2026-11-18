@@ -1,3 +1,5 @@
+import CardQueryInput from "../../components/CardQueryInput";
+import { searchCardPool } from "../cards/filters";
 import { CARD_FINISHES, finishLabel, type CardFinish } from "@gatcg/shared";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { BinderItem, Card, CollectionEntry } from "@gatcg/shared";
@@ -30,7 +32,7 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
   const options = useMemo(() => kind === "available"
     ? [...new Map(collection.filter(entry => entry.ownedQuantity > 0).map(entry => [entry.cardUuid, { uuid: entry.cardUuid, name: entry.cardName }])).values()]
     : cards.map(card => ({ uuid: card.uuid, name: card.name })), [cards, collection, kind]);
-  const results = useMemo(() => options.filter(card => card.name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 12), [options, query]);
+  const results = useMemo(() => searchCardPool(options, cards, query).slice(0, 12), [options, cards, query]);
   const card = cards.find(card => card.uuid === chosen?.uuid);
   const ownedPool = collection.find(row => row.cardUuid === chosen?.uuid && (row.editionUuid ?? "") === editionUuid && (row.finish ?? "unspecified") === finish);
   function choose(value: { uuid: string; name: string }) { setChosen(value); setFinish(kind === "available" ? collection.find(row => row.cardUuid === value.uuid && row.ownedQuantity > 0)?.finish ?? "unspecified" : "unspecified"); setEditionUuid(kind === "available" ? collection.find(row => row.cardUuid === value.uuid && row.ownedQuantity > 0)?.editionUuid ?? "" : ""); setOpen(false); setSaved(false); setQuery(value.name); setDirty(true); }
@@ -58,7 +60,7 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
   </>}><fieldset disabled={busy} onChange={() => setDirty(true)} className="min-w-0 space-y-4">
     {!item && <label className="block text-sm">List<select className={inputClass} value={kind} onChange={event => { setKind(event.target.value as typeof kind); setChosen(null); setQuery(""); setEditionUuid(""); setFinish("unspecified"); }}><option value="available">Available</option><option value="wanted">Wanted</option></select></label>}
     {!item && <div><label htmlFor={id} className="text-sm">Search {kind === "available" ? "owned cards" : "cards"}</label>
-      <input ref={search} id={id} role="combobox" aria-autocomplete="list" aria-expanded={open} aria-controls={`${id}-results`} aria-activedescendant={open && results[active] ? `${id}-${active}` : undefined} autoComplete="off" className={inputClass} value={query} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)} onChange={event => { setQuery(event.target.value); setOpen(true); setActive(0); setChosen(null); }} onKeyDown={event => {
+      <CardQueryInput ref={search} id={id} role="combobox" aria-autocomplete="list" aria-expanded={open} aria-controls={`${id}-results`} aria-activedescendant={open && results[active] ? `${id}-${active}` : undefined} autoComplete="off" className={inputClass} value={query} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)} onChange={event => { setQuery(event.target.value); setOpen(true); setActive(0); setChosen(null); }} onKeyDown={event => {
         if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); setOpen(false); }
         if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); setActive(index => (index + (event.key === "ArrowDown" ? 1 : -1) + Math.max(1, results.length)) % Math.max(1, results.length)); }
         if (event.key === "Enter" && open && results[active]) { event.preventDefault(); choose(results[active]); }
