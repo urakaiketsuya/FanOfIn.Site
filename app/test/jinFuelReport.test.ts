@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { computeJinFuelReport, createJinFuelPolicy, estimateDrawAndDamageInfluence, type Card, type InfluenceDrawSource } from '@gatcg/shared';
+import { computeJinFuelReport, createJinFuelPolicy, hasJinFuelSources, estimateDrawAndDamageInfluence, type Card, type InfluenceDrawSource } from '@gatcg/shared';
 import { createJinFuelSequence, type JinFuelCheckpoint } from '../../shared/src/jinFuelSequence';
 
 const catalog = new Map<string, Card>(JSON.parse(readFileSync(new URL('../../data/card-catalog.json', import.meta.url), 'utf8')).cards.map((card: Card) => [card.name, card]));
@@ -137,15 +137,41 @@ test('fixture report is deterministic, insensitive to line order/splitting, and 
   assert.notDeepEqual(computeJinFuelReport(deck, catalog, false), report);
 });
 
-test('missing/unsupported input is unavailable, while a valid deck without enablers produces honest zeros', () => {
+test('missing/ambiguous input is unavailable and decks without enablers are ineligible', () => {
   const missing = new Map(catalog); missing.delete('Creative Shock');
   assert.equal(computeJinFuelReport(deck, missing).status, 'missing');
   const badCost = new Map(catalog); badCost.set('Volcanic Crescendo', { ...catalog.get('Volcanic Crescendo')!, cost_reserve: null });
   assert.equal(computeJinFuelReport(deck, badCost).status, 'missing');
   assert.equal(computeJinFuelReport({ ...deck, material: [] }, catalog).status, 'unsupported');
   const wrongSpirit = { ...deck, material: deck.material.map(line => line.name === 'Spirit of Fire' ? { ...line, name: 'Spirit of Water' } : line) };
-  assert.equal(computeJinFuelReport(wrongSpirit, catalog).status, 'unsupported');
+  assert.equal(computeJinFuelReport(wrongSpirit, catalog).status, 'ready');
   const noFuel = computeJinFuelReport({ ...deck, main: [{ name: 'Volcanic Crescendo', quantity: 4 }, { name: 'Fast Cure', quantity: 56 }] }, catalog);
-  assert.equal(noFuel.status, 'ready');
+  assert.equal(noFuel.status, 'unsupported');
   if (noFuel.status === 'ready') assert.ok(noFuel.points.every(p => p.thresholds.every(t => t.chance === 0) && p.fuel.high === 0));
+});
+
+test('Crescendo plus discard qualifies independently of champion and section excludes sideboard', () => {
+  for (const names of [
+    ['Spirit of Fire', 'Rai, Spellcrafter', 'Rai, Archmage', 'Rai, Mana Weaver'],
+    ['Spirit of Fire', 'Lorraine, Wandering Warrior', 'Lorraine, Blademaster', 'Lorraine, Spirit Ruler'],
+    ['Spirit of Fire'],
+  ]) {
+    const other = { ...deck, material: names.map(name => ({ name, quantity: 1 })) };
+    assert.equal(hasJinFuelSources(other), true);
+    assert.equal(computeJinFuelReport(other, catalog).status, 'ready');
+  }
+  assert.equal(hasJinFuelSources({ ...deck, material: [] }), true);
+  assert.equal(hasJinFuelSources({ ...deck, main: [{ name: 'Volcanic Crescendo', quantity: 4 }] }), false);
+  assert.equal(hasJinFuelSources({ ...deck, main: [{ name: 'Creative Shock', quantity: 4 }] }), false);
+  assert.equal(hasJinFuelSources({ ...deck, main: [{ name: 'Volcanic Crescendo', quantity: 4 }, { name: 'Creative Shock', quantity: 0 }] }), false);
+});
+
+test('Dungeon Guide cannot invent a champion beyond the selected progression', () => {
+  const policy = createJinFuelPolicy({ ...deck, material: [{ name: 'Spirit of Fire', quantity: 1 }] }, catalog);
+  assert.equal(policy.status, 'ready');
+  if (policy.status !== 'ready') return;
+  const points = estimateDrawAndDamageInfluence(policy.main, [], 7, 'first', 5, 32, policy.progression, undefined, state => {
+    assert.equal(state.level, 0);
+  }, { messengerAttacks: true, maximumLevel: 0, checkpoint: () => {} });
+  assert.equal(points.length, 5);
 });

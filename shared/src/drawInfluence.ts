@@ -85,7 +85,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     const allyCounters = new Map<InfluenceDrawSource, number>();
     let ended = false;
     const championLife = () => level === 0 ? progression?.spiritLife ?? Infinity : progression?.lineage[level - 1]?.life ?? Infinity;
-    const championAlive = () => !ended && (Boolean(jinFuel) && level === 3 || damageCounters < championLife());
+    const championAlive = () => !ended && (Boolean(jinFuel) && progression?.lineage[level - 1]?.name === 'Jin, Undying Resolve' || damageCounters < championLife());
     const damageEffect = (source: InfluenceDrawSource) => source.damage ?? (source.mechanic === 'fireball' || source.mechanic === 'gilded-pyre' ? source.mechanic : undefined);
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];

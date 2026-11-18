@@ -26,7 +26,7 @@ export default function JinFuelReport({ deck, cardsByName }: Props) {
   const late = report?.status === 'ready' ? report.points[4] : undefined;
   return <Panel data-component="JinFuelReport">
     <h3 className="text-lg font-semibold">Graveyard fuel</h3>
-    <p className="mt-1 text-xs text-ctp-subtext1">Jin · Crescendo core engine estimate · going first</p>
+    <p className="mt-1 text-xs text-ctp-subtext1">Crescendo core engine estimate · going first</p>
     <div className="my-5 grid grid-cols-3 items-start gap-3 sm:grid-cols-6">{featured.map(name => {
       const quantity = deck.main.filter(line => line.name === name).reduce((n, line) => n + line.quantity, 0);
       if (!quantity) return null;
@@ -43,7 +43,7 @@ export default function JinFuelReport({ deck, cardsByName }: Props) {
       {stale ? <p role="status" className="py-4 text-sm text-ctp-subtext1">Recalculating…</p>
         : report?.status !== 'ready' ? <p role="status" className="py-4 text-sm text-ctp-subtext1">{report?.status === 'missing'
           ? cardsByName.size === 0 ? 'Loading card data…' : 'Required card data is unavailable.'
-          : 'Requires Spirit of Fire and the complete Jin lineage.'}</p>
+          : 'Requires a starting Spirit and an unambiguous champion progression.'}</p>
         : early && late && <>
           <h4 className="font-semibold">Resolved Crescendo</h4>
           <table className="mt-3 w-full text-right text-sm tabular-nums">

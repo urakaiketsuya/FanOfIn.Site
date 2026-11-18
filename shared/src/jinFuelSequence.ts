@@ -13,6 +13,7 @@ export interface JinFuelCheckpoint {
 export interface JinFuelOptions {
   /** Once per turn from the turn after entry, without opponent removal. */
   messengerAttacks: boolean;
+  maximumLevel?: number;
   checkpoint: (point: JinFuelCheckpoint) => void;
 }
 type Source = InfluenceDrawSource;
@@ -30,7 +31,7 @@ interface Zones {
   damage: (amount: number) => void;
 }
 
-/** Opt-in Jin core-engine policy; the shared runner owns all physical zones and payments. */
+/** Opt-in Crescendo core-engine policy; the shared runner owns all physical zones and payments. */
 export function createJinFuelSequence(zones: Zones, options: JinFuelOptions) {
   let melody = false, casts = 0, maxFuel = 0, harmonized = 0, damage = 0, discardedFire = 0;
   const fuel = () => zones.graveyard.filter(card => card.fireElement).length;
@@ -58,7 +59,7 @@ export function createJinFuelSequence(zones: Zones, options: JinFuelOptions) {
     const score = (card: Source) => {
       if (!discarding) return (keep.has(card) ? 100 : 0) + (card.fireElement ? 10 : 0);
       // Liminal can return on the next paid level; otherwise prioritize spare Fire.
-      return (keep.has(card) ? 100 : 0) + (card.fireElement ? 0 : card.jinFuelRole === 'liminal' && zones.level() < 3 ? 5 : 20);
+      return (keep.has(card) ? 100 : 0) + (card.fireElement ? 0 : card.jinFuelRole === 'liminal' && zones.level() < (options.maximumLevel ?? 3) ? 5 : 20);
     };
     zone.sort((a, b) => score(a) - score(b));
   };
@@ -91,7 +92,7 @@ export function createJinFuelSequence(zones: Zones, options: JinFuelOptions) {
     canPlay(card: Source) {
       if (card.jinFuelRole === 'liminal') return false;
       if (card.jinFuelRole === 'crescendo') return fuel() >= 3;
-      if (card.jinFuelRole === 'dungeon') return zones.level() < 3;
+      if (card.jinFuelRole === 'dungeon') return zones.level() < (options.maximumLevel ?? 3);
       return Boolean(card.jinFuelRole);
     },
     activate(card: Source) {
@@ -107,7 +108,7 @@ export function createJinFuelSequence(zones: Zones, options: JinFuelOptions) {
           zones.scavenge(zones.hand().some(source => source.jinFuelRole === 'crescendo') ? 'MELODY' : 'HARMONY');
           break;
         case 'dungeon':
-          if (zones.level() < 3 && zones.memory().length >= 2) {
+          if (zones.level() < (options.maximumLevel ?? 3) && zones.memory().length >= 2) {
             for (let n = 0; n < 2; n++) zones.banished.push(...zones.memory().splice(Math.floor(zones.random() * zones.memory().length), 1));
             zones.levelUp(); onLevel();
           }

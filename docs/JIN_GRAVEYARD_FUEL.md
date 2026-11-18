@@ -1,9 +1,14 @@
-# Jin / Volcanic Crescendo graveyard fuel
+# Volcanic Crescendo graveyard fuel
 
 The Stats → Deck Report panel runs `computeJinFuelReport` in `shared/` on Main and
-Material only. It requires the reviewed Spirit of Fire opening and all three Jin
-levels. Missing catalog entries, costs or champion life return unavailable rather
-than a zero forecast. Other champions/Spirits are outside this report's contract.
+Material only. Eligibility depends only on positive Main quantities of Volcanic Crescendo and at
+least one supported discard source: Creative Shock, Creative Tinder, Package Courier,
+Hasty Messenger or Sly Songstress. Champion identity does not gate the panel.
+Calculation uses the catalog's starting level-zero Spirit and a single contiguous
+champion progression from Material (including a Spirit-only progression).
+Missing catalog entries, costs or champion life return unavailable rather than
+a zero forecast; ambiguous progression shows a focused status. Other champion
+abilities are not inferred. The historical Jin function/file names remain internal.
 
 ## Sample and resource model
 
@@ -14,12 +19,12 @@ Each sample shares physical hand, memory, field, graveyard, banishment and libra
 cards. Reserve payments move hand cards into memory, not the graveyard. Recollection
 returns memory to hand. One natural card is drawn each turn after the first.
 
-Normal materialization starts on turn two, pays the next Jin's printed memory
+Normal materialization starts on turn two, pays the next champion's printed memory
 cost, and advances one level. Eligible Floating Memory in the actual graveyard
 pays first; remaining payment banishes random memory cards. A failed complete
 payment consumes nothing. Ignite Fate, Fast Cure and Angelic Channeling have
 unconditional Floating Memory. The shared reviewed Floating Memory list also
-supports Warrior-qualified cards after Jin level one. A Fire card spent this way
+supports Warrior-qualified cards after level one when all selected champions are Warriors. A Fire card spent this way
 cannot fuel Crescendo later. Off-element cards may still be discarded or used as
 payment; their effects require actual element access.
 
@@ -27,17 +32,17 @@ payment; their effects require actual element access.
 
 | Card | Modeled effect |
 | --- | --- |
-| Creative Shock; Creative Tinder | Pay Reserve, draw two, discard one. Shock's Mage bonus is inactive for Jin. |
+| Creative Shock; Creative Tinder | Pay Reserve, draw two, discard one. Shock's optional damage bonus is excluded from the Crescendo-only damage display. |
 | Package Courier | Pay Reserve, enter the field, optionally discard one remaining hand card and draw one. No card to discard means no draw. |
 | Hasty Messenger | Pay Reserve and enter. By default, each surviving copy attacks once per subsequent turn, before new plays, discarding one hand card then drawing one. It never attacks on entry. The report's toggle disables all these attacks. |
 | Sly Songstress | Pay Reserve and enter as a Melody activation. Existing copies each discard/draw on Harmony or Melody activation, after payment and before resolution. A newly activated Songstress cannot trigger itself. |
 | Musical Curator | Pay Reserve; choose Melody if a Crescendo remains in hand, otherwise Harmony. Scavenge up to 12, stopping at the first matching card; put it in hand and shuffle misses onto the bottom. Revealed misses are neither draws nor graveyard fuel. |
-| Dungeon Guide | Pay Reserve, then optionally banish two random memory cards and advance to the next compatible Jin, ignoring its materialization cost. No advancement past level three. |
-| Liminal Guide | A copy already in the graveyard returns to the field and draws one when Jin levels up, including Dungeon Guide level-ups. No subsequent field removal is modeled. |
+| Dungeon Guide | Pay Reserve, then optionally banish two random memory cards and advance to the next selected champion, ignoring its materialization cost. No advancement past the selected progression. |
+| Liminal Guide | A copy already in the graveyard returns to the field and draws one when the champion levels up, including Dungeon Guide level-ups. No subsequent field removal is modeled. |
 | Ignite Fate | Pay Reserve, deal two to each champion, then enter the graveyard. Its self-damage affects survival but is excluded from the Crescendo-only damage display. |
 | Volcanic Crescendo | With at least three existing Fire graveyard cards, pay Reserve and activate Harmony triggers. Banish all Fire cards then present, recording Empower 3+X. If a Melody resolved this turn, deal X to each champion. The resolving Crescendo cannot banish itself; it enters the graveyard afterward. |
 
-Jin level three is immortal during Main plays. Own lethal damage still ends the
+Only Jin, Undying Resolve is immortal during Main plays. Own lethal damage still ends the
 sample at the end phase; before level three, lethal damage stops further plays
 immediately. No opponent damage, prevention, removal or combat deaths are invented.
 Messenger attack opportunities and survival are assumptions, not predicted outcomes.
@@ -77,7 +82,7 @@ same priority and only draws when a card was actually discarded.
   with zero in samples where none occurred. Same percentiles; excludes Ignite Fate,
   combat and other damage. Multiple casts cannot reuse banished physical fuel.
 
-This is a **core engine estimate**, not a complete Jin deck simulator. Other Main
+This is a **core engine estimate**, not a complete deck simulator. Other Main
 cards remain real payment/discard/drawable resources, but their effects are omitted.
 In particular, Seething Intercession's banished-card access, Devil's Lifeline,
 Enrage, Angelic Channeling's filtering, Fast Cure's recovery, Arthur's combat effects,
@@ -102,3 +107,5 @@ layouts, overflow, card/name fallbacks, 48px control labels, keyboard Space togg
 with visible focus, recalculation, empty/unrelated decks, loading, missing data and
 unsupported lineage. No new disclosures or expanded states are introduced. Browser
 text zoom and a deployed production build were not verified.
+
+Champion-independent eligibility regression coverage includes Rai, Lorraine, Spirit-only progression, and absence/zero quantities of the required Main cards.
