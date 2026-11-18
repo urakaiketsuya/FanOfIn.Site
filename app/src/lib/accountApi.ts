@@ -1,4 +1,4 @@
-import type { AdminOverview, EditorialPackage, EditorialPackageInput } from "@gatcg/shared";
+import type { AdminSiteHealth, AdminOverview, EditorialPackage, EditorialPackageInput } from "@gatcg/shared";
 import type { MerchandiseCollection, MerchandiseSaveInput } from "@gatcg/shared";
 import type { CollectionProgressGoal } from "@gatcg/shared";
 import type { DeckLinkPreview } from "@gatcg/shared";
@@ -64,6 +64,7 @@ async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> 
 
 export const accountApi = {
   adminAccess: () => accountRequest<{ admin: boolean }>("/v1/me/admin"),
+  adminSiteHealth: () => accountRequest<AdminSiteHealth>("/v1/admin/site-health"),
   adminOverview: () => accountRequest<AdminOverview>("/v1/admin/overview"),
   adminPackages: () => accountRequest<{ packages: EditorialPackage[] }>("/v1/admin/packages"),
   publishedPackages: () => accountRequest<{ packages: EditorialPackage[] }>("/v1/packages"),

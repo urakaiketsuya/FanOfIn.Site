@@ -1,3 +1,5 @@
+import { metricOperation, recordOperation } from './operation-metrics';
+import { adminSiteHealth } from './admin-site-health';
 import { writeUsernameAddress, resolveProfileAddress } from "./profile-address";
 import { isAdmin, requireAdmin, adminOverview, listEditorialPackages, saveEditorialPackage } from "./admin-workspace";
 import { listMerchandise, saveMerchandise } from "./merchandise";
@@ -85,8 +87,8 @@ function logError(request: Request, requestId: string, error: unknown, status: n
   }));
 }
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+const handler = {
+  async fetch(request: Request, env: Env, observation: { authenticated: boolean }): Promise<Response> {
     const url = new URL(request.url);
     const requestId = request.headers.get("CF-Ray") ?? crypto.randomUUID();
     if (request.method === "POST" && url.pathname === "/v1/webhooks/resend") {
@@ -257,9 +259,11 @@ export default {
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+      observation.authenticated = true;
       if (url.pathname === "/v1/me/admin" && request.method === "GET") return response(env, request, { admin: await isAdmin(env, user) });
       if (url.pathname.startsWith("/v1/admin/")) {
         await requireAdmin(env, user);
+        if (url.pathname === "/v1/admin/site-health" && request.method === "GET") return response(env, request, await adminSiteHealth(env));
         if (url.pathname === "/v1/admin/overview" && request.method === "GET") return response(env, request, await adminOverview(env));
         if (url.pathname === "/v1/admin/packages" && request.method === "GET") return response(env, request, { packages: await listEditorialPackages(env) });
         const packageMatch = url.pathname.match(/^\/v1\/admin\/packages\/([a-zA-Z0-9-]+)$/);
@@ -586,5 +590,18 @@ export default {
       logError(request, requestId, known && failure.cause ? failure.cause : failure, status, code);
       return response(env, request, { error: known ? failure.publicMessage : "Unexpected account service error", requestId }, status, { "X-Request-ID": requestId });
     }
+  },
+};
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const observation = { authenticated: false };
+    const result = await handler.fetch(request, env, observation);
+    const operation = metricOperation(request.method, new URL(request.url).pathname);
+    if (observation.authenticated && operation) {
+      try { await recordOperation(env, operation, result.status); }
+      catch { console.error(JSON.stringify({ event: 'operation_metrics_unavailable' })); }
+    }
+    return result;
   },
 } satisfies ExportedHandler<Env>;

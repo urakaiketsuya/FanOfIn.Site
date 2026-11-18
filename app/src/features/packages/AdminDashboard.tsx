@@ -8,6 +8,7 @@ import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import Tabs, { TabPanel } from '../../components/ui/Tabs';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
+import AdminSiteHealth from './AdminSiteHealth';
 import AdminCollectionEngagement from './AdminCollectionEngagement';
 import AdminPackageEditor from './AdminPackageEditor';
 import AdminResearchQueue from './AdminResearchQueue';
@@ -59,6 +60,7 @@ export default function AdminDashboard() {
       }} onReview={(pkg, source) => { setFinding(source); setEditing(pkg); }} />}</TabPanel>
       <TabPanel baseId="admin" tab="overview" active={tab} className="py-4">
         {overview && <>
+          <AdminSiteHealth refreshKey={overview.collectionEngagement?.asOf} />
           <Panel className="mb-6"><h2 className="text-sm">Signed-up users</h2><p className="text-3xl font-semibold">{overview.users?.total.toLocaleString() ?? 'Unavailable'}</p></Panel>
           <h2 className="mb-3 text-lg font-semibold">Card collection tracking</h2>
           <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">

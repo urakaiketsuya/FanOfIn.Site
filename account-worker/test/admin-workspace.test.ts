@@ -30,7 +30,7 @@ test('HTTP routes enforce account grants on every admin read and write', async (
     const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode('test-token'))), byte => byte.toString(16).padStart(2, '0')).join('');
     db.prepare('INSERT INTO sessions(id,user_id,token_hash,expires_at,created_at,last_seen_at) VALUES(?,?,?,?,?,?)').run('s', 'a', hash, new Date(Date.now() + 60_000).toISOString(), now, now);
     const request = (path: string, signedIn: boolean, method = 'GET') => worker.fetch(new Request(`http://localhost${path}`, { method, headers: { Origin: 'http://localhost:5173', ...(signedIn ? { Cookie: 'fanofin_session=test-token' } : {}) }, ...(method === 'PUT' ? { body: JSON.stringify(input) } : {}) }), env);
-    for (const [path, method] of [['/v1/admin/overview', 'GET'], ['/v1/admin/packages', 'GET'], ['/v1/admin/packages/example', 'PUT']]) {
+    for (const [path, method] of [['/v1/admin/site-health', 'GET'], ['/v1/admin/overview', 'GET'], ['/v1/admin/packages', 'GET'], ['/v1/admin/packages/example', 'PUT']]) {
       assert.equal((await request(path, false, method)).status, 401);
       assert.equal((await request(path, true, method)).status, 403);
     }

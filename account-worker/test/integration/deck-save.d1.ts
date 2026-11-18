@@ -1,3 +1,4 @@
+import { recordOperation } from '../../src/operation-metrics';
 import { adminCollectionMetricsChecks } from './admin-collection-metrics-checks';
 import { profileAddressChecks } from "./profile-address-checks";
 import { adminOverview } from "../../src/admin-workspace";
@@ -48,6 +49,9 @@ try {
   await adminWorkspaceChecks(env, user);
   await adminCollectionMetricsChecks(env);
   await profileAddressChecks(env);
+  await Promise.all([200, 409, 500].map(status => recordOperation(env, 'deck-save', status, new Date('2026-11-18T12:00:00Z'))));
+  const operation = await db.prepare("SELECT requests,rejected,errors FROM admin_operation_metrics WHERE day='2026-11-18' AND operation='deck-save'").first();
+  assert.deepEqual(operation, { requests: 3, rejected: 1, errors: 1 });
   console.log("Local D1: migrations, recovery queries, batch rollback, retry receipts, concurrent retries, and revision conflicts passed.");
 } finally {
   await runtime?.dispose();

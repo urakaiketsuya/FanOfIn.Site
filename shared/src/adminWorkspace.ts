@@ -32,3 +32,19 @@ export interface EditorialPackageInput {
   status: 'draft' | 'published';
   revision: number;
 }
+
+export interface AdminSiteHealth {
+  asOf: string;
+  active7Days: number;
+  active30Days: number;
+  newUsers7Days: number;
+  newUsers30Days: number;
+  deckCreators30Days: number;
+  features: { key: string; label: string; users: number }[];
+  operations: {
+    since: string;
+    coverageStartedAt: string;
+    rows: { operation: string; requests: number; rejected: number; errors: number }[];
+  } | null;
+  freshness: { key: string; label: string; updatedAt: string | null }[];
+}
