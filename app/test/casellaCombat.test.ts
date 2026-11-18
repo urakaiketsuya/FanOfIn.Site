@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {casellaTurnForecast,simulateCasellaTurns,casellaCombatForecast,sequenceCasellaCombat,type Card} from '@gatcg/shared';
 import {withSpoilerCards} from '../src/lib/spoilerCatalog';
 import {casellaWind as deck} from './fixtures/casella-wind';
-const cards=new Map(withSpoilerCards(JSON.parse(readFileSync('data/card-catalog.json','utf8')).cards as Card[]).map(c=>[c.name,c]));
+const cards=new Map(withSpoilerCards(JSON.parse(readFileSync(new URL('../../data/card-catalog.json',import.meta.url),'utf8')).cards as Card[]).map(c=>[c.name,c]));
 const fill=(n:number)=>Array.from({length:n},()=> 'Nascent Barrier');
 test('paid bounce lines attack again without retaining a temporary buff',()=>{
  const r=sequenceCasellaCombat(['Dungeon Guide','Harness Lightning','Reclaim',...fill(14)],[],{...deck,song:[]},cards,32);
@@ -25,7 +25,7 @@ test('acceptance deck is deterministic, ordered quantiles, and Song omission una
  assert.equal(casellaCombatForecast(deck,cards,0,1).high,0);
 });
 test('imported existing fixtures cover bounce, modal buff and suppression boundaries',()=>{
- const evidence=JSON.parse(readFileSync('app/test/fixtures/tcgengine-casella-contracts.json','utf8'));
+ const evidence=JSON.parse(readFileSync(new URL('./fixtures/tcgengine-casella-contracts.json',import.meta.url),'utf8'));
  assert.ok(evidence.scenarios.some((s:{id:string;excerpt:string})=>s.id==='reclaim-return-ally'&&s.excerpt.includes('myHand')));
  assert.ok(evidence.scenarios.some((s:{id:string;excerpt:string})=>s.id==='harness-lightning-buffs-ally-and-self-banishes'&&s.excerpt.includes("5, 'Dungeon Guide gets four additional power'")));
  const r=sequenceCasellaCombat(["Aella, Zephyr's Hand",...fill(6)],[],{...deck,song:[]},cards);
@@ -68,7 +68,7 @@ test('Dungeon deployment pays reserve and two memory, and can accelerate turn-on
  assert.equal(r.level,1);assert.equal(r.aria,2);assert.equal(r.memory,1);
  assert.equal(r.hand,3);assert.equal(r.allies,1);assert.equal(r.total,0);
  assert.equal(r.mainAccounted,r.mainSize);
- const evidence=JSON.parse(readFileSync('app/test/fixtures/tcgengine-casella-contracts.json','utf8'));
+ const evidence=JSON.parse(readFileSync(new URL('./fixtures/tcgengine-casella-contracts.json',import.meta.url),'utf8'));
  const assertions=JSON.parse(evidence.integration.find((s:{path:string})=>s.path.includes('dungeon-guide-enter')&&s.path.endsWith('assertions.json')).excerpt);
  assert.ok(assertions.some((a:{zone:string;value:number})=>a.zone==='myBanish'&&a.value===2));
  assert.ok(evidence.timing.some((s:{excerpt:string})=>s.excerpt.includes('Starting player skips first draw phase')));

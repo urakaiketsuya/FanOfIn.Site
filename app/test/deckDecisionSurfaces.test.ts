@@ -18,7 +18,8 @@ test('evidence failures offer recovery instead of an indefinite loader or empty 
 });
 test('empty packages and completed empty evidence have distinct states', () => {
   assert.match(render(createElement(PackageDecisionReport, { deck, cards: new Map(), onExplore() {} })), /No reviewed packages/);
-  assert.match(render(createElement(ComparableBuildReport, { deck, cards: new Map(), loading: false, references: [], onRetry() {} })), /No comparable lists/);
+  assert.equal(render(createElement(ComparableBuildReport, { deck, cards: new Map(), loading: false, references: [], onRetry() {} })), '');
+  assert.equal(render(createElement(MatchupCoverageReport, { deck, cards: new Map(), loading: false, matchups: [], onRetry() {} })), '');
   assert.match(render(createElement(MatchupCoverageReport, { deck, cards: new Map(), loading: true, matchups: [], onRetry() {} })), /Loading matchup/);
 });
 test('fixed target coverage preserves non-attack, ally and printed-life restrictions', () => {

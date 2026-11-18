@@ -29,11 +29,13 @@ test('loading, failure and unmatched decks remain distinct', () => {
  assert.match(render({result:null,loading:true}),/Loading historical matchups/);
  const error = render({result:null,loading:true,error:'offline',onRetry:()=>{}});
  assert.match(error,/role="alert"/); assert.match(error,/Try again/); assert.doesNotMatch(error,/Loading historical/);
- assert.match(render({result:{...result,classification:{...result.classification,cluster:null}}}),/No matching archetype yet/);
+ assert.equal(render({result:{...result,classification:{...result.classification,cluster:null}}}), '');
 });
 test('missing matchups distinguish loading, empty and failure while preserving historical summary', () => {
  const empty = {...result,matchups:[]};
- assert.match(render({result:empty}),/No recorded opponent matchups/);
+ const completed = render({result:empty});
+ assert.match(completed,/54%/);
+ assert.doesNotMatch(completed,/Observed matchups|No recorded opponent matchups/);
  assert.match(render({result:empty,matchupsLoading:true}),/Loading opponent matchups/);
  const failed = render({result:empty,matchupsError:'offline',onRetryMatchups:()=>{}});
  assert.match(failed,/Opponent matchups could not be loaded/); assert.match(failed,/54%/);
