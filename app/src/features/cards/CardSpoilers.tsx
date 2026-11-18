@@ -1,3 +1,6 @@
+import CardGridSizeControl from "../../components/CardGridSizeControl";
+import { CARD_GRID_MINIMUM } from "../../lib/cardGridSize";
+import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import CardQueryInput from "../../components/CardQueryInput";
 import { groupSpoilers, searchSpoilers, spoilerSetKey } from "../../lib/spoilerCatalog";
 import { useMemo } from "react";
@@ -19,6 +22,8 @@ const addedDate = (value: string) => new Date(value.length === 10 ? `${value}T12
 
 export default function CardSpoilers() {
   useDocumentTitle("Card spoilers", "Unreleased Grand Archive cards by set, newest additions first.");
+  const prefs = useDecklistDisplayPrefs();
+  const gridSize = prefs.visualCardSize === "rows" ? "medium" : prefs.visualCardSize;
   const catalog = useCardCatalog();
   const byName = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
   const [params, setParams] = useSearchParams();
@@ -44,15 +49,18 @@ export default function CardSpoilers() {
         {sets.map(group => <option key={group.prefix} value={group.prefix}>{group.name} ({group.prefix})</option>)}
       </select></label>
     </div>
-    <p role="status" className="mb-4 text-sm text-ctp-subtext1">{shown.length} of {spoilers.cards.length} spoilers · Newest added first</p>
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <p role="status" className="text-sm text-ctp-subtext1">{shown.length} of {spoilers.cards.length} spoilers · Newest added first</p>
+      <CardGridSizeControl value={gridSize} onChange={prefs.setVisualCardSize} />
+    </div>
     {shown.length === 0 && <div className="space-y-3"><p>No spoilers match your filters.</p><Button onClick={() => setParams({})}>Clear filters</Button></div>}
     <div className="space-y-10">
       {groups.map(group => <section key={group.prefix} aria-labelledby={`set-${group.prefix}`}>
         <h2 id={`set-${group.prefix}`} className="mb-4 text-xl font-semibold">{group.name} <span className="text-sm font-normal text-ctp-subtext1">{group.cards.length} {group.cards.length === 1 ? "card" : "cards"}</span></h2>
-        <div className="mx-auto grid w-full max-w-sm grid-cols-1 items-start gap-6 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${CARD_GRID_MINIMUM[gridSize]}), 1fr))` }}>
           {group.cards.map(card => {
             const catalogCard = byName.get(card.name);
-            const content = <><CardArtTile card={artwork.get(card.name)} name={card.name} /><span className="block py-2 text-sm font-medium">{card.name}</span></>;
+            const content = <><CardArtTile card={artwork.get(card.name)} name={card.name} /><span className="block break-words py-2 text-sm font-medium">{card.name}</span></>;
             return <div key={card.name} className="min-w-0">
               {catalogCard ? <Link aria-label={card.name} to={`/cards/${catalogCard.slug}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : content}
               <p className="text-xs text-ctp-subtext1">Added <time dateTime={card.addedAt}>{addedDate(card.addedAt)}</time></p>

@@ -1,3 +1,5 @@
+import CardGridSizeControl from "../../components/CardGridSizeControl";
+import { CARD_GRID_MINIMUM } from "../../lib/cardGridSize";
 import CardLayoutControls from "../../components/CardLayoutControls";
 import Button from "../../components/ui/Button";
 import DialogSheet from "../../components/ui/DialogSheet";
@@ -28,10 +30,10 @@ export default function CardGrid({ cards, pickEdition, prices, winRates }: CardG
       if (value === "Rows") prefs.setVisualCardSize("rows");
       else if (value === "Grid" && prefs.visualCardSize === "rows") prefs.setVisualCardSize("medium");
     }} />
-    {layout === "Grid" && <label className="flex items-center gap-2 text-sm">Grid size<select aria-label="Grid size" value={prefs.visualCardSize} onChange={event => prefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>}
+    {layout === "Grid" && <CardGridSizeControl value={prefs.visualCardSize === "rows" ? "large" : prefs.visualCardSize} onChange={prefs.setVisualCardSize} />}
     {showExpand && <Button onClick={() => setExpanded(true)}>Expand cards</Button>}
   </div>;
-  const minimum = layout === "Grid" ? ({ large: "9rem", medium: "6.5rem", compact: "4.75rem", rows: "9rem" }[prefs.visualCardSize]) : "20rem";
+  const minimum = layout === "Grid" ? CARD_GRID_MINIMUM[prefs.visualCardSize === "rows" ? "large" : prefs.visualCardSize] : "20rem";
   const content = cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <div className="mt-4 grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${minimum}), 1fr))` }}>
     {cards.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} winRates={winRates} layout={layout} />)}
   </div>;
