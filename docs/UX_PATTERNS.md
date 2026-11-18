@@ -979,3 +979,19 @@ using one 0–100% scale. Keep the supported-list count visible and retain unava
 states. Draw-adjusted cohorts and fixed-cards-seen random access are separate results.
 In two-column mobile card grids, place numerical results below the art; the compact
 horizontal CardResult layout leaves insufficient space for checkpoint percentages.
+
+## Grouped card search results
+
+Catalog browsing, deck card search, collection/shopping, and card statistics share a
+Group by control: None, Element, Set, Class, or Type. Group the full filtered pool
+before pagination; retain the chosen sort within every group. Cards may belong to
+multiple groups, but repeated printings in one set family count once. Missing
+catalog metadata remains visible under Unknown. Each group has its own Show more
+action. Grouping never changes selected cards or quantities. The expanded catalog
+shares its grouping choice with the normal view.
+
+Verification (2026-11-18): grouping membership/order tests passed. Catalog checks at
+390px and 1280px covered element/set grouping, 48px grouping controls, keyboard
+access, overflow, expanded-view grouping persistence, and empty search results.
+Loading and unavailable community-tag states were observed. Authenticated collection
+mutations, native mobile input, and full deck-editor/collection journeys were not exercised.

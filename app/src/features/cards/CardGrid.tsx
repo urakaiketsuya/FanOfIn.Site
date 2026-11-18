@@ -1,3 +1,5 @@
+import type { CardGrouping } from "../../lib/cardResultGroups";
+import GroupedCardResults from "../../components/GroupedCardResults";
 import CardGridSizeControl from "../../components/CardGridSizeControl";
 import { CARD_GRID_MINIMUM } from "../../lib/cardGridSize";
 import CardLayoutControls from "../../components/CardLayoutControls";
@@ -22,6 +24,7 @@ interface CardGridProps {
 
 export default function CardGrid({ cards, pickEdition, prices, winRates }: CardGridProps) {
   const prefs = useDecklistDisplayPrefs();
+  const [grouping, setGrouping] = useState<CardGrouping>("none");
   const [expanded, setExpanded] = useState(false);
   const layout = prefs.displayMode === "detailed" ? "List" : prefs.visualCardSize === "rows" ? "Rows" : "Grid";
   const controls = (showExpand: boolean) => <div className="flex flex-wrap items-center justify-between gap-3">
@@ -34,9 +37,9 @@ export default function CardGrid({ cards, pickEdition, prices, winRates }: CardG
     {showExpand && <Button onClick={() => setExpanded(true)}>Expand cards</Button>}
   </div>;
   const minimum = layout === "Grid" ? CARD_GRID_MINIMUM[prefs.visualCardSize === "rows" ? "large" : prefs.visualCardSize] : "20rem";
-  const content = cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <div className="mt-4 grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${minimum}), 1fr))` }}>
-    {cards.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} winRates={winRates} layout={layout} />)}
-  </div>;
+  const content = cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <GroupedCardResults grouping={grouping} onGrouping={setGrouping} items={cards} cardFor={card => card} pageSize={60}>{visible => <div className="mt-4 grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${minimum}), 1fr))` }}>
+    {visible.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} winRates={winRates} layout={layout} />)}
+  </div>}</GroupedCardResults>;
   return <div data-component="CardGrid" className="mt-6 min-w-0">
     {controls(true)}{content}
     {expanded && <DialogSheet title={`Card overview · ${cards.length} cards`} fullScreen onDismiss={() => setExpanded(false)}><div className="flex h-full min-h-0 flex-col gap-3"><div className="shrink-0">{controls(false)}</div><div className="min-h-0 flex-1 overflow-y-auto">{content}</div></div></DialogSheet>}

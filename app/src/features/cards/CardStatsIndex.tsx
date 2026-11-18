@@ -1,8 +1,9 @@
+import GroupedCardResults from "../../components/GroupedCardResults";
 import FilterQuery from "../../components/filters/FilterQuery";
 import { filterCardNames } from "./filters";
 import { cardAdoption, formatFilterQuery } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } from "@gatcg/shared";
 import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from "../archetypes/data";
@@ -12,7 +13,6 @@ import { useCommunityBlendedCardInclusion, useCommunitySourceCounts } from "../c
 import CardArtTile from "../../components/CardArtTile";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
-import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { getPublishedPackageMembership as getCardPackageMembership } from "@gatcg/shared";
@@ -33,7 +33,6 @@ const SORT_LABELS: Record<SortMode, string> = {
 };
 
 const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
-const PAGE_SIZE = 50;
 
 export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
@@ -67,7 +66,6 @@ export default function CardStatsIndex() {
   const [comboCollapsed, setComboCollapsed] = useState(false);
   const [keywordSortMode, setKeywordSortMode] = useState<"usage" | "adjusted" | "raw">("usage");
   const [compositionType, setCompositionType] = useState<string | null>(null);
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const keywordRows = useMemo(() => {
     if (!keywordStatsData) return [];
@@ -145,13 +143,6 @@ export default function CardStatsIndex() {
       }
     });
   }, [cardStatsData, adoptionPeriods, sortMode, minDecks, category, search, catalogByName, communityByName, totalTournamentDecks]);
-
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [sortMode, minDecks, category, search]);
-
-  const visibleRows = rows.slice(0, visibleCount);
-  const cardImages = useCardsByNames(visibleRows.map((c) => c.name));
 
   const combination = useCardCombination(selectedCards);
   const comboNames = useMemo(
@@ -265,10 +256,10 @@ export default function CardStatsIndex() {
       {!cardStatsData && <InlineState className="mt-6">Loading…</InlineState>}
       {cardStatsData && rows.length === 0 && <InlineState className="mt-6">No cards match this filter yet.</InlineState>}
 
-      {cardStatsData && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">Showing {visibleRows.length.toLocaleString()} of {rows.length.toLocaleString()} cards</p>}
-      <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
+      {cardStatsData && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">{rows.length.toLocaleString()} matching cards</p>}
+      <GroupedCardResults items={rows} cardFor={entry => catalogByName.get(entry.name)} pageSize={50}>{visibleRows => <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
         {visibleRows.map((entry) => {
-          const card = cardImages.get(entry.name);
+          const card = catalogByName.get(entry.name);
           const alternateFace = primaryAlternateFace(card);
           const isSelected = selectedCards.includes(entry.name);
           const packages = getCardPackageMembership(entry.name);
@@ -310,9 +301,7 @@ export default function CardStatsIndex() {
             </article>
           );
         })}
-      </div>
-
-      <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
+      </div>}</GroupedCardResults>
 
       <KeywordStatsSection rows={keywordRows} loading={!keywordStatsData} sortMode={keywordSortMode} onSortChange={setKeywordSortMode} />
       <CompositionStatsSection rows={compositionRows} types={compositionTypesPresent} activeType={activeCompositionType} bestIndex={compositionBestIndex} loading={!compositionData} onTypeChange={setCompositionType} />

@@ -9,7 +9,7 @@ import DisclosureChevron from "../../components/DisclosureChevron";
 import PriceSortStatus from "../../components/PriceSortStatus";
 import { useDeckPriceByNameState } from "../pricing/useDeckPriceByName";
 import { compareCardPrices } from "../../lib/cardPriceSort";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CARD_TAG_CATEGORIES, cardTagCategory, searchSetFamily, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
@@ -30,14 +30,11 @@ import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { toggleSetValue } from "../../components/filters/filterUtils";
 import { rarityOptions } from "./rarities";
 import CardGrid from "./CardGrid";
-import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
-
-const PAGE_SIZE = 60;
 
 type TabMode = "browse" | "sets";
 const TABS: readonly TabMode[] = ["browse", "sets"];
@@ -64,13 +61,6 @@ export default function CardsBrowse() {
     () => filterCards(cards, filters, cardTags.lookup).sort((a, b) => sort === "win-rate" ? compareCardWinRates(a.name, b.name, winRates) : sort === "name" ? a.name.localeCompare(b.name) : compareCardPrices(a.name, b.name, prices, sort === "price-desc")),
     [cards, filters, cardTags.lookup, sort, prices, winRates],
   );
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [filters, sort]);
-
-  const visible = filtered.slice(0, visibleCount);
   const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0) + (filters.rarities?.size ?? 0) + (filters.tags?.size ?? 0);
 
   const artistOptions = useMemo(() => {
@@ -297,9 +287,8 @@ export default function CardsBrowse() {
             <div className="mt-6 rounded-xl border border-ctp-surface1 p-5"><h2 className="text-lg font-semibold">No matching cards</h2><p className="mt-2 text-sm text-ctp-subtext1">Try a different name or clear your filters to browse the catalog.</p><Button className="mt-3" onClick={() => setFilters(emptyFilterState())}>Browse all cards</Button></div>
           )}
 
-          {visible.length > 0 && (!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} prices={priceSort ? prices : undefined} winRates={sort === "win-rate" ? winRates : undefined} />}
+          {filtered.length > 0 && (!filters.tags?.size || !!cardTags.data) && <CardGrid cards={filtered} pickEdition={pickEdition} prices={priceSort ? prices : undefined} winRates={sort === "win-rate" ? winRates : undefined} />}
 
-          <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
       )}
     </div>
