@@ -8,6 +8,7 @@ import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import Tabs, { TabPanel } from '../../components/ui/Tabs';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
+import AdminCollectionEngagement from './AdminCollectionEngagement';
 import AdminPackageEditor from './AdminPackageEditor';
 import AdminResearchQueue from './AdminResearchQueue';
 import type { ResearchFinding } from './researchQueue';
@@ -67,6 +68,7 @@ export default function AdminDashboard() {
               ['Proxy copies tracked', overview.collection?.proxyCopies],
             ] as const).map(([label, total]) => <Panel key={label}><h3 className="text-sm">{label}</h3><p className="break-words text-3xl font-semibold">{total?.toLocaleString() ?? 'Unavailable'}</p></Panel>)}
           </div>
+          <AdminCollectionEngagement metrics={overview.collectionEngagement} />
           <h2 className="mb-3 text-lg font-semibold">Saved decks</h2><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(overview.decks).map(([label, total]) => <Panel key={label}><p className="text-sm capitalize">{label}</p><p className="text-3xl font-semibold">{total.toLocaleString()}</p></Panel>)}</div><p className="mt-3 text-sm text-ctp-subtext1">Current deck lists, excluding site seed decks. Versions are not counted separately.</p><Button className="mt-3" disabled={loading} onClick={() => void refresh()}>Refresh totals</Button></>}
       </TabPanel>
     </>}

@@ -1,3 +1,4 @@
+import { adminCollectionMetricsChecks } from './admin-collection-metrics-checks';
 import { profileAddressChecks } from "./profile-address-checks";
 import { adminOverview } from "../../src/admin-workspace";
 import { adminWorkspaceChecks } from "./admin-workspace-checks";
@@ -45,6 +46,7 @@ try {
   assert.deepEqual((await listDecks(env, user))[0].decklist, after.decklist);
   await assert.rejects(createDeckVersion(env, user, id, { ...command, requestId: crypto.randomUUID() }), /changed elsewhere/);
   await adminWorkspaceChecks(env, user);
+  await adminCollectionMetricsChecks(env);
   await profileAddressChecks(env);
   console.log("Local D1: migrations, recovery queries, batch rollback, retry receipts, concurrent retries, and revision conflicts passed.");
 } finally {

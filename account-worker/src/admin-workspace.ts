@@ -1,4 +1,5 @@
 import { decodePackage, encodePackage, type AdminOverview, type EditorialPackage, type EditorialPackageInput, type SharedPackage, type PackageResearchReview } from '@gatcg/shared';
+import { collectionEngagement } from './admin-collection-metrics';
 import type { AuthUser, Env } from './auth';
 import { ApiError, badRequest } from './errors';
 import { normalizeDisplayText } from './content-policy';
@@ -25,7 +26,7 @@ export async function adminOverview(env: Env): Promise<AdminOverview> {
       UNION ALL
       SELECT user_id, owned_quantity, proxy_quantity FROM collection_printing_entries
     ) WHERE owned_quantity > 0 OR proxy_quantity > 0`).first<AdminOverview['collection']>();
-  return { users: { total: Number(users!.total) }, decks, collection: collection! };
+  return { users: { total: Number(users!.total) }, decks, collection: collection!, collectionEngagement: await collectionEngagement(env, Number(users!.total), collection!.users) };
 }
 interface PackageRow { research_json: string | null; id: string; definition_json: string; status: 'draft' | 'published'; revision: number; updated_at: string }
 function present(row: PackageRow): EditorialPackage {

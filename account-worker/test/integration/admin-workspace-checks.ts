@@ -37,7 +37,8 @@ export async function adminWorkspaceChecks(env: Env, user: AuthUser) {
   assert.equal((await listEditorialPackages(env, true)).length, 0);
   for (const visibility of ['private', 'unlisted', 'public'] as const) {
     await env.ACCOUNT_DB.prepare('UPDATE user_decks SET visibility=?').bind(visibility).run();
-    assert.deepEqual(await adminOverview(env), { users: { total: 1 }, collection: { users: 0, ownedCopies: 0, proxyCopies: 0 }, decks: { private: 0, unlisted: 0, public: 0, [visibility]: 1, total: 1 } });
+    const { collectionEngagement: _engagement, ...overview } = await adminOverview(env);
+    assert.deepEqual(overview, { users: { total: 1 }, collection: { users: 0, ownedCopies: 0, proxyCopies: 0 }, decks: { private: 0, unlisted: 0, public: 0, [visibility]: 1, total: 1 } });
   }
   await env.ACCOUNT_DB.prepare('UPDATE user_decks SET is_seed=1').run();
   assert.equal((await adminOverview(env)).decks.total, 0);
