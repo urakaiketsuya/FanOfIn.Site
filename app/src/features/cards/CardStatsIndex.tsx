@@ -257,7 +257,7 @@ export default function CardStatsIndex() {
       {cardStatsData && rows.length === 0 && <InlineState className="mt-6">No cards match this filter yet.</InlineState>}
 
       {cardStatsData && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">{rows.length.toLocaleString()} matching cards</p>}
-      <GroupedCardResults items={rows} cardFor={entry => catalogByName.get(entry.name)} pageSize={50}>{visibleRows => <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
+      <GroupedCardResults resultKey={JSON.stringify(rows.map(entry => entry.name))} items={rows} cardFor={entry => catalogByName.get(entry.name)} pageSize={50}>{visibleRows => <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
         {visibleRows.map((entry) => {
           const card = catalogByName.get(entry.name);
           const alternateFace = primaryAlternateFace(card);

@@ -25,7 +25,7 @@ export default function CardSearchResults({ format = "UNKNOWN", query, names, ca
   return <section aria-label="Card catalog" className="mt-3">
     <p role="status" className="mb-2 text-xs text-ctp-subtext0">{matches.length} matching {matches.length === 1 ? "card" : "cards"}</p>
     {!matches.length && <p className="py-4 text-sm text-ctp-subtext1">No cards match. Try another search or clear a filter.</p>}
-    <GroupedCardResults items={matches} cardFor={name => catalog.get(name)}>{visible => <div className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
+    <GroupedCardResults resultKey={JSON.stringify([query, matches])} items={matches} cardFor={name => catalog.get(name)}>{visible => <div className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
       {visible.map(name => {
         const card = catalog.get(name);
         const quantity = quantityFor?.(name) ?? chosen.get(name) ?? 0;

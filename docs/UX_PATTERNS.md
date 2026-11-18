@@ -995,3 +995,23 @@ Verification (2026-11-18): grouping membership/order tests passed. Catalog check
 access, overflow, expanded-view grouping persistence, and empty search results.
 Loading and unavailable community-tag states were observed. Authenticated collection
 mutations, native mobile input, and full deck-editor/collection journeys were not exercised.
+
+Follow-up verification (2026-11-18): the deck editor and production collection
+controller were exercised at 390px and 1280px with real catalog data. Collection
+account methods used an isolated in-memory fixture; no production inventory writes
+were made. Checks covered duplicate-group selection/quantity synchronization,
+selection through empty searches, one-copy deck insertion, quantity undo and draft
+recovery, invalid destination rejection, collection Owned/All views, card-sheet
+editing and Escape/focus restoration, shopping deduplication, and 48px grouping
+controls without page overflow. A failed collection batch retained the draft;
+three failed attempts and the successful retry shared one request ID and saved
+one physical copy exactly once. Fixture drafts were cleaned up afterward.
+
+Fixed pagination retaining a previous search's expanded result count. Result
+membership/order changes now reset display limits without remounting grouping
+controls or feature-owned selections/drafts. Single-card groups use “1 card.”
+Both fixes were retested in the browser. Eighteen grouping, collection queue/draft,
+and deck mutation tests passed, along with targeted lint. Native mobile keyboards
+and live authentication/backend persistence were not exercised.
+App typechecking also passed with the unrelated concurrent `jin-fuel-preview.tsx`
+verification file excluded; the initial full check reported errors in that file.
