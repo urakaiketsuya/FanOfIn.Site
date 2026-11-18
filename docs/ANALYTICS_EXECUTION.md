@@ -770,3 +770,30 @@ format, champion, build, and element-matching populations must remain distinct
 from pooled Card Stats data; overlapping 30/90-day snapshots cannot substitute
 for adjacent windows. Extended Analytics remains approximately 69% (11/16 unequal
 top-level milestones complete); milestone 12 card/build reporting is ongoing.
+
+### 2026-11-18 — Casella paid combat-sequencing milestone
+
+Added the user's Casella Wind acceptance deck, a shared paid-sequence search,
+Song/aria tracking, first/repeat attack and buff/reset accounting, Final Refrain
+removal triggers, supported draw/scavenge paths, and repeatable access ranges.
+The report is explicitly a conditional level-three unopposed burst, not multi-turn
+resolved damage. Imported existing TCGEngine scenarios verbatim; new Casella Songs
+remain reviewed-spoiler-derived rather than falsely labeled engine-verified.
+See CASELLA_COMBAT.md for model boundaries and omitted interaction/timing effects.
+
+Integrated the result into the shared combat report and Casella-to-Casella
+comparison, preserving Song lists in comparison controllers. Preserved the other
+session's empty-report cleanup; unsupported data hides the new report.
+Thirteen focused/new and existing ally regressions passed. Shared typecheck and
+targeted lint passed. Report and routed comparison preview checks at 360/1280px
+confirmed card art, no overflow, keyboard focus, >=48px card links, loading, and
+missing-Song behavior. Signed-in persistence, live deployment and PHP engine replay
+were not exercised. No push requested.
+
+Next: multi-turn deployment/resource calibration beyond this conditional burst;
+the broader card/build initiative still has package cohort access and build
+concentration/stability work. Extended Analytics remains approximately 69% on the
+existing 11/16 unequal milestone checklist; this supplemental combat slice does not
+close the remaining card/build audit.
+Final full app typecheck also passed. The fixture import contains 15 existing
+upstream scenarios; no new upstream scenarios or live deployment were created.

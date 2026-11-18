@@ -1,7 +1,7 @@
 import type { Card } from './api-types.js';
 
 export type AnalyticsLine = { name: string; quantity: number };
-export type AnalyticsDeck = { main: AnalyticsLine[]; material: AnalyticsLine[] };
+export type AnalyticsDeck = { main: AnalyticsLine[]; material: AnalyticsLine[]; song?: AnalyticsLine[] };
 export function whole(value: number): number { return Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0; }
 export function aggregateLines(lines: AnalyticsLine[]): AnalyticsLine[] {
   const counts = new Map<string, number>();

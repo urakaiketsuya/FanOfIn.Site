@@ -16,7 +16,7 @@ export default function EqualDeckReport({ decks, decklists, onRetry }: { decks: 
   const inputs = useMemo(() => decks.map(deck => {
     const list = decklists.get(deck.key);
     return { ...deck, status: list ? undefined : decklists.has(deck.key) ? 'Decklist unavailable' : 'Loading decklist…',
-      deck: list ? { main: list.main.map(l => ({ name: l.card, quantity: l.quantity })), material: list.material.map(l => ({ name: l.card, quantity: l.quantity })) } : null };
+      deck: list ? { song: (list.song ?? []).map(l => ({ name: l.card, quantity: l.quantity })), main: list.main.map(l => ({ name: l.card, quantity: l.quantity })), material: list.material.map(l => ({ name: l.card, quantity: l.quantity })) } : null };
   }), [decks, decklists]);
   const [result, setResult] = useState<{ inputs: typeof inputs; cards: typeof cards; reports: DeckForecast[] }>();
   const [failed, setFailed] = useState(false);

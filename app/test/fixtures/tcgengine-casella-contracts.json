@@ -1,0 +1,96 @@
+{
+  "revision": "b629bcc038cbb40b8c6bf242c2796b02e6db14ef",
+  "note": "Existing upstream scenarios imported verbatim. Casella Song/aria behavior is separately catalog-derived; this is not an engine replay.",
+  "scenarios": [
+    {
+      "id": "reclaim-return-ally",
+      "path": "DevTools/ga-fixtures/cards-r.php",
+      "fileSha256": "5497c98bbe5c259369d55c14721f30d6d918643719c55c22aad70156565ee976",
+      "excerpt": "gaScenario('reclaim-return-ally')\n    ->standardDeck('Reclaim')\n    ->readyFor('Reclaim')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myHand', 'Reclaim')\n    ->castSpell('Reclaim', pay: 2, window: 'both', target: 'myField-1')\n    ->register();"
+    },
+    {
+      "id": "battlefield-benediction-empower4",
+      "path": "DevTools/ga-fixtures/cards-b.php",
+      "fileSha256": "b276cdf2d2df0cd30485f9b681723bd5690260c9f2fb3d1f1aa459292290cfd0",
+      "excerpt": "gaScenario('battlefield-benediction-empower4')\n    ->standardDeck('Battlefield Benediction')\n    ->seed('myField', 'Kongming, Fel Eidolon')\n    ->seed('theirField', 'Dungeon Guide')\n    ->seed('theirField', 'Dungeon Guide')\n    ->seed('theirField', 'Dungeon Guide')\n    ->seed('myHand', 'Battlefield Benediction')\n    ->castSpell('Battlefield Benediction', pay: 1, window: 'both')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"HcR3O8vDps\",\"EMPOWERED\",\"EMPOWER_PLUS_4\",\"vz4kc558yx-ACTION_ACTIVATED\"]', 'With 3+ opposing units, the champion is empowered by 4 instead of the base 2')\n    ->expectZoneCount('myMemory', 1, 1, 'The Class Bonus discount reduces the 2-reserve cost to 1, so only 1 reserve payment is made')\n    ->expectDqEmpty()\n    ->register();"
+    },
+    {
+      "id": "aella-zephyrs-hand-first-activation-costs-three-less-then-full-price",
+      "path": "DevTools/ga-fixtures/exalted.php",
+      "fileSha256": "37e17d61beb6a03f6b09e8b85215fb9e14786486e5ce26fc4ee8edd35bcb94ac",
+      "excerpt": "gaScenario('aella-zephyrs-hand-first-activation-costs-three-less-then-full-price')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Aella, Zephyr\\'s Hand')\n    ->seed('myField', 'Aella, Zephyr\\'s Hand')\n    ->seed('myField', 'Dungeon Guide', player: 2)\n    ->seed('myField', 'Giant Tortoise', player: 2)\n    ->action(1, 10001, 'myField-1!CustomInput!Activate:0')->target('theirField-1')\n    ->expectZoneCount('theirBanish', 1, 1, 'First activation: the target was suppressed with no reserve payment', step: 2)\n    ->action(1, 10001, 'myField-1!CustomInput!Activate:0')->pay(3)->target('theirField-1')\n    ->expectZoneCount('theirBanish', 2, 1, 'Second activation: it cost the full (3)')\n    ->tested('Aella, Zephyr\\'s Hand')\n    ->covers(['activated-ability', 'suppress', 'targeting', 'cost-reduction', 'first-time'], '(3): As a Spell, **suppress** another target ally, item, or weapon. This ability costs (3) less to activate the first time you activate it.')\n    ->register();"
+    },
+    {
+      "id": "aella-zephyrs-hand-fast-activation",
+      "path": "DevTools/ga-fixtures/exalted.php",
+      "fileSha256": "37e17d61beb6a03f6b09e8b85215fb9e14786486e5ce26fc4ee8edd35bcb94ac",
+      "excerpt": "gaScenario('aella-zephyrs-hand-fast-activation')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Aella, Zephyr\\'s Hand')\n    ->seed('myHand', 'Aella, Zephyr\\'s Hand')\n    ->seed('myField', 'Dungeon Guide', player: 2)\n    ->endTurn()->pass(1)->pass(1)\n    ->attack('myField-1', 'theirField-0', player: 2)\n    ->answer(1, 'myHand-7')->pay(3)\n    ->expectCardExists('myField', 'Aella, Zephyr\\'s Hand', 'Activated during the opponent\\'s attack')\n    ->tested('Aella, Zephyr\\'s Hand')\n    ->covers(['keyword', 'fast-activation'], '**Fast Activation**')\n    ->register();"
+    },
+    {
+      "id": "stormblade-squire-banishes-memory-and-scavenges-arcane",
+      "path": "DevTools/ga-fixtures/new-card-authoring.php",
+      "fileSha256": "6b0e2a9b6f70392362a333dec4db511e3f3bca7fca490beaa0a20d1ae1f5992f",
+      "excerpt": "gaScenario('stormblade-squire-banishes-memory-and-scavenges-arcane')\n    ->deckTemplate('quiet', 'Dungeon Guide')->readyFor('Stormblade Squire')\n    ->seed('myField', 'Stormblade Squire')->seed('myHand', 'Strategic Warfare')\n    ->deckTop(['Dungeon Guide', 'Dungeon Guide', 'Dungeon Guide', 'Unstable Voltage', 'Dungeon Guide'])\n    ->reachTurnThree()->castSpell('Strategic Warfare', pay: 2, window: 'both')->attack('myField-1', 'theirField-0')\n    ->answer(1, 'YES')\n    ->expectZoneCount('myBanish', 1, 1, 'One memory card was banished')->expectCardExists('myHand', 'Unstable Voltage', 'Scavenge finds the Arcane card')\n    ->tested('Stormblade Squire')->covers(['on-attack', 'random', 'scavenge'], 'Banish random memory; scavenge 2+X for arcane.')->register();"
+    },
+    {
+      "id": "harness-lightning-empower-and-self-banish",
+      "path": "DevTools/ga-fixtures/new-card-authoring.php",
+      "fileSha256": "6b0e2a9b6f70392362a333dec4db511e3f3bca7fca490beaa0a20d1ae1f5992f",
+      "excerpt": "gaScenario('harness-lightning-empower-and-self-banish')\n    ->deckTemplate('quiet', 'Dungeon Guide')->readyFor('Harness Lightning')\n    ->seed('myHand', 'Harness Lightning')->castSpell('Harness Lightning', pay: 1)->answer(1, '0')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"vz4kc558yx-ACTION_ACTIVATED\",\"bzwj7ztr78\",\"EMPOWERED\",\"EMPOWER_PLUS_4\"]', 'Empower four is installed')\n    ->expectPower('p1Field-0', 0, 'Empower does not give champion power')\n    ->expectCardExists('myBanish', 'Harness Lightning', 'Harness Lightning banishes itself')\n    ->expectDqEmpty()->tested('Harness Lightning')->covers(['modal', 'empower', 'banish'], 'Empower four, then banish Harness Lightning.')->register();"
+    },
+    {
+      "id": "harness-lightning-buffs-ally-and-self-banishes",
+      "path": "DevTools/ga-fixtures/new-card-authoring.php",
+      "fileSha256": "6b0e2a9b6f70392362a333dec4db511e3f3bca7fca490beaa0a20d1ae1f5992f",
+      "excerpt": "gaScenario('harness-lightning-buffs-ally-and-self-banishes')\n    ->deckTemplate('quiet', 'Dungeon Guide')->readyFor('Harness Lightning')\n    ->seed('myField', 'Dungeon Guide')->seed('myHand', 'Harness Lightning')\n    ->castSpell('Harness Lightning', pay: 1)->answer(1, '1')->target('myField-1')\n    ->expectPower('p1Field-1', 5, 'Dungeon Guide gets four additional power')\n    ->expectCardExists('myBanish', 'Harness Lightning', 'Harness Lightning banishes itself')\n    ->expectDqEmpty()->tested('Harness Lightning')->covers(['modal', 'stat-change', 'banish'], 'Target ally gets four power, then banish Harness Lightning.')->register();"
+    },
+    {
+      "id": "stridetech-w-on-enter-with-the-linked-ally-draws-into-memory",
+      "path": "DevTools/ga-fixtures/wind-items.php",
+      "fileSha256": "ac6e882836795a0533b2472c7e4b491038347b5ccd22ad422703af1909d85fb3",
+      "excerpt": "gaScenario('stridetech-w-on-enter-with-the-linked-ally-draws-into-memory')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('StrideTech W')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myHand', 'StrideTech W')\n    ->play('StrideTech W')->answer(1, 'myField-1')->pay(2)\n    ->expectZoneCount('myMemory', 3, 1, 'Two paid cards plus the card drawn into memory')\n    ->tested('StrideTech W')\n    ->covers(['ally-link', 'on-enter', 'draw-into-memory', 'condition'], '**Ally Link**', '**On Enter:** If you control the linked ally, draw a card into your memory.')\n    ->register();"
+    },
+    {
+      "id": "stridetech-w-pays-one-and-sacrifices-itself-to-return-the-linked-ally-to-memory",
+      "path": "DevTools/ga-fixtures/wind-items.php",
+      "fileSha256": "ac6e882836795a0533b2472c7e4b491038347b5ccd22ad422703af1909d85fb3",
+      "excerpt": "gaScenario('stridetech-w-pays-one-and-sacrifices-itself-to-return-the-linked-ally-to-memory')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('StrideTech W')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myHand', 'StrideTech W')\n    ->play('StrideTech W')->answer(1, 'myField-1')->pay(2)\n    ->action(1, 10001, 'myField-2!CustomInput!Activate:0')->pay(1)\n    ->expectCardExists('myMemory', 'Dungeon Guide', 'The linked ally was returned to its owner\\'s memory')\n    ->expectZoneCount('myField', 1, 1, 'Only the champion is left on the field')\n    ->expectCardExists('myGraveyard', 'StrideTech W', 'StrideTech W was sacrificed')\n    ->tested('StrideTech W')\n    ->covers(['ally-link', 'sacrifice', 'zone-movement'], '**(1), Sacrifice CARDNAME: **Return the linked ally to its owner\\'s memory.')\n    ->register();"
+    },
+    {
+      "id": "aesan-protector-return-ally",
+      "path": "DevTools/ga-fixtures/cards-a.php",
+      "fileSha256": "635f24f71eed53e4b1021caf99ef2f389284e95e33fa0f4299822b48f344c16e",
+      "excerpt": "gaScenario('aesan-protector-return-ally')\n    ->standardDeck('Aesan Protector')\n    ->readyFor('Aesan Protector')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myHand', 'Aesan Protector')\n    ->castSpell('Aesan Protector', pay: 4, window: 'both', target: 'myField-1')\n    ->register();"
+    },
+    {
+      "id": "turbo-charge-no-powercell-click-refused",
+      "path": "DevTools/ga-fixtures/cards-t.php",
+      "fileSha256": "ae1c989c4d0c50fb5d191547a11eb901a4c4d12cd73398c74d49f07e50d3a402",
+      "excerpt": "gaScenario('turbo-charge-no-powercell-click-refused')\n    ->deck($mordredDeck)\n    ->emptyZone('myHand', destZone: 'myGraveyard')\n    ->seed('myHand', 'Turbo Charge')\n    ->seed('myHand', 'Fluffy Shopkeep')\n    ->seed('myHand', 'Fluffy Shopkeep')\n    ->seed('myHand', 'Fluffy Shopkeep')\n    ->playSlot(0)\n    ->tested('Turbo Charge')\n    ->register();"
+    },
+    {
+      "id": "fairy-whispers-reveals-a-wind-card-and-puts-it-into-hand",
+      "path": "DevTools/ga-fixtures/wind-actions.php",
+      "fileSha256": "0fd1927c787da33cea0db067d2f8b0cc4e146ba50f70a789ac923ab73ae8c876",
+      "excerpt": "gaScenario('fairy-whispers-reveals-a-wind-card-and-puts-it-into-hand')\n    ->standardDeck('Fairy Whispers')\n    ->readyFor('Fairy Whispers')\n    ->seed('myHand', 'Fairy Whispers')\n    ->deckTop(['Aenean Reclaim', 'Dungeon Guide', 'Dungeon Guide'])\n    ->castSpell('Fairy Whispers', pay: 1, window: 'me')\n    ->answer(1, 'Top=DCzUre54F9,em6eEh9q8y,em6eEh9q8y;Bottom=')\n    ->expectCardExists('myHand', 'Aenean Reclaim', 'The revealed top card is wind element: it went into hand')\n    ->tested('Fairy Whispers')\n    ->covers(['glimpse', 'look', 'condition'], '**Glimpse 3**. *(To **glimpse**, look at that many cards from the top of your deck. Put those cards back on the top or on the bottom of your deck in any order.)*', 'Reveal the top card of your deck. If that card is wind element, put it into your hand.')\n    ->register();"
+    },
+    {
+      "id": "fairy-whispers-leaves-a-non-wind-top-card-on-the-deck",
+      "path": "DevTools/ga-fixtures/wind-actions.php",
+      "fileSha256": "0fd1927c787da33cea0db067d2f8b0cc4e146ba50f70a789ac923ab73ae8c876",
+      "excerpt": "gaScenario('fairy-whispers-leaves-a-non-wind-top-card-on-the-deck')\n    ->standardDeck('Fairy Whispers')\n    ->readyFor('Fairy Whispers')\n    ->seed('myHand', 'Fairy Whispers')\n    ->deckTop(['Dungeon Guide', 'Aenean Reclaim', 'Dungeon Guide'])\n    ->castSpell('Fairy Whispers', pay: 1, window: 'me')\n    ->answer(1, 'Top=em6eEh9q8y,DCzUre54F9,em6eEh9q8y;Bottom=')\n    ->expectZoneCount('myHand', 6, 1, 'Nothing was added to the hand (8 - 1 cast - 1 paid)')\n    ->tested('Fairy Whispers')\n    ->covers(['condition'], 'Reveal the top card of your deck. If that card is wind element, put it into your hand.')\n    ->register();"
+    },
+    {
+      "id": "windmill-engineer-imbued-on-enter-draws-a-card-into-memory",
+      "path": "DevTools/ga-fixtures/wind-allies5.php",
+      "fileSha256": "11f16ca8027d2eef9d491625d7c6877e7ad05c5d8beebad9149eccfdab4b1972",
+      "excerpt": "gaScenario('windmill-engineer-imbued-on-enter-draws-a-card-into-memory')\n    ->deckTemplate('quiet', 'Windmill Engineer')\n    ->readyFor('Windmill Engineer')\n    ->seed('myHand', 'Windrider Mage')->seed('myHand', 'Windrider Mage')\n    ->seed('myHand', 'Windmill Engineer')\n    ->play('Windmill Engineer')->answer(1, 'YES')->answer(1, 'myHand-7')->answer(1, 'myHand-7')\n    ->expectProperty('p1Field-1', 'TurnEffects', '[\"IMBUED\",\"ENTERED_THIS_TURN\"]', 'Two wind cards were reserved: imbued')\n    ->expectZoneCount('myMemory', 3, 1, 'Two reserved cards plus the card drawn into memory')\n    ->tested('Windmill Engineer')\n    ->covers(['imbue', 'on-enter', 'draw-discard', 'condition'], '**Imbue 2**', '**On Enter:** If CARDNAME is **imbued**, draw a card into your memory.')\n    ->register();"
+    },
+    {
+      "id": "windmill-engineer-not-imbued-on-enter-draws-nothing",
+      "path": "DevTools/ga-fixtures/wind-allies5.php",
+      "fileSha256": "11f16ca8027d2eef9d491625d7c6877e7ad05c5d8beebad9149eccfdab4b1972",
+      "excerpt": "gaScenario('windmill-engineer-not-imbued-on-enter-draws-nothing')\n    ->deckTemplate('quiet', 'Windmill Engineer')\n    ->readyFor('Windmill Engineer')\n    ->seed('myHand', 'Windmill Engineer')\n    ->play('Windmill Engineer')->answer(1, 'NO')->pay(2)\n    ->expectProperty('p1Field-1', 'TurnEffects', '[\"ENTERED_THIS_TURN\"]', 'Not imbued')\n    ->expectZoneCount('myMemory', 2, 1, 'Only the two paid cards')\n    ->tested('Windmill Engineer')\n    ->covers(['imbue', 'on-enter', 'condition'], 'If CARDNAME is **imbued**')\n    ->register();"
+    }
+  ]
+}

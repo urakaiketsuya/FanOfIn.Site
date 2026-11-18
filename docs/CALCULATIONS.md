@@ -7416,3 +7416,16 @@ previous → recent inclusion percentages and signed percentage-point difference
 rank by absolute change, then card name. These are descriptive changes, not
 significance or performance claims. `scripts/build-card-staples.ts` republishes
 only the tournament Staples artifact from cached events and catalog.
+
+### Casella paid burst sequences
+
+`casellaCombatForecast` samples available Main-card pools at the shared access
+checkpoints and searches paid level-three burst lines. Complete Casella lineage,
+four starting aria and a separate supported Song deck are required. Reserve costs
+move real hand cards to memory; returned allies lose modifiers and require a new
+paid deployment before another attack. Songs consume aria and premiere once;
+Final Refrain records each nonzero aria-removal event. Quantiles are over sampled
+best-found lines, not independent sums or predicted resolved game damage. The
+representative median line has additive first/repeat/buff/trigger contributions.
+Comparisons use the same conditional starting state. See CASELLA_COMBAT.md for
+search limits, supported draws, Material assumptions and upstream fixture provenance.

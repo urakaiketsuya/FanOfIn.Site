@@ -1,7 +1,11 @@
+import CasellaCombatComparison from './CasellaCombatComparison';
 import { useMemo } from 'react';
 import { computeCombatAccessForecast, REPORT_DRAW_CHECKPOINTS, type AnalyticsDeck, type Card } from '@gatcg/shared';
 import AssociatedCards from '../../components/AssociatedCards';
-export default function CombatRangeComparison({ baseline, target, cardsByName }: { baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card> }) {
+export default function CombatRangeComparison(props: { baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card> }) {
+  return [props.baseline,props.target].every(deck=>deck.material.some(l=>l.quantity>0&&l.name.startsWith('Casella,'))) ? <CasellaCombatComparison {...props} /> : <AllyRangeComparison {...props} />;
+}
+function AllyRangeComparison({ baseline, target, cardsByName }: { baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card> }) {
   const points = useMemo(() => REPORT_DRAW_CHECKPOINTS.map(seen => ({ seen,
     a: computeCombatAccessForecast(baseline.main, baseline.material, cardsByName, seen),
     b: computeCombatAccessForecast(target.main, target.material, cardsByName, seen),
