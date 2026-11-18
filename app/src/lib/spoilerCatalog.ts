@@ -18,3 +18,23 @@ export function searchSpoilers(query: string) {
   return spoilers.cards.filter(card => matches.has(card.name) || (plain &&
     [card.name, card.effect, ...card.classes, ...card.types, ...card.subtypes, ...card.elements].join(' ').toLowerCase().includes(query.trim().toLowerCase())));
 }
+
+/** Printing editions share a set; companion products remain separate groups. */
+export const spoilerSetKey = (prefix: string) => prefix.replace(/\s+1st$/, '');
+export const spoilerSetName = (prefix: string) => ({
+  CBL: 'Asphodel/Cantabile', CBLOS: 'Asphodel/Cantabile Opus',
+  CBLP: 'Asphodel/Cantabile Pantheon', 'Re:C-SKY': 'Re:Collection · Casella',
+  'Re:C-MST': 'Re:Collection · Beatrice', P26: '2026 Promos',
+}[prefix] ?? prefix);
+
+export function groupSpoilers<T extends { name: string; setPrefix: string; addedAt: string }>(cards: readonly T[]) {
+  const groups = new Map<string, T[]>();
+  // Stable ties preserve editorial order within an import batch.
+  for (const card of [...cards].sort((a, b) => Date.parse(b.addedAt) - Date.parse(a.addedAt))) {
+    const key = spoilerSetKey(card.setPrefix);
+    const group = groups.get(key) ?? [];
+    group.push(card);
+    groups.set(key, group);
+  }
+  return [...groups].map(([prefix, cards]) => ({ prefix, name: spoilerSetName(prefix), cards }));
+}
