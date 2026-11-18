@@ -92,5 +92,58 @@
       "fileSha256": "11f16ca8027d2eef9d491625d7c6877e7ad05c5d8beebad9149eccfdab4b1972",
       "excerpt": "gaScenario('windmill-engineer-not-imbued-on-enter-draws-nothing')\n    ->deckTemplate('quiet', 'Windmill Engineer')\n    ->readyFor('Windmill Engineer')\n    ->seed('myHand', 'Windmill Engineer')\n    ->play('Windmill Engineer')->answer(1, 'NO')->pay(2)\n    ->expectProperty('p1Field-1', 'TurnEffects', '[\"ENTERED_THIS_TURN\"]', 'Not imbued')\n    ->expectZoneCount('myMemory', 2, 1, 'Only the two paid cards')\n    ->tested('Windmill Engineer')\n    ->covers(['imbue', 'on-enter', 'condition'], 'If CARDNAME is **imbued**')\n    ->register();"
     }
+  ],
+  "integration": [
+    {
+      "id": "dungeon-guide-enter-banish-memory-levelup",
+      "path": "Tests/Integration/GrandArchiveSim/dungeon-guide-enter-banish-memory-levelup/actions.json",
+      "fileSha256": "fcd218587859f3b6048c94e51e5a290e728d49ade43a51d3e5c3daefcf651f78",
+      "excerpt": "[\n    {\n        \"playerID\": 1,\n        \"mode\": 10002,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHand-6!FSM!\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHand-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHand-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHand-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"YES\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myMaterial-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    }\n]\n"
+    },
+    {
+      "id": "dungeon-guide-enter-banish-memory-levelup",
+      "path": "Tests/Integration/GrandArchiveSim/dungeon-guide-enter-banish-memory-levelup/assertions.json",
+      "fileSha256": "cbd605f87f9f1f212a40c6626d1e4ed6b109efd359d8d10addf2480b18163d2e",
+      "excerpt": "[\n    {\"step\":6,\"type\":\"decision_queue_empty\",\"player\":\"all\"},\n    {\"step\":6,\"type\":\"card_property_equals\",\"mzId\":\"p1Field-0\",\"property\":\"CardID\",\"value\":\"em6eEh9q8y\",\"semantic\":true,\"label\":\"Dungeon Guide itself resolves onto the field\"},\n    {\"step\":6,\"type\":\"card_property_equals\",\"mzId\":\"p1Field-1\",\"property\":\"CardID\",\"value\":\"DpHDGaX2Pn\",\"semantic\":true,\"label\":\"Accepting the On Enter offer levels the champion up into a higher-level champion from material\"},\n    {\"step\":6,\"type\":\"card_property_equals\",\"mzId\":\"p1Field-1\",\"property\":\"Subcards\",\"value\":\"[\\\"LMyKyVC2O9\\\"]\",\"semantic\":true,\"label\":\"The previous champion (Spirit of Fire) is preserved in the new champion's lineage\"},\n    {\"step\":6,\"type\":\"zone_count\",\"zone\":\"myBanish\",\"viewerPlayerID\":1,\"value\":2,\"semantic\":true,\"label\":\"Exactly two cards were banished at random from memory to pay for the level-up\"},\n    {\"step\":6,\"type\":\"zone_count\",\"zone\":\"myMemory\",\"viewerPlayerID\":1,\"value\":3,\"semantic\":true,\"label\":\"Memory went from 5 (2 seeded + 3 paid as this card's own memory cost) down to 3 after banishing 2\"},\n    {\"step\":6,\"type\":\"zone_count\",\"zone\":\"myMaterial\",\"viewerPlayerID\":1,\"value\":3,\"semantic\":true,\"label\":\"The chosen champion left material to level up\"},\n    {\"step\":6,\"type\":\"zone_count\",\"zone\":\"myHand\",\"viewerPlayerID\":1,\"value\":3}\n]\n"
+    },
+    {
+      "id": "return-stroke-floating-memory",
+      "path": "Tests/Integration/GrandArchiveSim/return-stroke-floating-memory/actions.json",
+      "fileSha256": "5693662c4efd6c2e08806cb1dc2e8229559f9bf44efe4ddd8bfe4691a84d2453",
+      "excerpt": "[\n    {\n        \"playerID\": 1,\n        \"mode\": 10001,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHealth-0!CustomInput!Pass\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 2,\n        \"mode\": 10001,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myHealth-0!CustomInput!Pass\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myMaterial-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    },\n    {\n        \"playerID\": 1,\n        \"mode\": 100,\n        \"buttonInput\": \"\",\n        \"cardID\": \"myGraveyard-0\",\n        \"chkInput\": [],\n        \"inputText\": \"\"\n    }\n]"
+    },
+    {
+      "id": "return-stroke-floating-memory",
+      "path": "Tests/Integration/GrandArchiveSim/return-stroke-floating-memory/assertions.json",
+      "fileSha256": "a6bd656d3bfb740840196a9f0f2e046159a7f1d231b440332c3d688444410d6a",
+      "excerpt": "[\n    {\"step\":4,\"type\":\"card_property_equals\",\"mzId\":\"myField-0\",\"property\":\"CardID\",\"value\":\"DpHDGaX2Pn\",\"semantic\":true,\"label\":\"The champion level-up completes -- Lorraine, Wandering Warrior takes the field\"},\n    {\"step\":4,\"type\":\"zone_count\",\"zone\":\"myGraveyard\",\"viewerPlayerID\":1,\"value\":0,\"semantic\":true,\"label\":\"Return Stroke leaves the graveyard, paying for the level-up's memory cost\"},\n    {\"step\":4,\"type\":\"zone_count\",\"zone\":\"myBanish\",\"viewerPlayerID\":1,\"value\":1,\"semantic\":true,\"label\":\"Floating Memory banishes Return Stroke rather than tapping a myMemory card\"},\n    {\"step\":4,\"type\":\"zone_count\",\"zone\":\"myMemory\",\"viewerPlayerID\":1,\"value\":0,\"semantic\":true,\"label\":\"No myMemory card was seeded or spent -- the cost was paid entirely from the graveyard\"},\n    {\"step\":4,\"type\":\"decision_queue_empty\",\"player\":\"all\"}\n]\n"
+    }
+  ],
+  "timing": [
+    {
+      "path": "GrandArchiveSim/Custom/MaterializeLogic.php",
+      "fileSha256": "833ed847bd19b0162f2d2e8a071ff22620f6367fa590234e445e11fb54b118b2",
+      "excerpt": "function MaterializePhase($additional = false) {\n    $currentTurn = intval(GetTurnNumber());\n    if($currentTurn === 1 && !$additional && !GADTRIsExtraTurn()) return;\n    \n"
+    },
+    {
+      "path": "GrandArchiveSim/Custom/GameLogic.php",
+      "fileSha256": "0beb34c2ab8d948a90aee6325b978b0b5f36b89c513fbd2ae6e53007594a90fe",
+      "excerpt": "function RecollectionPhase() {\n    $currentTurn = intval(GetTurnNumber());\n    if($currentTurn === 1 && !GADTRIsExtraTurn()) return;\n\n"
+    },
+    {
+      "path": "GrandArchiveSim/Custom/GameLogic.php",
+      "fileSha256": "0beb34c2ab8d948a90aee6325b978b0b5f36b89c513fbd2ae6e53007594a90fe",
+      "excerpt": "function DrawPhase() {\n    // Draw phase - player draws a card\n    $currentTurn = &GetTurnNumber();\n    $turnPlayer = &GetTurnPlayer();\n    $firstPlayer = &GetFirstPlayer();\n    if($currentTurn == 1 && $turnPlayer == $firstPlayer && !GADTRIsExtraTurn()) return;//Starting player skips first draw phase\n"
+    },
+    {
+      "path": "GrandArchiveSim/Custom/GameLogic.php",
+      "fileSha256": "0beb34c2ab8d948a90aee6325b978b0b5f36b89c513fbd2ae6e53007594a90fe",
+      "excerpt": "        MZMove($turnPlayer, \"myMemory-\" . $i, \"myHand\");\n    }\n}\n\n"
+    },
+    {
+      "path": "DevTools/ga-fixtures/Scenario.php",
+      "fileSha256": "acd0e60b33622a8880f8d4a2b79c761b82bc9205f87133796679c5e977225744",
+      "excerpt": "    // Player 1's first turn cannot attack (rule 1.h): both players end a turn, then player 1 declines the materialize offer\n    // of their own turn 3 and is back in the main phase with the board unchanged.\n    // $fastCardInHand: player 1 holds a fast card on those turns (any Wind Fairy Whispers-style card), which opens a priority window at\n    // every phase change: the same route needs a pass in each of them. Check with dump-fixture-state.php if the first play is refused.\n    public function reachTurnThree(bool $fastCardInHand = false): self {\n        if ($fastCardInHand) return $this->endTurn(1)->pass(1)->pass(1)->endTurn(2)->pass(1)->pass(1)->pass(1)->pass(1);\n        return $this->endTurn(1)->endTurn(2)->pass(1);\n    }\n\n"
+    }
   ]
 }

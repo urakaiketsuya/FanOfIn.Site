@@ -797,3 +797,31 @@ existing 11/16 unequal milestone checklist; this supplemental combat slice does 
 close the remaining card/build audit.
 Final full app typecheck also passed. The fixture import contains 15 existing
 upstream scenarios; no new upstream scenarios or live deployment were created.
+
+
+### 2026-11-18 — Casella multi-turn resource and deployment calibration
+
+Replaced the displayed free level-three starting state with seeded, persistent
+opening-to-turn-five trajectories. Added paid materialization before recollection,
+Dungeon Guide acceleration, Floating/Active Memory, first/second-player opening
+rules, deployed-ally persistence and temporary/permanent buff lifetime handling.
+The fixed first-player report shows cumulative damage ranges at own turns 2–5,
+level-three reach percentages and median-line card/resource results. Casella deck
+comparisons now match those turn checkpoints. The burst API remains regression-tested.
+
+Reused existing TCGEngine Dungeon Guide and Floating Memory integration contracts
+and pinned timing excerpts; no upstream fixture authoring or PHP replay. Casella
+and Poise/Song contracts remain catalog-derived. The 18 focused tests include all
+60 acceptance-deck rotations with Main-card conservation, resource timing, payment,
+buff lifetime and non-Casella regressions. App/shared typechecks and targeted lint
+passed. Local browser verification exercised the real report/comparison routers at
+360px and 1280px, card links/focus, 48px targets, missing Song hiding and overflow;
+no console errors. Transient loading was not captured in the browser. No new
+expansion or error interaction was introduced. Live/signed-in deployment and PHP
+engine execution were not verified.
+
+Scoped Casella multi-turn milestone complete. Next: opponent survival/interaction
+and empirical sequence calibration, which requires observed turn data; these
+unopposed outputs must not be called expected resolved match damage. The broader
+Extended Analytics roadmap remains approximately 69% (11/16 unequal milestones);
+this supplemental Casella work does not close the outstanding card/build audit.

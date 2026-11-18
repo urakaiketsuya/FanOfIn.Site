@@ -7417,15 +7417,17 @@ rank by absolute change, then card name. These are descriptive changes, not
 significance or performance claims. `scripts/build-card-staples.ts` republishes
 only the tournament Staples artifact from cached events and catalog.
 
-### Casella paid burst sequences
+### Casella paid turn progression
 
-`casellaCombatForecast` samples available Main-card pools at the shared access
-checkpoints and searches paid level-three burst lines. Complete Casella lineage,
-four starting aria and a separate supported Song deck are required. Reserve costs
-move real hand cards to memory; returned allies lose modifiers and require a new
-paid deployment before another attack. Songs consume aria and premiere once;
-Final Refrain records each nonzero aria-removal event. Quantiles are over sampled
-best-found lines, not independent sums or predicted resolved game damage. The
-representative median line has additive first/repeat/buff/trigger contributions.
-Comparisons use the same conditional starting state. See CASELLA_COMBAT.md for
-search limits, supported draws, Material assumptions and upstream fixture provenance.
+`casellaTurnForecast` follows 64 seeded shuffled Main orders through own turns
+1–5; the report displays cumulative p10/median/p90 at turns 2–5, going first.
+Spirit draws seven; Casella levels, reserve, memory banishment, recollection,
+Dungeon acceleration and supported draw effects are paid and carried forward.
+No level-three/four-aria starting state is granted. Level-three reach and replay
+percentages use the same trajectories. Deployed allies and permanent counters
+persist; temporary buffs expire. The median-damage trajectory supplies additive
+regular/replay/buff/trigger contributions, board size and cards accessed.
+Comparisons use identical turn policies. These are unopposed best-found sequences,
+not predicted resolved game damage. The original `casellaCombatForecast` burst API
+remains for regression compatibility. See CASELLA_COMBAT.md for search weights,
+resource policies, unsupported effects and upstream fixture provenance.
