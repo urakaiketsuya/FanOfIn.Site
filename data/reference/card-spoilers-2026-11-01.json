@@ -2690,6 +2690,37 @@
       "speed": "fast",
       "effect": "Class Bonus This card costs 1 less to activate.\nPut three preparation counters on your champion. At the beginning of the next end phase, remove three preparation counters from your champion. For each counter removed this way, deal 2 damage to your champion.",
       "sourceFile": "new-image-6.png"
+    },
+    {
+      "name": "Programmatica Prime",
+      "setPrefix": "CBL",
+      "collectorNumber": "023",
+      "rarity": "UR",
+      "image": "programmatica-prime.jpg",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DEVICE"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Beatrice Bonus You may sacrifice an object named Neos Essence to activate this card from your material deck.\nBeatrice Bonus Rest: Scavenge 3 for a Program card. Banish that card compiled rather than putting it into your hand.",
+      "addedAt": "2026-11-19",
+      "sourceFile": "IMG-20261119-WA0039.jpg"
     }
   ],
   "deckSections": {
