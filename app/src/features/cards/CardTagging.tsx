@@ -5,7 +5,7 @@ import { isPreviewCard, previewCardSet } from "../../lib/previewCards";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
-import { canonicalCardTag, cardTagKey, cardTagCategory, type Card, type TagProposalInput, type TagTarget } from "@gatcg/shared";
+import { canonicalCardTag, cardTagKey, cardTagCategory, type Card, type CardTagLookup, type TagProposalInput, type TagTarget } from "@gatcg/shared";
 import CardResult from "../../components/CardResult";
 import DialogSheet from "../../components/ui/DialogSheet";
 import Button from "../../components/ui/Button";
@@ -26,6 +26,14 @@ function initialDraft(params: URLSearchParams): Draft {
     if (raw && typeof raw.tag === "string" && typeof raw.reason === "string" && (raw.action === "add" || raw.action === "remove") && Array.isArray(raw.targets) && raw.targets.length <= 50 && raw.targets.every(target => typeof target?.cardUuid === "string" && (typeof target.editionUuid === "string" || target.editionUuid === null))) return { ...raw, id: typeof raw.id === "string" ? raw.id : crypto.randomUUID() };
   } catch { /* Storage may be unavailable; manual tagging still works. */ }
   return { id: crypto.randomUUID(), tag: canonicalCardTag(params.get("tag") ?? ""), action: params.get("action") === "remove" ? "remove" : "add", reason: "", targets: params.get("card") && (params.get("edition") || params.get("card")!.startsWith("preview:")) ? [{ cardUuid: params.get("card")!, editionUuid: params.get("edition") }] : [] };
+}
+
+function CurrentTags({ target, lookup, failed }: { target: TagTarget; lookup?: CardTagLookup; failed: boolean }) {
+  const tags = [...(target.editionUuid === null ? lookup?.cards.get(target.cardUuid) : lookup?.editions.get(target.editionUuid)) ?? []].sort((a, b) => a.localeCompare(b));
+  return <div className="mt-2 text-xs text-ctp-subtext0">
+    <p>Current tags{lookup && tags.length > 0 ? ` (${tags.length})` : ""}</p>
+    {!lookup ? <p>{failed ? "Tags unavailable" : "Loading tags…"}</p> : tags.length ? <ul className="mt-1 flex flex-wrap gap-1" aria-label="Current tags">{tags.map(tag => <li key={tag} className="max-w-full rounded-md bg-ctp-surface0 px-2 py-1 break-words text-ctp-text">{tag}</li>)}</ul> : <p>None recorded</p>}
+  </div>;
 }
 
 export default function CardTagging() {
@@ -105,6 +113,7 @@ export default function CardTagging() {
       const target = { cardUuid: card.uuid, editionUuid: edition?.uuid ?? null };
       return <CardResult key={targetKey(target)} card={edition ? { ...card, editions: [edition] } : card} name={card.name} selected={draft.targets.some(row => targetKey(row) === targetKey(target))} onSelect={() => toggle(target)}>
         <p className="mt-2 text-xs text-ctp-subtext0">{edition ? `${edition.set.prefix} · ${edition.collector_number}` : "Gameplay tags only"}</p>
+        <CurrentTags target={target} lookup={lookup} failed={status.phase === "error"} />
         <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center text-sm text-ctp-blue">Card details<span className="sr-only"> in a new tab</span></Link>
       </CardResult>;
     })}</div>
@@ -121,7 +130,7 @@ export default function CardTagging() {
       <div className="grid grid-cols-2 gap-3">{draft.targets.map(target => {
         const card = cards.find(row => row.uuid === target.cardUuid);
         const edition = card?.editions.find(row => row.uuid === target.editionUuid);
-        return <CardResult key={targetKey(target)} card={card && edition ? { ...card, editions: [edition] } : card} name={card?.name ?? target.cardUuid} newTab><p className="text-xs">{edition ? `${edition.set.prefix} · ${edition.collector_number}` : target.editionUuid === null ? "Gameplay tags only" : "Printing unavailable"}</p><p className="mt-2 break-words text-xs text-ctp-subtext0">Current tags: {[...(target.editionUuid === null ? lookup?.cards.get(target.cardUuid) : lookup?.editions.get(target.editionUuid)) ?? []].join(", ") || "None recorded"}</p><button className={`${tagControl} mt-2 w-full`} disabled={busy} onClick={() => toggle(target)}>Remove selection</button></CardResult>;
+        return <CardResult key={targetKey(target)} card={card && edition ? { ...card, editions: [edition] } : card} name={card?.name ?? target.cardUuid} newTab><p className="text-xs">{edition ? `${edition.set.prefix} · ${edition.collector_number}` : target.editionUuid === null ? "Gameplay tags only" : "Printing unavailable"}</p><CurrentTags target={target} lookup={lookup} failed={status.phase === "error"} /><button className={`${tagControl} mt-2 w-full`} disabled={busy} onClick={() => toggle(target)}>Remove selection</button></CardResult>;
       })}</div>
       <fieldset disabled={busy} className="mt-4 space-y-4">
         <label className="flex flex-col gap-1 text-sm">Action<select className={tagControl} value={draft.action} onChange={event => update({ action: event.target.value as Draft["action"] })}><option value="add">Suggest adding a tag</option><option value="remove">Report an incorrect tag</option></select></label>
