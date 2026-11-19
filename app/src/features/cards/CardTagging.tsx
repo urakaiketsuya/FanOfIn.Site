@@ -4,7 +4,7 @@ import { searchCardPrintings } from "./filters";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
-import { canonicalCardTag, cardTagCategory, type TagProposalInput, type TagTarget } from "@gatcg/shared";
+import { canonicalCardTag, cardTagKey, cardTagCategory, type TagProposalInput, type TagTarget } from "@gatcg/shared";
 import CardResult from "../../components/CardResult";
 import DialogSheet from "../../components/ui/DialogSheet";
 import PageLayout from "../../components/layout/PageLayout";
@@ -72,7 +72,7 @@ export default function CardTagging() {
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Submission failed. Your draft is preserved."); }
     finally { setBusy(false); }
   }
-  const validTag = draft.tag.trim().length > 0 && draft.tag.length <= 100 && (draft.action === "add" || data?.tags.some(tag => tag.name === draft.tag));
+  const validTag = draft.tag.trim().length > 0 && draft.tag.length <= 100 && (draft.action === "add" || data?.tags.some(tag => cardTagKey(tag.name) === cardTagKey(draft.tag)));
   const missingTargets = cards.length > 0 && draft.targets.some(target => !cards.some(card => card.uuid === target.cardUuid && card.editions.some(edition => edition.uuid === target.editionUuid)));
   return <PageLayout width="full">
     <Link className="inline-flex min-h-12 items-center text-ctp-blue" to="/cards/tags">Tag galleries</Link>

@@ -43,3 +43,16 @@ test("local corrections preserve other printings, rebuild counts and leave impor
   assert.equal(gameplay.editions.get("a2")?.has("Mill"), true);
   assert.equal(gameplay.cards.get("a")?.has("Mill"), true);
 });
+
+
+test("case and whitespace variants share one tag and preserve corrections", async () => {
+  const { mergeTagOverrides } = await import("@gatcg/shared");
+  const source: CardTagsData = { generatedAt: "test", source: "test", sourceUrl: "https://example.test", tags: [{ name: "Dragon", cardCount: 1, status: "approved" }, { name: " dragon ", cardCount: 1, status: "pending" }], cards: { a: [0], b: [1] }, editions: { a1: [0], b1: [1] } };
+  const catalog = [{ uuid: "a", editions: [{ uuid: "a1" }] }, { uuid: "b", editions: [{ uuid: "b1" }] }];
+  const merged = mergeTagOverrides(source, [{ cardUuid: "a", editionUuid: "a1", tag: "DRAGON", action: "remove" }], catalog);
+  assert.equal(merged.tags.length, 1);
+  assert.equal(merged.tags[0].name, "Dragon");
+  assert.equal(merged.tags[0].cardCount, 1);
+  assert.equal(merged.tags[0].status, "pending");
+  assert.equal(buildCardTagLookup(merged).editions.get("a1")?.size, 0);
+});

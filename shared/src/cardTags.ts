@@ -35,33 +35,42 @@ export function canonicalCardTag(name: string): string {
   return aliases.get(normalized.toLowerCase()) ?? normalized;
 }
 
+export function cardTagKey(name: string): string {
+  return canonicalCardTag(name).toLocaleLowerCase("en-US");
+}
+
 /** Categories are editorial discovery aids, not verified card mechanics. */
 export function cardTagCategory(name: string): CardTagCategory {
   const canonical = canonicalCardTag(name);
   if (characters.has(canonical)) return "Characters";
-  if (gameplay.has(canonical.toLowerCase()) || /^[+-]\d+ Influence$/.test(canonical) || /^\d+ (Power|Cost|Health)$/.test(canonical)) return "Gameplay";
+  if (gameplay.has(canonical.toLowerCase()) || /^[+-]\d+ Influence$/i.test(canonical) || /^\d+ (Power|Cost|Health)$/i.test(canonical)) return "Gameplay";
   if (art.has(canonical.toLowerCase())) return "Art & themes";
   return "Other";
 }
 
 /** Keep source data intact; merge aliases for discovery and count distinct cards, not links. */
 export function normalizeCardTags(data: CardTagsData): CardTagsData {
-  const names = [...new Set(data.tags.map(tag => canonicalCardTag(tag.name)))];
-  const index = new Map(names.map((name, i) => [name, i]));
+  const namesByKey = new Map<string, string>();
+  for (const tag of data.tags) {
+    const name = canonicalCardTag(tag.name);
+    if (!namesByKey.has(cardTagKey(name))) namesByKey.set(cardTagKey(name), name);
+  }
+  const names = [...namesByKey.values()];
+  const index = new Map(names.map((name, i) => [cardTagKey(name), i]));
   const remap = (rows: Record<string, number[]>) => Object.fromEntries(Object.entries(rows).map(([uuid, ids]) => [uuid,
-    [...new Set(ids.flatMap(id => data.tags[id] ? [index.get(canonicalCardTag(data.tags[id].name))!] : []))],
+    [...new Set(ids.flatMap(id => data.tags[id] ? [index.get(cardTagKey(data.tags[id].name))!] : []))],
   ]));
   const cards = remap(data.cards);
   const counts = new Map<number, number>();
   for (const ids of Object.values(cards)) for (const id of ids) counts.set(id, (counts.get(id) ?? 0) + 1);
   const statuses = new Map<string, CardTagStatus>();
   for (const tag of data.tags) {
-    const name = canonicalCardTag(tag.name);
+    const name = cardTagKey(tag.name);
     const previous = statuses.get(name);
     // Merging an approved alias must not promote an unreviewed label.
     statuses.set(name, previous === "pending" || tag.status === "pending" ? "pending" : previous === "review" || tag.status === "review" ? "review" : "approved");
   }
-  return { ...data, cards, editions: remap(data.editions), tags: names.map((name, i) => ({ name, cardCount: counts.get(i) ?? 0, status: statuses.get(name)! })) };
+  return { ...data, cards, editions: remap(data.editions), tags: names.map((name, i) => ({ name, cardCount: counts.get(i) ?? 0, status: statuses.get(cardTagKey(name))! })) };
 }
 
 /** Decoded silvie.gg art tags — tag names per card uuid and per edition uuid. */

@@ -51,7 +51,15 @@ test("pending suggestions are private and do not publish; retries and conflicts 
     const newTag = { ...input(), tag: "Invented" };
     assert.equal((await submitTagProposal(f.env, f.a, newTag)).status, "pending");
     await reviewTagProposal(f.env, f.mod, newTag.id, { decision: "approved" });
-    assert.ok((await listTagOverrides(f.env)).some(row => row.tag === "Invented" && row.action === "add"));
+    const variant = { ...input(), tag: "invented", targets: [{ cardUuid: "card-a", editionUuid: "print-b" }] };
+    await submitTagProposal(f.env, f.a, variant);
+    await reviewTagProposal(f.env, f.mod, variant.id, { decision: "approved" });
+    assert.equal((await listTagOverrides(f.env)).find(row => row.editionUuid === "print-b")?.tag, "invented");
+    assert.ok((await listTagOverrides(f.env)).some(row => row.tag === "invented" && row.action === "add"));
+    const removal = { ...input(), tag: "INVENTED", action: "remove" };
+    await submitTagProposal(f.env, f.a, removal);
+    await reviewTagProposal(f.env, f.mod, removal.id, { decision: "approved" });
+    assert.equal((await listTagOverrides(f.env)).find(row => row.editionUuid === "print-a")?.action, "remove");
     await assert.rejects(submitTagProposal(f.env, f.a, { ...input(), targets: [{ cardUuid: "card-a", editionUuid: "wrong-print" }] }), /no longer available/);
   } finally { f.db.close(); }
 });

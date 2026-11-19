@@ -1,7 +1,7 @@
 import { CATALOG_CARD_ID_PATTERN } from "@gatcg/shared";
 import { publishedSpoilerTargets } from "./spoiler-catalog";
 import { assertAllowedText } from "./content-policy";
-import { canonicalCardTag, cardTagCategory, type CardTagsData, type TagOverride, type TagProposal, type TagProposalInput, type TagProposalList } from "@gatcg/shared";
+import { canonicalCardTag, cardTagKey, cardTagCategory, type CardTagsData, type TagOverride, type TagProposal, type TagProposalInput, type TagProposalList } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
 import { assetJson } from "./assets";
@@ -33,23 +33,24 @@ export async function canReviewTags(env: Env, user: AuthUser): Promise<boolean> 
   return row?.community_role === "moderator" || row?.community_role === "staff";
 }
 
-async function validatePublishedTargets(env: Env, input: TagProposalInput) {
+async function validatePublishedTargets(env: Env, input: TagProposalInput): Promise<string> {
   let catalog: { cards: { uuid: string; editions: { uuid: string }[] }[] }; let tags: CardTagsData;
   try {
     [catalog, tags] = await Promise.all([assetJson<typeof catalog>(env, "/data/community/card-tag-targets.json"), assetJson<CardTagsData>(env, "/data/community/card-tags.json")]);
   } catch (error) {
     console.error("Tag validation asset fetch failed", error instanceof Error ? error.message : "Unknown error");
     throw new ApiError("Card and tag validation is temporarily unavailable. Your draft can be retried.", 503, "tag_catalog_unavailable"); }
-  if (input.action === "remove" && !tags.tags.some(tag => canonicalCardTag(tag.name) === input.tag)) {
-    const local = await env.ACCOUNT_DB.prepare("SELECT 1 FROM card_tag_overrides WHERE tag = ? AND action = 'add' LIMIT 1").bind(input.tag).first();
-    if (!local) throw badRequest("Choose an existing published tag to remove");
-  }
+  const published = tags.tags.find(tag => cardTagKey(tag.name) === cardTagKey(input.tag));
+  const localTags = await env.ACCOUNT_DB.prepare("SELECT DISTINCT tag FROM card_tag_overrides WHERE action = 'add'").all<{ tag: string }>();
+  const local = localTags.results.find(row => cardTagKey(row.tag) === cardTagKey(input.tag));
+  if (input.action === "remove" && !published && !local) throw badRequest("Choose an existing published tag to remove");
   const spoilers = input.targets.some(target => target.cardUuid.startsWith("preview:")) ? await publishedSpoilerTargets(env) : [];
   const cards = new Map([...catalog.cards, ...spoilers].map(card => [card.uuid, card]));
   for (const target of input.targets) {
     const card = cards.get(target.cardUuid);
     if (!card || (target.editionUuid && !card.editions.some(edition => edition.uuid === target.editionUuid))) throw badRequest("A selected card or printing is no longer available");
   }
+  return published ? canonicalCardTag(published.name) : local ? canonicalCardTag(local.tag) : cardTagKey(input.tag);
 }
 
 interface Row { id: string; user_id: string | null; payload: string; status: TagProposal["status"]; created_at: string; reviewed_at: string | null }
@@ -95,13 +96,13 @@ export async function reviewTagProposal(env: Env, user: AuthUser, id: string, va
   if (!row) throw new ApiError("Submission not found", 404, "tag_proposal_missing");
   if (row.status !== "pending") throw new ApiError("This submission has already been reviewed. Refresh the queue.", 409, "tag_already_reviewed");
   const input = decision === "approved" ? parseTagProposal(JSON.parse(row.payload)) : null;
-  if (input) await validatePublishedTargets(env, input);
+  const resolvedTag = input ? await validatePublishedTargets(env, input) : null;
   const token = crypto.randomUUID();
   const statements = [env.ACCOUNT_DB.prepare("UPDATE card_tag_proposals SET status = ?, reviewed_at = ?, reviewer_id = ?, review_token = ? WHERE id = ? AND status = 'pending'").bind(decision, new Date().toISOString(), user.id, token, id)];
   if (input) for (const target of input.targets) statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_overrides(card_uuid, edition_uuid, tag, action, proposal_id)
     SELECT ?, ?, ?, ?, ? FROM card_tag_proposals WHERE id = ? AND review_token = ?
     ON CONFLICT(card_uuid, edition_uuid, tag) DO UPDATE SET action = excluded.action, proposal_id = excluded.proposal_id`)
-    .bind(target.cardUuid, target.editionUuid ?? "", input.tag, input.action, id, id, token));
+    .bind(target.cardUuid, target.editionUuid ?? "", resolvedTag, input.action, id, id, token));
   const results = await env.ACCOUNT_DB.batch(statements);
   if (results[0].meta.changes !== 1) throw new ApiError("This submission has already been reviewed. Refresh the queue.", 409, "tag_already_reviewed");
 }
