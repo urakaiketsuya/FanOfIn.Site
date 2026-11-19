@@ -15,11 +15,11 @@ function fixture() {
     bind(...values: unknown[]) { args = values; return this; },
     async first() { return db.prepare(sql).get(...args as never[]) ?? null; },
     async all() { return { results: db.prepare(sql).all(...args as never[]).map(row => ({ ...row })) }; },
-    async run() { return { meta: db.prepare(sql).run(...args as never[]) }; },
+    run() { return { meta: db.prepare(sql).run(...args as never[]) }; },
   }; };
   const env = { ASSET_BASE_URL: "https://assets.example.test", ACCOUNT_DB: { prepare, async batch(statements: ReturnType<typeof prepare>[]) {
     const hook = beforeBatch; beforeBatch = undefined; hook?.();
-    db.exec("BEGIN"); try { const results = []; for (const statement of statements) results.push(await statement.run()); db.exec("COMMIT"); return results; } catch (error) { db.exec("ROLLBACK"); throw error; }
+    db.exec("BEGIN"); try { const results = []; for (const statement of statements) results.push(statement.run()); db.exec("COMMIT"); return results; } catch (error) { db.exec("ROLLBACK"); throw error; }
   } } } as unknown as Env;
   return { db, env, a: { id: "a" } as AuthUser, b: { id: "b" } as AuthUser, mod: { id: "mod" } as AuthUser, beforeBatch(hook: () => void) { beforeBatch = hook; } };
 }
@@ -117,5 +117,31 @@ test("published spoilers accept gameplay tags without inventing printings", asyn
     await reviewTagProposal(f.env, f.mod, value.id, { decision: "approved" });
     assert.deepEqual(await listTagOverrides(f.env), [{ cardUuid: value.targets[0].cardUuid, editionUuid: null, tag: "Mill", action: "add" }]);
     await assert.rejects(submitTagProposal(f.env, f.a, { ...value, id: crypto.randomUUID(), targets: [{ cardUuid: "preview:invented", editionUuid: null }] }), /no longer available/);
+  } finally { f.db.close(); }
+});
+
+test('administrator submissions auto-publish atomically; retries cannot overwrite later corrections', async t => {
+  assets(t); const f = fixture(); try {
+    f.db.exec("INSERT INTO admin_users(user_id) VALUES('a')");
+    const value = input();
+    f.db.exec("CREATE TRIGGER fail_auto_override BEFORE INSERT ON card_tag_overrides BEGIN SELECT RAISE(ABORT, 'auto failure'); END");
+    await assert.rejects(submitTagProposal(f.env, f.a, value), /auto failure/);
+    assert.equal(f.db.prepare('SELECT COUNT(*) AS total FROM card_tag_proposals').get()?.total, 0);
+    f.db.exec('DROP TRIGGER fail_auto_override');
+    const [saved, retry] = await Promise.all([submitTagProposal(f.env, f.a, value), submitTagProposal(f.env, f.a, value)]);
+    assert.deepEqual(saved, retry); assert.equal(saved.status, 'approved'); assert.ok(saved.reviewedAt);
+    assert.equal(f.db.prepare('SELECT reviewer_id FROM card_tag_proposals WHERE id=?').get(value.id)?.reviewer_id, 'a');
+    assert.equal((await listTagOverrides(f.env))[0].action, 'add');
+    const correction = { ...input(), action: 'remove' };
+    assert.equal((await submitTagProposal(f.env, f.a, correction)).status, 'approved');
+    await submitTagProposal(f.env, f.a, value);
+    assert.equal((await listTagOverrides(f.env))[0].action, 'remove');
+    await assert.rejects(submitTagProposal(f.env, f.b, value), /already in use/);
+    assert.equal((await listTagProposals(f.env, f.mod, true, 0)).proposals.length, 0);
+    // Reviewer and moderator privileges alone still require another review.
+    f.db.exec("INSERT INTO card_tag_reviewers(user_id) VALUES('b')");
+    assert.equal((await submitTagProposal(f.env, f.b, input())).status, 'pending');
+    assert.equal((await submitTagProposal(f.env, f.mod, input())).status, 'pending');
+    await assert.rejects(submitTagProposal(f.env, f.a, { ...input(), targets: [{ cardUuid: 'card-a', editionUuid: 'missing' }] }), /no longer available/);
   } finally { f.db.close(); }
 });

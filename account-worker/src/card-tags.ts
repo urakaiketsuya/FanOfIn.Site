@@ -1,3 +1,4 @@
+import { isAdmin } from "./admin-workspace";
 import { CATALOG_CARD_ID_PATTERN } from "@gatcg/shared";
 import { publishedSpoilerTargets } from "./spoiler-catalog";
 import { assertAllowedText } from "./content-policy";
@@ -64,9 +65,16 @@ export async function submitTagProposal(env: Env, user: AuthUser, value: unknown
     if (existing.user_id !== user.id || existing.payload !== payload) throw new ApiError("This submission ID is already in use", 409, "tag_proposal_conflict");
     return proposal(existing);
   }
-  await validatePublishedTargets(env, input);
+  const resolvedTag = await validatePublishedTargets(env, input);
   const now = new Date().toISOString();
-  await env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_proposals (id, user_id, payload, created_at)
+  if (await isAdmin(env, user)) {
+    const token = crypto.randomUUID();
+    await env.ACCOUNT_DB.batch([
+      env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_proposals (id, user_id, payload, created_at, status, reviewed_at, reviewer_id, review_token)
+        VALUES (?, ?, ?, ?, 'approved', ?, ?, ?) ON CONFLICT(id) DO NOTHING`).bind(input.id, user.id, payload, now, now, user.id, token),
+      ...overrideStatements(env, input, resolvedTag, token),
+    ]);
+  } else await env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_proposals (id, user_id, payload, created_at)
     SELECT ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM card_tag_proposals WHERE user_id = ? AND status = 'pending') < 100
     ON CONFLICT(id) DO NOTHING`).bind(input.id, user.id, payload, now, user.id).run();
   const saved = await env.ACCOUNT_DB.prepare("SELECT * FROM card_tag_proposals WHERE id = ?").bind(input.id).first<Row>();
@@ -99,10 +107,14 @@ export async function reviewTagProposal(env: Env, user: AuthUser, id: string, va
   const resolvedTag = input ? await validatePublishedTargets(env, input) : null;
   const token = crypto.randomUUID();
   const statements = [env.ACCOUNT_DB.prepare("UPDATE card_tag_proposals SET status = ?, reviewed_at = ?, reviewer_id = ?, review_token = ? WHERE id = ? AND status = 'pending'").bind(decision, new Date().toISOString(), user.id, token, id)];
-  if (input) for (const target of input.targets) statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_overrides(card_uuid, edition_uuid, tag, action, proposal_id)
-    SELECT ?, ?, ?, ?, ? FROM card_tag_proposals WHERE id = ? AND review_token = ?
-    ON CONFLICT(card_uuid, edition_uuid, tag) DO UPDATE SET action = excluded.action, proposal_id = excluded.proposal_id`)
-    .bind(target.cardUuid, target.editionUuid ?? "", resolvedTag, input.action, id, id, token));
+  if (input) statements.push(...overrideStatements(env, input, resolvedTag!, token));
   const results = await env.ACCOUNT_DB.batch(statements);
   if (results[0].meta.changes !== 1) throw new ApiError("This submission has already been reviewed. Refresh the queue.", 409, "tag_already_reviewed");
+}
+
+function overrideStatements(env: Env, input: TagProposalInput, tag: string, token: string) {
+  return input.targets.map(target => env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_overrides(card_uuid, edition_uuid, tag, action, proposal_id)
+    SELECT ?, ?, ?, ?, ? FROM card_tag_proposals WHERE id = ? AND review_token = ?
+    ON CONFLICT(card_uuid, edition_uuid, tag) DO UPDATE SET action = excluded.action, proposal_id = excluded.proposal_id`)
+    .bind(target.cardUuid, target.editionUuid ?? "", tag, input.action, input.id, input.id, token));
 }

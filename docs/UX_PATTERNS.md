@@ -1093,3 +1093,11 @@ covered search/list loading, empty results, load failure/retry, role save failur
 saved role reopening, keyboard dismissal/focus restoration, 48px sheet targets, and
 page overflow. Native mobile keyboards and production authenticated dashboard saves
 were not exercised. Backend fixtures cover authorization, rollback and concurrent retries.
+
+Administrator card-tag submissions publish immediately with an approved history entry.
+Other submissions remain pending. Submission confirmation reflects the server status and
+refreshes local contributions after automatic approval. Both approval paths share the same
+catalog validation and atomic override writes; retries never replay superseded changes.
+Verification: 390px/1280px fixture-backed submission checks covered the published confirmation,
+failed-save recovery, draft reload, preview/printing scope, keyboard focus, 48px controls,
+and overflow. Backend tests cover automatic approval rollback and concurrent retries.

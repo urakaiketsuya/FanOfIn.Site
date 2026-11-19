@@ -74,9 +74,10 @@ export default function CardTagging() {
   async function submit() {
     setBusy(true); setError("");
     try {
-      await accountApi.submitTagProposal({ ...draft, tag: canonicalCardTag(draft.tag), targets });
+      const result = await accountApi.submitTagProposal({ ...draft, tag: canonicalCardTag(draft.tag), targets });
       setDraft(value => ({ ...value, id: crypto.randomUUID(), targets: [], reason: "" }));
-      setNotice("Submitted for review. Public tags will change only after moderator approval.");
+      setNotice(result.proposal.status === "approved" ? "Approved and published." : "Submitted for review.");
+      if (result.proposal.status === "approved") await local.refetch();
       setReviewOpen(false);
       await client.invalidateQueries({ queryKey: ["tag-proposals"] });
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Submission failed. Your draft is preserved."); }
@@ -88,7 +89,7 @@ export default function CardTagging() {
   return <PageLayout width="full">
     <Link className="inline-flex min-h-12 items-center text-ctp-blue" to="/cards/tags">Tag galleries</Link>
     <h1 className="text-2xl font-bold">Contribute card tags</h1>
-    <p className="mt-2 text-sm text-ctp-subtext0">Select up to 50 cards or printings, then suggest a tag or request a correction. Changes are reviewed before publication.</p>
+    <p className="mt-2 text-sm text-ctp-subtext0">Select up to 50 cards or printings, then suggest a tag or request a correction. Administrator submissions publish automatically; other submissions are reviewed.</p>
     {notice && <p role="status" className="mt-3 rounded-xl bg-ctp-surface0 p-3">{notice}</p>}
     {storageError && <p role="status">Draft storage is unavailable. Keep this page open to preserve your selections.</p>}
     {!data && <p role="status" className="mt-3">{status.phase === "error" ? <>Tags unavailable. <button className={tagControl} onClick={status.retry}>Retry tags</button></> : "Loading tags…"}</p>}
@@ -115,7 +116,7 @@ export default function CardTagging() {
     </div>
     {error && !reviewOpen && <p role="alert" className="mt-3 text-ctp-red">{error}</p>}
     {session.data?.user && <TagProposalHistory userId={session.data.user.id} cards={cards} />}
-    {reviewOpen && <DialogSheet title="Review tag suggestion" onDismiss={() => setReviewOpen(false)} dismissible={!busy} footer={<Button variant="primary" className="w-full" disabled={busy || !session.data?.user || !validTag || !targets.length || missingTargets || needsPrinting || !cards.length || draft.reason.trim().length < 3} onClick={() => void submit()}>{busy ? "Submitting…" : `Submit ${targets.length} ${gameplay ? targets.length === 1 ? "card" : "cards" : targets.length === 1 ? "printing" : "printings"} for review`}</Button>}>
+    {reviewOpen && <DialogSheet title="Review tag suggestion" onDismiss={() => setReviewOpen(false)} dismissible={!busy} footer={<Button variant="primary" className="w-full" disabled={busy || !session.data?.user || !validTag || !targets.length || missingTargets || needsPrinting || !cards.length || draft.reason.trim().length < 3} onClick={() => void submit()}>{busy ? "Submitting…" : `Submit ${targets.length} ${gameplay ? targets.length === 1 ? "card" : "cards" : targets.length === 1 ? "printing" : "printings"}`}</Button>}>
       <p className="mb-3 text-sm">Your draft is saved in this browser tab. Closing this review keeps it.</p>
       <div className="grid grid-cols-2 gap-3">{draft.targets.map(target => {
         const card = cards.find(row => row.uuid === target.cardUuid);
