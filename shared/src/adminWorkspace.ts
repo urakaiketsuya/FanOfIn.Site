@@ -48,3 +48,14 @@ export interface AdminSiteHealth {
   } | null;
   freshness: { key: string; label: string; updatedAt: string | null }[];
 }
+
+export type CommunityRole = 'member' | 'moderator' | 'staff';
+export interface AdminUserRoles {
+  id: string;
+  displayName: string;
+  profileSlug: string | null;
+  communityRole: CommunityRole;
+  reviewer: boolean;
+  admin: boolean;
+}
+export interface AdminRoleInput { communityRole: CommunityRole; reviewer: boolean; admin: boolean }

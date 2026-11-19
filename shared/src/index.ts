@@ -153,7 +153,7 @@ export * from './broadcastEventMap.js';
 export * from "./timelineSeo";
 
 export * from "./previewIdentity";
-export type { EditorialPackage, EditorialPackageInput, PackageResearchReview, AdminOverview, CollectionEngagement, AdminSiteHealth } from './adminWorkspace.js';
+export type { AdminUserRoles, AdminRoleInput, CommunityRole, EditorialPackage, EditorialPackageInput, PackageResearchReview, AdminOverview, CollectionEngagement, AdminSiteHealth } from './adminWorkspace.js';
 export * from './tonorisDrawReport.js';
 export * from './raiDrawComparison.js';
 export * from './raiDamageReport.js';

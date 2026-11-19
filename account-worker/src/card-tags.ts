@@ -30,7 +30,7 @@ export function parseTagProposal(value: unknown): TagProposalInput {
 
 export async function canReviewTags(env: Env, user: AuthUser): Promise<boolean> {
   const row = await env.ACCOUNT_DB.prepare("SELECT community_role FROM users WHERE id = ?").bind(user.id).first<{ community_role: string }>();
-  return row?.community_role === "moderator" || row?.community_role === "staff";
+  return row?.community_role === "moderator" || row?.community_role === "staff" || !!await env.ACCOUNT_DB.prepare("SELECT user_id FROM card_tag_reviewers WHERE user_id = ?").bind(user.id).first();
 }
 
 async function validatePublishedTargets(env: Env, input: TagProposalInput): Promise<string> {

@@ -1,3 +1,4 @@
+import { listAdminUsers, saveAdminRoles } from './admin-roles';
 import { metricOperation, recordOperation } from './operation-metrics';
 import { adminSiteHealth } from './admin-site-health';
 import { writeUsernameAddress, resolveProfileAddress } from "./profile-address";
@@ -266,6 +267,12 @@ const handler = {
         if (url.pathname === "/v1/admin/site-health" && request.method === "GET") return response(env, request, await adminSiteHealth(env));
         if (url.pathname === "/v1/admin/overview" && request.method === "GET") return response(env, request, await adminOverview(env));
         if (url.pathname === "/v1/admin/packages" && request.method === "GET") return response(env, request, { packages: await listEditorialPackages(env) });
+        if (url.pathname === "/v1/admin/users" && request.method === "GET") return response(env, request, { users: await listAdminUsers(env, user, (url.searchParams.get("search") ?? "").trim()) });
+        const roleMatch = url.pathname.match(/^\/v1\/admin\/users\/([a-zA-Z0-9_-]{1,80})\/roles$/);
+        if (roleMatch && request.method === "PUT") {
+          if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+          return response(env, request, { user: await saveAdminRoles(env, user, roleMatch[1], await jsonBody(request)) });
+        }
         const packageMatch = url.pathname.match(/^\/v1\/admin\/packages\/([a-zA-Z0-9-]+)$/);
         if (packageMatch && request.method === "PUT") {
           if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

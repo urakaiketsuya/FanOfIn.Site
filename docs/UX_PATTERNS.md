@@ -1078,3 +1078,18 @@ failed-save retry with the same ID, loading, tag/account failure and retry, sign
 stale-target blockers, Escape/focus restoration, keyboard containment, 48px sheet controls,
 and page/sheet overflow. Account responses were isolated fixtures. Native mobile keyboards,
 production account writes, and deployment were not exercised.
+
+
+## Administrator role assignment
+
+Admin → Users searches names and usernames and opens a role-editing sheet. Community
+roles, dedicated card-tag Reviewer access, and Administrator access remain separate.
+Reviewers can review tags without comment moderation. Moderators and Staff retain
+existing review access. Administrators cannot revoke their own administrator grant.
+Role saves are atomic and retry-safe; failures preserve the sheet draft.
+
+Verification (2026-11-19): 390px and 1280px browser checks with isolated account responses
+covered search/list loading, empty results, load failure/retry, role save failure/retry,
+saved role reopening, keyboard dismissal/focus restoration, 48px sheet targets, and
+page overflow. Native mobile keyboards and production authenticated dashboard saves
+were not exercised. Backend fixtures cover authorization, rollback and concurrent retries.
