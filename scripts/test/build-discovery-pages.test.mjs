@@ -20,7 +20,7 @@ test('canonical routes normalize legacy champion spaces and query state without 
   assert.equal(canonicalSiteUrl('/champions/Guo-Jia/stats/'), championMetadata('Guo Jia', true).url);
   assert.equal(canonicalSiteUrl('/events/1?tab=decklists'), eventMetadata(event).url);
   for (const slug of ['spoilers', 'banlist', 'search-reference']) assert.equal(isCardPageSlug(slug), false);
-  assert.equal(canonicalSiteUrl('/decks/shared'), 'https://fanofin.site/decks/shared');
+  assert.equal(canonicalSiteUrl('/decks/shared'), 'https://fanofin.site/decks/shared/');
   assert.equal(canonicalSiteUrl('/archetypes/compare'), 'https://fanofin.site/archetypes/compare');
   assert.notEqual(championMetadata('Diao Chan').title, championMetadata('Diao Chan', true).title);
 });

@@ -1,3 +1,4 @@
+import { smokeIndexing } from './check-indexing.mjs';
 import assert from 'node:assert/strict';
 import { pathToFileURL } from 'node:url';
 import { readdirSync } from 'node:fs';
@@ -40,5 +41,6 @@ export async function smokeRelease({ origin = 'https://fanofin.site', expectedRe
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const revision = await smokeRelease({ origin: process.env.RELEASE_URL, expectedRevision: process.env.EXPECTED_REVISION });
+  await smokeIndexing({ origin: process.env.RELEASE_URL });
   console.log(`Release smoke checks passed: ${revision}`);
 }

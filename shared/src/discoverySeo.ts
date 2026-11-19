@@ -3,13 +3,7 @@ import type { OmnidexEventSummary } from './omnidex-index-types';
 import { canonicalSiteUrl } from './seo';
 
 export const SITEMAP_EVENT_CATEGORIES = new Set(['worlds', 'nationals', 'ascent', 'regionals', 'store-championships']);
-export const STATIC_SITEMAP_ROUTES = [
-  '/', '/cards', '/artists', '/stores', '/cards/stats', '/cards/staples', '/cards/spoilers',
-  '/cards/banlist', '/cards/search-reference', '/cards/packages', '/thema', '/events',
-  '/seasons', '/players', '/teams', '/achievements', '/archetypes', '/battle-chart',
-  '/champions', '/metagame', '/decks', '/decks/shared', '/pantheon', '/compare',
-  '/official-decks', '/products', '/merchandise', '/timelines',
-];
+export { STATIC_SITEMAP_ROUTES } from "./seo";
 export const RETIRED_SITEMAP_ROUTES = new Set(['/sets', '/judges', '/tournaments', '/top-decks', '/popular-decks']);
 export function championNameToSlug(name: string): string {
   return encodeURIComponent(name.trim().replace(/\s+/g, '-'));

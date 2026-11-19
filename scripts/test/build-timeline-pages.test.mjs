@@ -20,7 +20,7 @@ test('match entries expose exact results, canonical metadata and escaped readabl
  assert.equal(canonicalSiteUrl('/timelines/mike-Raylam'),'https://fanofin.site/timelines/mike-Raylam/');
  assert.throws(()=>timelinePath('../escape'));assert.throws(()=>timelinePath('combos'));
  assert.equal(canonicalSiteUrl('/timelines/test-match?game=2'),'https://fanofin.site/timelines/test-match/');
- assert.equal(canonicalSiteUrl('/timelines/combos'),'https://fanofin.site/timelines/combos');
+ assert.equal(canonicalSiteUrl('/timelines/combos'),'https://fanofin.site/timelines/combos/');
  assert.doesNotMatch(renderTimelinePage(shell,{...match,video:{id:'javascript:',kind:'broadcast'}}),/href="https:\/\/www.youtube/);
 });
 test('index links every match and groups events; champion identities preserve multiples and spirit fallback',()=>{

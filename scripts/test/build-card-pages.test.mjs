@@ -25,7 +25,7 @@ test('SEO metadata holds only the card name, keywords and effect text', () => {
   assert.ok(cardPageMetadata({ ...card, effect_raw: 'word '.repeat(80) }).description.length <= 160);
   assert.equal(meta.path, '/cards/test-card/');
   assert.equal(canonicalSiteUrl('/cards/test-card?edition=ed1'), 'https://fanofin.site/cards/test-card/');
-  assert.equal(canonicalSiteUrl('/cards/stats'), 'https://fanofin.site/cards/stats');
+  assert.equal(canonicalSiteUrl('/cards/stats'), 'https://fanofin.site/cards/stats/');
 });
 
 test('keywords drop counts, formulas, costs and duplicates', () => {

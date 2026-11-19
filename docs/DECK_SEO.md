@@ -232,3 +232,49 @@ Rendering is bounded to four pages at a time. The completed artifact is approxim
 1.276 GB before deployment packaging. Deployment and signed-in platform validation are
 still pending; the SEO/social expansion rollout is approximately 90% complete, with
 implementation and local verification complete and hosting/live validation remaining.
+
+## Public entry coverage and indexing checks — November 19
+
+The build now ends with `scripts/build-public-pages.mjs` and
+`scripts/check-indexing.mjs`. Public landing routes, all published seasons and the
+24 official deck primers receive real directory-backed documents instead of the
+GitHub Pages JavaScript 404 redirect. The home page also has readable initial
+content and navigation. Public route metadata and the trailing-slash canonical
+policy live together in `shared/src/seo.ts`; the pipeline and browser use that
+same policy. Community deck slug URLs retain their existing canonical delivery.
+
+The sitemap adds the tag gallery, published strategies, methodology, public API
+documentation, changelog, timeline combos and every current primer. Primer and
+season entries are reconciled against current source data on each build. Private
+account tools, draft/edit routes, tag contribution workflows, search parameters,
+player profiles and regular weekly-event details are not newly submitted.
+
+Initial documents use committed catalog, tournament and editorial data. They
+retain the application root and assets so React opens the same route, query,
+hash and existing user drafts normally. Pages that require a live service expose
+concise route-specific content and navigation before the interactive view loads;
+they do not invent current community decks or live Thema rankings. Builds remain
+offline. No extra social raster assets are generated for these routes.
+
+The build check examines every main sitemap target for an existing HTML document,
+readable heading, title, description, one matching canonical and no `noindex`.
+It also checks required public-route coverage, duplicate URLs, canonical syntax,
+host and sitemap size limits. Regression fixtures cover missing generated files,
+repeat builds, removed primers/seasons, escaped text and preserved detail URLs.
+
+The deployed release smoke now checks both live sitemaps, robots declarations,
+every repaired/new public document, all discoverable community deck documents,
+and representative existing detail pages. It rejects non-200 responses,
+`noindex`, empty app fallbacks and canonical mismatches. This runs with plain Node
+24 and no installed dependencies in the deployment smoke job. Google Search
+Console URL Inspection and sitemap submission remain account-specific final
+validation; successful technical checks do not guarantee Google's selection or
+timing of indexing.
+
+Local verification: 1,179 app tests and 73 tooling tests pass; app, shared and
+pipeline typechecks pass. Lint passes with existing warnings. At 390px and 1280px,
+the generated primer's static content and loaded React route preserve their
+canonical, card art and names without horizontal overflow. Primer tabs support
+keyboard navigation and 48px targets; static links have visible focus and 48px
+targets. Live data failure injection and signed-in account/draft flows were not
+exercised; no changes were made to their controllers or persistence.

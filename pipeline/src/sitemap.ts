@@ -7,7 +7,6 @@ import { loadCardCatalog } from "./cards/catalog.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../data");
 const OUT_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../app/public/sitemap.xml");
-const SITE_URL = "https://fanofin.site";
 
 function xmlEscape(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -43,7 +42,7 @@ export async function writeSitemap(): Promise<void> {
     for (const event of index.events) {
       if (SITEMAP_EVENT_CATEGORIES.has(event.category)) urls.push(canonicalSiteUrl(`/events/${event.id}`));
     }
-    for (const season of index.seasons) urls.push(`${SITE_URL}/seasons/${season.slug}`);
+    for (const season of index.seasons) urls.push(canonicalSiteUrl(`/seasons/${season.slug}`));
   }
 
   const championTrends = await readJson<ChampionTrendsData>("analysis/champion-trends.json");
