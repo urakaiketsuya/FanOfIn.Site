@@ -10,16 +10,22 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardTags } from "./cardTags";
 
-import { tagAction, tagControl, tagGalleryUrl } from "./tagUi";
+import { tagAction, tagChoice, tagControl, tagGalleryUrl } from "./tagUi";
+
+type View = "popular" | "az" | "few" | "recent";
+const VIEWS: { id: View; label: string }[] = [{ id: "popular", label: "Most cards" }, { id: "az", label: "A–Z" }, { id: "few", label: "Needs cards" }, { id: "recent", label: "Recently added" }];
+/** A tag with this many cards or fewer is still thin and welcomes more matches. */
+const FEW_CARDS = 5;
 
 export default function TagGallery() {
   const { tag: routeTag } = useParams();
   const tag = routeTag ? canonicalCardTag(routeTag) : undefined;
   useDocumentTitle(tag ? `${tag} cards` : "Community tag galleries");
-  const { data, lookup, status, local } = useCardTags();
+  const { data, lookup, status, local, recent } = useCardTags();
   const cards = useCardCatalog();
   const [search, setSearch] = useBrowseState('cards/TagGallery.search', "");
   const [set, setSet] = useBrowseState('cards/TagGallery.set', "");
+  const [view, setView] = useBrowseState<View>('cards/TagGallery.view', "popular");
   const [limit, setLimit] = useState(36);
   const [pending, startTransition] = useTransition();
   const matches = useMemo(() => {
@@ -30,6 +36,16 @@ export default function TagGallery() {
       return editions.map(edition => ({ card, edition }));
     });
   }, [cards, lookup, tag, search, set]);
+  const listed = useMemo(() => {
+    if (!data) return [];
+    const q = search.toLowerCase();
+    const list = data.tags.filter(item => item.name.toLowerCase().includes(q));
+    const byName = (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name);
+    if (view === "recent") { const order = new Map(recent.map((name, i) => [name, i])); return list.filter(item => order.has(item.name)).sort((a, b) => order.get(a.name)! - order.get(b.name)!); }
+    if (view === "few") return list.filter(item => item.cardCount <= FEW_CARDS).sort((a, b) => a.cardCount - b.cardCount || byName(a, b));
+    if (view === "az") return list.sort(byName);
+    return list.sort((a, b) => b.cardCount - a.cardCount || byName(a, b));
+  }, [data, search, view, recent]);
   const sets = [...new Set(cards.flatMap(card => card.editions.map(edition => edition.set.prefix)))].sort();
   return <PageLayout width="full">
     <Link to="/cards" className="inline-flex min-h-12 items-center text-ctp-blue">Back to cards</Link>
@@ -42,7 +58,19 @@ export default function TagGallery() {
         {tag && <label className="flex flex-col gap-1 text-sm">Printing set<select className={tagControl} value={set} onChange={event => { setSet(event.target.value); setLimit(36); }}><option value="">All sets</option>{sets.map(prefix => <option key={prefix}>{prefix}</option>)}</select></label>}
       </div>
       {pending && <p role="status">Recalculating…</p>}
-      {!tag ? <>{CARD_TAG_CATEGORIES.map(category => <section key={category} className="mt-6"><h2 className="font-semibold">{category}</h2><div className="mt-2 flex flex-wrap gap-2">{data.tags.filter(item => cardTagCategory(item.name) === category && item.name.toLowerCase().includes(search.toLowerCase())).map(item => <Link key={item.name} to={tagGalleryUrl(item.name)} className={`${tagAction} flex items-center gap-2 text-ctp-blue`}>{item.name} <span className="text-ctp-subtext0">{item.cardCount}</span></Link>)}</div></section>)}{!data.tags.some(item => item.name.toLowerCase().includes(search.toLowerCase())) && <p className="mt-4">No tags match your search.</p>}</> : <>
+      {!tag ? <>
+        <div role="radiogroup" aria-label="Tag view" className="mt-4 flex flex-wrap gap-2">{VIEWS.map(item => <button key={item.id} type="button" role="radio" aria-checked={view === item.id} className={`${tagChoice(view === item.id)} min-w-32`} onClick={() => setView(item.id)}>{view === item.id && <span aria-hidden="true">✓</span>}{item.label}</button>)}</div>
+        {view === "few" && <p className="mt-3 text-sm text-ctp-subtext0">Tags with {FEW_CARDS} or fewer cards, thinnest first. Use ＋ to suggest more matching cards.</p>}
+        {view === "recent" && <p className="mt-3 text-sm text-ctp-subtext0">Tags first added by approved Fan of Insight contributions, newest first.</p>}
+        {(view === "recent" ? [null] : CARD_TAG_CATEGORIES).map(category => {
+          const items = category ? listed.filter(item => cardTagCategory(item.name) === category) : listed;
+          return items.length > 0 && <section key={category ?? "recent"} className="mt-6">{category && <h2 className="font-semibold">{category}</h2>}<div className="mt-2 flex flex-wrap gap-2">{items.map(item => <span key={item.name} className="inline-flex items-stretch gap-1">
+            <Link to={tagGalleryUrl(item.name)} className={`${tagControl} flex items-center gap-2 text-ctp-blue transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97]`}>{item.name} <span className="text-ctp-subtext0">{item.cardCount}</span></Link>
+            {view === "few" && <Link to={`/cards/tagging?${new URLSearchParams({ tag: item.name })}`} aria-label={`Suggest more cards for ${item.name}`} className={`${tagControl} flex items-center font-semibold text-ctp-blue transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97]`}>＋</Link>}
+          </span>)}</div></section>;
+        })}
+        {listed.length === 0 && <p className="mt-4">{view === "recent" && !search ? "No site contributions have been approved yet." : view === "few" && !search ? `Every tag has more than ${FEW_CARDS} cards.` : "No tags match your search."}</p>}
+      </> : <>
         <p role="status" className="my-3 text-sm text-ctp-subtext0">{matches.length} matching {cardTagCategory(tag) === "Gameplay" ? "cards" : "printings"}</p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{matches.slice(0, limit).map(({ card, edition }) => <CardResult key={edition.uuid} card={{ ...card, editions: [edition] }} name={card.name}><p className="text-xs text-ctp-subtext0">{edition.set.prefix} · {edition.collector_number}</p></CardResult>)}</div>
         {!matches.length && <p className="mt-4">{cards.length ? "No matching printings. Try another set or search." : "Loading card catalog…"}</p>}

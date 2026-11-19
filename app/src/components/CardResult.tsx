@@ -6,7 +6,7 @@ import CardArtTile from "./CardArtTile";
 
 /** Shared card-first surface. Feature controllers own selection, quantities and persistence. */
 export default function CardResult({ card, name, editionUuid, compactOnMobile = false, selected, onSelect, onManage, newTab = false, children }: {
-  compactOnMobile?: boolean; editionUuid?: string; card?: Card; name: string; selected?: boolean; onSelect?: () => void;
+  compactOnMobile?: boolean; editionUuid?: string; card?: Card; name: string; selected?: boolean; onSelect?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onManage?: () => void; newTab?: boolean; children?: ReactNode;
 }) {
   const content = <><CardArtTile card={card} editionUuid={editionUuid} name={name} /><span className="flex min-h-12 items-center break-words text-sm font-medium">{name}</span></>;
