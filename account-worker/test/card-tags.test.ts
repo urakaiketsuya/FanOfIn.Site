@@ -35,6 +35,7 @@ test("validate shape, scope and batch limits", () => {
   assert.throws(() => parseTagProposal({ ...input(), tag: "Mill" }));
   assert.throws(() => parseTagProposal({ ...input(), targets: [{ cardUuid: "card-a", editionUuid: null }] }));
   assert.equal(parseTagProposal(input()).tag, "Lorraine Allard");
+  assert.equal(parseTagProposal({ ...input(), tag: "  Blue  Hair " }).tag, "Blue Hair");
 });
 test("pending suggestions are private and do not publish; retries and conflicts are safe", async t => {
   assets(t); const f = fixture(); try {
@@ -113,6 +114,8 @@ test("published spoilers accept gameplay tags without inventing printings", asyn
   try {
     const value = { ...input(), tag: "Mill", targets: [{ cardUuid: "preview:casella-sky-s-cantatrice", editionUuid: null }] };
     assert.equal((await submitTagProposal(f.env, f.a, value)).status, "pending");
+    await reviewTagProposal(f.env, f.mod, value.id, { decision: "approved" });
+    assert.deepEqual(await listTagOverrides(f.env), [{ cardUuid: value.targets[0].cardUuid, editionUuid: null, tag: "Mill", action: "add" }]);
     await assert.rejects(submitTagProposal(f.env, f.a, { ...value, id: crypto.randomUUID(), targets: [{ cardUuid: "preview:invented", editionUuid: null }] }), /no longer available/);
   } finally { f.db.close(); }
 });

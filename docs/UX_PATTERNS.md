@@ -1061,3 +1061,20 @@ details. Browser Back/Forward and reload retain that trail; direct links use a r
 Primary navigation starts a fresh trail, and repeated ancestors are trimmed. Breadcrumb links
 wrap on mobile and keep 48px touch targets. Check filtered results → detail → browser Back and
 filtered results → detail → breadcrumb, including a changed detail tab and reload.
+
+## Card tag contributions
+
+Keep tag text unchanged while typing; canonicalize it when submitting. Select published
+printings for art and character tags, or preview cards for gameplay tags. Preview selections
+use card-level targets without inventing printings, remain selected across filters and reloads,
+and block submission with a concise error when the chosen tag requires a printing. Review
+shows preview artwork, card names, and existing card-level tags. Drafts survive dismissal and
+failed submissions; retries preserve the submission ID.
+
+Verification (2026-11-19): local production-route checks at 390px and 1280px covered multiword
+input and submission normalization, published-printing and preview selection, preview direct
+links, set/untagged filters, empty search, reload recovery, gameplay/art scope changes,
+failed-save retry with the same ID, loading, tag/account failure and retry, signed-out and
+stale-target blockers, Escape/focus restoration, keyboard containment, 48px sheet controls,
+and page/sheet overflow. Account responses were isolated fixtures. Native mobile keyboards,
+production account writes, and deployment were not exercised.
