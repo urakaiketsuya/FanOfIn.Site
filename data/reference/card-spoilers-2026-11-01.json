@@ -2721,6 +2721,99 @@
       "effect": "Beatrice Bonus You may sacrifice an object named Neos Essence to activate this card from your material deck.\nBeatrice Bonus Rest: Scavenge 3 for a Program card. Banish that card compiled rather than putting it into your hand.",
       "addedAt": "2026-11-19",
       "sourceFile": "IMG-20261119-WA0039.jpg"
+    },
+    {
+      "name": "Automaton Processor",
+      "collectorNumber": "027",
+      "rarity": "C",
+      "image": "automaton-processor.png",
+      "types": [
+        "ITEM"
+      ],
+      "subtypes": [
+        "DEVICE"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "speed": "fast",
+      "effect": "Ally Link, Fast Activation\nLinked ally is an Automaton in addition to its other types.\nBeatrice Bonus On Enter: Draw a card.",
+      "sourceFile": "codex-clipboard-65199db7-a8e6-4611-8e9e-802edbd028c5.png",
+      "setPrefix": "CBL",
+      "classes": [
+        "TAMER"
+      ],
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19"
+    },
+    {
+      "name": "Singularity Directive",
+      "collectorNumber": null,
+      "rarity": "CSR",
+      "image": "singularity-directive.png",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "ULTIMATE",
+        "PROGRAM"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "10"
+      },
+      "speed": null,
+      "effect": "Program cards you activate cost 2 less to activate.\nProgram objects you control have \"Linked object gets +2 POWER.\"\nBeatrice Bonus (0): Banish a Program card from your hand or memory compiled. If you do, draw a card.",
+      "sourceFile": "codex-clipboard-be88e3c6-9fbf-4dd1-ab30-34e9210ee179.png",
+      "setPrefix": "CBL",
+      "classes": [
+        "TAMER"
+      ],
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19"
+    },
+    {
+      "name": "Protocol/FREEZE",
+      "collectorNumber": "130",
+      "rarity": "U",
+      "image": "protocol-freeze.png",
+      "types": [
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "speed": null,
+      "effect": "Automaton Ally Link\nBeatrice Bonus On Enter: Rest linked ally.\nLinked ally gets +4 LIFE and can’t wake up.",
+      "flavor": "Processes may be stopped, but defenses will be significantly heightened.",
+      "sourceFile": "codex-clipboard-c0293d4d-0842-4afe-b9b5-c4eda62c2642.png",
+      "setPrefix": "CBL",
+      "classes": [
+        "TAMER"
+      ],
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19"
     }
   ],
   "deckSections": {
