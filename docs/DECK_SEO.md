@@ -238,8 +238,9 @@ implementation and local verification complete and hosting/live validation remai
 The build now ends with `scripts/build-public-pages.mjs` and
 `scripts/check-indexing.mjs`. Public landing routes, all published seasons and the
 24 official deck primers receive real directory-backed documents instead of the
-GitHub Pages JavaScript 404 redirect. The home page also has readable initial
-content and navigation. Public route metadata and the trailing-slash canonical
+GitHub Pages JavaScript 404 redirect. The home document retains its empty app root because live community deck
+delivery uses `/index.html` as its shared shell. Its canonical is explicit;
+home-page content continues to render in React. Public route metadata and the trailing-slash canonical
 policy live together in `shared/src/seo.ts`; the pipeline and browser use that
 same policy. Community deck slug URLs retain their existing canonical delivery.
 
@@ -258,6 +259,8 @@ offline. No extra social raster assets are generated for these routes.
 
 The build check examines every main sitemap target for an existing HTML document,
 readable heading, title, description, one matching canonical and no `noindex`.
+The shared root app shell is exempt from the initial-heading/body requirement,
+and a cross-service fixture verifies community deck rendering from that shell.
 It also checks required public-route coverage, duplicate URLs, canonical syntax,
 host and sitemap size limits. Regression fixtures cover missing generated files,
 repeat builds, removed primers/seasons, escaped text and preserved detail URLs.

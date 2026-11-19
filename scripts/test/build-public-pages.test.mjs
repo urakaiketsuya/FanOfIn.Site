@@ -4,6 +4,7 @@ import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { buildPublicPages, publicEntries } from '../build-public-pages.mjs';
+import { renderCommunityDeckPage } from '../../account-bff/lib/deck-page.ts';
 import { canonicalSiteUrl } from '../../shared/src/seo.ts';
 import { PUBLIC_PAGE_ROUTES } from '../../shared/src/seo.ts';
 import { sitemapUrls, assertIndexableHtml, expectedPublicUrls } from '../check-indexing.mjs';
@@ -21,7 +22,7 @@ test('build supplies readable content for every public URL, preserves detail ent
     await writeFile(path.join(outDir, 'index.html'), shell);
     await writeFile(path.join(outDir, 'sitemap.xml'), '<urlset><url><loc>https://fanofin.site/cards/test-card/</loc></url><url><loc>https://fanofin.site/seasons/retired/</loc></url><url><loc>https://fanofin.site/official-decks/retired/primer/</loc></url></urlset>');
     const expected = await expectedPublicUrls();
-    assert.equal(await buildPublicPages({ outDir }), expected.length);
+    assert.equal(await buildPublicPages({ outDir }), expected.length - 1);
     const xml = await readFile(path.join(outDir, 'sitemap.xml'), 'utf8');
     const urls = sitemapUrls(xml);
     assert.ok(urls.includes('https://fanofin.site/cards/test-card/'));
@@ -30,15 +31,17 @@ test('build supplies readable content for every public URL, preserves detail ent
       assert.ok(urls.includes(url), url);
       const html = await readFile(path.join(outDir, new URL(url).pathname, 'index.html'), 'utf8');
       assertIndexableHtml(html, url);
-      assert.equal((html.match(/public-entry-start/g) ?? []).length, 1);
+      assert.equal((html.match(/public-entry-start/g) ?? []).length, url === 'https://fanofin.site/' ? 0 : 1);
     }
     const primer = await readFile(path.join(outDir, 'official-decks/ciel-mirages-grave/primer/index.html'), 'utf8');
     assert.match(primer, /Opening turns/); assert.match(primer, /Ombreux Chevalier/); assert.match(primer, /<img/);
     await buildPublicPages({ outDir });
     assert.equal(await readFile(path.join(outDir, 'sitemap.xml'), 'utf8'), xml);
     const home = await readFile(path.join(outDir, 'index.html'), 'utf8');
-    assert.equal((home.match(/<h1>/g) ?? []).length, 1);
-    assert.equal((home.match(/application\/ld\+json/g) ?? []).length, 1);
+    assert.ok(home.includes('<div id="root"></div>'));
+    const deckHtml = renderCommunityDeckPage(home, { publicSlug: 'a'.repeat(32), title: 'Published deck', description: 'Community deck', visibility: 'public', owner: { displayName: 'Player' }, decklist: { material: [], main: [] } });
+    assertIndexableHtml(deckHtml, 'https://fanofin.site/decks/' + 'a'.repeat(32));
+    assert.equal((deckHtml.match(/application\/ld\+json/g) ?? []).length, 1);
   } finally { await rm(outDir, { recursive: true, force: true }); }
 });
 test('editorial display text is escaped and missing primer sources fail before rendering', () => {

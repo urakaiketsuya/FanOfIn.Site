@@ -76,7 +76,6 @@ export function publicEntries(data) {
     entries.push(page(`/official-decks/${guide.slug}/primer`, `${deck.name} · Deck Primer`, guide.summary,
       cardLinks(guide.cards) + section('Opening turns', paragraph(guide.opening)) + section('Leveling', paragraph(guide.leveling)) + section('Card sequence', paragraph(guide.sequence)) + section('Before you commit', list(guide.mistakes.map(escape))) + section('Card synergies', cardLinks(guide.synergyCards ?? []) + paragraph(guide.sequence)) + section('How you win', cardLinks(guide.winCards ?? []) + paragraph(guide.winText ?? '')) + link(canonicalSiteUrl('/official-decks'), 'All official decks')));
   }
-  entries.push(page('/', 'Fan of Insight', 'Grand Archive cards, tournament results, decks and strategy guides.', tiles(featured.slice(0, 6)) + section('Explore Grand Archive', list(entries.filter(entry => PUBLIC_PAGE_ROUTES.some(([route]) => route === entry.route)).map(entry => link(entry.meta.url, entry.meta.title))))));
   if (new Set(entries.map(entry => entry.meta.url)).size !== entries.length) throw new Error('Duplicate public entry URL');
   return entries;
 }
@@ -88,13 +87,18 @@ export async function buildPublicPages({ dataDir = path.join(root, 'data'), outD
     read('card-catalog.json'), read('omnidex/index.json'), appRead('features/official-products/primers/guides.json'), appRead('features/official-products/decks.json'), read('analysis/cards.json'), read('reference/card-spoilers-2026-11-01.json'), read('omnidex/stores.json'), read('omnidex/teams.json'), read('analysis/achievements.json'), read('community/card-tags.json'), read('reference/curated-strategies.json'), read('changelog.json'), read('broadcast-timelines.json'),
   ]);
   // Mark only our root content so repeated generation keeps an empty app shell.
-  const shell = (await readFile(path.join(outDir, 'index.html'), 'utf8')).replace(/<!--public-entry-start-->[\s\S]*?<!--public-entry-end-->/, '');
+  let shell = (await readFile(path.join(outDir, 'index.html'), 'utf8')).replace(/<!--public-entry-start-->[\s\S]*?<!--public-entry-end-->/, '');
+  // Community deck delivery fetches /index.html and requires the empty app root.
+  shell = shell.replace(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi, '').replace(/<script\b(?=[^>]*application\/ld\+json)[^>]*>[\s\S]*?<\/script>/gi, '');
+  if (!shell.includes('<div id="root"></div>')) throw new Error('Missing empty shared app shell');
+  shell = shell.replace('</head>', '<link rel="canonical" href="https://fanofin.site/"></head>');
   const entries = publicEntries({ cards: catalog.cards, index, primers, official, stats, spoilers, stores, teams, achievements, tags, strategies, changelog, matches });
   for (const entry of entries) {
     entry.html = renderDiscoveryPage(shell, entry.meta, entry.body).replace('<div id="root">', '<div id="root"><!--public-entry-start-->').replace('</main></div>', '</main><!--public-entry-end--></div>');
   }
   let xml = await readFile(path.join(outDir, 'sitemap.xml'), 'utf8');
   const urls = new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => canonicalSiteUrl(new URL(match[1]).pathname)));
+  urls.add(canonicalSiteUrl('/'));
   // Primers and seasons are generated from the current source, dropping removed entries.
   for (const url of urls) if (/\/(?:seasons\/[^/]+|official-decks\/[^/]+\/primer)\/$/.test(new URL(url).pathname)) urls.delete(url);
   for (const entry of entries) urls.add(entry.meta.url);
@@ -103,6 +107,7 @@ export async function buildPublicPages({ dataDir = path.join(root, 'data'), outD
     const dir = path.join(outDir, decodeURIComponent(new URL(entry.meta.url).pathname));
     await mkdir(dir, { recursive: true }); await writeFile(path.join(dir, 'index.html'), entry.html);
   }
+  await writeFile(path.join(outDir, 'index.html'), shell);
   await writeFile(path.join(outDir, 'sitemap.xml'), xml);
   console.log(`Public entry pages: ${entries.length} landing pages, seasons and primers`);
   return entries.length;
