@@ -2500,6 +2500,101 @@
       "addedAt": "2026-11-18",
       "sourceFile": "image3.png",
       "exalted": true
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Harmonious Fractal",
+      "collectorNumber": "121",
+      "rarity": "U",
+      "image": "harmonious-fractal.png",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "FRACTAL",
+        "HARMONY"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "speed": null,
+      "effect": "Reservable (While paying for a reserve cost, you may rest this object to pay for 1 of that cost.)\nHarmonize — On Enter: If you’ve activated a Melody card this turn, glimpse 3 and recover 3.",
+      "flavor": "Deep below, a forgotten song can still be heard.",
+      "sourceFile": "new-image.png"
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Scherzo Prestissimo",
+      "collectorNumber": "166",
+      "rarity": "SR",
+      "image": "scherzo-prestissimo.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "speed": "fast",
+      "effect": "Class Bonus This card costs 2 less to activate.\nChoose one. If an arcane element card was put into your banishment this turn, choose two instead. You may choose the same mode more than once—\n• Deal 6 damage to up to one target ally.\n• Empower 4.\n• Draw a card into your memory.",
+      "sourceFile": "new-image-2.png"
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Casella's Prelude",
+      "collectorNumber": "116",
+      "rarity": "U",
+      "image": "casellas-prelude.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "speed": "fast",
+      "effect": "Casella Bonus Casella sings. (You may copy a Song card from your Song deck and activate that copy. If you do, turn the copied card face up if it’s face down.)\nFloating Memory",
+      "flavor": "Hers was a voice that inspired even the most weary.",
+      "sourceFile": "new-image-3.png"
     }
   ],
   "deckSections": {

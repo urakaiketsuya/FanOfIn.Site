@@ -25,6 +25,24 @@ import { gatcgApi } from '../src/lib/api/client';
 import spoilers from '../../data/reference/card-spoilers-2026-11-01.json';
 import { existsSync } from 'node:fs';
 import { searchSetPrefix } from '@gatcg/shared';
+import { emptyCatalogFilters, filterCatalog } from '../src/components/deck-editor/catalogFilters';
+import { automaticDeckSection } from '../src/lib/deckEditing';
+import { deckDestinationEligibility } from '../src/lib/deckSectionEligibility';
+
+test('every spoiler is searchable in the builder and has an eligible automatic destination', () => {
+  const catalog = mergePreviewCards([], spoilers.cards, true);
+  for (const reveal of spoilers.cards) {
+    const card = catalog.find(candidate => candidate.name === reveal.name);
+    assert.ok(card, reveal.name);
+    assert.ok(filterCatalog(catalog, JSON.stringify(reveal.name), emptyCatalogFilters()).some(candidate => candidate.name === reveal.name), reveal.name);
+    assert.ok(deckDestinationEligibility(card, automaticDeckSection(card)).allowed, reveal.name);
+  }
+  for (const name of ['Harmonious Fractal', 'Scherzo Prestissimo', "Casella's Prelude"]) {
+    const card = catalog.find(candidate => candidate.name === name)!;
+    assert.ok(existsSync(new URL(`../public${cardImagePath(card)}`, import.meta.url)), name);
+    assert.equal(mergePreviewCards([], spoilers.cards, false, [name])[0].name, name);
+  }
+});
 
 test('Deploy the Future is available in CBL deck building and retained in restored drafts', () => {
   const cards = filterCards(withSpoilerCards([]), { ...emptyFilterState(), name: 'Deploy the Future', sets: new Set(['CBL']) });
@@ -122,7 +140,7 @@ test('spoiler groups order sets and cards by first addition, merging editions on
 test('Desktop reveals retain printed stats and addition provenance', () => {
   const catalog = withSpoilerCards([]);
   const additions = spoilers.cards.filter(card => 'sourceFile' in card);
-  assert.equal(additions.length, 19);
+  assert.equal(additions.length, 22);
   for (const card of spoilers.cards) assert.ok(Number.isFinite(Date.parse(card.addedAt)), card.name);
   for (const card of additions) {
     assert.ok(catalog.some(candidate => candidate.name === card.name));
