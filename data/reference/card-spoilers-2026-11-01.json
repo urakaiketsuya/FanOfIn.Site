@@ -2595,6 +2595,101 @@
       "effect": "Casella Bonus Casella sings. (You may copy a Song card from your Song deck and activate that copy. If you do, turn the copied card face up if it’s face down.)\nFloating Memory",
       "flavor": "Hers was a voice that inspired even the most weary.",
       "sourceFile": "new-image-3.png"
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Tributary Stifle",
+      "collectorNumber": "079",
+      "rarity": "R",
+      "image": "tributary-stifle.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "speed": "fast",
+      "exalted": true,
+      "effect": "(Exalted — This element is enabled for you as long as you have another advanced element enabled.)\nNegate target on enter trigger from a non-champion object unless its controller pays 4.",
+      "flavor": "Stop! This area is for DCSF personnel only!",
+      "sourceFile": "new-image-4.png"
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Stratus Deflector",
+      "collectorNumber": null,
+      "rarity": "R",
+      "image": "stratus-deflector.png",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ACCESSORY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "speed": null,
+      "effect": "Banish Stratus Deflector: Until end of turn, if damage would be dealt to target unit, prevent 1 of that damage.",
+      "flavor": "A compact protective module that deploys a barrier of pressurized wind.",
+      "sourceFile": "new-image-5.png"
+    },
+    {
+      "setPrefix": "CBL",
+      "level": null,
+      "power": null,
+      "life": null,
+      "addedAt": "2026-11-19",
+      "name": "Cinders of Conflict",
+      "collectorNumber": "091",
+      "rarity": "R",
+      "image": "cinders-of-conflict.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "ASSASSIN"
+      ],
+      "subtypes": [
+        "SKILL"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "speed": "fast",
+      "effect": "Class Bonus This card costs 1 less to activate.\nPut three preparation counters on your champion. At the beginning of the next end phase, remove three preparation counters from your champion. For each counter removed this way, deal 2 damage to your champion.",
+      "sourceFile": "new-image-6.png"
     }
   ],
   "deckSections": {

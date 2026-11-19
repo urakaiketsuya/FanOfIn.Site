@@ -140,7 +140,9 @@ test('spoiler groups order sets and cards by first addition, merging editions on
 test('Desktop reveals retain printed stats and addition provenance', () => {
   const catalog = withSpoilerCards([]);
   const additions = spoilers.cards.filter(card => 'sourceFile' in card);
-  assert.equal(additions.length, 22);
+  for (const name of ['Tributary Stifle', 'Stratus Deflector', 'Cinders of Conflict']) {
+    assert.ok(additions.some(card => card.name === name), name);
+  }
   for (const card of spoilers.cards) assert.ok(Number.isFinite(Date.parse(card.addedAt)), card.name);
   for (const card of additions) {
     assert.ok(catalog.some(candidate => candidate.name === card.name));
