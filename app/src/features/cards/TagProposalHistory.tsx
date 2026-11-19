@@ -6,8 +6,8 @@ import DialogSheet from "../../components/ui/DialogSheet";
 import { accountApi } from "../../lib/accountApi";
 import { tagControl } from "./tagUi";
 
-export default function TagProposalHistory({ userId, cards }: { userId: string; cards: Card[] }) {
-  const [review, setReview] = useState(false);
+export default function TagProposalHistory({ userId, cards, reviewOnly = false }: { userId: string; cards: Card[]; reviewOnly?: boolean }) {
+  const [review, setReview] = useState(reviewOnly);
   const [offset, setOffset] = useState(0);
   const [selected, setSelected] = useState<TagProposal>();
   const [busy, setBusy] = useState(false);
@@ -26,7 +26,8 @@ export default function TagProposalHistory({ userId, cards }: { userId: string; 
   }
   return <section className="mt-8 border-t border-ctp-surface1 pt-4">
     <h2 className="text-lg font-semibold">{review ? "Tag review queue" : "My tag submissions"}</h2>
-    {query.data?.canReview && <button className={`${tagControl} mt-2`} onClick={() => { setReview(value => !value); setOffset(0); }}>{review ? "Show my submissions" : "Review pending submissions"}</button>}
+    {!reviewOnly && query.data?.canReview && <button className={`${tagControl} mt-2`} onClick={() => { setReview(value => !value); setOffset(0); }}>{review ? "Show my submissions" : "Review pending submissions"}</button>}
+    {reviewOnly && query.data && !query.data.canReview && <p role="alert">This account does not have card tag review access.</p>}
     {query.isPending && <p role="status">Loading submissions…</p>}
     {query.isError && <p role="alert">Submissions unavailable. <button className={tagControl} onClick={() => void query.refetch()}>Retry submissions</button></p>}
     <div className="mt-3 space-y-2">{query.data?.proposals.map(row => <button key={row.id} className={`${tagControl} flex w-full flex-wrap justify-between gap-2 text-left`} onClick={() => { setSelected(row); setError(""); }}><span>{row.action === "add" ? "Add" : "Remove"} {row.tag} · {row.targets.length} targets</span><span>{row.status}</span></button>)}</div>

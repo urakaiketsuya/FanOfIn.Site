@@ -48,7 +48,10 @@ test("pending suggestions are private and do not publish; retries and conflicts 
     await assert.rejects(reviewTagProposal(f.env, f.a, value.id, { decision: "approved" }), /Moderator/);
     await assert.rejects(submitTagProposal(f.env, f.b, value), /already in use/);
     await assert.rejects(submitTagProposal(f.env, f.a, { ...value, reason: "Different" }), /already in use/);
-    await assert.rejects(submitTagProposal(f.env, f.a, { ...input(), tag: "Invented" }), /published tag/);
+    const newTag = { ...input(), tag: "Invented" };
+    assert.equal((await submitTagProposal(f.env, f.a, newTag)).status, "pending");
+    await reviewTagProposal(f.env, f.mod, newTag.id, { decision: "approved" });
+    assert.ok((await listTagOverrides(f.env)).some(row => row.tag === "Invented" && row.action === "add"));
     await assert.rejects(submitTagProposal(f.env, f.a, { ...input(), targets: [{ cardUuid: "card-a", editionUuid: "wrong-print" }] }), /no longer available/);
   } finally { f.db.close(); }
 });

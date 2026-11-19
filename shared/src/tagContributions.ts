@@ -46,5 +46,5 @@ export function mergeTagOverrides(source: CardTagsData, overrides: TagOverride[]
   const names = [...new Set([...data.tags.map(tag => tag.name), ...overrides.map(row => canonicalCardTag(row.tag))])];
   const index = new Map(names.map((name, i) => [name, i]));
   const encode = (rows: Map<string, Set<string>>) => Object.fromEntries([...rows].map(([id, tags]) => [id, [...tags].map(tag => index.get(tag)!)]));
-  return normalizeCardTags({ ...data, tags: names.map(name => ({ name, cardCount: 0, status: data.tags.find(tag => tag.name === name)?.status ?? "pending" })), cards: encode(cards), editions: encode(editions) });
+  return normalizeCardTags({ ...data, tags: names.map(name => ({ name, cardCount: 0, status: data.tags.find(tag => tag.name === name)?.status ?? "approved" })), cards: encode(cards), editions: encode(editions) });
 }

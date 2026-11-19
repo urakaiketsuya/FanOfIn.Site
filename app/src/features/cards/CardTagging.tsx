@@ -72,12 +72,12 @@ export default function CardTagging() {
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Submission failed. Your draft is preserved."); }
     finally { setBusy(false); }
   }
-  const validTag = data?.tags.some(tag => tag.name === draft.tag);
+  const validTag = draft.tag.trim().length > 0 && draft.tag.length <= 100 && (draft.action === "add" || data?.tags.some(tag => tag.name === draft.tag));
   const missingTargets = cards.length > 0 && draft.targets.some(target => !cards.some(card => card.uuid === target.cardUuid && card.editions.some(edition => edition.uuid === target.editionUuid)));
   return <PageLayout width="full">
     <Link className="inline-flex min-h-12 items-center text-ctp-blue" to="/cards/tags">Tag galleries</Link>
     <h1 className="text-2xl font-bold">Contribute card tags</h1>
-    <p className="mt-2 text-sm text-ctp-subtext0">Select up to 50 printings, then suggest an existing tag or request a correction. Changes are reviewed before publication.</p>
+    <p className="mt-2 text-sm text-ctp-subtext0">Select up to 50 printings, then suggest a tag or request a correction. Changes are reviewed before publication.</p>
     {notice && <p role="status" className="mt-3 rounded-xl bg-ctp-surface0 p-3">{notice}</p>}
     {storageError && <p role="status">Draft storage is unavailable. Keep this page open to preserve your selections.</p>}
     {!data && <p role="status" className="mt-3">{status.phase === "error" ? <>Tags unavailable. <button className={tagControl} onClick={status.retry}>Retry tags</button></> : "Loading tags…"}</p>}
@@ -113,8 +113,8 @@ export default function CardTagging() {
       })}</div>
       <fieldset disabled={busy} className="mt-4 space-y-4">
         <label className="flex flex-col gap-1 text-sm">Action<select className={tagControl} value={draft.action} onChange={event => update({ action: event.target.value as Draft["action"] })}><option value="add">Suggest adding a tag</option><option value="remove">Report an incorrect tag</option></select></label>
-        <label className="flex flex-col gap-1 text-sm">Existing tag<input className={tagControl} list="contribution-tags" value={draft.tag} onChange={event => update({ tag: canonicalCardTag(event.target.value) })} placeholder="Search existing tags" /><datalist id="contribution-tags">{data?.tags.map(tag => <option key={tag.name} value={tag.name} />)}</datalist></label>
-        {draft.tag && !validTag && <p role="alert" className="text-sm text-ctp-red">Choose a tag from the existing list.</p>}
+        <label className="flex flex-col gap-1 text-sm">Tag<input className={tagControl} list="contribution-tags" value={draft.tag} onChange={event => update({ tag: canonicalCardTag(event.target.value) })} maxLength={100} placeholder="Search or suggest a tag" /><datalist id="contribution-tags">{data?.tags.map(tag => <option key={tag.name} value={tag.name} />)}</datalist></label>
+        {draft.tag && !validTag && <p role="alert" className="text-sm text-ctp-red">Enter a tag, or choose an existing tag to remove.</p>}
         <p className="text-sm text-ctp-subtext0">{gameplay ? `Gameplay tag: applies to ${targets.length} distinct ${targets.length === 1 ? "card" : "cards"} across every printing. Include supporting card text below.` : "Art, character, and other tags apply only to the selected printings."}</p>
         <label className="flex flex-col gap-1 text-sm">{draft.action === "remove" ? "Why is this tag incorrect?" : "Why does this tag fit?"}<textarea className={`${tagControl} min-h-28`} maxLength={1000} value={draft.reason} onChange={event => update({ reason: event.target.value })} /></label>
       </fieldset>

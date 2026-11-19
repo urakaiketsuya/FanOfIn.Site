@@ -10,7 +10,7 @@ export function parseTagProposal(value: unknown): TagProposalInput {
   if (!value || typeof value !== "object") throw badRequest("Invalid tag proposal");
   const input = value as Record<string, unknown>;
   if (typeof input.id !== "string" || !/^[a-f0-9-]{36}$/.test(input.id)) throw badRequest("Invalid proposal ID");
-  if (typeof input.tag !== "string" || !input.tag.trim() || input.tag.length > 100) throw badRequest("Choose an existing tag");
+  if (typeof input.tag !== "string" || !input.tag.trim() || input.tag.length > 100) throw badRequest("Enter a tag");
   if (input.action !== "add" && input.action !== "remove") throw badRequest("Invalid tag action");
   if (typeof input.reason !== "string" || input.reason.trim().length < 3 || input.reason.length > 1000) throw badRequest("Explain the suggestion in 3–1,000 characters");
   assertAllowedText(input.tag, "Tag");
@@ -40,7 +40,10 @@ async function validatePublishedTargets(env: Env, input: TagProposalInput) {
   } catch (error) {
     console.error("Tag validation asset fetch failed", error instanceof Error ? error.message : "Unknown error");
     throw new ApiError("Card and tag validation is temporarily unavailable. Your draft can be retried.", 503, "tag_catalog_unavailable"); }
-  if (!tags.tags.some(tag => canonicalCardTag(tag.name) === input.tag)) throw badRequest("Choose an existing published tag");
+  if (input.action === "remove" && !tags.tags.some(tag => canonicalCardTag(tag.name) === input.tag)) {
+    const local = await env.ACCOUNT_DB.prepare("SELECT 1 FROM card_tag_overrides WHERE tag = ? AND action = 'add' LIMIT 1").bind(input.tag).first();
+    if (!local) throw badRequest("Choose an existing published tag to remove");
+  }
   const spoilers = input.targets.some(target => target.cardUuid.startsWith("preview:")) ? await publishedSpoilerTargets(env) : [];
   const cards = new Map([...catalog.cards, ...spoilers].map(card => [card.uuid, card]));
   for (const target of input.targets) {
