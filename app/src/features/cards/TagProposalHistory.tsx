@@ -4,7 +4,7 @@ import type { Card, TagProposal } from "@gatcg/shared";
 import CardResult from "../../components/CardResult";
 import DialogSheet from "../../components/ui/DialogSheet";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
-import { tagControl } from "./tagUi";
+import { tagAction } from "./tagUi";
 
 export default function TagProposalHistory({ userId, cards, reviewOnly = false }: { userId: string; cards: Card[]; reviewOnly?: boolean }) {
   const [review, setReview] = useState(reviewOnly);
@@ -26,13 +26,13 @@ export default function TagProposalHistory({ userId, cards, reviewOnly = false }
   }
   return <section className="mt-8 border-t border-ctp-surface1 pt-4">
     <h2 className="text-lg font-semibold">{review ? "Tag review queue" : "My tag submissions"}</h2>
-    {!reviewOnly && query.data?.canReview && <button className={`${tagControl} mt-2`} onClick={() => { setReview(value => !value); setOffset(0); }}>{review ? "Show my submissions" : "Review pending submissions"}</button>}
+    {!reviewOnly && query.data?.canReview && <button className={`${tagAction} mt-2`} onClick={() => { setReview(value => !value); setOffset(0); }}>{review ? "Show my submissions" : "Review pending submissions"}</button>}
     {query.isPending && <p role="status">Loading submissions…</p>}
-    {query.isError && <p role="alert">{review && query.error instanceof AccountApiError && query.error.status === 403 ? "Card tag review requires a moderator or staff community role. Administrator access alone does not grant review access." : "Submissions unavailable."} <button className={tagControl} onClick={() => void query.refetch()}>Retry submissions</button></p>}
-    <div className="mt-3 space-y-2">{query.data?.proposals.map(row => <button key={row.id} className={`${tagControl} flex w-full flex-wrap justify-between gap-2 text-left`} onClick={() => { setSelected(row); setError(""); }}><span>{row.action === "add" ? "Add" : "Remove"} {row.tag} · {row.targets.length} targets</span><span>{row.status}</span></button>)}</div>
+    {query.isError && <p role="alert">{review && query.error instanceof AccountApiError && query.error.status === 403 ? "Card tag review requires a moderator or staff community role. Administrator access alone does not grant review access." : "Submissions unavailable."} <button className={tagAction} onClick={() => void query.refetch()}>Retry submissions</button></p>}
+    <div className="mt-3 space-y-2">{query.data?.proposals.map(row => <button key={row.id} className={`${tagAction} flex w-full flex-wrap justify-between gap-2 text-left`} onClick={() => { setSelected(row); setError(""); }}><span>{row.action === "add" ? "Add" : "Remove"} {row.tag} · {row.targets.length} targets</span><span>{row.status}</span></button>)}</div>
     {query.data?.proposals.length === 0 && <p className="mt-3 text-sm">{review ? "No submissions awaiting review." : "No submissions yet."}</p>}
-    <div className="mt-3 flex gap-2">{offset > 0 && <button className={tagControl} onClick={() => setOffset(value => Math.max(0, value - 50))}>Previous</button>}{query.data?.nextOffset != null && <button className={tagControl} onClick={() => setOffset(query.data!.nextOffset!)}>Next</button>}</div>
-    {selected && <DialogSheet title={`${selected.action === "add" ? "Add" : "Remove"} ${selected.tag}`} onDismiss={() => setSelected(undefined)} dismissible={!busy} footer={review && selected.status === "pending" ? <div className="flex flex-wrap gap-2"><button disabled={busy} className={`${tagControl} text-ctp-blue`} onClick={() => void decide("approved")}>{busy ? "Saving…" : "Approve all targets"}</button><button disabled={busy} className={tagControl} onClick={() => void decide("rejected")}>Reject submission</button></div> : undefined}>
+    <div className="mt-3 flex gap-2">{offset > 0 && <button className={tagAction} onClick={() => setOffset(value => Math.max(0, value - 50))}>Previous</button>}{query.data?.nextOffset != null && <button className={tagAction} onClick={() => setOffset(query.data!.nextOffset!)}>Next</button>}</div>
+    {selected && <DialogSheet title={`${selected.action === "add" ? "Add" : "Remove"} ${selected.tag}`} onDismiss={() => setSelected(undefined)} dismissible={!busy} footer={review && selected.status === "pending" ? <div className="flex flex-wrap gap-2"><button disabled={busy} className={`${tagAction} text-ctp-blue`} onClick={() => void decide("approved")}>{busy ? "Saving…" : "Approve all targets"}</button><button disabled={busy} className={tagAction} onClick={() => void decide("rejected")}>Reject submission</button></div> : undefined}>
       <p className="mb-3 text-sm">{selected.status} · {new Date(selected.createdAt).toLocaleDateString()}</p>
       <div className="grid grid-cols-2 gap-3">{selected.targets.map(target => {
         const card = cards.find(item => item.uuid === target.cardUuid);

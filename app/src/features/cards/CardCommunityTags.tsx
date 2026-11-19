@@ -26,7 +26,7 @@ export default function CardCommunityTags({ cardUuid, editionUuid }: { cardUuid:
           const tags = names.filter(name => cardTagCategory(name) === category);
           return tags.length > 0 && <div key={category} className="mt-3">
             <h3 className="mb-2 text-xs font-semibold text-ctp-subtext0">{category}</h3>
-            <div className="flex flex-wrap gap-2">{tags.map(name => <Link key={name} to={tagGalleryUrl(name)} className="flex min-h-12 max-w-full flex-col justify-center rounded-xl border border-ctp-surface2 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue">
+            <div className="flex flex-wrap gap-2">{tags.map(name => <Link key={name} to={tagGalleryUrl(name)} className="flex min-h-12 max-w-full flex-col justify-center rounded-xl border border-ctp-surface2 px-3 py-2 text-sm text-ctp-blue transition-all duration-200 hover:-translate-y-0.5 hover:bg-ctp-surface0 hover:shadow-md active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-ctp-blue">
               <span className="break-words">{name}</span>
               {!editionTags?.has(name) && <span className="text-xs text-ctp-subtext0">Other printing</span>}
             </Link>)}</div>
