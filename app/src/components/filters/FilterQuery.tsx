@@ -4,9 +4,10 @@ import { formatFilterQuery, parseFilterQuery, SEARCH_FACETS, filterValue, filter
 import Button from "../ui/Button";
 
 /** One query and picker state; invalid drafts never replace the last applied filters. */
-export default function FilterQuery({ text, facets, onChange, allowed = Object.values(SEARCH_FACETS), allowText = true, actions, compact = false }: {
+export default function FilterQuery({ text, facets, onChange, allowed = Object.values(SEARCH_FACETS), allowText = true, actions, compact = false, isLiteralName }: {
   actions?: ReactNode;
   compact?: boolean;
+  isLiteralName?: (value: string) => boolean;
   text: string; facets: SearchFacets; onChange: (text: string, facets: SearchFacets) => void; allowed?: SearchFacet[]; allowText?: boolean;
 }) {
   const errorId = useId();
@@ -14,6 +15,15 @@ export default function FilterQuery({ text, facets, onChange, allowed = Object.v
   const [draft, setDraft] = useState(value), [error, setError] = useState("");
   useEffect(() => { setDraft(value); setError(""); }, [value]);
   function submit() {
+    if (allowText && draft === value && isLiteralName?.(text.trim())) {
+      setError("");
+      return;
+    }
+    if (allowText && isLiteralName?.(draft.trim())) {
+      setError("");
+      onChange(draft.trim(), facets);
+      return;
+    }
     const parsed = parseFilterQuery(draft);
     if (!allowText && parsed.text.trim()) { setError("Use a field such as subtype:harmony, or choose cards below."); return; }
     const unsupported = [...Object.keys(parsed.facets), ...parsed.usedFacets ?? []].find(key => !allowed.includes(key as SearchFacet));

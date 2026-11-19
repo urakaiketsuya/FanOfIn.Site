@@ -34,7 +34,7 @@ test('every spoiler is searchable in the builder and has an eligible automatic d
   for (const reveal of spoilers.cards) {
     const card = catalog.find(candidate => candidate.name === reveal.name);
     assert.ok(card, reveal.name);
-    assert.ok(filterCatalog(catalog, JSON.stringify(reveal.name), emptyCatalogFilters()).some(candidate => candidate.name === reveal.name), reveal.name);
+    assert.ok(filterCatalog(catalog, reveal.name, emptyCatalogFilters()).some(candidate => candidate.name === reveal.name), reveal.name);
     assert.ok(deckDestinationEligibility(card, automaticDeckSection(card)).allowed, reveal.name);
   }
   for (const name of ['Harmonious Fractal', 'Scherzo Prestissimo', "Casella's Prelude"]) {

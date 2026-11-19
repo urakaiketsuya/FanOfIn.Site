@@ -12,6 +12,14 @@ test("manual catalog searches rules text and combines subtype, element and cost 
  assert.equal(filterCatalog(cards,"recover",{...filters,element:"FIRE"}).length,0);
  assert.deepEqual(filterCatalog(cards,"",{...emptyCatalogFilters(),costType:"memory",maxCost:"0"}).map(c=>c.name),["Token"]);
 });
+test("full card names with search punctuation work without quotes and still respect filters", () => {
+ const named = card("Spellshield: Double", { elements: ["WATER"] });
+ const pool = [named, ...cards];
+ assert.deepEqual(filterCatalog(pool, '  spellshield: double  ', emptyCatalogFilters()), [named]);
+ assert.deepEqual(filterCatalog(pool, 'Spellshield: Double', { ...emptyCatalogFilters(), element: 'FIRE' }), []);
+ assert.deepEqual(filterCatalog(pool, 'element:water', emptyCatalogFilters()), [named, cards[0]]);
+ assert.deepEqual(filterCatalog(pool, 'unknown:field', emptyCatalogFilters()), []);
+});
 test("ownership and available elements are opt-in and never silently restrict all cards",()=>{
  assert.equal(filterCatalog(cards,"",emptyCatalogFilters(),undefined,new Set(["WATER"])).length,3);
  assert.deepEqual(filterCatalog(cards,"",{...emptyCatalogFilters(),availableElements:true},undefined,new Set(["WATER"])).map(c=>c.name),["Singer","Token"]);

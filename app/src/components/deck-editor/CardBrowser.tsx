@@ -21,7 +21,7 @@ import FilterPanel from "../filters/FilterPanel";
 import MultiSelectFilter from "../filters/MultiSelectFilter";
 import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
-import { emptyCatalogFilters, filterCatalog, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
+import { emptyCatalogFilters, filterCatalog, isFullCardName, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
 
 export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destination, onDestination, names, catalog, deck, onEdit, onAdded, owned, collectionStatus, identityElements, suggestedNames, evidence, suppressResults = false, sourceControl, renderStats, statsControls, suggestionStatus }: {
   format?: DeckFormat;
@@ -81,7 +81,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const facetKeys = { class: "classes", set: "sets", edition: "printingSets", element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
   const facets = Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [facet, new Set(filters[key as keyof typeof facetKeys] ? filters[key as keyof typeof facetKeys]!.split("|") : [])]));
   return <>
-    <FilterQuery text={query} facets={facets} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
+    <FilterQuery text={query} facets={facets} isLiteralName={value => isFullCardName(cards, value)} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
     <div className={`grid w-full items-center gap-2 ${sourceControl ? "grid-cols-2" : "grid-cols-1"}`}>
       {sourceControl}
       <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck (automatic)</option><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option>{deck.song !== undefined && <option value="song">Song</option>}<option value="maybeboard">Maybeboard</option></select></label>

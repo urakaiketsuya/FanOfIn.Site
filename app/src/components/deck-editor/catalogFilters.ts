@@ -9,8 +9,14 @@ export interface CatalogFilters {
 }
 export const emptyCatalogFilters = (): CatalogFilters => ({ class: "", set: "", edition: "", rarity: "", element: "", type: "", subtype: "", costType: "", maxCost: "", ownedOnly: false, availableElements: false });
 
+export function isFullCardName(cards: readonly Card[], query: string): boolean {
+  const name = query.trim().toLocaleLowerCase();
+  return name.length > 0 && cards.some(card => card.name.toLocaleLowerCase() === name);
+}
+
 export function filterCatalog(cards: Card[], query: string, filters: CatalogFilters, owned?: ReadonlyMap<string, number>, elements?: ReadonlySet<string>): Card[] {
-  return filterCards(cards, { ...emptyFilterState(), name: query, printingSets: new Set(filters.edition?.split("|").filter(Boolean) ?? []), classes: new Set(filters.class?.split("|").filter(Boolean) ?? []), sets: new Set(filters.set?.split("|").filter(Boolean) ?? []), rarities: new Set(filters.rarity?.split("|").filter(Boolean) ?? []),
+  const search = isFullCardName(cards, query) ? `name:${JSON.stringify(query.trim())}` : query;
+  return filterCards(cards, { ...emptyFilterState(), name: search, printingSets: new Set(filters.edition?.split("|").filter(Boolean) ?? []), classes: new Set(filters.class?.split("|").filter(Boolean) ?? []), sets: new Set(filters.set?.split("|").filter(Boolean) ?? []), rarities: new Set(filters.rarity?.split("|").filter(Boolean) ?? []),
     elements: new Set(filters.element?.split("|").filter(Boolean) ?? []), types: new Set(filters.type?.split("|").filter(Boolean) ?? []), subtypes: new Set(filters.subtype?.split("|").filter(Boolean) ?? []),
   }).filter(card => {
     const memory = card.cost_memory != null || card.cost?.type === "memory";
