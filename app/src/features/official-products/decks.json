@@ -5829,6 +5829,426 @@
         "generated": [],
         "status": []
       }
+    },
+    {
+      "id": "recollection-rec-brv",
+      "name": "Merlin Re:Collection, Brilliant Vestige",
+      "productCode": "ReC-BRV",
+      "champions": [
+        "Merlin"
+      ],
+      "sourceUrl": "https://shoutatyourdecks.com/decks/d7f8665f-f080-4721-af51-09926e260e2e",
+      "cards": {
+        "main": [
+          {
+            "name": "Another Beginning",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Converge Reflections",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Crystalline Reality",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Dormouse Informant",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Find the Lost",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Gentle Respite",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Obelith Escort",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Overlapping Visages",
+            "quantity": 2,
+            "set": "ReC-BRV",
+            "collectorNumber": "025A"
+          },
+          {
+            "name": "Protect Her At All Costs",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Return to the Archive",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Shardwing Searchlight",
+            "quantity": 3,
+            "set": "ReC-BRV",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Undeniable Truth",
+            "quantity": 3,
+            "set": "ReC-BRV",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Quiet Refraction",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Seep Into the Mind",
+            "quantity": 3,
+            "set": "ReC-BRV",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Shattered Hope",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Stand Before the Queen",
+            "quantity": 3,
+            "set": "ReC-BRV",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Will to Save",
+            "quantity": 4,
+            "set": "ReC-BRV",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Duality's Convergence",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "035"
+          },
+          {
+            "name": "Materialize the Soul",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Possessed Reaping",
+            "quantity": 2,
+            "set": "ReC-BRV",
+            "collectorNumber": "037"
+          },
+          {
+            "name": "Spirit Blade: Terminus",
+            "quantity": 3,
+            "set": "ReC-BRV",
+            "collectorNumber": "038"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Merlin, Memorite Vassal",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Merlin, Amethyst's Glow",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Merlin, Brilliant Vestige",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Assassin's Mantle",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Poisoned Dagger",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Prismspire Scepter",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Proto Key Crest",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Shardforged Blade",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Luminous Quartz",
+            "quantity": 1,
+            "set": "ReC-BRV",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "recollection-rec-aur",
+      "name": "Mordred Re:Collection, Aurelian Regent",
+      "productCode": "ReC-AUR",
+      "champions": [
+        "Mordred"
+      ],
+      "sourceUrl": "https://shoutatyourdecks.com/decks/5b809702-5e69-4b62-85e4-f17cf2688134",
+      "cards": {
+        "main": [
+          {
+            "name": "Dauntless Assault",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Dungeon Guide",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Gildas, Faesworn Monarch",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Invigorated Slash",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Savage Slash",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Sudden Steel",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Trickster of the Fae Realm",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Warrior of the Fae Realm",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Dredging Streams",
+            "quantity": 2,
+            "set": "ReC-AUR",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Drenching Finish",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Freezing Hail",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Frostbind",
+            "quantity": 2,
+            "set": "ReC-AUR",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Frostsworn Paladin",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Lakereaving Chill",
+            "quantity": 2,
+            "set": "ReC-AUR",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Regulus Blitz",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Snow Fairy",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Striking Tides",
+            "quantity": 4,
+            "set": "ReC-AUR",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Luminescent Slash",
+            "quantity": 3,
+            "set": "ReC-AUR",
+            "collectorNumber": "034"
+          }
+        ],
+        "material": [
+          {
+            "name": "Flawless Spirit of Mordred",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Mordred, Burnished Avenger",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Mordred, Flawless Blade",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Mordred, Fated Luminary",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Mordred, Aurelian Regent",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Drawn Blade",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Dummy Trainer",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Rhongomiant, Grove's Spire",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Safeguard Amulet",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Sword of Seeking",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Mirrordepth's Blade",
+            "quantity": 1,
+            "set": "ReC-AUR",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
     }
   ]
 }

@@ -646,5 +646,70 @@
     ],
     "winText": "After Zander moves cards out of opposing hands, Strike of Singularity doubles its attack damage against a unit whose controller has no cards in hand. Check that condition when damage is dealt. Bathe in Light recovers 4 now and again next recollection; each such recovery gives Elyan +4 power and unblockable for that turn. Prepared Slice and Dice offers another attack if its first attack hits.",
     "slug": "zander-pantheon-starter"
+  },
+  {
+    "deckId": "recollection-rec-brv",
+    "summary": "Pile sheen counters onto enemy units and your Fractured Memories, bank preparation counters, then cash both in. Prepared attacks hit harder, and big sheen totals unlock Luminous Quartz, Spirit Blade: Terminus and Brilliant Vestige.",
+    "opening": "Level 1 Memorite Vassal gives you the Fractured Memories mastery and lets you pay (2) to summon a Memorite Blade. Play Quiet Refraction early: it draws into memory and adds two sheen to Fractured Memories, and it adds two more each time Merlin levels up. Dormouse Informant and Will to Save give you the first preparation counter. Gentle Respite, Will to Save and Return to the Archive have Floating Memory, so they help pay later memory costs.",
+    "leveling": "Level 2 Amethyst's Glow puts two sheen counters on a unit. Its (9) ability draws a card and adds a preparation counter, and it costs less for every sheen counter on your Fractured Memories. Level 3 Brilliant Vestige rewards sheen totals: at Sheen 8+ it can banish a regalia from your material deck to draw and add a preparation counter. At Sheen 24+ it looks at an opponent's memory at your end phase and banishes a card from it. Quiet Refraction adds sheen at each level up, so play it before you level.",
+    "sequence": "Summon Memorite tokens with Shardwing Searchlight, Obelith Escort and Protect Her At All Costs. Obelith tokens grow with sheen, and when one leaves the field its sheen moves to Fractured Memories. Seep Into the Mind and Shattered Hope spread sheen onto the opponent's units and your own allies. Prepare 1 and Prepare 2 cards, such as Find the Lost and Obelith Escort, give a bonus only when you pay the counters. Spirit Blade: Terminus gets +1 power for every four sheen on Fractured Memories.",
+    "cards": [
+      "Merlin, Memorite Vassal",
+      "Merlin, Amethyst's Glow",
+      "Merlin, Brilliant Vestige"
+    ],
+    "mistakes": [
+      "Sheen counters on a unit and sheen counters on your Fractured Memories are different piles. Sheen thresholds on Merlin's cards count the pile on Fractured Memories.",
+      "A Prepare card is prepared only if you pay the counters. Dormouse Informant gives a counter only when your champion has none, so do not hold it until you already have one.",
+      "Every Merlin Bonus needs Merlin as your champion. Check your lineage before you plan a discount like Protect Her At All Costs or Shattered Hope.",
+      "Overlapping Visages makes you sacrifice an ally too. Keep a cheap token ready, and you need both a Distortion and a non-Distortion ally sacrificed to get the Lost Being."
+    ],
+    "synergyTitle": "Turn counters into tokens and discounts",
+    "synergyCards": [
+      "Quiet Refraction",
+      "Obelith Escort",
+      "Spirit Blade: Terminus"
+    ],
+    "winTitle": "Sheen finish with Quartz and Terminus",
+    "winCards": [
+      "Luminous Quartz",
+      "Spirit Blade: Terminus",
+      "Merlin, Brilliant Vestige"
+    ],
+    "winText": "At Sheen 12+, Luminous Quartz can rest and spend a preparation counter to deal 1 plus the sheen on a target unit as damage, at slow speed. A prepared Spirit Blade: Terminus doubles the sheen on Fractured Memories when it hits, then goes to memory, so it sets up the next big total. Brilliant Vestige at Sheen 24+ adds a steady memory disruption on top.",
+    "slug": "merlin-recollection-brilliant-vestige"
+  },
+  {
+    "deckId": "recollection-rec-aur",
+    "summary": "Play many cheap attack cards, and use the attack cards in your graveyard as extra memory payment. Level up to make the next attack cheaper or stronger, then end with a large Luminescent Slash.",
+    "opening": "Flawless Spirit of Mordred draws seven and glimpses 4. At level 1, Burnished Avenger looks at your top card: an attack card can be banished and activated that turn. Savage Slash has Floating Memory for a Warrior champion, and Dredging Streams gets it at level 2. Play Frostsworn Paladin and Warrior or Snow Fairy allies with Stealth early to hold the board while your graveyard fills with attacks.",
+    "leveling": "Dungeon Guide is your main way to level up: it banishes two random cards from memory and levels your champion. After a level up, Invigorated Slash gets +2 power and, with Mordred Bonus, the first attack card costs 2 less. Level 2 Flawless Blade gives attack cards in your graveyard Floating Memory. At level 3, Fated Luminary draws two when it levels into another level 3 Mordred, and gives attack cards in the graveyard Ephemerate. Aurelian Regent gives your next attack +3 power and On Hit: Recover 3.",
+    "sequence": "Attack first with cheap cards such as Invigorated Slash, Savage Slash and Drenching Finish. Then use Striking Tides and Regulus Blitz, which need floating-memory cards in the graveyard. Striking Tides wakes your champion for another attack. Freezing Hail, Frostbind and Lakereaving Chill answer threats. Rhongomiant gets +4 power while the opponent's influence is eight or more.",
+    "cards": [
+      "Mordred, Burnished Avenger",
+      "Mordred, Flawless Blade",
+      "Mordred, Fated Luminary",
+      "Mordred, Aurelian Regent"
+    ],
+    "mistakes": [
+      "Floating Memory pays only for memory costs. It does not help pay reserve costs.",
+      "Aurelian Regent delevels Mordred whenever you activate a luxem card, and Luminescent Slash is a luxem card. Plan a level-up with Dungeon Guide after you cast it.",
+      "Dungeon Guide banishes two random cards from memory, so you need two cards in memory to level up with it.",
+      "Dauntless Assault and Gildas are Exalted. They need another advanced element enabled. Mordred Bonus cards also need Mordred as your champion."
+    ],
+    "synergyTitle": "Fill the graveyard with attacks",
+    "synergyCards": [
+      "Dungeon Guide",
+      "Striking Tides",
+      "Regulus Blitz"
+    ],
+    "winTitle": "A chain of attacks ending in Luminescent Slash",
+    "winCards": [
+      "Luminescent Slash",
+      "Mordred, Aurelian Regent",
+      "Striking Tides"
+    ],
+    "winText": "Luminescent Slash costs 2 less and gets +2 power for each other attack card you have activated this turn. Chain cheap attacks, use Striking Tides to wake your champion, then cast it for a very large hit. Aurelian Regent's On Enter adds another +3 power to the next attack and recovers 3 on hit.",
+    "slug": "mordred-recollection-aurelian-regent"
   }
 ]

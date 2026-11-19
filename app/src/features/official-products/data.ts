@@ -18,7 +18,7 @@ export interface OfficialProductDeck {
 }
 
 export const PRODUCT_RELEASE_DATES: Record<string, string> = {
-  PRDSD: "2026-08-21", RDOPD: "2026-04-03", DTRSD: "2025-07-25",
+  PRDSD: "2026-08-21", "ReC-AUR": "2026-04-03", "ReC-BRV": "2025-12-05", RDOPD: "2026-04-03", DTRSD: "2025-07-25",
   "ReC-IDY": "2025-03-07", "ReC-HVF": "2025-03-07", AMBSD: "2024-10-11",
   "ReC-SLM": "2024-05-17", "ReC-SHD": "2024-05-17", ALCSD: "2024-01-26",
   DOASD: "2023-04-28", DOAp: "2023-01-01",
@@ -29,6 +29,8 @@ export const officialProductsSource = rawData.source;
 
 export const PRODUCT_LABELS: Record<string, string> = {
   DTRSD: "Distorted Reflections",
+  "ReC-AUR": "Re:Collection – Aurelian Regent",
+  "ReC-BRV": "Re:Collection – Brilliant Vestige",
   "ReC-IDY": "Re:Collection – Idyll Corsage",
   "ReC-HVF": "Re:Collection – Heaven's Favored",
   "ReC-SLM": "Re:Collection – Slime Sovereign",

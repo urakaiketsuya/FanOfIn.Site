@@ -5,7 +5,7 @@ import { starterPrimers, primerTerms, findPrimer, primerPath } from '../src/feat
 
 test('every catalog product has its own primer and valid card examples', () => {
   const expected = officialProductDecks;
-  assert.equal(expected.length, 22);
+  assert.equal(expected.length, 24);
   assert.deepEqual([...starterPrimers.keys()].sort(), expected.map(deck => deck.id).sort());
   for (const deck of expected) {
     const primer = starterPrimers.get(deck.id)!;
@@ -60,6 +60,8 @@ test('new products explain their distinctive mechanics', () => {
     'ReC-HVF': ['Transform / Fatestone / Fatebound', 'Quest counters', 'Retort', 'Generate'],
     'ReC-SLM': ['Pride', 'Refinement counters'],
     'ReC-SHD': ['Prepare / Preparation', 'Ominous Shadow', 'Agility'],
+    'ReC-BRV': ['Sheen counters', 'Prepare / Preparation'],
+    'ReC-AUR': ['Floating Memory', 'Ephemerate'],
     RDOPD: ['Crowd’s Favor', 'Siegeable / On Destroy', 'Retort'],
   };
   for (const deck of officialProductDecks) {

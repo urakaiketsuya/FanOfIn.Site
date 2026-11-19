@@ -548,6 +548,36 @@
       "pattern": "\\blevel counters?\\b",
       "meaning": "Each level counter gives the champion +1 effective level. This can meet Pride and ordinary Level thresholds, but does not change its base level, skip champion levels, or unlock an advanced element by itself.",
       "ruleQuote": null
+    },
+    {
+      "term": "Sheen counters",
+      "pattern": "sheen",
+      "meaning": "Sheen counters mark a unit or your Fractured Memories. Cards with a Sheen threshold, like Sheen 8+, check the counters on your Fractured Memories. A Memorite Obelith token moves its sheen counters to Fractured Memories when it leaves the field.",
+      "ruleQuote": null
+    },
+    {
+      "term": "Ephemerate",
+      "pattern": "ephemerate",
+      "meaning": "You may activate the card from your graveyard by paying its Ephemerate cost. The card becomes ephemeral in the intent.",
+      "ruleQuote": null
+    },
+    {
+      "term": "Luxem / Delevel",
+      "pattern": "luxem|delevel",
+      "meaning": "Luxem is an advanced element. Some effects delevel your champion, which lowers its level and can stop level-based bonuses until you level up again.",
+      "ruleQuote": null
+    },
+    {
+      "term": "Divine Relic",
+      "pattern": "divine relic",
+      "meaning": "You can have only one card with Divine Relic in your material deck. Flawless Spirit of Mordred can only level up into a Mordred champion.",
+      "ruleQuote": null
+    },
+    {
+      "term": "Distortion",
+      "pattern": "distortion",
+      "meaning": "Distortion is an object type. Some cards care whether an object is a Distortion, or turn token copies of regalia into Distortions.",
+      "ruleQuote": null
     }
   ],
   "decks": {
@@ -5543,6 +5573,13 @@
           "cardName": "Advent of the Shenju",
           "sourceUrl": "https://index.gatcg.com/card/advent-of-the-shenju"
         }
+      },
+      {
+        "termIndex": 92,
+        "cards": [
+          "Fatestone of Heaven"
+        ],
+        "quote": null
       }
     ],
     "F3W6n38rYYLtCyn7wYCu": [
@@ -8562,6 +8599,734 @@
         "cards": [
           "Slice and Dice",
           "Birefringence"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 92,
+        "cards": [
+          "Corhazi Lightblade",
+          "Gleaming Cut",
+          "Zander, Blinding Steel"
+        ],
+        "quote": {
+          "text": "At the beginning of your recollection phase, you may reveal all cards in your memory. For each luxem element card revealed, each opponent puts a…",
+          "cardName": "Zander, Blinding Steel",
+          "sourceUrl": "https://index.gatcg.com/card/zander-blinding-steel"
+        }
+      }
+    ],
+    "recollection-rec-brv": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Gentle Respite",
+          "Return to the Archive",
+          "Stand Before the Queen",
+          "Will to Save"
+        ],
+        "quote": {
+          "text": "Floating Memory",
+          "cardName": "Gentle Respite",
+          "sourceUrl": "https://index.gatcg.com/card/gentle-respite"
+        }
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Stand Before the Queen",
+          "Poisoned Dagger"
+        ],
+        "quote": {
+          "text": "[Class Bonus] Floating Memory",
+          "cardName": "Stand Before the Queen",
+          "sourceUrl": "https://index.gatcg.com/card/stand-before-the-queen"
+        }
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Merlin, Amethyst's Glow",
+          "Luminous Quartz"
+        ],
+        "quote": {
+          "text": "(9): Draw a card and put a preparation counter on Merlin. Activate this ability only once. This ability costs (X) less to activate, where X…",
+          "cardName": "Merlin, Amethyst's Glow",
+          "sourceUrl": "https://index.gatcg.com/card/merlin-amethysts-glow"
+        }
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Merlin, Amethyst's Glow",
+          "Merlin, Brilliant Vestige"
+        ],
+        "quote": {
+          "text": "Merlin Lineage",
+          "cardName": "Merlin, Brilliant Vestige",
+          "sourceUrl": "https://index.gatcg.com/card/merlin-brilliant-vestige"
+        }
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Merlin, Memorite Vassal"
+        ],
+        "quote": {
+          "text": "[Merlin Bonus] Inherited Effect — Whenever an opponent recollects three or more cards, for every three cards recollected, they put a sheen counter on a…",
+          "cardName": "Merlin, Memorite Vassal",
+          "sourceUrl": "https://index.gatcg.com/card/merlin-memorite-vassal"
+        }
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Dormouse Informant",
+          "Quiet Refraction",
+          "Spirit of Water",
+          "Merlin, Memorite Vassal",
+          "Merlin, Amethyst's Glow",
+          "Merlin, Brilliant Vestige",
+          "Prismspire Scepter"
+        ],
+        "quote": {
+          "text": "On Enter: If your champion has no preparation counters on them, put a preparation counter on them.",
+          "cardName": "Dormouse Informant",
+          "sourceUrl": "https://index.gatcg.com/card/dormouse-informant"
+        }
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Shardwing Searchlight",
+          "Spirit Blade: Terminus"
+        ],
+        "quote": {
+          "text": "Until end of turn, Memorite objects you control gain \"On Hit: Put a sheen counter on the hit object.\"",
+          "cardName": "Shardwing Searchlight",
+          "sourceUrl": "https://index.gatcg.com/card/shardwing-searchlight"
+        }
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Crystalline Reality",
+          "Stand Before the Queen"
+        ],
+        "quote": {
+          "text": "• Your champion gains true sight until end of turn.",
+          "cardName": "Crystalline Reality",
+          "sourceUrl": "https://index.gatcg.com/card/crystalline-reality"
+        }
+      },
+      {
+        "termIndex": 18,
+        "cards": [
+          "Find the Lost"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Shattered Hope"
+        ],
+        "quote": {
+          "text": "Glimpse 1, then draw a card.",
+          "cardName": "Shattered Hope",
+          "sourceUrl": "https://index.gatcg.com/card/shattered-hope"
+        }
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Return to the Archive",
+          "Proto Key Crest"
+        ],
+        "quote": {
+          "text": "You may sacrifice a regalia. If you do, recover 2 and draw a card.",
+          "cardName": "Return to the Archive",
+          "sourceUrl": "https://index.gatcg.com/card/return-to-the-archive"
+        }
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Converge Reflections"
+        ],
+        "quote": {
+          "text": "As an additional cost to activate this card, sacrifice a non-token item or weapon.",
+          "cardName": "Converge Reflections",
+          "sourceUrl": "https://index.gatcg.com/card/converge-reflections"
+        }
+      },
+      {
+        "termIndex": 33,
+        "cards": [
+          "Poisoned Dagger"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Converge Reflections",
+          "Crystalline Reality",
+          "Obelith Escort",
+          "Overlapping Visages",
+          "Protect Her At All Costs",
+          "Shardwing Searchlight",
+          "Duality's Convergence",
+          "Merlin, Memorite Vassal"
+        ],
+        "quote": {
+          "text": "As an additional cost to activate this card, sacrifice a non-token item or weapon.",
+          "cardName": "Converge Reflections",
+          "sourceUrl": "https://index.gatcg.com/card/converge-reflections"
+        }
+      },
+      {
+        "termIndex": 48,
+        "cards": [
+          "Merlin, Memorite Vassal"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Possessed Reaping",
+          "Merlin, Brilliant Vestige",
+          "Assassin's Mantle",
+          "Life Essence Amulet",
+          "Poisoned Dagger",
+          "Prismspire Scepter",
+          "Tariff Ring"
+        ],
+        "quote": {
+          "text": "On Ally Kill: Return the killed ally from its owner's graveyard to the field under your control rested.…",
+          "cardName": "Possessed Reaping",
+          "sourceUrl": "https://index.gatcg.com/card/possessed-reaping"
+        }
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Converge Reflections",
+          "Overlapping Visages",
+          "Return to the Archive",
+          "Undeniable Truth",
+          "Shardforged Blade"
+        ],
+        "quote": {
+          "text": "As an additional cost to activate this card, sacrifice a non-token item or weapon.",
+          "cardName": "Converge Reflections",
+          "sourceUrl": "https://index.gatcg.com/card/converge-reflections"
+        }
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Will to Save",
+          "Possessed Reaping",
+          "Poisoned Dagger",
+          "Luminous Quartz"
+        ],
+        "quote": {
+          "text": "You may rest your champion. If you do, put a preparation counter on them.",
+          "cardName": "Will to Save",
+          "sourceUrl": "https://index.gatcg.com/card/will-to-save"
+        }
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Another Beginning",
+          "Return to the Archive",
+          "Duality's Convergence",
+          "Materialize the Soul",
+          "Merlin, Brilliant Vestige"
+        ],
+        "quote": {
+          "text": "Materialize a regalia card with memory cost 0 from your material deck.",
+          "cardName": "Another Beginning",
+          "sourceUrl": "https://index.gatcg.com/card/another-beginning"
+        }
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Prismspire Scepter",
+          "Luminous Quartz"
+        ],
+        "quote": {
+          "text": "[Merlin Bonus] On Enter: As a Spell, put two sheen counters on target champion you don't control.",
+          "cardName": "Prismspire Scepter",
+          "sourceUrl": "https://index.gatcg.com/card/prismspire-scepter"
+        }
+      },
+      {
+        "termIndex": 72,
+        "cards": [
+          "Crystalline Reality",
+          "Dormouse Informant",
+          "Find the Lost",
+          "Obelith Escort",
+          "Undeniable Truth",
+          "Will to Save",
+          "Spirit Blade: Terminus",
+          "Merlin, Amethyst's Glow",
+          "Merlin, Brilliant Vestige",
+          "Assassin's Mantle",
+          "Luminous Quartz"
+        ],
+        "quote": {
+          "text": "On Enter: If your champion has no preparation counters on them, put a preparation counter on them.",
+          "cardName": "Dormouse Informant",
+          "sourceUrl": "https://index.gatcg.com/card/dormouse-informant"
+        }
+      },
+      {
+        "termIndex": 77,
+        "cards": [
+          "Gentle Respite"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 85,
+        "cards": [
+          "Proto Key Crest"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 88,
+        "cards": [
+          "Duality's Convergence"
+        ],
+        "quote": {
+          "text": "Each player summons a token copy of each non-Distortion regalia they control. Those copies each become a Distortion in addition to its other types.",
+          "cardName": "Duality's Convergence",
+          "sourceUrl": "https://index.gatcg.com/card/dualitys-convergence"
+        }
+      },
+      {
+        "termIndex": 90,
+        "cards": [
+          "Obelith Escort",
+          "Protect Her At All Costs",
+          "Shardwing Searchlight",
+          "Quiet Refraction",
+          "Seep Into the Mind",
+          "Shattered Hope",
+          "Stand Before the Queen",
+          "Materialize the Soul",
+          "Spirit Blade: Terminus",
+          "Merlin, Memorite Vassal",
+          "Merlin, Amethyst's Glow",
+          "Merlin, Brilliant Vestige",
+          "Prismspire Scepter",
+          "Shardforged Blade",
+          "Luminous Quartz"
+        ],
+        "quote": {
+          "text": "Summon a Memorite Obelith token with two sheen counters on it. You may change the target of an attack to that token.",
+          "cardName": "Protect Her At All Costs",
+          "sourceUrl": "https://index.gatcg.com/card/protect-her-at-all-costs"
+        }
+      },
+      {
+        "termIndex": 94,
+        "cards": [
+          "Converge Reflections",
+          "Overlapping Visages",
+          "Duality's Convergence"
+        ],
+        "quote": {
+          "text": "Each player sacrifices an ally. If at least one non-Distortion ally and at least one Distortion ally were sacrificed this way, you summon a Lost…",
+          "cardName": "Overlapping Visages",
+          "sourceUrl": "https://index.gatcg.com/card/overlapping-visages"
+        }
+      }
+    ],
+    "recollection-rec-aur": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Savage Slash",
+          "Dredging Streams",
+          "Frostsworn Paladin",
+          "Regulus Blitz",
+          "Striking Tides",
+          "Mordred, Flawless Blade",
+          "Mordred, Fated Luminary"
+        ],
+        "quote": {
+          "text": "[Class Bonus] Floating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.…",
+          "cardName": "Savage Slash",
+          "sourceUrl": "https://index.gatcg.com/card/savage-slash"
+        }
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Savage Slash",
+          "Sudden Steel",
+          "Drenching Finish",
+          "Drawn Blade",
+          "Sword of Seeking"
+        ],
+        "quote": {
+          "text": "[Class Bonus] Floating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.…",
+          "cardName": "Savage Slash",
+          "sourceUrl": "https://index.gatcg.com/card/savage-slash"
+        }
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Dredging Streams"
+        ],
+        "quote": {
+          "text": "[Level 2+] Floating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.…",
+          "cardName": "Dredging Streams",
+          "sourceUrl": "https://index.gatcg.com/card/dredging-streams"
+        }
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Sudden Steel",
+          "Mordred, Fated Luminary"
+        ],
+        "quote": {
+          "text": "[Class Bonus] Efficiency (This card costs LV less to activate. LV refers to your champion's level.…",
+          "cardName": "Sudden Steel",
+          "sourceUrl": "https://index.gatcg.com/card/sudden-steel"
+        }
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Mordred, Burnished Avenger",
+          "Mordred, Fated Luminary",
+          "Mordred, Aurelian Regent"
+        ],
+        "quote": {
+          "text": "Flawless Spirit of Mordred Lineage",
+          "cardName": "Mordred, Burnished Avenger",
+          "sourceUrl": "https://index.gatcg.com/card/mordred-burnished-avenger"
+        }
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Mordred, Burnished Avenger"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Dungeon Guide",
+          "Trickster of the Fae Realm",
+          "Warrior of the Fae Realm",
+          "Frostsworn Paladin",
+          "Snow Fairy",
+          "Flawless Spirit of Mordred",
+          "Mordred, Burnished Avenger",
+          "Mordred, Aurelian Regent",
+          "Drawn Blade"
+        ],
+        "quote": {
+          "text": "On Enter: You may banish two cards at random from your memory. If you do, level up your champion.…",
+          "cardName": "Dungeon Guide",
+          "sourceUrl": "https://index.gatcg.com/card/dungeon-guide"
+        }
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Dauntless Assault"
+        ],
+        "quote": {
+          "text": "[Mordred Bonus] On Attack: Wake up the attacker.",
+          "cardName": "Dauntless Assault",
+          "sourceUrl": "https://index.gatcg.com/card/dauntless-assault"
+        }
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Striking Tides",
+          "Mordred, Aurelian Regent"
+        ],
+        "quote": {
+          "text": "[Mordred Bonus] On Hit: You may banish a card with floating memory from your graveyard. If you do, wake up your champion.",
+          "cardName": "Striking Tides",
+          "sourceUrl": "https://index.gatcg.com/card/striking-tides"
+        }
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Drenching Finish"
+        ],
+        "quote": {
+          "text": "[Class Bonus] On Kill: Target player puts the top three cards of their deck into their graveyard.",
+          "cardName": "Drenching Finish",
+          "sourceUrl": "https://index.gatcg.com/card/drenching-finish"
+        }
+      },
+      {
+        "termIndex": 13,
+        "cards": [
+          "Mirrordepth's Blade"
+        ],
+        "quote": {
+          "text": "On Banish: Look at the top card of your deck. You may put it into your graveyard.",
+          "cardName": "Mirrordepth's Blade",
+          "sourceUrl": "https://index.gatcg.com/card/mirrordepths-blade"
+        }
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Frostsworn Paladin"
+        ],
+        "quote": {
+          "text": "Intercept (Whenever your champion is attacked while this ally is awake, you may redirect that attack to this ally.)",
+          "cardName": "Frostsworn Paladin",
+          "sourceUrl": "https://index.gatcg.com/card/frostsworn-paladin"
+        }
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Gildas, Faesworn Monarch",
+          "Trickster of the Fae Realm",
+          "Warrior of the Fae Realm",
+          "Snow Fairy",
+          "Sword of Seeking"
+        ],
+        "quote": {
+          "text": "Stealth, Vigor",
+          "cardName": "Gildas, Faesworn Monarch",
+          "sourceUrl": "https://index.gatcg.com/card/gildas-faesworn-monarch"
+        }
+      },
+      {
+        "termIndex": 17,
+        "cards": [
+          "Rhongomiant, Grove's Spire"
+        ],
+        "quote": {
+          "text": "Spellshroud",
+          "cardName": "Rhongomiant, Grove's Spire",
+          "sourceUrl": "https://index.gatcg.com/card/rhongomiant-groves-spire"
+        }
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Flawless Spirit of Mordred"
+        ],
+        "quote": {
+          "text": "On Enter: Draw seven cards, then glimpse 4.",
+          "cardName": "Flawless Spirit of Mordred",
+          "sourceUrl": "https://index.gatcg.com/card/flawless-spirit-of-mordred"
+        }
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Sudden Steel"
+        ],
+        "quote": {
+          "text": "[Class Bonus] Efficiency (This card costs LV less to activate. LV refers to your champion's level.…",
+          "cardName": "Sudden Steel",
+          "sourceUrl": "https://index.gatcg.com/card/sudden-steel"
+        }
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Mordred, Aurelian Regent"
+        ],
+        "quote": {
+          "text": "On Enter: Mordred's next attack this turn gets +3[POWER] and gains \"On Hit: Recover 3.\"",
+          "cardName": "Mordred, Aurelian Regent",
+          "sourceUrl": "https://index.gatcg.com/card/mordred-aurelian-regent"
+        }
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Lakereaving Chill",
+          "Rhongomiant, Grove's Spire",
+          "Sword of Seeking"
+        ],
+        "quote": {
+          "text": "Item or Weapon Link (This object enters the field linked to target item or weapon. If the link is broken, sacrifice this object.)",
+          "cardName": "Lakereaving Chill",
+          "sourceUrl": "https://index.gatcg.com/card/lakereaving-chill"
+        }
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Frostsworn Paladin"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 28,
+        "cards": [
+          "Mordred, Fated Luminary"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 34,
+        "cards": [
+          "Gildas, Faesworn Monarch"
+        ],
+        "quote": {
+          "text": "Stealth, Vigor",
+          "cardName": "Gildas, Faesworn Monarch",
+          "sourceUrl": "https://index.gatcg.com/card/gildas-faesworn-monarch"
+        }
+      },
+      {
+        "termIndex": 43,
+        "cards": [
+          "Frostbind",
+          "Regulus Blitz"
+        ],
+        "quote": {
+          "text": "Negate target card activation unless its controller pays (2). Banish the card that had its activation negated this way.",
+          "cardName": "Frostbind",
+          "sourceUrl": "https://index.gatcg.com/card/frostbind"
+        }
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Dummy Trainer"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 50,
+        "cards": [
+          "Lakereaving Chill"
+        ],
+        "quote": {
+          "text": "Item or Weapon Link (This object enters the field linked to target item or weapon. If the link is broken, sacrifice this object.)",
+          "cardName": "Lakereaving Chill",
+          "sourceUrl": "https://index.gatcg.com/card/lakereaving-chill"
+        }
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Dungeon Guide",
+          "Savage Slash",
+          "Trickster of the Fae Realm",
+          "Warrior of the Fae Realm",
+          "Dredging Streams",
+          "Drenching Finish",
+          "Frostbind",
+          "Frostsworn Paladin",
+          "Regulus Blitz",
+          "Striking Tides",
+          "Mordred, Burnished Avenger",
+          "Mordred, Flawless Blade",
+          "Mordred, Fated Luminary",
+          "Dummy Trainer",
+          "Safeguard Amulet",
+          "Tariff Ring",
+          "Mirrordepth's Blade"
+        ],
+        "quote": {
+          "text": "On Enter: You may banish two cards at random from your memory. If you do, level up your champion.…",
+          "cardName": "Dungeon Guide",
+          "sourceUrl": "https://index.gatcg.com/card/dungeon-guide"
+        }
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Lakereaving Chill"
+        ],
+        "quote": {
+          "text": "Item or Weapon Link (This object enters the field linked to target item or weapon. If the link is broken, sacrifice this object.)",
+          "cardName": "Lakereaving Chill",
+          "sourceUrl": "https://index.gatcg.com/card/lakereaving-chill"
+        }
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Dauntless Assault",
+          "Gildas, Faesworn Monarch",
+          "Trickster of the Fae Realm",
+          "Freezing Hail",
+          "Frostsworn Paladin",
+          "Regulus Blitz",
+          "Snow Fairy",
+          "Striking Tides"
+        ],
+        "quote": {
+          "text": "[Mordred Bonus] On Attack: Wake up the attacker.",
+          "cardName": "Dauntless Assault",
+          "sourceUrl": "https://index.gatcg.com/card/dauntless-assault"
+        }
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Dungeon Guide"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 63,
+        "cards": [
+          "Dauntless Assault"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 77,
+        "cards": [
+          "Rhongomiant, Grove's Spire"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 91,
+        "cards": [
+          "Mordred, Fated Luminary"
+        ],
+        "quote": {
+          "text": "Attack cards in your graveyard have floating memory and \"Ephemerate — (X)\", where X is that card's reserve cost.…",
+          "cardName": "Mordred, Fated Luminary",
+          "sourceUrl": "https://index.gatcg.com/card/mordred-fated-luminary"
+        }
+      },
+      {
+        "termIndex": 92,
+        "cards": [
+          "Mordred, Aurelian Regent"
+        ],
+        "quote": null
+      },
+      {
+        "termIndex": 93,
+        "cards": [
+          "Flawless Spirit of Mordred"
         ],
         "quote": null
       }
