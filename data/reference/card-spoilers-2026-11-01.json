@@ -14,7 +14,7 @@
     "Field names and enum values follow data/card-catalog.json (types, subtypes, elements, cost). exalted marks the \"Ex\" frame badge.",
     "reprintOf: the same card text already exists in the catalog under that set prefix.",
     "Song cards are Unlockable Actions: they can only be registered in an unlockable deck (the Song deck). Opening Refrain is a normal Melody action in Main and copies a card from the Song deck.",
-    "image / altPrintings[].image are local image assets in app/public/images/spoilers/. Records with sourceImageUrl use gallery artwork; remaining assets are stream screenshot crops.",
+    "image / altPrintings[].image are local image assets in app/public/images/spoilers/. Records with sourceImageUrl use gallery artwork; remaining assets are supplied screenshots or stream screenshot crops.",
     "addedAt records first catalog addition, recovered from Git history for existing cards. Desktop import sourceFile values identify supplied images; addition dates are independent of reveal dates."
   ],
   "sets": {
@@ -2814,6 +2814,479 @@
       "power": null,
       "life": null,
       "addedAt": "2026-11-19"
+    },
+    {
+      "name": "Protocol/SELFDESTRUCT",
+      "setPrefix": "CBL",
+      "collectorNumber": "104",
+      "rarity": "C",
+      "image": "protocol-selfdestruct.png",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Class Bonus This card costs 1 less to activate.\nAutomaton Ally Link\nLinked ally has “On Death: Deal 4 damage to each champion.”\n(2), REST: Destroy linked ally.",
+      "sourceFile": "codex-clipboard-897fe4db-b957-433d-8804-bb3eaef472cc.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Sting Prowler",
+      "setPrefix": "CBL",
+      "collectorNumber": "109",
+      "rarity": "U",
+      "image": "sting-prowler.png",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 1,
+      "life": 2,
+      "speed": null,
+      "effect": "Stealth (This unit can’t be targeted by attacks unless permitted by true sight.)\nClass Bonus At the beginning of your recollection phase, you may banish a fire element card from your graveyard. If you do, put a buff counter on Sting Prowler.",
+      "sourceFile": "codex-clipboard-f27c3642-c142-4628-a96f-5273c52161c9.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Cognoid Cycler",
+      "setPrefix": "CBL",
+      "collectorNumber": "015",
+      "rarity": "R",
+      "image": "cognoid-cycler.png",
+      "types": [
+        "REGALIA",
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "2"
+      },
+      "power": 3,
+      "life": 2,
+      "speed": null,
+      "effect": "Beatrice Bonus This card costs 1 less to materialize.\nPay only using active memory for this card’s memory cost.\nOn Enter: Draw two cards, then discard two cards.",
+      "sourceFile": "codex-clipboard-f486a196-1ad5-4716-bed5-fe53b2584e5d.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Stoke the Flames",
+      "setPrefix": "CBL",
+      "collectorNumber": "110",
+      "rarity": "SR",
+      "image": "stoke-the-flames.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Discard any amount of fire element cards from your hand and/or memory. Draw a card into your memory for each card discarded from your memory this way. Then draw a card into your hand for each card discarded from your hand this way.\nAt the beginning of your next end phase, banish all fire element cards from your graveyard.",
+      "sourceFile": "codex-clipboard-b312ef41-afaf-4570-9023-3f318de0a583.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Pericardium Fractal",
+      "setPrefix": "CBL",
+      "collectorNumber": "175",
+      "rarity": "SR",
+      "image": "pericardium-fractal.png",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "ELYSIAN",
+        "FRACTAL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Elysian Aura, Reservable\nClass Bonus On Enter: Depending on the amount of damage counters on your champion—\n• 14 or less— Scavenge 7 for an Aenean Spell card.\n• 15— Empower 7. The next Aenean Spell card you activate this turn costs 2 less to activate.\n• 16 or more— Recover 7.",
+      "sourceFile": "codex-clipboard-de5e9c3e-1de5-436a-90b8-d111f428d771.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Blood Offering",
+      "setPrefix": "CBL",
+      "collectorNumber": "172",
+      "rarity": "U",
+      "image": "blood-offering.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Each opponent sacrifices an ally. Then if no allies were sacrificed this way, draw a card into your memory.",
+      "sourceFile": "codex-clipboard-18978bd0-37e3-4e53-947c-ea8d6ee9f9e0.png",
+      "addedAt": "2026-11-20",
+      "flavor": "“Dr. Judas, you never told us about this! We were supposed to be the ones worth keeping!”"
+    },
+    {
+      "name": "In Vitro Nostalgia",
+      "setPrefix": "CBL",
+      "collectorNumber": "053",
+      "rarity": "R",
+      "image": "in-vitro-nostalgia.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Put all cards from your graveyard on the bottom of your deck in a random order. Banish In Vitro Nostalgia.\nEphemerate — (6) (You may activate this card from your graveyard by paying this cost. Action cards played this way become ephemeral on the effects stack.)",
+      "sourceFile": "codex-clipboard-80f6be7f-5470-4eed-9783-12622bd56059.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Mechanized Showdown",
+      "setPrefix": "CBL",
+      "collectorNumber": "061",
+      "rarity": "C",
+      "image": "mechanized-showdown.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Wake up target non-Human ally. Until end of turn, that ally can’t attack champions.",
+      "sourceFile": "codex-clipboard-32ee84f3-4242-4d1a-9167-10907714b7dd.png",
+      "addedAt": "2026-11-20",
+      "flavor": "Underground slime fighting had become a serious problem in Dis, particularly as it held very little regard for the slimes’ feelings or well-being."
+    },
+    {
+      "name": "Gentle Respite",
+      "setPrefix": "CBL",
+      "collectorNumber": "050",
+      "rarity": "U",
+      "image": "gentle-respite.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "If target opponent’s influence is greater than yours, draw a card into your memory. (A player’s influence is equal to the total amount of cards in their hand and memory.)\nFloating Memory",
+      "sourceFile": "codex-clipboard-63a8977b-37ca-40dd-a036-a3c9fe1c4b4f.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "ElecTech Slime",
+      "setPrefix": "CBL",
+      "collectorNumber": "160",
+      "rarity": "R",
+      "image": "electech-slime.png",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "VELTECH",
+        "AUTOMATON",
+        "ANIMAL",
+        "SLIME"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 2,
+      "speed": null,
+      "effect": "Class Bonus On Enter: You may banish a card at random from your memory. If you do, draw a card. If the banished card is a Slime or VelTech card with reserve cost 3 or less, put it onto the field. It gains ally link and becomes linked to ElecTech Slime.",
+      "sourceFile": "codex-clipboard-22f8e20a-2488-4942-8819-eb4d834abdb7.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Construct Slime",
+      "setPrefix": "CBL",
+      "collectorNumber": "178",
+      "rarity": "U",
+      "image": "construct-slime.png",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON",
+        "ANIMAL",
+        "SLIME"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 3,
+      "life": 3,
+      "speed": null,
+      "effect": "Class Bonus As long as Construct Slime is linked to an object, it gets +2 POWER and +2 LIFE.",
+      "sourceFile": "codex-clipboard-904510eb-52f6-433b-9052-769a3fbd19ee.png",
+      "addedAt": "2026-11-20",
+      "flavor": "Slimes often appear in areas with high concentrations of aether. Yet sometimes, technology can be mistaken for powerful aether."
+    },
+    {
+      "name": "Voxilis Finale Ultimo",
+      "setPrefix": "CBL",
+      "collectorNumber": "171",
+      "rarity": "UR",
+      "image": "voxilis-finale-ultimo.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ULTIMATE",
+        "SPELL",
+        "MELODY"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "15"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Casella Bonus This card costs 2 less to activate for each face up card in your Song deck.\nCasella Bonus For each arcane element card in your banishment, put four aria counters on your champion. Then Casella sings four times.",
+      "sourceFile": "codex-clipboard-8b49359b-89e1-4732-a0ca-b3ffbb6852d8.png",
+      "addedAt": "2026-11-20"
+    },
+    {
+      "name": "Auxiliary Power",
+      "setPrefix": "CBL",
+      "collectorNumber": "028",
+      "rarity": "U",
+      "image": "auxiliary-power.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "AUTOMATON",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "As an additional cost to activate this card, sacrifice a Powercell item or an Automaton ally.\nPut two buff counters on target Automaton ally.\nLevel 1+ Floating Memory",
+      "sourceFile": "codex-clipboard-b88cd1b9-9ef8-4a03-8cc3-ad51b26eb9be.png",
+      "addedAt": "2026-11-20",
+      "flavor": "Love knows no bounds."
+    },
+    {
+      "name": "Thunderbolt Oratorio",
+      "setPrefix": "CBL",
+      "collectorNumber": "169",
+      "rarity": "R",
+      "image": "thunderbolt-oratorio.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL",
+        "MELODY"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Deal 3 damage to target unit X times, where X is the amount of face up Song cards in your Song deck.",
+      "sourceFile": "codex-clipboard-7c2cb020-3d94-4d95-a5c3-875d4ac1d99e.png",
+      "addedAt": "2026-11-20",
+      "flavor": "She finally remembered why she sang. No longer would she falter. Casella Voxilis would sing with her heart, and save the world."
+    },
+    {
+      "name": "Enthusiastic Concertgoers",
+      "setPrefix": "CBL",
+      "collectorNumber": "048",
+      "rarity": "R",
+      "image": "enthusiastic-concertgoers.png",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 1,
+      "life": 3,
+      "speed": null,
+      "effect": "Casella Bonus On Enter: If Enthusiastic Concertgoers isn’t a token, summon two token copies of Enthusiastic Concertgoers.",
+      "sourceFile": "codex-clipboard-8750a9b3-31fa-4a7d-8a96-4cbdf6919f84.png",
+      "addedAt": "2026-11-20",
+      "flavor": "“I can’t wait for the concert! It’s a good thing we bought VIP tickets—that line was brutal!”",
+      "exalted": true
     }
   ],
   "deckSections": {
