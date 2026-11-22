@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T21:44:39.293Z",
+  "generatedAt": "2026-11-22T21:48:50.925Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -10224,6 +10224,33 @@
           "beats": [
             {
               "order": 1,
+              "actor": "p1",
+              "text": "Long destroys Censer of Restful Peace with Reduce to Ash. That frees Liminal Guide to enter play and draw him another card.",
+              "cards": [
+                "Reduce to Ash",
+                "Censer of Restful Peace",
+                "Liminal Guide"
+              ],
+              "timestamp": {
+                "videoId": "oHCCZOZBvKM",
+                "seconds": 36950
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Long reaches Ciel, Mirage’s Grave and brings out another Liminal Guide. The Guides pressure Lubé, with Ciel’s end-phase damage threatening to finish her.",
+              "cards": [
+                "Ciel, Mirage's Grave",
+                "Liminal Guide"
+              ],
+              "timestamp": {
+                "videoId": "oHCCZOZBvKM",
+                "seconds": 37015
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Yamikin levels to Tristan and plays Mad Hatter. The random selection avoids Ranger Strides, allowing the boots to enter. Reduce to Ash forces Incapacitate, leaving Resolute Stand to reduce the ensuing attacks.",
               "cards": [
@@ -10239,7 +10266,7 @@
               }
             },
             {
-              "order": 2,
+              "order": 4,
               "actor": "p1",
               "text": "Long removes Mad Hatter and develops Library Witch. Yamikin cannot assemble another finishing attack while Long preserves his defense.",
               "cards": [
@@ -10252,7 +10279,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 5,
               "actor": "p1",
               "text": "A later Baleful Oblation draws Incapacitate. Long swings with Inert Sword for six; Evasive Maneuvers and Skirting Step reduce the attack, but Ciel’s end-phase damage finishes the match.",
               "cards": [
@@ -10382,6 +10409,20 @@
             {
               "order": 1,
               "actor": "p2",
+              "text": "At 18 damage, Apaul uses Portentous Tanggu to draw Dungeon Guide. The draw gives him a route to Guo Jia level 3 while holding Innervate Agility for ProAnnn’s burn.",
+              "cards": [
+                "Portentous Tanggu",
+                "Dungeon Guide",
+                "Innervate Agility"
+              ],
+              "timestamp": {
+                "videoId": "oHCCZOZBvKM",
+                "seconds": 41985
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
               "text": "Apaul reaches Guo Jia level 3 while preserving Seiryuu’s Command and Innervate Agility. Censer of Restful Peace limits ProAnnn’s floating-memory options.",
               "cards": [
                 "Seiryuu's Command",
@@ -10394,7 +10435,7 @@
               }
             },
             {
-              "order": 2,
+              "order": 3,
               "actor": "both",
               "text": "Seiryuu’s Command produces an attack and Arcane Blast, but ProAnnn survives with Restorative Flame. Apaul then attacks with Gazelle; the casters note he overlooked ProAnnn’s Guo Jia level 2 life total.",
               "cards": [
@@ -10409,7 +10450,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "Tariff Ring restricts ProAnnn’s reply. He draws another floating-memory card instead of the burn he needs, and Apaul takes the championship.",
               "cards": [

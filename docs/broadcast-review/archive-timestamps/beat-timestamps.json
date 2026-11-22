@@ -107727,7 +107727,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
     "gameNumber": 3,
-    "order": 1,
+    "order": 3,
     "text": "Yamikin levels to Tristan and plays Mad Hatter. The random selection avoids Ranger Strides, allowing the boots to enter. Reduce to Ash forces Incapacitate, leaving Resolute Stand to reduce the ensuing attacks.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -108366,7 +108366,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
     "gameNumber": 3,
-    "order": 2,
+    "order": 4,
     "text": "Long removes Mad Hatter and develops Library Witch. Yamikin cannot assemble another finishing attack while Long preserves his defense.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -108610,7 +108610,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
     "gameNumber": 3,
-    "order": 3,
+    "order": 5,
     "text": "A later Baleful Oblation draws Incapacitate. Long swings with Inert Sword for six; Evasive Maneuvers and Skirting Step reduce the attack, but Ciel’s end-phase damage finishes the match.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -109575,7 +109575,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
     "gameNumber": 3,
-    "order": 1,
+    "order": 2,
     "text": "Apaul reaches Guo Jia level 3 while preserving Seiryuu’s Command and Innervate Agility. Censer of Restful Peace limits ProAnnn’s floating-memory options.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -109824,7 +109824,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Seiryuu’s Command produces an attack and Arcane Blast, but ProAnnn survives with Restorative Flame. Apaul then attacks with Gazelle; the casters note he overlooked ProAnnn’s Guo Jia level 2 life total.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -110003,7 +110003,7 @@
   {
     "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Tariff Ring restricts ProAnnn’s reply. He draws another floating-memory card instead of the burn he needs, and Apaul takes the championship.",
     "timestamp": {
       "videoId": "oHCCZOZBvKM",
@@ -190163,5 +190163,287 @@
     ],
     "review": "akihabara-three-play-expansion",
     "sourceFile": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
+    "gameNumber": 3,
+    "order": 1,
+    "text": "Long destroys Censer of Restful Peace with Reduce to Ash. That frees Liminal Guide to enter play and draw him another card.",
+    "timestamp": {
+      "videoId": "oHCCZOZBvKM",
+      "seconds": 36950
+    },
+    "sourceRows": [
+      16125,
+      16135
+    ],
+    "sourceSha256": "740f81acf3981e2a846ed6367e3e54716589e316629980b6d2236eb3a4ffeda1",
+    "source": [
+      {
+        "row": 16125,
+        "timestamp": "615:50",
+        "text": "to ash right now."
+      },
+      {
+        "row": 16126,
+        "timestamp": "615:51",
+        "text": ">> Reduce gets that sensor. This is big."
+      },
+      {
+        "row": 16127,
+        "timestamp": "615:53",
+        "text": "That means the liinal guide also gets to"
+      },
+      {
+        "row": 16128,
+        "timestamp": "615:55",
+        "text": "come on field. Draw an extra card which"
+      },
+      {
+        "row": 16129,
+        "timestamp": "615:56",
+        "text": "means it's time to party. If we have"
+      },
+      {
+        "row": 16130,
+        "timestamp": "615:58",
+        "text": "that dungeon guide, we are close to"
+      },
+      {
+        "row": 16131,
+        "timestamp": "616:01",
+        "text": "probably putting this game on a wrap."
+      },
+      {
+        "row": 16132,
+        "timestamp": "616:03",
+        "text": ">> Yeah, you can see Long's reaction again"
+      },
+      {
+        "row": 16133,
+        "timestamp": "616:04",
+        "text": "like last game just changes the moment"
+      },
+      {
+        "row": 16134,
+        "timestamp": "616:06",
+        "text": "reduce the ash is activated to kill the"
+      },
+      {
+        "row": 16135,
+        "timestamp": "616:08",
+        "text": "sensor. His deck just suddenly becomes"
+      }
+    ],
+    "review": "taipei-three-play-expansion",
+    "sourceFile": "Ascent Taipei Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Long reaches Ciel, Mirage’s Grave and brings out another Liminal Guide. The Guides pressure Lubé, with Ciel’s end-phase damage threatening to finish her.",
+    "timestamp": {
+      "videoId": "oHCCZOZBvKM",
+      "seconds": 37015
+    },
+    "sourceRows": [
+      16159,
+      16173
+    ],
+    "sourceSha256": "740f81acf3981e2a846ed6367e3e54716589e316629980b6d2236eb3a4ffeda1",
+    "source": [
+      {
+        "row": 16159,
+        "timestamp": "616:55",
+        "text": "into the uh level three C right here."
+      },
+      {
+        "row": 16160,
+        "timestamp": "616:58",
+        "text": "And because of that activating the"
+      },
+      {
+        "row": 16161,
+        "timestamp": "617:00",
+        "text": "luminous guides right now, we're going"
+      },
+      {
+        "row": 16162,
+        "timestamp": "617:02",
+        "text": "to have one right here. Draw another"
+      },
+      {
+        "row": 16163,
+        "timestamp": "617:04",
+        "text": "one. Does he have another one in the"
+      },
+      {
+        "row": 16164,
+        "timestamp": "617:06",
+        "text": "grave? No, that's just those those two"
+      },
+      {
+        "row": 16165,
+        "timestamp": "617:08",
+        "text": "that are on field right now. But yeah,"
+      },
+      {
+        "row": 16166,
+        "timestamp": "617:10",
+        "text": "we can threaten this Lube or at least"
+      },
+      {
+        "row": 16167,
+        "timestamp": "617:11",
+        "text": "force the evasive maneuvers on her. But"
+      },
+      {
+        "row": 16168,
+        "timestamp": "617:14",
+        "text": "then N phase trigger CL finishes her"
+      },
+      {
+        "row": 16169,
+        "timestamp": "617:17",
+        "text": "off."
+      },
+      {
+        "row": 16170,
+        "timestamp": "617:17",
+        "text": ">> Yep, it's going to be a one and one and"
+      },
+      {
+        "row": 16171,
+        "timestamp": "617:19",
+        "text": "one. Ne is considering to protect it,"
+      },
+      {
+        "row": 16172,
+        "timestamp": "617:22",
+        "text": "but knowing the Omen's effect right"
+      },
+      {
+        "row": 16173,
+        "timestamp": "617:24",
+        "text": "here. CL's whenever Omen cont"
+      }
+    ],
+    "review": "taipei-three-play-expansion",
+    "sourceFile": "Ascent Taipei Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
+    "gameNumber": 3,
+    "order": 1,
+    "text": "At 18 damage, Apaul uses Portentous Tanggu to draw Dungeon Guide. The draw gives him a route to Guo Jia level 3 while holding Innervate Agility for ProAnnn’s burn.",
+    "timestamp": {
+      "videoId": "oHCCZOZBvKM",
+      "seconds": 41985
+    },
+    "sourceRows": [
+      18488,
+      18506
+    ],
+    "sourceSha256": "740f81acf3981e2a846ed6367e3e54716589e316629980b6d2236eb3a4ffeda1",
+    "source": [
+      {
+        "row": 18488,
+        "timestamp": "699:45",
+        "text": "We're going to see him go up. Is that"
+      },
+      {
+        "row": 18489,
+        "timestamp": "699:47",
+        "text": "the dungeon guide?"
+      },
+      {
+        "row": 18490,
+        "timestamp": "699:48",
+        "text": ">> That was the dungeon guide of the"
+      },
+      {
+        "row": 18491,
+        "timestamp": "699:49",
+        "text": "pretentious Tangu. How pretentious this"
+      },
+      {
+        "row": 18492,
+        "timestamp": "699:51",
+        "text": "situation is. I whatever. We're just"
+      },
+      {
+        "row": 18493,
+        "timestamp": "699:54",
+        "text": "going to send it. That's going to put us"
+      },
+      {
+        "row": 18494,
+        "timestamp": "699:55",
+        "text": "exactly at enough. Five quest counters"
+      },
+      {
+        "row": 18495,
+        "timestamp": "699:58",
+        "text": "and or 10 quest counters. And now we can"
+      },
+      {
+        "row": 18496,
+        "timestamp": "700:00",
+        "text": "now flip our big dragon. And now it's"
+      },
+      {
+        "row": 18497,
+        "timestamp": "700:02",
+        "text": "Shenzhu dual time."
+      },
+      {
+        "row": 18498,
+        "timestamp": "700:04",
+        "text": ">> Oh my goodness. A Paul, you are a mad"
+      },
+      {
+        "row": 18499,
+        "timestamp": "700:08",
+        "text": "man. The residue stand for free into the"
+      },
+      {
+        "row": 18500,
+        "timestamp": "700:10",
+        "text": "portent tango to draw into the dungeon"
+      },
+      {
+        "row": 18501,
+        "timestamp": "700:12",
+        "text": "guy. And the big thing here too is at"
+      },
+      {
+        "row": 18502,
+        "timestamp": "700:15",
+        "text": "the end of the turn, we can still keep"
+      },
+      {
+        "row": 18503,
+        "timestamp": "700:17",
+        "text": "the Shenzhu. We can keep our Seru as the"
+      },
+      {
+        "row": 18504,
+        "timestamp": "700:19",
+        "text": "faith stone, draw a card which would"
+      },
+      {
+        "row": 18505,
+        "timestamp": "700:21",
+        "text": "give us three cards which allows us to"
+      },
+      {
+        "row": 18506,
+        "timestamp": "700:22",
+        "text": "activate the iterate agility. Pro an you"
+      }
+    ],
+    "review": "taipei-three-play-expansion",
+    "sourceFile": "Ascent Taipei Day 2  Grand Archive TCG.txt"
   }
 ]

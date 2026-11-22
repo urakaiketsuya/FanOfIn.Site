@@ -123,3 +123,19 @@ transcript filename, SHA-256, zero-based inclusive rows, and caption excerpts.
 | 2 | [42:37](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2557s) | Windwalker Boots and Sadi give Schwarzer a path to the preparation counters needed for Slice and Dice. |
 | 2 | [45:06](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2706s) | Z3US deploys Censer of Restful Peace to cut off floating memory. |
 | 2 | [49:13](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2953s) | Cinder Geyser forces Schwarzer to spend Safeguard Amulet before the next attacks. |
+
+## Ascent Taipei three-play recap review
+
+Reviewed game three of both the bronze match and the grand final against the
+local Day 2 transcript. The public Day 2 replay runs 11:54:55, through the
+transcript's last caption at 11:54:36. The player accepted the original
+broadcast-relative clock for all three additions. Exact caption rows, source
+filename and SHA-256 are in `beat-timestamps.json`.
+
+- Bronze, Long vs Yamikin. At [10:15:50](https://www.youtube.com/watch?v=oHCCZOZBvKM&t=36950s),
+  Reduce to Ash removes Censer of Restful Peace and reopens Liminal Guide.
+  At [10:16:55](https://www.youtube.com/watch?v=oHCCZOZBvKM&t=37015s),
+  Long levels Ciel and develops another Liminal Guide, putting Lubé under pressure.
+- Grand final, ProAnnn vs Apaul. At [11:39:45](https://www.youtube.com/watch?v=oHCCZOZBvKM&t=41985s),
+  Apaul's Portentous Tanggu draw finds Dungeon Guide at 18 damage. The cue
+  starts with the draw sequence, before the existing level-three highlight.
