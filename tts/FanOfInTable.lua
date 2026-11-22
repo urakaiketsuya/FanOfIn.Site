@@ -8,8 +8,7 @@
     * Seat rotation: rot = 0 or 180 is the card rotY that reads upright for that seat. If cards
       face the wrong way, swap the rot values in SEATS.
     * Playmat size: Custom_Tile base size is assumed to be about 2.2 units. Adjust PLAYMAT.
-    * "Recollect" moves every card from your memory zone to your hand. Change RECOLLECT below if
-      the real rule differs.
+    * "Recollect" moves every card from your memory zone to your hand (rule confirmed by the owner).
     * Rested cards are rotated 90 degrees. "Wake up" turns cards in your field upright.
 ]]
 
@@ -42,12 +41,25 @@ local ZONE_ALIAS = { main = "deck" }
 local GLIMPSE_LOCAL = { lx = 0, lz = -8 }
 local RECOLLECT = { from = "memory", to = "hand" }
 
--- Status token art: set an image URL to get a real token. Empty uses a plain marker.
+-- Status markers: one colored marker per status, named on the object. No art is needed.
 local STATUS_TOKENS = {
-  { name = "Imbued", image = "" },
-  { name = "Fracturized", image = "" },
-  { name = "Distant", image = "" },
-  { name = "Snow Fairied", image = "" },
+  { name = "Distant",     color = { r = 0.90, g = 0.70, b = 0.70 } },
+  { name = "Imbued",      color = { r = 0.00, g = 0.70, b = 0.00 } },
+  { name = "Fostered",    color = { r = 0.30, g = 0.30, b = 0.30 } },
+  { name = "Fracturized", color = { r = 0.30, g = 0.75, b = 0.80 } },
+  { name = "Suppressed",  color = { r = 0.20, g = 0.70, b = 0.20 } },
+  { name = "Stealth",     color = { r = 0.70, g = 0.40, b = 0.10 } },
+  { name = "Ephemeral",   color = { r = 0.80, g = 0.40, b = 0.90 } },
+  { name = "Used Up",     color = { r = 0.50, g = 0.40, b = 0.90 } },
+  { name = "Omen",        color = { r = 0.60, g = 0.60, b = 0.20 } },
+  { name = "Frenzy",      color = { r = 0.20, g = 0.20, b = 0.80 } },
+  { name = "Distortion",  color = { r = 0.80, g = 0.20, b = 0.40 } },
+  { name = "Dontwake",    color = { r = 0.00, g = 0.80, b = 0.80 } },
+  { name = "Immortality", color = { r = 0.70, g = 0.70, b = 0.70 } },
+  { name = "True Sight",  color = { r = 0.40, g = 0.70, b = 0.90 } },
+  { name = "Spellshroud", color = { r = 0.80, g = 0.60, b = 0.90 } },
+  { name = "Brewed",      color = { r = 0.60, g = 0.70, b = 0.80 } },
+  { name = "Woh",         color = { r = 0.60, g = 0.30, b = 0.50 } },
 }
 
 -- ===== State =====
@@ -370,21 +382,26 @@ function foiGGGoNext(color, player)
 end
 
 -- ===== Status tokens =====
+local tokenCount = {}  -- tokenCount[color] = markers spawned, used to fan them out
+
+local function findToken(name)
+  local wanted = string.lower(name or "")
+  for _, token in ipairs(STATUS_TOKENS) do
+    if string.lower(token.name) == wanted then return token end
+  end
+end
+
 function foiSpawnToken(name, color, player)
+  local token = findToken(name)
+  if not token then foiSay(player, "Unknown status: " .. tostring(name)); return end
   local point = foiSeatPoint(color, "field")
   if not point then foiSay(player, "You are not seated in this layout."); return end
-  local art
-  for _, token in ipairs(STATUS_TOKENS) do if token.name == name then art = token.image end end
-  if art and art ~= "" then
-    spawnObjectJSON({ json = JSON.encode({
-      Name = "Custom_Token",
-      Nickname = name,
-      Transform = { posX = point.x, posY = 3, posZ = point.z, rotX = 0, rotY = 0, rotZ = 0, scaleX = 0.6, scaleY = 1, scaleZ = 0.6 },
-      CustomImage = { ImageURL = art, ImageSecondaryURL = "", ImageScalar = 1, WidthScale = 0, CustomToken = { Thickness = 0.2, MergeDistancePixels = 15, StandUp = false, Stackable = false } },
-    }) })
-  else
-    local marker = spawnObject({ type = "Checker_white", position = { point.x, 3, point.z } })
-    if marker then marker.setName(name) end
+  tokenCount[color] = (tokenCount[color] or 0) + 1
+  local offset = ((tokenCount[color] - 1) % 8) * 0.8 - 2.8
+  local marker = spawnObject({ type = "Checker_white", position = { point.x + offset, 3, point.z } })
+  if marker then
+    marker.setName(token.name)
+    marker.setColorTint(token.color)
   end
 end
 
@@ -407,9 +424,10 @@ local function buildXml()
     button("Glimpse", "uiGlimpse"), button("Return glimpse", "uiGlimpseReturn"),
     button("GG Go Next", "uiGG"),
   }
-  for _, token in ipairs(STATUS_TOKENS) do
-    table.insert(rows, button("Token: " .. token.name, "uiToken_" .. string.gsub(token.name, "%s", "")))
-  end
+  local options = {}
+  for _, token in ipairs(STATUS_TOKENS) do table.insert(options, "<Option>" .. token.name .. "</Option>") end
+  table.insert(rows, '<Dropdown id="foiToken" onValueChanged="uiSetToken">' .. table.concat(options) .. '</Dropdown>')
+  table.insert(rows, button("Spawn status marker", "uiToken"))
   return '<Panel id="foiPanel" width="230" height="' .. (#rows * 34 + 10) .. '" '
     .. 'color="#1E1E28E6" rectAlignment="MiddleLeft" offsetXY="10 0" padding="8 8 8 8">'
     .. '<VerticalLayout spacing="4" childForceExpandHeight="false">' .. table.concat(rows) .. '</VerticalLayout></Panel>'
@@ -445,10 +463,8 @@ function uiGlimpse(player) foiGlimpse(player.color, math.max(1, math.floor(input
 function uiGlimpseReturn(player) foiGlimpseReturn(player.color, player) end
 function uiGG(player) foiGGGoNext(player.color, player) end
 
-for _, token in ipairs(STATUS_TOKENS) do
-  local name = token.name
-  _G["uiToken_" .. string.gsub(name, "%s", "")] = function(player) foiSpawnToken(name, player.color, player) end
-end
+function uiSetToken(player, value) inputFor(player).token = value end
+function uiToken(player) foiSpawnToken(inputFor(player).token or STATUS_TOKENS[1].name, player.color, player) end
 
 -- ===== Chat commands that belong to the table =====
 function foiTableChat(message, player)
@@ -457,6 +473,8 @@ function foiTableChat(message, player)
   local count = string.match(message, "^!glimpse%s*(%d*)$")
   if count then foiGlimpse(player.color, tonumber(count) or 3, player); return false end
   if message == "!unglimpse" then foiGlimpseReturn(player.color, player); return false end
+  local status = string.match(message, "^!token%s+(.+)$")
+  if status then foiSpawnToken(status, player.color, player); return false end
   if message == "!reserve" then foiReserve(player.color, player); return false end
   if message == "!wake" then foiWakeUp(player.color, player); return false end
   if message == "!gg" then foiGGGoNext(player.color, player); return false end
