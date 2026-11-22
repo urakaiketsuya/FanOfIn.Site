@@ -42,3 +42,4 @@ npm-debug.log*
 /app/test/localWorkshop.test.ts
 /app/test/mtgWorkshop.test.ts
 /app/test/weissWorkshop.test.ts
+tts/dist/
