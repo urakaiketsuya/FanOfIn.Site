@@ -6,9 +6,20 @@ export function timelinePath(id: string): string {
   if (id.toLowerCase() === 'combos' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(id)) throw new Error(`Invalid match ID: ${id}`);
   return `/timelines/${id}/`;
 }
+export function timelineMatchup(match: BroadcastTimelineMatch) {
+  return match.players.map(player => match.sourceVideos ? player.deck : player.name).join(' vs. ');
+}
+
+export function timelineSourceLinks(match: BroadcastTimelineMatch) {
+  return (match.sourceVideos ?? []).flatMap(source => {
+    const link = timelineVideoLink({ id: source.id, kind: 'match' });
+    return link ? [{ ...link, label: source.label }] : [];
+  });
+}
+
 export function timelineMetadata(match: BroadcastTimelineMatch) {
-  const title = `${match.players.map(player => player.name).join(' vs. ')} · ${match.event} · ${match.round}`;
-  const description = `Grand Archive: ${match.players.map(player => `${player.name} (${player.deck})`).join(' vs. ')}. ${match.result}. Game recaps, cards and broadcast video.`;
+  const title = `${timelineMatchup(match)} · ${match.event} · ${match.round}`;
+  const description = `Grand Archive: ${match.players.map(player => `${player.name} (${player.deck})`).join(' vs. ')}. ${match.result}. Game recaps, cards and source video.`;
   const path = timelinePath(match.id);
   return { title, description, path, url: canonicalSiteUrl(path), image: `https://fanofin.site/media/matches/${match.id}.jpg` };
 }

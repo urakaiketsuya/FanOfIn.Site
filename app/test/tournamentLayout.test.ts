@@ -8,7 +8,7 @@ const spiritNames = new Set<string>(read("card-catalog.json").cards.filter((c: {
 const maps: BroadcastEventMaps = read('broadcast-events.json');
 const recaps: BroadcastTimelines = read('broadcast-timelines.json');
 
-test('all recaps remain accessible and event/stage/round pairing joins are unique', () => {
+test('all broadcast recaps remain accessible and event/stage/round pairing joins are unique', () => {
   const ids = new Set<string>();
   for (const event of maps.events) {
     const source = read(`omnidex/events/${event.id}.json`);
@@ -25,7 +25,7 @@ test('all recaps remain accessible and event/stage/round pairing joins are uniqu
     }
     for (const id of event.unlinkedRecapIds) ids.add(id);
   }
-  assert.deepEqual([...ids].sort(), recaps.matches.map(m => m.id).sort());
+  assert.deepEqual([...ids].sort(), recaps.matches.filter(m => !m.sourceVideos).map(m => m.id).sort());
   assert.equal(read('manifest.json')['broadcast-events'], maps.generatedAt);
 });
 test('Worlds full top eight connects seven matches; bronze is separate; official and broadcast scores stay distinct', () => {

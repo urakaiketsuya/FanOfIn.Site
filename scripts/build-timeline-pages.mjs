@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { timelineMetadata, timelinePath, timelineChampions, timelineVideoLink, timelineRoundLabel } from '../shared/src/timelineSeo.ts';
+import { timelineMetadata, timelinePath, timelineChampions, timelineVideoLink, timelineRoundLabel, timelineMatchup, timelineSourceLinks } from '../shared/src/timelineSeo.ts';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const style = `<style>.match-entry{max-width:64rem;margin:auto;padding:24px;font-family:system-ui;color:#cdd6f4;background:#1e1e2e;overflow-wrap:anywhere}.match-entry a{display:inline-flex;min-height:48px;align-items:center;color:#89b4fa}.match-entry a:focus-visible{outline:2px solid currentColor}.match-entry h1{font-size:clamp(24px,4vw,40px)}.match-entry .versus{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;text-align:center}.match-entry img{width:100%;height:auto;border-radius:16px}.match-entry li{margin:12px 0}.match-entry p{line-height:1.6}</style>`;
@@ -25,16 +25,17 @@ function entry(shell, { title, description, url, image }, body, structured) {
 }
 export function renderTimelinePage(shell, match) {
   const meta=timelineMetadata(match), video=timelineVideoLink(match.video);
-  const body=`<a href="/timelines/">← Match Timelines</a><p>${escape(match.event)} · ${escape(match.round)}</p><h1>${escape(match.players.map(p=>p.name).join(' vs. '))}</h1>
+  const sources=timelineSourceLinks(match);
+  const body=`<a href="/timelines/">← Match Timelines</a><p>${escape(match.event)} · ${escape(match.round)}</p><h1>${escape(timelineMatchup(match))}</h1>
   <img src="${meta.image}" width="1200" height="630" alt="${escape(meta.title)}">
-  <div class="versus">${match.players.map(player=>`<p><strong>${escape(player.name)}</strong><br>${escape(player.deck)}</p>`).join("<span>VS</span>")}</div><p>${escape(match.result)}</p>${video?`<a href="${escape(video.url)}">${video.label} ↗</a>`:''}
-  ${match.games.map(game=>`<section><h2>Game ${game.gameNumber}</h2><p>${escape(game.summary)}</p><ol>${game.beats.map(beat=>`<li>${escape(beat.text)}</li>`).join('')}</ol></section>`).join('')}`;
-  return entry(shell,meta,body,{'@context':'https://schema.org','@type':'Article',headline:meta.title,description:meta.description,url:meta.url,image:meta.image,about:{'@type':'Thing',name:'Grand Archive TCG'},...(video?{citation:video.url}:{})});
+  <div class="versus">${match.players.map(player=>`<p><strong>${escape(player.name)}</strong><br>${escape(player.deck)}</p>`).join("<span>VS</span>")}</div><p>${escape(match.result)}</p>${[...(video?[video]:[]),...sources].map(link=>`<a href="${escape(link.url)}">${escape(link.label)} ↗</a>`).join(' ')}
+  ${match.games.map(game=>`<section><h2>Game ${game.gameNumber}</h2><p>${escape(game.summary)}</p><ol>${game.beats.map(beat=>`<li>${escape(beat.text)}</li>`).join('')}</ol></section>`).join('')}${sources.length?`<p>${escape(match.sourceNote)}</p>`:''}`;
+  return entry(shell,meta,body,{'@context':'https://schema.org','@type':'Article',headline:meta.title,description:meta.description,url:meta.url,image:meta.image,about:{'@type':'Thing',name:'Grand Archive TCG'},...(video?{citation:video.url}:sources.length?{citation:sources.map(link=>link.url)}:{})});
 }
 export function renderTimelineIndex(shell,matches) {
   const groups=Map.groupBy(matches,match=>match.event);
   const meta={title:'Grand Archive Match Timelines',description:'Explore Grand Archive tournament matches by event, player and champion. Watch broadcasts and read game recaps.',url:'https://fanofin.site/timelines/',image:'https://fanofin.site/media/social/fan-of-insight-v1.jpg'};
-  return entry(shell,meta,`<h1>Match Timelines</h1>${[...groups].map(([event,rows])=>`<section><h2>${escape(event)}</h2><ul>${rows.map(match=>`<li><a href="${timelinePath(match.id)}">${escape(match.players.map(p=>p.name).join(' vs. '))} · ${escape(match.round)}</a><p>${escape(match.result)}</p></li>`).join('')}</ul></section>`).join('')}`,{'@context':'https://schema.org','@type':'CollectionPage',name:meta.title,url:meta.url,mainEntity:{'@type':'ItemList',itemListElement:matches.map((match,i)=>({'@type':'ListItem',position:i+1,url:timelineMetadata(match).url,name:match.players.map(p=>p.name).join(' vs. ')}))}});
+  return entry(shell,meta,`<h1>Match Timelines</h1>${[...groups].map(([event,rows])=>`<section><h2>${escape(event)}</h2><ul>${rows.map(match=>`<li><a href="${timelinePath(match.id)}">${escape(timelineMatchup(match))} · ${escape(match.round)}</a><p>${escape(match.result)}</p></li>`).join('')}</ul></section>`).join('')}`,{'@context':'https://schema.org','@type':'CollectionPage',name:meta.title,url:meta.url,mainEntity:{'@type':'ItemList',itemListElement:matches.map((match,i)=>({'@type':'ListItem',position:i+1,url:timelineMetadata(match).url,name:timelineMatchup(match)}))}});
 }
 export function matchPortraitCards(match,cards,eventMaps) {
   const pairing=eventMaps?.events.find(e=>e.id===match.eventId)?.stages.flatMap(s=>s.matches).find(m=>m.recapId===match.id);

@@ -65,13 +65,18 @@ export default function TimelinesIndex() {
   const extraRecaps = selectedEvent ? filtered.filter(m => selectedEvent.unlinkedRecapIds.includes(m.id)) : [];
   const groups = useMemo(() => groupTimelineResults(filtered, allEvents, event).filter(group => !region || eventLocation(group.name, group.event?.id ?? group.matches[0]?.eventId).region === region), [filtered, allEvents, event, region]);
   const allGroups = useMemo(() => groupTimelineResults(matches, allEvents), [matches, allEvents]);
+  const eventChoices = view === "timeline" ? allGroups.filter(group => group.event) : allGroups;
+  const creatorRecaps = allGroups.find(group => group.key === "RyerGA Match Recaps");
   const resultCount = groups.reduce((count, group) => count + group.matches.length, 0);
   const clearFilters = () => updateValues({ q: "", champion: "", event: "", region: "", stage: "", round: "", branch: "", page: "" });
   const control = "min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue";
   return <PageLayout width="fluid" data-component="TimelinesIndex">
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div><p className="text-xs text-ctp-subtext0">Broadcast recaps</p><h1 className="text-3xl font-bold">Match Timelines</h1></div>
-      <Link to="/timelines/combos" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Notable combos →</Link>
+      <div className="flex flex-wrap gap-x-4">
+        {creatorRecaps && <Link to={`/timelines?event=${encodeURIComponent(creatorRecaps.key)}`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">RyerGA recaps →</Link>}
+        <Link to="/timelines/combos" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Notable combos →</Link>
+      </div>
     </div>
     <div className="mt-5"><Tabs baseId="match-browse" label="Match browsing" tabs={[{ key: "results", label: "Results" }, { key: "timeline", label: "Timeline" }]} active={view} onChange={value => updateValues({ view: value === "results" ? "" : value })} /></div>
     <TimelineStatus loading={!data} />
@@ -80,7 +85,7 @@ export default function TimelinesIndex() {
       <label className="text-xs text-ctp-subtext1">Search<MatchSearch className={`${control} mt-1`} search={search} onChange={value => update("q", value)} /></label>
       <label className="text-xs text-ctp-subtext1">Champion<select className={`${control} mt-1`} value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{championNames.map(name => <option key={name}>{name}</option>)}</select></label>
     </div>
-    <EventPicker events={allGroups.map(group => ({ key: group.key, name: group.name, id: group.event?.id ?? group.matches[0]?.eventId, date: group.event?.date, season: group.event?.season, count: group.matches.length }))}
+    <EventPicker events={eventChoices.map(group => ({ key: group.key, name: group.name, id: group.event?.id ?? group.matches[0]?.eventId, date: group.event?.date, season: group.event?.season, count: group.matches.length }))}
       selected={event ? (allGroups.find(group => group.key === event || group.name === event || group.event?.aliases.includes(event))?.key ?? event) : ''}
       region={region} onRegion={value => updateValues({ region: value, event: '', stage: '', round: '', branch: '', page: '' })}
       onSelect={value => update('event', value)} timeline={view === 'timeline'} />

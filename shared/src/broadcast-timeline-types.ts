@@ -61,6 +61,8 @@ export interface BroadcastTimelineMatch {
   id: string;
   /** Official upload. Start offsets require evidence in the source registry; clip timestamps are not stream offsets. */
   video?: { id: string; kind: "match" | "broadcast"; startSeconds?: number };
+  /** Creator uploads associated with the recap, in reading order. */
+  sourceVideos?: { id: string; label: string }[];
   event: string;
   /** Omnidex event id this broadcast belongs to, when the source tournament is tracked there — lets the UI pull in real decklists/standings. Hand-matched from `event`/date/player overlap, not guaranteed for every match (e.g. untracked exhibitions like The Gauntlet's earlier rounds). */
   eventId?: number;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T18:27:06.259381+00:00",
+  "generatedAt": "2026-11-22T18:11:06.391Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -33488,6 +33488,2658 @@
         }
       ],
       "sourceNote": "Reviewed from the captured broadcast audio. The public replay currently ends near the final’s opening."
+    },
+    {
+      "id": "ryerga-fire-mordred-vs-water-neos-tonoris",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Fire Mordred"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Neos Tonoris"
+        }
+      ],
+      "result": "Tonoris wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Tonoris turns recurring tokens and layered prevention into a board-clearing finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Hasty Messenger puts attacks and floating memory into Mordred’s graveyard. At level two, that stockpile funds materializations while preserving attacks for later reuse.",
+              "cards": [
+                "Hasty Messenger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Reciprocity and the obelisk supply separate streams of tokens. Tonoris can turn their quantity into pressure even as Mordred trades resources to keep up."
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Song of Frost stops Devastating Blow. RyerGA then spends two Acolytes to take out Reciprocity and Lost Providence, sacrificing the chance to use those allies against the tokens already in play.",
+              "cards": [
+                "Song of Frost",
+                "Lost Providence"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Mordred reuses Dauntless to attack through both shields. The second attack meets prevention from the obelisk and Diffusive Block, so attacking twice still fails to open a clean lane to the champion.",
+              "cards": [
+                "Diffusive Block"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Blade of Creation turns the weapon swing into a 17-power cleave. The allies behind it supply the rest of the damage, and Mordred’s Smoke Bombs draw misses Resolute Stand.",
+              "cards": [
+                "Blade of Creation",
+                "Smoke Bombs",
+                "Resolute Stand"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. The upload shows a post-sideboard game. RyerGA also describes a separate Mordred win.",
+      "sourceVideos": [
+        {
+          "id": "NyvPLCo3Jkg",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-fire-umbra-diana-vs-wind-seiryuu-guo-jia",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Fire Umbra Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Diana keeps a loaded weapon through Guo Jia’s level-up and ends the opener with Incendiary Shot.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Guo Jia opens on Unmake Duality. Diana filters with Return to the Archive and develops Looking Glass before showing the gun plan.",
+              "cards": [
+                "Unmake Duality",
+                "Return to the Archive"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Diana gets ahead on damage but initially counts Incendiary Shot toward an attack it does not contribute to. The correction leaves Guo Jia another turn."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Guo Jia levels for the larger health threshold and takes quest counters. A flip still requires another turn and enough suppression to buy it."
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "With a round already loaded, Diana can attack without exposing a fresh load trigger. Guo Jia has no answer in hand."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Seiryuu gets time to build its arcane finish and Incapacitate stops Diana’s last escape.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA boards out the gun shield and brings in Reduce to Ash and Slip Away. Suppression from Baby Green Slime is the interaction he wants to account for, and Reduce to Ash gives him an answer to Censer.",
+              "cards": [
+                "Reduce to Ash",
+                "Slip Away",
+                "Baby Green Slime"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "The two players hold defensive resources through several threatened attacks. RyerGA revisits the damage math around Abnegation and notes that a missed point affected how he evaluated his own lethal chances.",
+              "cards": [
+                "Abnegation"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Guo Jia sets up a Seiryuu attack sequence. Its last layer of protection is Incapacitate, held for Diana’s attempt to Slip Away, which lets the finish go through.",
+              "cards": [
+                "Incapacitate",
+                "Slip Away"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Diana converts the opponent’s extra draws into damage after weathering repeated gun suppression.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Diana keeps Slip Away available against a Seiryuu attack and uses a Tasershot from Framework Sidearm to get Creeping Torment started. Guo Jia times suppression on her own end step, keeping a gun away until Diana’s next end step.",
+              "cards": [
+                "Slip Away",
+                "Tasershot",
+                "Framework Sidearm",
+                "Creeping Torment"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Diana upgrades to Seeker's Rifle and uses Sporrel to remove a buffed Baby Green Slime. That takes away an ally that could suppress the next loaded gun.",
+              "cards": [
+                "Seeker's Rifle",
+                "Baby Green Slime"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Two Punishing Cartridge activations redirect the attack to Guo Jia and apply the sacrifice trigger twice. The shot takes away allied support as well as pushing damage.",
+              "cards": [
+                "Punishing Cartridge"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Umbral Tithe adds to the pressure from the curses. RyerGA draws a second copy on the next cycle and shows that Seeker's Rifle has true sight, closing the remaining defensive line after Innervate Agility.",
+              "cards": [
+                "Umbral Tithe",
+                "Seeker's Rifle",
+                "Innervate Agility"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. RyerGA corrects the upload order in the second video. It contains games 2 and 1, in that order. The first upload contains game 3.",
+      "sourceVideos": [
+        {
+          "id": "srV_0nDH6Ts",
+          "label": "Watch games 1 and 2"
+        },
+        {
+          "id": "8Oa9sWgLI18",
+          "label": "Watch game 3"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-norm-purity-rai-vs-serene-fire-coup-ciel",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Norm Purity Rai"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Serene Fire Coup Ciel"
+        }
+      ],
+      "result": "Opponent wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Rai’s Advent turn produces more arcane damage than Ciel can absorb.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Ciel puts Safeguard Amulet in place as Rai fills memory with arcane cards. Early weapon and attack damage put Rai under pressure to find a payoff.",
+              "cards": [
+                "Safeguard Amulet"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Arcane Sight and repeated Careful Study build Rai’s effective level and replace cards. Advent of the Stormcaller comes down with empower and opens access to a large pile of arcane spells.",
+              "cards": [
+                "Arcane Sight",
+                "Careful Study",
+                "Advent of the Stormcaller"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Safeguard Amulet, Abnegation and lineage release extend the exchange, but Rai’s pile still contains additional Arcane Blasts and Erratic Bolts beyond the first wave.",
+              "cards": [
+                "Safeguard Amulet",
+                "Abnegation",
+                "Arcane Blast",
+                "Erratic Bolt"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Topsy Decree protects Ciel from the big spell turn, then Beguiling Coup takes over.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Both decks stay on their original lists. Rai draws a hand heavy on arcane cards and hesitates to risk Dungeon Guide as Ciel builds influence.",
+              "cards": [
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Ciel develops the amulet and keeps cards available for Topsy Decree. Rai can threaten an Advent turn, but has to account for both spell interaction and lineage recovery.",
+              "cards": [
+                "Topsy Decree"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Ciel gets through the final Spellshield Arcane with Devouring Malice and has Beguiling Coup damage behind it. Rai has no path to survive the rest of the stack.",
+              "cards": [
+                "Devouring Malice",
+                "Beguiling Coup"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Rai spends a late turn finding cards and passes at a damage total Ciel can finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Rai brings out the book and uses Arcane Sight to reach effective level ten. Arcane Blast pushes damage, but the remaining gap still has to cover Ciel’s six points of lineage recovery.",
+              "cards": [
+                "Arcane Sight",
+                "Arcane Blast"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Peer into Mana converts 12 enlightenment counters into four cards. Those draws fail to supply an immediate finish, and Rai passes after a deep scry.",
+              "cards": [
+                "Peer into Mana"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "RyerGA realizes after passing that Rai is already at 20 damage. Ciel can finish with Three of Hearts and the existing board, including Dungeon Guide.",
+              "cards": [
+                "Three of Hearts",
+                "Dungeon Guide"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "a9j_gZJEIeQ",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-fire-argus-alice-vs-fire-aggro-polkhawk",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Fire Argus Alice"
+        },
+        {
+          "id": "p2",
+          "name": "Matt",
+          "deck": "Fire Aggro Polkhawk"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Polkhawk turns an established suited board into a large ranged attack before Alice can stabilize.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Cheshire Cat, Impish Grin and the inert sword create early pressure while Alice is still assembling its level-two engine.",
+              "cards": [
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Alice has lineage recovery available, but the projection is 12 from Mad Hatter with the Cat and Ranger Strides, plus another weapon attack. Spending the defensive resources still leaves few outs.",
+              "cards": [
+                "Ranger Strides"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Polkhawk closes the game before Alice can deploy the board and repeatable recovery that make the long game favorable."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Argus holds the board and Alice finishes with multiple small sources of damage.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Mantle and Backup Charger give Alice ways to spend floating memory and improve a hand whose payoffs mostly need level two.",
+              "cards": [
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Polkhawk uses three Backsteps looking for a bullet and misses. Argus remains available, with Slip Away as a possible save once he rests.",
+              "cards": [
+                "Slip Away"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Alice adds up several attackers to reach 18 damage and taps Devouring Malice for the finish.",
+              "cards": [
+                "Devouring Malice"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Alice survives the late burn turn and closes with Gildas and Sporrel.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Undying Dreams lets Wraithguard contribute more than a single block. Alice keeps enough of a board to force Polkhawk to spend damage on allies.",
+              "cards": [
+                "Undying Dreams"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Flash Grenade threatens the Mad Hatter exchange, but Evasive Maneuvers protects the targeted Hatter. Polkhawk later makes Seeker's Rifle to put the remaining bullets to work.",
+              "cards": [
+                "Flash Grenade",
+                "Evasive Maneuvers",
+                "Seeker's Rifle"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "The last suited attack forces Devouring Malice and Alice’s lineage recovery. RyerGA holds Abnegation as a further response if Polkhawk can contest the heal.",
+              "cards": [
+                "Devouring Malice",
+                "Abnegation"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Alice gets another turn, resolves Gildas, and finishes with Sporrel. The board and Blight's Ring had also made waiting a viable option.",
+              "cards": [
+                "Blight's Ring"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "X4XhLmuufME",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-water-allies-ciel-vs-wind-crux-lorraine",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Water Allies Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Ciel keeps enough allies in play to finish after Aela breaks up the first lethal attempt.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Lorraine opens with Benediction Angel and levels before Ciel can exploit the expected longer setup. Dungeon Guide then gives Lorraine access to level two while protecting the cards already set aside.",
+              "cards": [
+                "Benediction Angel",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Ciel assembles a board with several live activations. The Bandit, Trapper and Nullifying Mirror constrain what Lorraine can commit even when Ciel has little left in hand.",
+              "cards": [
+                "Nullifying Mirror"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Armoire gives Ciel access to Cerulean Decree. The plan is to keep that interaction available while threatening Heavy Swing, so Lorraine cannot answer the board simply by committing to a big attack.",
+              "cards": [
+                "Cerulean Decree",
+                "Heavy Swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "both",
+              "text": "Aela interferes with the first Heavy Swing finish. RyerGA identifies an avoidable sequencing error around Protector Raccoon and still gets a seven-damage Ciel attack through.",
+              "cards": [
+                "Heavy Swing",
+                "Protector Raccoon"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p1",
+              "text": "Ciel strips a Crux resource, then divides the final attacks to clear the Windmill Ace before sending the remaining allies at Lorraine. Nullifying Mirror covers a possible Veiling Breeze.",
+              "cards": [
+                "Nullifying Mirror",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. Only game 1 is shown. RyerGA reports the final score.",
+      "sourceVideos": [
+        {
+          "id": "Nz7vM7Ot49s",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-water-deluge-rai-vs-serene-fire-arcane-rai",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Water Deluge Rai"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Serene Fire Arcane Rai"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Deluge Rai survives Fire Rai’s arcane buildup and finds a copied Liquidation finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Both players work toward larger spell turns. Water Rai opens with Engulf available and sends a Refracting Missile while leaving enough memory for Backup Charger. Fire Rai develops two Mnemonic Charms.",
+              "cards": [
+                "Engulf",
+                "Refracting Missile",
+                "Backup Charger",
+                "Mnemonic Charm"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Water Rai keeps Cerulean Decree rather than spending it on Careful Study. That reserves an answer for the payoff while Fracturize contributes to Rai’s own engine.",
+              "cards": [
+                "Cerulean Decree",
+                "Careful Study",
+                "Fracturize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Fire Rai removes the Bullfrog and uses Arcane Sight to reach an effective level of ten. The turn shows the danger of giving the mirror time to build its spell resources.",
+              "cards": [
+                "Arcane Sight"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "RyerGA spots a possible finish after passing. On the next turn, Conniving Plans mills a non-Water card, so Refracting Missile and Frost Shard supply the last Water cards. Rai copies Liquidation for a 28-damage finish.",
+              "cards": [
+                "Conniving Plans",
+                "Refracting Missile",
+                "Frost Shard",
+                "Liquidation"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "m3Wmocp1DtI",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-water-luxem-zander-vs-water-astra-diana",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Water Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Astra Diana"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zander survives a 20-damage hit and wins on the turn he reaches Luxem.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zander levels immediately and looks for Dungeon Guide, an Assassin action and floating memory. Shroud in Mist stays available for a threatening attack instead of a smaller Charge the Soul exchange.",
+              "cards": [
+                "Dungeon Guide",
+                "Shroud in Mist",
+                "Charge the Soul"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Diana connects for 20 damage and gets a glimpse of 21. The hit puts Zander on a short clock without ending the game."
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "At Luxem, the Striking and Lightweavers reveals stack damage and put cards into memory. RyerGA notes that resolving the reveals in that sequence squeezes extra damage out of the second Lightweavers trigger.",
+              "cards": [
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Diana attacks while Zander is still using Backup Charger to try to level.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA boards in Eminent Lethargy for attack interaction. The early Engulf line still leaves Zander needing to improve a hand full of advanced-element cards.",
+              "cards": [
+                "Eminent Lethargy",
+                "Engulf"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Diana's earlier attacks and glimpses keep the pressure on. Zander turns to Backup Charger to get three cards down when most of his hand is stranded.",
+              "cards": [
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Nimble Longbowman supplies distance from an ally trigger, and Krustallan Archer plus Aetheric Calibration keep the attack sequence going despite Zander’s lineage recovery. Aether Call and Cosmic Focus add enough damage to end the game.",
+              "cards": [
+                "Nimble Longbowman",
+                "Krustallan Archer",
+                "Aetheric Calibration",
+                "Cosmic Focus"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. The upload shows games 1 and 2. RyerGA reports winning the deciding game.",
+      "sourceVideos": [
+        {
+          "id": "ypcU19fqVug",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-byakko-guo-jia-vs-water-fractals-tonoris",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Byakko Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Fractals Tonoris"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Byakko survives the Fractal burst and closes with Byakko’s Command.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Fractal of Waves and Powercell give Tonoris resources while leveling. The Fractals also become ammunition for a later burn turn.",
+              "cards": [
+                "Fractal of Waves"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Imperious Galebind permanently removes tokens it targets, and Byakko takes down Atmos Armor A.R.E.S. before Tonoris can reuse it. Avatar of Byakko increases the pressure on the champion.",
+              "cards": [
+                "Imperious Galebind",
+                "Avatar of Byakko"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Tonoris makes Archon Broadsword and threatens Burst Asunder with a stocked Fractal board. Guo Jia has enough damage in play to demand a response that turn.",
+              "cards": [
+                "Archon Broadsword",
+                "Burst Asunder"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "The recovery RyerGA took earlier leaves room for Crystallized Destiny to matter against one Burst Asunder instance. Guo Jia survives and has exactly enough resources for Byakko’s Command on the return turn.",
+              "cards": [
+                "Crystallized Destiny",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "l3xyUdH_a5I",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-gelidus-byakko-guo-jia-vs-wind-seiryuu-guo-jia",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Gelidus Byakko Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Seiryuu wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Three Auspicious Manifestations keep Seiryuu alive through repeated attacks on the dragon.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Seiryuu develops its quest counters alongside a wind board. Gelidus Byakko uses suppression to interrupt Azureite Fate Stone during windows when its draw is about to matter."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "RyerGA flips Byakko while Seiryuu is still building. Innervate Agility blunts a turn that otherwise threatened to put a large amount of damage through.",
+              "cards": [
+                "Innervate Agility"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Dream Fairy resets threats and forces the Byakko side to spend extra turns rebuilding. Even after Seiryuu exhausts its material deck, it keeps answering the larger bodies.",
+              "cards": [
+                "Dream Fairy"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Gelidus with taunt and Wraithguard give RyerGA defensive cover behind a wide board. Clearing the opposing dragon is still the priority because its follow-up spell damage can go around the defenders."
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "The third Auspicious Manifestation stops another attempt to kill Seiryuu. Guo Jia has already committed his hand, and Seiryuu’s Command sets up the Arcane Blast finish through the remaining taunt.",
+              "cards": [
+                "Auspicious Manifestation",
+                "Seiryuu's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "pHI2yWGrUgA",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-luxem-zander-vs-fire-suited-aggro-tonoris",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Fire Suited Aggro Tonoris"
+        }
+      ],
+      "result": "Opponent wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Fire Suited builds a board faster than Zander can assemble Slice and Dice.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Two of Spades threatens to give the suited board true sight once another suited ally is in place. That reduces how much time Zander can buy with Dream Fairy alone.",
+              "cards": [
+                "Two of Spades",
+                "Dream Fairy"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Windmill Ace trades into an ally while Zander levels and digs with Sirocco Operative. Finding Slice and Dice matters more than developing an extra weapon buff.",
+              "cards": [
+                "Sirocco Operative",
+                "Slice and Dice"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "The suited board stays wide enough to force defensive spending. After a large early hit, Impact Hammer and the remaining Three of Hearts put the game out of reach.",
+              "cards": [
+                "Impact Hammer",
+                "Three of Hearts"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Fire Suited punishes Reclaim with two Straight Flares on the stack.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA brings in Wraithguard and Stifling Trap to stabilize the board. Sharpen Blade, Turbo Charge and Sirocco Operative make room because the early turns matter most.",
+              "cards": [
+                "Stifling Trap",
+                "Sharpen Blade",
+                "Turbo Charge",
+                "Sirocco Operative"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Zander’s Ace picks off Four of Hearts, but The Duchess's Thornes keeps the suited abilities relevant and lets Two of Hearts pressure the champion.",
+              "cards": [
+                "Four of Hearts",
+                "The Duchess's Thornes",
+                "Two of Hearts"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Zander casts Reclaim on the Windmill. The opponent responds with two Straight Flares, counting differently costed suited objects across the board, including The Duchess's Thornes.",
+              "cards": [
+                "Reclaim",
+                "Straight Flare",
+                "The Duchess's Thornes"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "cw8YFFWDI94",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-luxem-zander-vs-wind-water-chessman-alice",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind/Water Chessman Alice"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zander converts repeated Luxem reveals into a hand-size advantage and a finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Spirit of Chess enables the mixed-element Chessman setup. Goosemark Gauge makes the early allies harder to clear and remains useful when Alice needs to push damage."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zander plays for influence, then recovers Surveil the Winds and uses two Gleaming Cuts for Benediction Angel’s advanced imbue. The same cards remain valuable when Zander gets to reveal them.",
+              "cards": [
+                "Surveil the Winds",
+                "Gleaming Cut",
+                "Benediction Angel"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Escape the Wreckage helps preserve the developed resources. At level three, Zander draws into Lightweaver’s Assault and uses the map to set up the rest of the turn.",
+              "cards": [
+                "Escape the Wreckage",
+                "Lightweaver's Assault"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Two Lightweaver reveals put additional damage on Alice. Blinding Orb turns floating memory into a redraw, and the Chessman player offers to concede as Zander gets to demonstrate his ultimate.",
+              "cards": [
+                "Lightweaver's Assault",
+                "Blinding Orb"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. The upload shows one selected game.",
+      "sourceVideos": [
+        {
+          "id": "JXWSKMy6ogM",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-vacuous-ciel-vs-water-neos-tonoris",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Vacuous Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Neos Tonoris"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Ciel builds weapon pressure without spending all its durability, then closes with a second threat.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Ciel levels early to take advantage of Omen generation. The fast opening makes the weapon and surviving Servants matter before Neos has built a broad board."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The Viceblade attack gets the benefit of Servile Mastery. Suppression during combat preserves weapon durability, giving Ciel another attack and another Servant on a later turn."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Tonoris intercepts an attack with a shield and uses Song of Frost on a seven-power Heavy Swing. Those answers prevent a large hit but leave the recurring weapon threat in place.",
+              "cards": [
+                "Song of Frost",
+                "Heavy Swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "The next Viceblade hit brings Tonoris to 26 damage. Song of Frost stops Carter, leaving the opponent without cards in hand for the Sentinel follow-up.",
+              "cards": [
+                "Song of Frost"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "vCMUUAEqA7E",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-gelidus-byakko-guo-jia-vs-water-diana",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Gelidus Byakko Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Diana"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "The level-one Byakko build withstands repeated Diana attacks and builds a wider closing board.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fluffy Shopkeep opens the game for Guo Jia. Staying at level one keeps the build focused on suppressing allies and weapons instead of spending turns on the higher Guo Jia levels.",
+              "cards": [
+                "Fluffy Shopkeep"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Censer makes it more important for Diana to dig for Fracturize. RyerGA prioritizes cutting off Iona’s glimpse so the Water deck gets fewer looks at that answer.",
+              "cards": [
+                "Fracturize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Diana uses Krustallan Archer and Backstab to remove an Engineer and draw a card. Later, Cheshire Cat, Impish Grin and Ranger Strides still threaten a burst even when neither side has a clear board.",
+              "cards": [
+                "Krustallan Archer",
+                "Backstab",
+                "Cheshire Cat, Impish Grin",
+                "Ranger Strides"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Wraithguard, Gelidus and Avatar make Diana spend attacks on the board. Once the weapon pressure is contained, Dream Fairy and another Avatar give Guo Jia multiple ways to push damage through the remaining defenders.",
+              "cards": [
+                "Dream Fairy",
+                "Avatar of Byakko"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. RyerGA flags an earlier sequence that was over budget under the active restriction.",
+      "sourceVideos": [
+        {
+          "id": "WhkNJxkJH0k",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-resonators-vanitas-vs-wind-neos-tonoris",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Resonators Vanitas"
+        },
+        {
+          "id": "p2",
+          "name": "Matt",
+          "deck": "Wind Neos Tonoris"
+        }
+      ],
+      "result": "Matt wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Tonoris outlasts the early Resonators and makes more tokens than Vanitas can remove.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Vanitas tries to turn an early board and Melody access into pressure before Tonoris reaches Neos. Every ally that survives provides another attacker for the big Melody turn."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Reciprocity and the token engine widen the board while interacting with Vanitas’s allies. Blade of Creation then leaves Vanitas without a realistic way to rebuild or sweep the opposing board.",
+              "cards": [
+                "Blade of Creation"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Tonoris keeps making tokens and uses the domain discount to threaten more board development. Vanitas passes without an answer to the accumulated damage."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Vanitas’s all-in Melody turn meets interaction, and Tonoris rebuilds behind it.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA brings in more reach and tools for Reciprocity and the board. Going first lets the Resonators set up while looking deep for a Melody."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "With Cobalt Leader in play, RyerGA weighs a Sforzando line against Fan Club Leader plus a cheaper Melody. Both plans depend on the board converting the spells into damage."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "The burst comes up short. RyerGA points to Displace and Blood Chalice as ways Tonoris can disrupt the damage calculation, and recognizes that Stifling Gyre could have bought a slower turn against Atmos.",
+              "cards": [
+                "Displace",
+                "Stifling Gyre"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "The wider Neos board remains after the attempt. With Vanitas’s immediate reach spent, Tonoris gets the last attack window."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "RY5VwLFB7gU",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-byakko-guo-jia-vs-wind-shadowstrike-tristan",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Byakko Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind Shadowstrike Tristan"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Guo Jia survives the preparation threat and wins with allies before needing Byakko.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Incapacitate stops the turn-one Unmake Duality. The resulting influence gap gives Guo Jia time to build a board and start the suppression engine.",
+              "cards": [
+                "Incapacitate",
+                "Unmake Duality"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Brisk Windtrotter follows Effigy of Gaia. Displace dodges Stifling Trap and lets the Trotter’s enter effect happen again, preserving the pressure Tristan tried to interrupt.",
+              "cards": [
+                "Effigy of Gaia",
+                "Displace",
+                "Stifling Trap"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Guo Jia holds Veiling Breeze and Incapacitate while Tristan builds preparation. The allies close with enough damage once Tristan can no longer answer the board.",
+              "cards": [
+                "Veiling Breeze",
+                "Incapacitate"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Tristan wins the stack fight around a nine-preparation Shadowstrike.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA adds Peer Beyond, Innervate Agility and Crystallized Destiny for Shadowstrike and stealth, and trims some of the slower allies.",
+              "cards": [
+                "Peer Beyond",
+                "Innervate Agility",
+                "Crystallized Destiny"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Tristan reaches nine preparation and creates a finishing line with Shadowstrike and Shadow’s Claw. Blinding Orb limits the responses that Guo Jia can pay for.",
+              "cards": [
+                "Shadowstrike",
+                "Shadow's Claw",
+                "Blinding Orb"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Incapacitate stops Crystallized Destiny. Zephyr reduces the weapon pressure, but the two remaining Shadows supply the last points for exactly 19 damage.",
+              "cards": [
+                "Incapacitate",
+                "Crystallized Destiny"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "The first Byakko flip of the match gets through stealth with Peer Beyond.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Guo Jia deploys attackers early and tries to force Tristan to answer them. Ensnaring Fumes remains a concern when a threatened hit falls a point short.",
+              "cards": [
+                "Ensnaring Fumes"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Sporrel sends Dream Fairy back to memory, protecting herself and slowing the ally plan. Guo Jia builds toward the Fate Stone flip for a new way to finish.",
+              "cards": [
+                "Dream Fairy"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Tristan answers the Byakko swing with Innervate Agility. Peer Beyond gives Byakko true sight from the graveyard, and Byakko’s Command supplies enough damage to reach 23.",
+              "cards": [
+                "Innervate Agility",
+                "Peer Beyond",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "dACA_OaKFWQ",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-water-potions-crux-lorraine-vs-serene-wind-astra-arisanna",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Water Potions Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Serene Wind Astra Arisanna"
+        }
+      ],
+      "result": "Opponent wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Arisanna’s herb engine survives Lorraine’s attacks and wins the longer game.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lorraine wants allies and an early attack window but draws few allies. Both players use Looking Glass while setting up their advanced-element turns."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Arisanna uses the herb engine and responds to a materialization, taking down Cheshire Cat, Impish Grin while preserving an herb for Fertile Grounds.",
+              "cards": [
+                "Cheshire Cat, Impish Grin",
+                "Fertile Grounds"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Lorraine looks for a rested-unit payoff through Inundating Clash and Frostbite. Those pieces improve individual attacks, but the remaining defensive options keep Arisanna alive.",
+              "cards": [
+                "Inundating Clash"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Arisanna retains enough resources to take over. RyerGA concludes that even a different damage line would have left Lorraine dying shortly afterward."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Astral Seal denies Lorraine’s final defensive spell after a close lethal calculation.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lorraine adds four Snow Whites after sideboarding. The opening still comes down to finding allies and putting enough pressure on before Arisanna can accumulate herbs."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Arisanna builds an herb stockpile and deploys Spellshield Astra. Lorraine’s push through Ghosts of Pendragon and equipment does not remove enough of that defense.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Sheath of Faceted Lapis adds attack power. RyerGA checks an alternate finish using Eventide Scepter and another Ghost but cannot find the needed pieces in time.",
+              "cards": [
+                "Sheath of Faceted Lapis",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Lorraine uses its last cards to attempt the Frostworn defense. Arisanna answers with Astral Seal and closes the game.",
+              "cards": [
+                "Astral Seal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "wymlmQnHDxo",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-byakko-guo-jia-vs-fire-aetherwing-diana",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Byakko Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Fire Aetherwing Diana"
+        }
+      ],
+      "result": "RyerGA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Guo Jia survives Diana’s first big attack and finds enough ally damage on the return turn.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fairy Whispers looks for Baby Green Slime, one of Guo Jia’s best ways to interrupt a gun. The hand instead has to work with the allies it can find.",
+              "cards": [
+                "Fairy Whispers",
+                "Baby Green Slime"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Diana threatens a large Ranger Strides turn. RyerGA notes afterward that he omitted Diana’s built-in distant bonus when deciding whether to suppress Trivaria, leaving a narrower survival margin than he realized.",
+              "cards": [
+                "Ranger Strides"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The Grove Sword attack puts Diana at 16 damage. Guo Jia commits Brisk Windtrotter for the remaining damage despite the risk of Manifair Barrage on the return turn."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Weapon disruption buys enough time to win with a buffed Byakko attack and Command.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA brings in Crystallized Destiny, Unbroken Mustang and Calming Breeze. Dream Fairy and Scavenging Raccoon are among the cuts.",
+              "cards": [
+                "Crystallized Destiny",
+                "Unbroken Mustang",
+                "Calming Breeze",
+                "Dream Fairy",
+                "Scavenging Raccoon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Diana reaches Aetherwing without a distance enabler available, and uses Aetheric Calibration to look for a way back into the game.",
+              "cards": [
+                "Aetheric Calibration"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Unbroken Mustang destroys a weapon and the Baby Green Slime suppression loop makes it hard to keep another gun online. Suppression also builds the remaining quest counters.",
+              "cards": [
+                "Unbroken Mustang",
+                "Baby Green Slime"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "A free Brisk Windtrotter puts two counters on Byakko. Byakko’s Command turns that concentrated attack power into two nine-damage instances.",
+              "cards": [
+                "Byakko's Command"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "L0SyUj8OQmU",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-endura-rai-vs-wind-tera-kongming",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Endura Rai"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Wind Tera Kongming"
+        }
+      ],
+      "result": "RyerGA wins the featured game",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Rai uses repeated enter effects to build enlightenment, then wins after holding off Kongming’s board.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Windmill Engineer opens the damage race. Rai keeps ways to reuse allies as the game moves toward a spell turn instead of committing every resource to the first attacks.",
+              "cards": [
+                "Windmill Engineer"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Displace reuses the inquisitive Mage. With the supporting pieces in play, the sequence produces six enlightenment counters and gives Rai another way to refill.",
+              "cards": [
+                "Displace"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Argus absorbs a large hit and Lu Bu threatens the board. RyerGA later identifies a missed chance to target the replayed Lu Bu with Tempest Downfall.",
+              "cards": [
+                "Tempest Downfall"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Aela suppresses the Fan of Seven Deaths, temporarily removing a key payoff. Rai keeps working through counters and draws while Kongming threatens with another Lu Bu."
+            },
+            {
+              "order": 5,
+              "actor": "p1",
+              "text": "Rai reserves counters on Ventus for the late exchange. After holding enough defenses to get another turn, Rai converts the remaining resources into the finish."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "wP7EeAeiow0",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-luxem-zander-vs-wind-shadowstrike-tristan",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Game of Guts",
+          "deck": "Wind Shadowstrike Tristan"
+        }
+      ],
+      "result": "RyerGA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zander draws six off the Luxem reveal and stacks two 11-damage Lightweaver’s Assaults.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zander sets up a hand with multiple advanced-element cards and times Surveil the Winds so he can level and still use Dungeon Guide. Imbuing Benediction Angel immediately would cost cards needed for that climb.",
+              "cards": [
+                "Surveil the Winds",
+                "Dungeon Guide",
+                "Benediction Angel"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Tristan builds preparation and threatens a large Shadowstrike. Zander has to weigh how much of his hand to commit while Aela gives him a fast way to use the cards he sets down.",
+              "cards": [
+                "Shadowstrike"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The Luxem reveal shows three Gleaming Cuts, Luxem Sight and two Lightweaver’s Assaults. The six draws convert the level-up into enough resources for a second push.",
+              "cards": [
+                "Gleaming Cut",
+                "Luxem Sight",
+                "Lightweaver's Assault"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Zander casts both Assaults before either resolves. Each sees both payments plus the three cards already in memory, making each spell worth 11 damage.",
+              "cards": [
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Zander forces Tristan to commit cards before a second double-Assault finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "The players continue without sideboarding. Zander makes Backup Charger early and later uses successive Surveil the Winds plays to find two Assaults.",
+              "cards": [
+                "Backup Charger",
+                "Surveil the Winds",
+                "Lightweaver's Assault"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The reveal triggers chip Tristan to 14. Scout the Land pressures Tristan into laying down cards and leaves few resources for a response.",
+              "cards": [
+                "Scout the Land"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Zander attacks for one before casting two Assaults worth eight each. Either one is enough at that point, so a single Incapacitate cannot stop the finish.",
+              "cards": [
+                "Lightweaver's Assault",
+                "Incapacitate"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "5REkWrkvoTU",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-water-hybrid-exia-dante-vs-wind-crux-lorraine",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Water Hybrid Exia Dante"
+        },
+        {
+          "id": "p2",
+          "name": "Matt",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Matt wins 2–1 in the recorded set",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Dante takes the recorded game, then RyerGA identifies a condition the finishing sequence failed to meet.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lorraine develops a Crux attack plan with Pendragon, Aela and a stocked memory. Dante keeps Aenean Frozen Shunt for a larger attack while building toward empower.",
+              "cards": [
+                "Aenean Frozen Shunt"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dante weighs the damage from the Elysian triggers and looks for enough reach to close. Aela’s end-of-main suppression changes which pieces are available in the final exchange."
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "RyerGA notes that Thanatotic Hemosynth requires at least ten damage on Dante to give the spell ephemerate. He was below that threshold. The alternative Cryosalvo line would also have faced the Calming Breeze already in Matt’s hand.",
+              "cards": [
+                "Thanatotic Hemosynth",
+                "Calming Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Lorraine keeps pressure on while Dante’s large empower goes to a draw spell.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The players keep the same lists. Dante rebuilds early resources with Backup Charger and Powercell, and puts a payoff into the graveyard for later access.",
+              "cards": [
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Loss clears several allies and gives Dante a large empower. RyerGA realizes afterward that he should have played the draw spell while the empower triggers were pending to keep that bonus for a payoff."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Dante draws Rising Tide instead of the Hemoflux answer he was looking for. Lorraine’s board remains capable of ending the game even through the recovery Dante considers."
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Aela constrains Dante’s recovery and Lorraine survives until the last draw misses.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lorraine uses Aela to suppress Lost Providence and keeps enough board damage available that Dante has to track the threat of Dispersion through several turns."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dante uses recovery and the Elysian aura to stay in the game. Ghosts of Pendragon gives him another draw window, but the cards he finds do not convert his resources into a finish.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "RyerGA goes to Terraforming and looks for an Elysian object to stay alive. The final draw is a Fractal, and he accepts the loss before his end step."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. RyerGA counted game 1 for Dante as played and later identified an unmet card requirement in the finish.",
+      "sourceVideos": [
+        {
+          "id": "1OETgZmbdfs",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-fire-arcane-midrange-lorraine-vs-fire-king-dante",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Fire Arcane Midrange Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Game of Guts",
+          "deck": "Fire King Dante"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Dante stacks empower and lands two lethal Fireballs before Lorraine’s next attack.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lorraine develops Sword Saint and uses the extra weapon power to pressure Dante. Flame Sweep adds damage, but RyerGA later sees a stronger line with Rending Flames that he passed up.",
+              "cards": [
+                "Flame Sweep",
+                "Rending Flames"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Lorraine levels for safety. RyerGA notes that holding more attack resources would have kept a stronger chance of ending the game before Dante could take another turn."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Dante builds ten empower. The resulting Fireballs clear the remaining damage threshold before Lorraine gets the chance to attack for lethal."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Clarent buys time against repeated spell damage, then Rending Flames finishes Dante.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA brings in the Clarent package after seeing how much of Dante’s damage comes from repeated spell hits. Clarent turns a sequence that threatens several separate damage instances into a turn Lorraine can survive."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Dante stays in the game through a large Hemoflux Drain and the associated recovery. Lorraine now needs a large weapon hit rather than a few smaller attacks."
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Lorraine skips materialization, uses Hone by Fire and finds Rending Flames to finish. RyerGA also identifies a longer Dungeon Guide line available without that draw.",
+              "cards": [
+                "Hone by Fire",
+                "Rending Flames",
+                "Dungeon Guide"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary. Only games 1 and 2 are shown. RyerGA describes game 3 as similar to game 2 and reports the match win.",
+      "sourceVideos": [
+        {
+          "id": "rVOvdXdVeBo",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-luxem-zander-vs-fire-aggro-dante",
+      "event": "RyerGA Match Recaps",
+      "round": "Featured match",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Game of Guts",
+          "deck": "Fire Aggro Dante"
+        }
+      ],
+      "result": "RyerGA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zander stabilizes against the early fire board and pays for both Slice and Dice attacks.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA digs for Slice and Dice without rushing to the highest champion level. The plan needs enough preparation and influence left to pay for the follow-up attacks.",
+              "cards": [
+                "Slice and Dice"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Zander puts Veiling Breeze above Nullifying Mirror’s activation and uses Terraforming to protect the bounty hunter. Dante has to spend the attack window dealing with the board.",
+              "cards": [
+                "Veiling Breeze"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Blinding Orb forces a commitment and the redraw finds Slice and Dice. With five preparation counters and enough cards to pay through Terraforming, Zander resolves the two-attack finish.",
+              "cards": [
+                "Blinding Orb",
+                "Slice and Dice"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Early trades preserve Zander’s influence and a second Slice and Dice lands for lethal.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA adds Dream Fairy for Arthur, Unbroken Mustang for regalia, and Calming Breeze for burst turns. He trims slower pieces from the Luxem plan.",
+              "cards": [
+                "Dream Fairy",
+                "Unbroken Mustang",
+                "Calming Breeze"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Sadi and the Windmill trade into the Acolyte. Dante leaves the Engineer in play while playing around Reclaim, giving Zander a chance to recover resources safely.",
+              "cards": [
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Dungeon Guide advances Zander to level two, then returning Sadi supplies the preparation needed for the last blade. The two Slice and Dice hits take the total to 19 damage.",
+              "cards": [
+                "Dungeon Guide",
+                "Slice and Dice"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA gameplay and commentary.",
+      "sourceVideos": [
+        {
+          "id": "c4DpFq_4Im4",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-umbra-ciel-vs-water-astra-diana",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Chris",
+          "deck": "Water Astra Diana"
+        }
+      ],
+      "result": "Chris wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Aqua Mirage connects through Ciel’s prevention after an Aethercharge setup.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Ciel keeps potential intercepts and attack prevention while looking for enough Omen resources to start the engine. Diana uses Refreshing Charge as she develops.",
+              "cards": [
+                "Refreshing Charge"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Flash Grenade and Reposition help load the Astra weapon and set up distance. Cosmic Focus and the loaded cards let Diana threaten the finish on a small hand.",
+              "cards": [
+                "Flash Grenade",
+                "Reposition",
+                "Cosmic Focus"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Ciel puts up Terraforming and holds prevention, but even two Veiling Breezes would leave enough damage. Diana commits the remaining cards and attacks for the game.",
+              "cards": [
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Krustallan Archer supplies early pressure and stacked Cosmic Focus ends the game.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Diana uses Krustallan Archer to get damage and glimpses before committing to her top end. Ciel levels under pressure with Dungeon Guide lines still constrained.",
+              "cards": [
+                "Krustallan Archer",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Moonpiercer and more Aethercharge setup put Ciel under pressure. RyerGA wants the graveyard lock from Censer but does not have it available in the closing sequence."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "A third Cosmic Focus takes Diana to the stated attack bonus of eight. Ciel asks whether Chris can get past the remaining defender, and concedes when Chris shows the answer.",
+              "cards": [
+                "Cosmic Focus"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 1 of RyerGA’s Wind Umbra Ciel locals video.",
+      "sourceVideos": [
+        {
+          "id": "7KpeGY3aKVk",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-umbra-ciel-vs-serene-fire-coup-ciel",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Vern",
+          "deck": "Serene Fire Coup Ciel"
+        }
+      ],
+      "result": "RyerGA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Wind Ciel uses suppression to clear the attack lane and still has Umbra damage after Fire Ciel’s recovery.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Imperious Galebind removes a Powercell token, cutting off the opponent’s Turbo Charge setup. Wind Ciel also develops several cheap redraws that can be reused as the game stretches.",
+              "cards": [
+                "Imperious Galebind",
+                "Turbo Charge"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Vern keeps Beguiling Coup live through the protracted exchanges. RyerGA builds Omens and weighs whether to spend them on attacks or continue drawing toward a safer finish.",
+              "cards": [
+                "Beguiling Coup"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The last suppression exchange removes Stalwart and Tariff Ring for the turn. Fire Ciel uses lineage recovery, but Wind Ciel still has Umbra damage available after the attack.",
+              "cards": [
+                "Tariff Ring"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Imperious Galebind refills Wind Ciel and lets flexible damage reach through the last defense.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA adds Eternal Magistrate, Cry for Help and Tempestuous Conviction. Turbo Charge supports an early level-up while Fairy Whispers starts the next Omen.",
+              "cards": [
+                "Eternal Magistrate",
+                "Cry for Help",
+                "Tempestuous Conviction",
+                "Turbo Charge",
+                "Fairy Whispers"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "RyerGA plans to use the Armoire to set up Magistrate against Dungeon Guide but draws Heavy Swing and changes course. Vern gets the level-up window RyerGA had planned to deny.",
+              "cards": [
+                "Dungeon Guide",
+                "Heavy Swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "After taking a large Heavy Swing, RyerGA levels and uses Imperious Galebind with three redraws set up. The extra cards give Wind Ciel several ways to apply damage through recovery.",
+              "cards": [
+                "Imperious Galebind",
+                "Heavy Swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "A final Imperious Galebind on the Cakes and Chevalier reopens those triggers. Vern has no remaining heal for the damage and gives RyerGA the game.",
+              "cards": [
+                "Imperious Galebind"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 2 of RyerGA’s Wind Umbra Ciel locals video.",
+      "sourceVideos": [
+        {
+          "id": "7KpeGY3aKVk",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-umbra-ciel-vs-fire-aggro-lorraine",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Matt",
+          "deck": "Fire Aggro Lorraine"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Veiling Breeze stops the big Rending Flames attack and Ciel finishes with Tempest Downfall.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Matt opens with two Creative Shocks. Windmill Engineer and an Ace give Ciel board pressure while Lorraine is low on cards.",
+              "cards": [
+                "Creative Shock",
+                "Windmill Engineer"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Lorraine sets up an inert sword and doubles the Rending Flames attack. Veiling Breeze reduces the underlying attack to zero before the doubling can matter.",
+              "cards": [
+                "Rending Flames",
+                "Veiling Breeze"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Ciel checks the damage through Lorraine’s recovery, waits a turn, then uses the sword, Caterpillar and Tempest Downfall to complete the finish.",
+              "cards": [
+                "Tempest Downfall"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Lorraine punishes a short defensive hand with Heated Vengeance and Blazing Throw.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lorraine builds an early fire graveyard and sets up Heated Vengeance. Ciel tries to account for the weapon hit while keeping a response for the burn behind it.",
+              "cards": [
+                "Heated Vengeance"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Ciel lacks Veiling Breeze for the closing exchange. Blazing Throw supplies the last damage and forces the deciding game.",
+              "cards": [
+                "Veiling Breeze",
+                "Blazing Throw"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Ciel survives the last fire turn and buys back Heavy Swing for the win.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dream Fairy gives Ciel a way to disrupt Arthur. Later, Calming Breeze changes the damage math around Rending Flames and Blazing Throw and helps Ciel live long enough to keep drawing.",
+              "cards": [
+                "Dream Fairy",
+                "Calming Breeze",
+                "Rending Flames",
+                "Blazing Throw"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Ciel draws through the hourglass and clears Xiaoya, removing a source of damage for Lorraine’s final turn. Lorraine still lines up burn and a champion attack.",
+              "cards": [
+                "Candlelight Hourglass"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The last attack and burn leave Ciel alive. The Armoire returns Heavy Swing for the finish.",
+              "cards": [
+                "Heavy Swing"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 3 of RyerGA’s Wind Umbra Ciel locals video.",
+      "sourceVideos": [
+        {
+          "id": "7KpeGY3aKVk",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-seiryuu-guo-jia-vs-water-fractals-diao-chan",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Water Fractals Diao Chan"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Diao Chan scales Burst Asunder beyond Guo Jia’s available defense.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Diao Chan gets Fractals in play while both sides use Looking Glass. Because the Fractals remain in play, every new token increases the damage Guo Jia must respect."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Guo Jia levels to increase the damage needed for lethal and uses defenders to keep incidental attacks away from the champion. The spell damage is still live."
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "With six Fractals available, the first Burst Asunder represents 14 damage. Guo Jia has one layer of interaction and the second Burst ends the game.",
+              "cards": [
+                "Burst Asunder"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Topsy Decree defends against the burst and Harness Lightning finishes on the return turn.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA boards in Topsy Decree, Calming Breeze, Verdigris Decree and Innervate Agility. Several slower advanced-element cards come out as the deck prioritizes stopping the Fractal finish.",
+              "cards": [
+                "Topsy Decree",
+                "Calming Breeze",
+                "Innervate Agility"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Diao Chan attempts Burst Asunder. Topsy Decree protects Guo Jia and prompts a discard, leaving Diao Chan without the resources for Song of Frost.",
+              "cards": [
+                "Burst Asunder",
+                "Topsy Decree",
+                "Song of Frost"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Seiryuu pushes the damage up and Harness Lightning covers the remaining gap.",
+              "cards": [
+                "Harness Lightning"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Guo Jia survives the Fractal burst and wins the fight over the last answer.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Diao Chan adds Fractals while Guo Jia weighs whether the next attack can get through one Glimmering Refusal. Every extra setup turn gives Diao Chan more potential burst."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "A Shimmering Refraction from memory reveals a dangerous line alongside Burst Asunder. Veiling Breeze helps Guo Jia survive for another attack window.",
+              "cards": [
+                "Shimmering Refraction",
+                "Burst Asunder",
+                "Veiling Breeze"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The finish goes through one Glimmering Refusal. RyerGA notes that a second copy would have changed the result.",
+              "cards": [
+                "Glimmering Refusal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 1 of RyerGA’s Wind Seiryuu locals video.",
+      "sourceVideos": [
+        {
+          "id": "OH2azVDiX9I",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-seiryuu-guo-jia-vs-serene-water-nico",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Serene Water Nico"
+        }
+      ],
+      "result": "RyerGA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Triple Harness Lightning gets Seiryuu through Nico’s last Song of Frost.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Nico develops Lash counters through the graveyard while Guo Jia builds influence. Guo Jia considers leveling sooner but initially uses Thurible to constrain the graveyard."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Three Harness Lightnings grow Seiryuu to 16 power before the attack. Guo Jia has Incapacitate for Song of Frost.",
+              "cards": [
+                "Harness Lightning",
+                "Song of Frost",
+                "Incapacitate"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Nico leaves Enfeebling Orb unused during the exchange. The players discuss that opening as they move to game two.",
+              "cards": [
+                "Enfeebling Orb"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Seiryuu keeps drawing and suppresses Vaporjet Shield for the closing attack.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RyerGA adds Topsy Decree to interact with the graveyard and removes pieces such as Stifling Trap and Regal Inquisition. He expects Nico’s Lash-powered attack to matter even if its generated actions never resolve.",
+              "cards": [
+                "Topsy Decree",
+                "Stifling Trap",
+                "Regal Inquisition"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "The early spell exchanges involve Cerulean Decree and Tidal Lock, but Guo Jia retains the resources to keep developing after the interaction.",
+              "cards": [
+                "Cerulean Decree",
+                "Tidal Lock"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Baby Green Slime targets Vaporjet Shield as Guo Jia closes. RyerGA points out a possible Temptation’s Facade response in review, and reports that both players considered the remaining damage lethal.",
+              "cards": [
+                "Baby Green Slime"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 2 of RyerGA’s Wind Seiryuu locals video.",
+      "sourceVideos": [
+        {
+          "id": "OH2azVDiX9I",
+          "label": "Watch on RyerGA"
+        }
+      ]
+    },
+    {
+      "id": "ryerga-wind-seiryuu-guo-jia-vs-fire-aggro-merlin",
+      "event": "RyerGA Match Recaps",
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RyerGA",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Opponent",
+          "deck": "Fire Aggro Merlin"
+        }
+      ],
+      "result": "RyerGA wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Merlin’s early burn and pressure take the opener before Seiryuu is set up.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Arthur and Red Hair put six damage on the board. With Molten Echo enabling Memorite Blade, Merlin can finish using attacks already available.",
+              "cards": [
+                "Arthur, Young Heir",
+                "Molten Echo",
+                "Memorite Blade"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Guo Jia saves Veiling Breeze for the weapon attack after letting Molten Echo resolve. Merlin counters Breeze with Incapacitate and has exactly 19 damage across the remaining attacks.",
+              "cards": [
+                "Veiling Breeze",
+                "Incapacitate"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Two Byakko’s Commands empower a free Arcane Blast.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Merlin attacks with weapons and uses Blazing Throw on the Soulknife. Smoke Out clears Dream Fairy, giving Fire another way to keep the early attacks moving.",
+              "cards": [
+                "Blazing Throw",
+                "Smoke Out",
+                "Dream Fairy"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Guo Jia levels as Merlin’s influence drops. Later he has Veiling Breeze and Incapacitate available while building toward a dragon attack.",
+              "cards": [
+                "Veiling Breeze",
+                "Incapacitate"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Two Byakko’s Commands supply eight empower with Harness Lightning already banished. The attack brings Merlin to 18 and the empowered Arcane Blast closes.",
+              "cards": [
+                "Byakko's Command",
+                "Harness Lightning",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Guo Jia counters the burn finish and uses Seiryuu’s Command to set up the last Blast.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Merlin uses Molten Echo pressure to build damage and Sheen. Guo Jia holds both Commands while looking for a way to survive the next materialization and attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Incapacitate answers the last Blazing Throw. That also gives RyerGA information about whether Merlin could have a counterspell for the return turn.",
+              "cards": [
+                "Incapacitate",
+                "Blazing Throw"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Guo Jia starts the last turn with 12 quest counters. Seiryuu’s Command lets him generate Arcane Blast and apply six empower, leaving enough cards to cast it at effective level nine.",
+              "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Source: RyerGA, Locals Longplay. Round 3 of RyerGA’s Wind Seiryuu locals video.",
+      "sourceVideos": [
+        {
+          "id": "OH2azVDiX9I",
+          "label": "Watch on RyerGA"
+        }
+      ]
     }
   ]
 }

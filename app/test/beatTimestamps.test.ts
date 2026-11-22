@@ -64,20 +64,20 @@ test('archive backfill retains source excerpts and matches current highlights an
   assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 204);
 });
 
-test('remaining timestamp queue covers every untimed highlight exactly once', () => {
+test('broadcast archive queue covers every untimed broadcast highlight exactly once', () => {
   const read = (p: string) => JSON.parse(readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
   const data: BroadcastTimelines = read('data/broadcast-timelines.json');
   const remaining = read('docs/broadcast-review/archive-timestamps/remaining.json');
-  const expected = data.matches.flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
+  const expected = data.matches.filter(m => !m.sourceVideos).flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
   const actual = remaining.flatMap((m: { matchId: string; beats: { gameNumber: number; order: number }[] }) => m.beats.map(b => `${m.matchId}/${b.gameNumber}/${b.order}`));
   assert.deepEqual(actual.sort(), expected.sort());
 });
 
-test('every remaining highlight has a documented source or game-assignment blocker', () => {
+test('every remaining broadcast highlight has a documented source or game-assignment blocker', () => {
   const read = (p: string) => JSON.parse(readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
   const data: BroadcastTimelines = read('data/broadcast-timelines.json');
   const unresolved = read('docs/broadcast-review/archive-timestamps/unresolved.json');
-  const expected = data.matches.flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
+  const expected = data.matches.filter(m => !m.sourceVideos).flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
   const actual = unresolved.map((e: { matchId: string; gameNumber: number; order: number; text: string; videoId: string; reason: string }) => {
     const match = data.matches.find(m => m.id === e.matchId)!;
     const beat = match.games.find(g => g.gameNumber === e.gameNumber)!.beats.find(b => b.order === e.order)!;

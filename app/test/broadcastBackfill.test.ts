@@ -18,11 +18,11 @@ const match = (id: string) => {
   return found;
 };
 
-test('recovered coverage retains the baseline and accounts for every new recap', () => {
+test('recovered coverage retains the baseline and accounts for every broadcast recap', () => {
   assert.equal(review.baselineRecapIds.length, 110);
   assert.equal(review.newRecapIds.length, 86);
   assert.equal(review.updatedOffsetIds.length, 18);
-  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds, ...resolutions.newRecapIds, ...osaka.newRecapIds, ...osakaDay2.newRecapIds].sort(), data.matches.map(m => m.id).sort());
+  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds, ...resolutions.newRecapIds, ...osaka.newRecapIds, ...osakaDay2.newRecapIds].sort(), data.matches.filter(m => !m.sourceVideos).map(m => m.id).sort());
   assert.equal(new Set(review.sources.map((s: { videoId: string }) => s.videoId)).size, 14);
   for (const source of review.sources) {
     assert.equal(source.fullGameplayReviewed, false);

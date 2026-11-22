@@ -1,5 +1,5 @@
 import { refreshPublishedData } from '../../lib/sync/usePublishedData';
-import { timelineMetadata } from "@gatcg/shared";
+import { timelineMetadata, timelineSourceLinks } from "@gatcg/shared";
 import MatchShare from "./MatchShare";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -63,7 +63,9 @@ export default function TimelineDetail() {
             &larr; Match Timelines
           </Link>
           <MatchTimelineHeader match={match} />
-          <div className="mt-4 flex flex-wrap items-center gap-3"><MatchVideoLink match={match} /><MatchShare key={match.id} match={match} /></div>
+          <div className="mt-4 flex flex-wrap items-center gap-3"><MatchVideoLink match={match} />
+            {timelineSourceLinks(match).map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-control items-center gap-2 rounded px-3 text-sm font-medium text-ctp-blue hover:bg-ctp-blue/10 focus-visible:outline-2 focus-visible:outline-ctp-blue">{link.label}<span aria-hidden="true">↗</span></a>)}
+            <MatchShare key={match.id} match={match} /></div>
 
           <div className="mt-4">
               <Tabs baseId="match-view" variant="pill" tabs={tabs} active={activeTab} onChange={next => { if (next === "decklists") setDecklistsVisited(true); setTab(next); }} label="Match view" />

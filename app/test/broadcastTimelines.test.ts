@@ -40,6 +40,23 @@ test('published recaps have valid actors, outcomes, sequences and canonical card
   assert.equal(read('manifest.json')['broadcast-timelines'], data.generatedAt);
 });
 
+test('RyerGA recaps cover all source uploads without tournament pairing IDs', () => {
+  const recaps = data.matches.filter(match => match.event === 'RyerGA Match Recaps');
+  const sources = recaps.flatMap(match => match.sourceVideos ?? []);
+  assert.equal(recaps.length, 28);
+  assert.equal(new Set(sources.map(source => source.id)).size, 25);
+  for (const match of recaps) {
+    assert.equal(match.eventId, undefined);
+    assert.equal(match.video, undefined);
+    assert.match(match.sourceNote, /^Source: RyerGA/);
+    assert.ok(match.sourceVideos?.length);
+    assert.ok(match.sourceVideos.every(source => /^[\w-]{11}$/.test(source.id)));
+  }
+  const split = recaps.find(match => match.sourceVideos?.length === 2)!;
+  assert.deepEqual(split.sourceVideos?.map(source => source.id), ['srV_0nDH6Ts', '8Oa9sWgLI18']);
+  assert.deepEqual(split.games.map(game => [game.gameNumber, game.winner]), [[1, 'p1'], [2, 'p2'], [3, 'p1']]);
+});
+
 test('verified SEA identities resolve and Swiss attachments use explicit stage lists', () => {
   const sea = find('ai-sentus');
   assert.deepEqual(sea.players.map(p => p.name), ['Awi', 'Centratus']);

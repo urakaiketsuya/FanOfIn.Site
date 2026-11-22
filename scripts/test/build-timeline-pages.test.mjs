@@ -43,3 +43,23 @@ test('build emits pages and images, preserves other sitemap entries, and is idem
  assert.match(await readFile(path.join(outDir,'timelines/test-match/index.html'),'utf8'),/Game 1/);assert.ok((await readFile(path.join(outDir,'media/matches/test-match.jpg'))).length>1000);
  }finally{await rm(dir,{recursive:true,force:true});}
 });
+
+test('creator recap links both source uploads and identifies the matchup', () => {
+  const creatorMatch = {
+    ...match,
+    event: 'RyerGA Match Recaps',
+    video: undefined,
+    sourceNote: 'Source: RyerGA gameplay and commentary.',
+    sourceVideos: [
+      { id: 'srV_0nDH6Ts', label: 'Watch games 1 and 2' },
+      { id: '8Oa9sWgLI18', label: 'Watch game 3' },
+    ],
+  };
+  const html = renderTimelinePage(shell, creatorMatch);
+  assert.match(html, /Watch games 1 and 2/);
+  assert.match(html, /Watch game 3/);
+  assert.equal((html.match(/youtube\.com\/watch\?v=srV_0nDH6Ts/g) ?? []).length, 2);
+  assert.equal((html.match(/youtube\.com\/watch\?v=8Oa9sWgLI18/g) ?? []).length, 2);
+  assert.match(html, /Source: RyerGA gameplay and commentary/);
+  assert.ok(html.includes(creatorMatch.players.map(player => player.deck).join(' vs. ')));
+});
