@@ -15,5 +15,20 @@
   },
   "capturedAudioDurationSeconds": 46938,
   "fullPlaybackVerified": false,
-  "pendingHighlightCount": 10
+  "pendingHighlightCount": 10,
+  "recheck": {
+    "checkedOn": "2026-11-22",
+    "browser": {
+      "requestedSeconds": 44400,
+      "actualSeconds": 42898,
+      "durationSeconds": 42898,
+      "observed": "The public player clamped the requested 12:20:00 seek to its endpoint at 11:54:58."
+    },
+    "pendingCaptureRangeSeconds": [
+      43740,
+      46583
+    ],
+    "pendingHighlightCount": 12,
+    "finalTimestampAlignmentVerified": false
+  }
 }

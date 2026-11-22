@@ -72,8 +72,9 @@ test('final capture timestamps stay unpublished while the replay is truncated', 
   const final = matches.find(m => m.round === 'Final')!;
   assert.equal(final.video!.startSeconds, undefined);
   assert.equal(pending.length, review.pendingTimestampCount);
+  assert.equal(pending.length, check.recheck.pendingHighlightCount);
   for (const p of pending) {
-    assert.ok(p.captureSeconds > check.browser.durationSeconds);
+    assert.ok(p.captureSeconds > check.recheck.browser.durationSeconds);
     const beat = final.games.find(g => g.gameNumber === p.gameNumber)!.beats.find(b => b.order === p.order)!;
     assert.equal(beat.text, p.text);
     const cue = evidence.find((e: { matchId: string; gameNumber: number; order: number }) =>

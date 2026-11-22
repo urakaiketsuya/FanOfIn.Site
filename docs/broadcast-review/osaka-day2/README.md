@@ -10,7 +10,7 @@ Five Swiss matches cover rounds 10–14. Elimination coverage contains Noel–Du
 
 ## Replay processing limitation
 
-79 highlight links are enabled. The final's twelve offsets remain in `pending-playback.json`, with matching entries in the archive's remaining/unresolved queues. The captured audio runs 13:02:18, but YouTube metadata still reports `post_live` and 11:54:59. A browser request at 12:15:00 clamped to 11:59:58 of 12:00:03, showing the final's opening. The final recap is supported by captured commentary, but its beyond-end links and match-start offset are withheld. Recheck the processed archive's duration and clock alignment before enabling them; do not guess an offset or trim the recap to the public player's current duration.
+79 highlight links are enabled. The final's twelve offsets remain in `pending-playback.json`, with matching entries in the archive's remaining/unresolved queues. The captured audio runs 13:02:18, but YouTube metadata still reports `post_live` and 11:54:59. A browser request at 12:15:00 clamped to 11:59:58 of 12:00:03, showing the final's opening. On November 22 the public player clamped a 12:20:00 request to 11:54:58. All twelve capture cues (12:09:00–12:56:23) are beyond that duration. The final recap is supported by captured commentary, but its beyond-end links and match-start offset are withheld. Recheck the processed archive's duration and clock alignment before enabling them; do not guess an offset or trim the recap to the public player's current duration.
 
 `playback-check.json` records this check. No new UI or disclosures were introduced.
 
