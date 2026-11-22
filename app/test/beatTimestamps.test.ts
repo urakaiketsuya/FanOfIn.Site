@@ -115,3 +115,24 @@ test('NA round nine uses its separate replay clock and persistent video mapping'
     assert.ok(beatVideoLink(beat, match.video));
   }
 });
+
+test('every RyerGA play links to a listed source, including games split across uploads', () => {
+  const data: BroadcastTimelines = JSON.parse(readFileSync(new URL('../../data/broadcast-timelines.json', import.meta.url), 'utf8'));
+  const recaps = data.matches.filter(match => match.sourceVideos?.length);
+  const split = recaps.find(match => match.sourceVideos?.length === 2)!;
+  let count = 0;
+  for (const match of recaps) for (const game of match.games) {
+    let previous = -1;
+    const id = match === split ? (game.gameNumber === 3 ? '8Oa9sWgLI18' : 'srV_0nDH6Ts') : match.sourceVideos![0].id;
+    for (const play of game.beats) {
+      assert.equal(play.timestamp?.videoId, id, match.id);
+      assert.ok(play.timestamp.seconds > previous, match.id);
+      const link = beatVideoLink(play, match.video, match.sourceVideos);
+      assert.equal(link?.url, `https://www.youtube.com/watch?v=${id}&t=${play.timestamp.seconds}s`);
+      assert.equal(beatVideoLink(play, undefined, [{ id: 'VOlVotCfOU0', label: 'Other upload' }]), undefined);
+      previous = play.timestamp.seconds;
+      count++;
+    }
+  }
+  assert.equal(count, 185);
+});

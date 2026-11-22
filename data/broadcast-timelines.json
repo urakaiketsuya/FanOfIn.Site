@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T18:11:06.391Z",
+  "generatedAt": "2026-11-22T20:41:54.522Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -33068,6 +33068,20 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Enfeebling Orb cuts Yadon’s hand below what he needs to play Lightweaver’s Assault at fast speed.",
+              "cards": [
+                "Enfeebling Orb",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36238
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
               "cards": [
@@ -33120,6 +33134,19 @@
             },
             {
               "order": 3,
+              "actor": "p1",
+              "text": "Yadon finds two copies of Lightweaver’s Assault, but his hand is too small to play one immediately and his next draw fails to give him lethal.",
+              "cards": [
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37014
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
               "cards": [
@@ -33518,12 +33545,20 @@
               "text": "Hasty Messenger puts attacks and floating memory into Mordred’s graveyard. At level two, that stockpile funds materializations while preserving attacks for later reuse.",
               "cards": [
                 "Hasty Messenger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "NyvPLCo3Jkg",
+                "seconds": 149
+              }
             },
             {
               "order": 2,
               "actor": "p2",
-              "text": "Reciprocity and the obelisk supply separate streams of tokens. Tonoris can turn their quantity into pressure even as Mordred trades resources to keep up."
+              "text": "Reciprocity and the obelisk supply separate streams of tokens. Tonoris can turn their quantity into pressure even as Mordred trades resources to keep up.",
+              "timestamp": {
+                "videoId": "NyvPLCo3Jkg",
+                "seconds": 677
+              }
             },
             {
               "order": 3,
@@ -33532,7 +33567,11 @@
               "cards": [
                 "Song of Frost",
                 "Lost Providence"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "NyvPLCo3Jkg",
+                "seconds": 779
+              }
             },
             {
               "order": 4,
@@ -33540,7 +33579,11 @@
               "text": "Mordred reuses Dauntless to attack through both shields. The second attack meets prevention from the obelisk and Diffusive Block, so attacking twice still fails to open a clean lane to the champion.",
               "cards": [
                 "Diffusive Block"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "NyvPLCo3Jkg",
+                "seconds": 1160
+              }
             },
             {
               "order": 5,
@@ -33550,7 +33593,11 @@
                 "Blade of Creation",
                 "Smoke Bombs",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "NyvPLCo3Jkg",
+                "seconds": 1313
+              }
             }
           ]
         }
@@ -33593,22 +33640,38 @@
               "cards": [
                 "Unmake Duality",
                 "Return to the Archive"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 2062
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Diana gets ahead on damage but initially counts Incendiary Shot toward an attack it does not contribute to. The correction leaves Guo Jia another turn."
+              "text": "Diana gets ahead on damage but initially counts Incendiary Shot toward an attack it does not contribute to. The correction leaves Guo Jia another turn.",
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 2531
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Guo Jia levels for the larger health threshold and takes quest counters. A flip still requires another turn and enough suppression to buy it."
+              "text": "Guo Jia levels for the larger health threshold and takes quest counters. A flip still requires another turn and enough suppression to buy it.",
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 2618
+              }
             },
             {
               "order": 4,
               "actor": "p1",
-              "text": "With a round already loaded, Diana can attack without exposing a fresh load trigger. Guo Jia has no answer in hand."
+              "text": "With a round already loaded, Diana can attack without exposing a fresh load trigger. Guo Jia has no answer in hand.",
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 2708
+              }
             }
           ]
         },
@@ -33625,7 +33688,11 @@
                 "Reduce to Ash",
                 "Slip Away",
                 "Baby Green Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 15
+              }
             },
             {
               "order": 2,
@@ -33633,7 +33700,11 @@
               "text": "The two players hold defensive resources through several threatened attacks. RyerGA revisits the damage math around Abnegation and notes that a missed point affected how he evaluated his own lethal chances.",
               "cards": [
                 "Abnegation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 1347
+              }
             },
             {
               "order": 3,
@@ -33642,7 +33713,11 @@
               "cards": [
                 "Incapacitate",
                 "Slip Away"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "srV_0nDH6Ts",
+                "seconds": 1947
+              }
             }
           ]
         },
@@ -33660,7 +33735,11 @@
                 "Tasershot",
                 "Framework Sidearm",
                 "Creeping Torment"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "8Oa9sWgLI18",
+                "seconds": 528
+              }
             },
             {
               "order": 2,
@@ -33669,7 +33748,11 @@
               "cards": [
                 "Seeker's Rifle",
                 "Baby Green Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "8Oa9sWgLI18",
+                "seconds": 906
+              }
             },
             {
               "order": 3,
@@ -33677,7 +33760,11 @@
               "text": "Two Punishing Cartridge activations redirect the attack to Guo Jia and apply the sacrifice trigger twice. The shot takes away allied support as well as pushing damage.",
               "cards": [
                 "Punishing Cartridge"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "8Oa9sWgLI18",
+                "seconds": 1015
+              }
             },
             {
               "order": 4,
@@ -33687,7 +33774,11 @@
                 "Umbral Tithe",
                 "Seeker's Rifle",
                 "Innervate Agility"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "8Oa9sWgLI18",
+                "seconds": 1199
+              }
             }
           ]
         }
@@ -33733,7 +33824,11 @@
               "text": "Ciel puts Safeguard Amulet in place as Rai fills memory with arcane cards. Early weapon and attack damage put Rai under pressure to find a payoff.",
               "cards": [
                 "Safeguard Amulet"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 217
+              }
             },
             {
               "order": 2,
@@ -33743,7 +33838,11 @@
                 "Arcane Sight",
                 "Careful Study",
                 "Advent of the Stormcaller"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 611
+              }
             },
             {
               "order": 3,
@@ -33754,7 +33853,11 @@
                 "Abnegation",
                 "Arcane Blast",
                 "Erratic Bolt"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 1352
+              }
             }
           ]
         },
@@ -33769,7 +33872,11 @@
               "text": "Both decks stay on their original lists. Rai draws a hand heavy on arcane cards and hesitates to risk Dungeon Guide as Ciel builds influence.",
               "cards": [
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 1407
+              }
             },
             {
               "order": 2,
@@ -33777,7 +33884,11 @@
               "text": "Ciel develops the amulet and keeps cards available for Topsy Decree. Rai can threaten an Advent turn, but has to account for both spell interaction and lineage recovery.",
               "cards": [
                 "Topsy Decree"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 1932
+              }
             },
             {
               "order": 3,
@@ -33786,7 +33897,11 @@
               "cards": [
                 "Devouring Malice",
                 "Beguiling Coup"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 2843
+              }
             }
           ]
         },
@@ -33802,7 +33917,11 @@
               "cards": [
                 "Arcane Sight",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 3331
+              }
             },
             {
               "order": 2,
@@ -33810,7 +33929,11 @@
               "text": "Peer into Mana converts 12 enlightenment counters into four cards. Those draws fail to supply an immediate finish, and Rai passes after a deep scry.",
               "cards": [
                 "Peer into Mana"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 3380
+              }
             },
             {
               "order": 3,
@@ -33819,7 +33942,11 @@
               "cards": [
                 "Three of Hearts",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "a9j_gZJEIeQ",
+                "seconds": 3439
+              }
             }
           ]
         }
@@ -33861,7 +33988,11 @@
               "text": "Cheshire Cat, Impish Grin and the inert sword create early pressure while Alice is still assembling its level-two engine.",
               "cards": [
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 207
+              }
             },
             {
               "order": 2,
@@ -33869,12 +34000,20 @@
               "text": "Alice has lineage recovery available, but the projection is 12 from Mad Hatter with the Cat and Ranger Strides, plus another weapon attack. Spending the defensive resources still leaves few outs.",
               "cards": [
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 488
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Polkhawk closes the game before Alice can deploy the board and repeatable recovery that make the long game favorable."
+              "text": "Polkhawk closes the game before Alice can deploy the board and repeatable recovery that make the long game favorable.",
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 556
+              }
             }
           ]
         },
@@ -33889,7 +34028,11 @@
               "text": "Mantle and Backup Charger give Alice ways to spend floating memory and improve a hand whose payoffs mostly need level two.",
               "cards": [
                 "Backup Charger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 789
+              }
             },
             {
               "order": 2,
@@ -33897,7 +34040,11 @@
               "text": "Polkhawk uses three Backsteps looking for a bullet and misses. Argus remains available, with Slip Away as a possible save once he rests.",
               "cards": [
                 "Slip Away"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 1094
+              }
             },
             {
               "order": 3,
@@ -33905,7 +34052,11 @@
               "text": "Alice adds up several attackers to reach 18 damage and taps Devouring Malice for the finish.",
               "cards": [
                 "Devouring Malice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 1159
+              }
             }
           ]
         },
@@ -33920,7 +34071,11 @@
               "text": "Undying Dreams lets Wraithguard contribute more than a single block. Alice keeps enough of a board to force Polkhawk to spend damage on allies.",
               "cards": [
                 "Undying Dreams"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 1467
+              }
             },
             {
               "order": 2,
@@ -33930,7 +34085,11 @@
                 "Flash Grenade",
                 "Evasive Maneuvers",
                 "Seeker's Rifle"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 1895
+              }
             },
             {
               "order": 3,
@@ -33939,7 +34098,11 @@
               "cards": [
                 "Devouring Malice",
                 "Abnegation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 2399
+              }
             },
             {
               "order": 4,
@@ -33947,7 +34110,11 @@
               "text": "Alice gets another turn, resolves Gildas, and finishes with Sporrel. The board and Blight's Ring had also made waiting a viable option.",
               "cards": [
                 "Blight's Ring"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "X4XhLmuufME",
+                "seconds": 2457
+              }
             }
           ]
         }
@@ -33990,7 +34157,11 @@
               "cards": [
                 "Benediction Angel",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "Nz7vM7Ot49s",
+                "seconds": 94
+              }
             },
             {
               "order": 2,
@@ -33998,7 +34169,11 @@
               "text": "Ciel assembles a board with several live activations. The Bandit, Trapper and Nullifying Mirror constrain what Lorraine can commit even when Ciel has little left in hand.",
               "cards": [
                 "Nullifying Mirror"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "Nz7vM7Ot49s",
+                "seconds": 967
+              }
             },
             {
               "order": 3,
@@ -34007,7 +34182,11 @@
               "cards": [
                 "Cerulean Decree",
                 "Heavy Swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "Nz7vM7Ot49s",
+                "seconds": 1200
+              }
             },
             {
               "order": 4,
@@ -34016,7 +34195,11 @@
               "cards": [
                 "Heavy Swing",
                 "Protector Raccoon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "Nz7vM7Ot49s",
+                "seconds": 1550
+              }
             },
             {
               "order": 5,
@@ -34025,7 +34208,11 @@
               "cards": [
                 "Nullifying Mirror",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "Nz7vM7Ot49s",
+                "seconds": 1892
+              }
             }
           ]
         }
@@ -34070,7 +34257,11 @@
                 "Refracting Missile",
                 "Backup Charger",
                 "Mnemonic Charm"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "m3Wmocp1DtI",
+                "seconds": 218
+              }
             },
             {
               "order": 2,
@@ -34080,7 +34271,11 @@
                 "Cerulean Decree",
                 "Careful Study",
                 "Fracturize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "m3Wmocp1DtI",
+                "seconds": 750
+              }
             },
             {
               "order": 3,
@@ -34088,7 +34283,11 @@
               "text": "Fire Rai removes the Bullfrog and uses Arcane Sight to reach an effective level of ten. The turn shows the danger of giving the mirror time to build its spell resources.",
               "cards": [
                 "Arcane Sight"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "m3Wmocp1DtI",
+                "seconds": 1018
+              }
             },
             {
               "order": 4,
@@ -34099,7 +34298,11 @@
                 "Refracting Missile",
                 "Frost Shard",
                 "Liquidation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "m3Wmocp1DtI",
+                "seconds": 1385
+              }
             }
           ]
         }
@@ -34143,12 +34346,20 @@
                 "Dungeon Guide",
                 "Shroud in Mist",
                 "Charge the Soul"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 124
+              }
             },
             {
               "order": 2,
               "actor": "p2",
-              "text": "Diana connects for 20 damage and gets a glimpse of 21. The hit puts Zander on a short clock without ending the game."
+              "text": "Diana connects for 20 damage and gets a glimpse of 21. The hit puts Zander on a short clock without ending the game.",
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 734
+              }
             },
             {
               "order": 3,
@@ -34156,7 +34367,11 @@
               "text": "At Luxem, the Striking and Lightweavers reveals stack damage and put cards into memory. RyerGA notes that resolving the reveals in that sequence squeezes extra damage out of the second Lightweavers trigger.",
               "cards": [
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 958
+              }
             }
           ]
         },
@@ -34172,7 +34387,11 @@
               "cards": [
                 "Eminent Lethargy",
                 "Engulf"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 1009
+              }
             },
             {
               "order": 2,
@@ -34180,7 +34399,11 @@
               "text": "Diana's earlier attacks and glimpses keep the pressure on. Zander turns to Backup Charger to get three cards down when most of his hand is stranded.",
               "cards": [
                 "Backup Charger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 1554
+              }
             },
             {
               "order": 3,
@@ -34191,7 +34414,11 @@
                 "Krustallan Archer",
                 "Aetheric Calibration",
                 "Cosmic Focus"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ypcU19fqVug",
+                "seconds": 1611
+              }
             }
           ]
         }
@@ -34233,7 +34460,11 @@
               "text": "Fractal of Waves and Powercell give Tonoris resources while leveling. The Fractals also become ammunition for a later burn turn.",
               "cards": [
                 "Fractal of Waves"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "l3xyUdH_a5I",
+                "seconds": 85
+              }
             },
             {
               "order": 2,
@@ -34242,7 +34473,11 @@
               "cards": [
                 "Imperious Galebind",
                 "Avatar of Byakko"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "l3xyUdH_a5I",
+                "seconds": 830
+              }
             },
             {
               "order": 3,
@@ -34251,7 +34486,11 @@
               "cards": [
                 "Archon Broadsword",
                 "Burst Asunder"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "l3xyUdH_a5I",
+                "seconds": 1348
+              }
             },
             {
               "order": 4,
@@ -34260,7 +34499,11 @@
               "cards": [
                 "Crystallized Destiny",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "l3xyUdH_a5I",
+                "seconds": 1555
+              }
             }
           ]
         }
@@ -34299,7 +34542,11 @@
             {
               "order": 1,
               "actor": "both",
-              "text": "Seiryuu develops its quest counters alongside a wind board. Gelidus Byakko uses suppression to interrupt Azureite Fate Stone during windows when its draw is about to matter."
+              "text": "Seiryuu develops its quest counters alongside a wind board. Gelidus Byakko uses suppression to interrupt Azureite Fate Stone during windows when its draw is about to matter.",
+              "timestamp": {
+                "videoId": "pHI2yWGrUgA",
+                "seconds": 1273
+              }
             },
             {
               "order": 2,
@@ -34307,7 +34554,11 @@
               "text": "RyerGA flips Byakko while Seiryuu is still building. Innervate Agility blunts a turn that otherwise threatened to put a large amount of damage through.",
               "cards": [
                 "Innervate Agility"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pHI2yWGrUgA",
+                "seconds": 1398
+              }
             },
             {
               "order": 3,
@@ -34315,12 +34566,20 @@
               "text": "Dream Fairy resets threats and forces the Byakko side to spend extra turns rebuilding. Even after Seiryuu exhausts its material deck, it keeps answering the larger bodies.",
               "cards": [
                 "Dream Fairy"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pHI2yWGrUgA",
+                "seconds": 2081
+              }
             },
             {
               "order": 4,
               "actor": "p1",
-              "text": "Gelidus with taunt and Wraithguard give RyerGA defensive cover behind a wide board. Clearing the opposing dragon is still the priority because its follow-up spell damage can go around the defenders."
+              "text": "Gelidus with taunt and Wraithguard give RyerGA defensive cover behind a wide board. Clearing the opposing dragon is still the priority because its follow-up spell damage can go around the defenders.",
+              "timestamp": {
+                "videoId": "pHI2yWGrUgA",
+                "seconds": 2529
+              }
             },
             {
               "order": 5,
@@ -34330,7 +34589,11 @@
                 "Auspicious Manifestation",
                 "Seiryuu's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pHI2yWGrUgA",
+                "seconds": 2985
+              }
             }
           ]
         }
@@ -34373,7 +34636,11 @@
               "cards": [
                 "Two of Spades",
                 "Dream Fairy"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 179
+              }
             },
             {
               "order": 2,
@@ -34382,7 +34649,11 @@
               "cards": [
                 "Sirocco Operative",
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 664
+              }
             },
             {
               "order": 3,
@@ -34391,7 +34662,11 @@
               "cards": [
                 "Impact Hammer",
                 "Three of Hearts"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 1106
+              }
             }
           ]
         },
@@ -34409,7 +34684,11 @@
                 "Sharpen Blade",
                 "Turbo Charge",
                 "Sirocco Operative"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 1138
+              }
             },
             {
               "order": 2,
@@ -34419,7 +34698,11 @@
                 "Four of Hearts",
                 "The Duchess's Thornes",
                 "Two of Hearts"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 1385
+              }
             },
             {
               "order": 3,
@@ -34429,7 +34712,11 @@
                 "Reclaim",
                 "Straight Flare",
                 "The Duchess's Thornes"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "cw8YFFWDI94",
+                "seconds": 1646
+              }
             }
           ]
         }
@@ -34468,7 +34755,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Spirit of Chess enables the mixed-element Chessman setup. Goosemark Gauge makes the early allies harder to clear and remains useful when Alice needs to push damage."
+              "text": "Spirit of Chess enables the mixed-element Chessman setup. Goosemark Gauge makes the early allies harder to clear and remains useful when Alice needs to push damage.",
+              "timestamp": {
+                "videoId": "JXWSKMy6ogM",
+                "seconds": 203
+              }
             },
             {
               "order": 2,
@@ -34478,7 +34769,11 @@
                 "Surveil the Winds",
                 "Gleaming Cut",
                 "Benediction Angel"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "JXWSKMy6ogM",
+                "seconds": 787
+              }
             },
             {
               "order": 3,
@@ -34487,7 +34782,11 @@
               "cards": [
                 "Escape the Wreckage",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "JXWSKMy6ogM",
+                "seconds": 1017
+              }
             },
             {
               "order": 4,
@@ -34496,7 +34795,11 @@
               "cards": [
                 "Lightweaver's Assault",
                 "Blinding Orb"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "JXWSKMy6ogM",
+                "seconds": 1297
+              }
             }
           ]
         }
@@ -34535,12 +34838,20 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Ciel levels early to take advantage of Omen generation. The fast opening makes the weapon and surviving Servants matter before Neos has built a broad board."
+              "text": "Ciel levels early to take advantage of Omen generation. The fast opening makes the weapon and surviving Servants matter before Neos has built a broad board.",
+              "timestamp": {
+                "videoId": "vCMUUAEqA7E",
+                "seconds": 184
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The Viceblade attack gets the benefit of Servile Mastery. Suppression during combat preserves weapon durability, giving Ciel another attack and another Servant on a later turn."
+              "text": "The Viceblade attack gets the benefit of Servile Mastery. Suppression during combat preserves weapon durability, giving Ciel another attack and another Servant on a later turn.",
+              "timestamp": {
+                "videoId": "vCMUUAEqA7E",
+                "seconds": 807
+              }
             },
             {
               "order": 3,
@@ -34549,7 +34860,11 @@
               "cards": [
                 "Song of Frost",
                 "Heavy Swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "vCMUUAEqA7E",
+                "seconds": 1009
+              }
             },
             {
               "order": 4,
@@ -34557,7 +34872,11 @@
               "text": "The next Viceblade hit brings Tonoris to 26 damage. Song of Frost stops Carter, leaving the opponent without cards in hand for the Sentinel follow-up.",
               "cards": [
                 "Song of Frost"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "vCMUUAEqA7E",
+                "seconds": 1210
+              }
             }
           ]
         }
@@ -34599,7 +34918,11 @@
               "text": "Fluffy Shopkeep opens the game for Guo Jia. Staying at level one keeps the build focused on suppressing allies and weapons instead of spending turns on the higher Guo Jia levels.",
               "cards": [
                 "Fluffy Shopkeep"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "WhkNJxkJH0k",
+                "seconds": 137
+              }
             },
             {
               "order": 2,
@@ -34607,18 +34930,26 @@
               "text": "Censer makes it more important for Diana to dig for Fracturize. RyerGA prioritizes cutting off Iona’s glimpse so the Water deck gets fewer looks at that answer.",
               "cards": [
                 "Fracturize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "WhkNJxkJH0k",
+                "seconds": 514
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Diana uses Krustallan Archer and Backstab to remove an Engineer and draw a card. Later, Cheshire Cat, Impish Grin and Ranger Strides still threaten a burst even when neither side has a clear board.",
+              "text": "Diana uses Krustallan Archer and Backstep to remove an Engineer and draw a card. Later, Cheshire Cat, Impish Grin and Ranger Strides still threaten a burst even when neither side has a clear board.",
               "cards": [
                 "Krustallan Archer",
-                "Backstab",
+                "Backstep",
                 "Cheshire Cat, Impish Grin",
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "WhkNJxkJH0k",
+                "seconds": 797
+              }
             },
             {
               "order": 4,
@@ -34627,7 +34958,11 @@
               "cards": [
                 "Dream Fairy",
                 "Avatar of Byakko"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "WhkNJxkJH0k",
+                "seconds": 2172
+              }
             }
           ]
         }
@@ -34666,7 +35001,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Vanitas tries to turn an early board and Melody access into pressure before Tonoris reaches Neos. Every ally that survives provides another attacker for the big Melody turn."
+              "text": "Vanitas tries to turn an early board and Melody access into pressure before Tonoris reaches Neos. Every ally that survives provides another attacker for the big Melody turn.",
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 178
+              }
             },
             {
               "order": 2,
@@ -34674,12 +35013,20 @@
               "text": "Reciprocity and the token engine widen the board while interacting with Vanitas’s allies. Blade of Creation then leaves Vanitas without a realistic way to rebuild or sweep the opposing board.",
               "cards": [
                 "Blade of Creation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 668
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Tonoris keeps making tokens and uses the domain discount to threaten more board development. Vanitas passes without an answer to the accumulated damage."
+              "text": "Tonoris keeps making tokens and uses the domain discount to threaten more board development. Vanitas passes without an answer to the accumulated damage.",
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 825
+              }
             }
           ]
         },
@@ -34691,12 +35038,20 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "RyerGA brings in more reach and tools for Reciprocity and the board. Going first lets the Resonators set up while looking deep for a Melody."
+              "text": "RyerGA brings in more reach and tools for Reciprocity and the board. Going first lets the Resonators set up while looking deep for a Melody.",
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 885
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "With Cobalt Leader in play, RyerGA weighs a Sforzando line against Fan Club Leader plus a cheaper Melody. Both plans depend on the board converting the spells into damage."
+              "text": "With Cobalt Leader in play, RyerGA weighs a Sforzando line against Fan Club Leader plus a cheaper Melody. Both plans depend on the board converting the spells into damage.",
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 1555
+              }
             },
             {
               "order": 3,
@@ -34705,12 +35060,20 @@
               "cards": [
                 "Displace",
                 "Stifling Gyre"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 1672
+              }
             },
             {
               "order": 4,
               "actor": "p2",
-              "text": "The wider Neos board remains after the attempt. With Vanitas’s immediate reach spent, Tonoris gets the last attack window."
+              "text": "The wider Neos board remains after the attempt. With Vanitas’s immediate reach spent, Tonoris gets the last attack window.",
+              "timestamp": {
+                "videoId": "RY5VwLFB7gU",
+                "seconds": 2006
+              }
             }
           ]
         }
@@ -34753,7 +35116,11 @@
               "cards": [
                 "Incapacitate",
                 "Unmake Duality"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 84
+              }
             },
             {
               "order": 2,
@@ -34763,7 +35130,11 @@
                 "Effigy of Gaia",
                 "Displace",
                 "Stifling Trap"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 889
+              }
             },
             {
               "order": 3,
@@ -34772,7 +35143,11 @@
               "cards": [
                 "Veiling Breeze",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 1039
+              }
             }
           ]
         },
@@ -34789,7 +35164,11 @@
                 "Peer Beyond",
                 "Innervate Agility",
                 "Crystallized Destiny"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 1049
+              }
             },
             {
               "order": 2,
@@ -34799,7 +35178,11 @@
                 "Shadowstrike",
                 "Shadow's Claw",
                 "Blinding Orb"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 1699
+              }
             },
             {
               "order": 3,
@@ -34808,7 +35191,11 @@
               "cards": [
                 "Incapacitate",
                 "Crystallized Destiny"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 1739
+              }
             }
           ]
         },
@@ -34823,7 +35210,11 @@
               "text": "Guo Jia deploys attackers early and tries to force Tristan to answer them. Ensnaring Fumes remains a concern when a threatened hit falls a point short.",
               "cards": [
                 "Ensnaring Fumes"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 2167
+              }
             },
             {
               "order": 2,
@@ -34831,7 +35222,11 @@
               "text": "Sporrel sends Dream Fairy back to memory, protecting herself and slowing the ally plan. Guo Jia builds toward the Fate Stone flip for a new way to finish.",
               "cards": [
                 "Dream Fairy"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 2639
+              }
             },
             {
               "order": 3,
@@ -34841,7 +35236,11 @@
                 "Innervate Agility",
                 "Peer Beyond",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "dACA_OaKFWQ",
+                "seconds": 3100
+              }
             }
           ]
         }
@@ -34880,7 +35279,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Lorraine wants allies and an early attack window but draws few allies. Both players use Looking Glass while setting up their advanced-element turns."
+              "text": "Lorraine wants allies and an early attack window but draws few allies. Both players use Looking Glass while setting up their advanced-element turns.",
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 208
+              }
             },
             {
               "order": 2,
@@ -34889,7 +35292,11 @@
               "cards": [
                 "Cheshire Cat, Impish Grin",
                 "Fertile Grounds"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 555
+              }
             },
             {
               "order": 3,
@@ -34897,12 +35304,20 @@
               "text": "Lorraine looks for a rested-unit payoff through Inundating Clash and Frostbite. Those pieces improve individual attacks, but the remaining defensive options keep Arisanna alive.",
               "cards": [
                 "Inundating Clash"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 1015
+              }
             },
             {
               "order": 4,
               "actor": "p2",
-              "text": "Arisanna retains enough resources to take over. RyerGA concludes that even a different damage line would have left Lorraine dying shortly afterward."
+              "text": "Arisanna retains enough resources to take over. RyerGA concludes that even a different damage line would have left Lorraine dying shortly afterward.",
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 1343
+              }
             }
           ]
         },
@@ -34914,7 +35329,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Lorraine adds four Snow Whites after sideboarding. The opening still comes down to finding allies and putting enough pressure on before Arisanna can accumulate herbs."
+              "text": "Lorraine adds four Snow Whites after sideboarding. The opening still comes down to finding allies and putting enough pressure on before Arisanna can accumulate herbs.",
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 1374
+              }
             },
             {
               "order": 2,
@@ -34922,7 +35341,11 @@
               "text": "Arisanna builds an herb stockpile and deploys Spellshield Astra. Lorraine’s push through Ghosts of Pendragon and equipment does not remove enough of that defense.",
               "cards": [
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 2359
+              }
             },
             {
               "order": 3,
@@ -34931,7 +35354,11 @@
               "cards": [
                 "Sheath of Faceted Lapis",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 2772
+              }
             },
             {
               "order": 4,
@@ -34939,7 +35366,11 @@
               "text": "Lorraine uses its last cards to attempt the Frostworn defense. Arisanna answers with Astral Seal and closes the game.",
               "cards": [
                 "Astral Seal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wymlmQnHDxo",
+                "seconds": 3322
+              }
             }
           ]
         }
@@ -34982,7 +35413,11 @@
               "cards": [
                 "Fairy Whispers",
                 "Baby Green Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 211
+              }
             },
             {
               "order": 2,
@@ -34990,12 +35425,20 @@
               "text": "Diana threatens a large Ranger Strides turn. RyerGA notes afterward that he omitted Diana’s built-in distant bonus when deciding whether to suppress Trivaria, leaving a narrower survival margin than he realized.",
               "cards": [
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 443
+              }
             },
             {
               "order": 3,
               "actor": "p1",
-              "text": "The Grove Sword attack puts Diana at 16 damage. Guo Jia commits Brisk Windtrotter for the remaining damage despite the risk of Manifair Barrage on the return turn."
+              "text": "The Grove Sword attack puts Diana at 16 damage. Guo Jia commits Brisk Windtrotter for the remaining damage despite the risk of Manifair Barrage on the return turn.",
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 1137
+              }
             }
           ]
         },
@@ -35014,7 +35457,11 @@
                 "Calming Breeze",
                 "Dream Fairy",
                 "Scavenging Raccoon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 1180
+              }
             },
             {
               "order": 2,
@@ -35022,7 +35469,11 @@
               "text": "Diana reaches Aetherwing without a distance enabler available, and uses Aetheric Calibration to look for a way back into the game.",
               "cards": [
                 "Aetheric Calibration"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 1298
+              }
             },
             {
               "order": 3,
@@ -35031,7 +35482,11 @@
               "cards": [
                 "Unbroken Mustang",
                 "Baby Green Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 1689
+              }
             },
             {
               "order": 4,
@@ -35039,7 +35494,11 @@
               "text": "A free Brisk Windtrotter puts two counters on Byakko. Byakko’s Command turns that concentrated attack power into two nine-damage instances.",
               "cards": [
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L0SyUj8OQmU",
+                "seconds": 2157
+              }
             }
           ]
         }
@@ -35081,7 +35540,11 @@
               "text": "Windmill Engineer opens the damage race. Rai keeps ways to reuse allies as the game moves toward a spell turn instead of committing every resource to the first attacks.",
               "cards": [
                 "Windmill Engineer"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wP7EeAeiow0",
+                "seconds": 111
+              }
             },
             {
               "order": 2,
@@ -35089,7 +35552,11 @@
               "text": "Displace reuses the inquisitive Mage. With the supporting pieces in play, the sequence produces six enlightenment counters and gives Rai another way to refill.",
               "cards": [
                 "Displace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wP7EeAeiow0",
+                "seconds": 533
+              }
             },
             {
               "order": 3,
@@ -35097,17 +35564,29 @@
               "text": "Argus absorbs a large hit and Lu Bu threatens the board. RyerGA later identifies a missed chance to target the replayed Lu Bu with Tempest Downfall.",
               "cards": [
                 "Tempest Downfall"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "wP7EeAeiow0",
+                "seconds": 676
+              }
             },
             {
               "order": 4,
               "actor": "p2",
-              "text": "Aela suppresses the Fan of Seven Deaths, temporarily removing a key payoff. Rai keeps working through counters and draws while Kongming threatens with another Lu Bu."
+              "text": "Aela suppresses the Fan of Seven Deaths, temporarily removing a key payoff. Rai keeps working through counters and draws while Kongming threatens with another Lu Bu.",
+              "timestamp": {
+                "videoId": "wP7EeAeiow0",
+                "seconds": 1765
+              }
             },
             {
               "order": 5,
               "actor": "p1",
-              "text": "Rai reserves counters on Ventus for the late exchange. After holding enough defenses to get another turn, Rai converts the remaining resources into the finish."
+              "text": "Rai reserves counters on Ventus for the late exchange. After holding enough defenses to get another turn, Rai converts the remaining resources into the finish.",
+              "timestamp": {
+                "videoId": "wP7EeAeiow0",
+                "seconds": 2315
+              }
             }
           ]
         }
@@ -35151,7 +35630,11 @@
                 "Surveil the Winds",
                 "Dungeon Guide",
                 "Benediction Angel"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 486
+              }
             },
             {
               "order": 2,
@@ -35159,7 +35642,11 @@
               "text": "Tristan builds preparation and threatens a large Shadowstrike. Zander has to weigh how much of his hand to commit while Aela gives him a fast way to use the cards he sets down.",
               "cards": [
                 "Shadowstrike"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 755
+              }
             },
             {
               "order": 3,
@@ -35169,7 +35656,11 @@
                 "Gleaming Cut",
                 "Luxem Sight",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 1098
+              }
             },
             {
               "order": 4,
@@ -35177,7 +35668,11 @@
               "text": "Zander casts both Assaults before either resolves. Each sees both payments plus the three cards already in memory, making each spell worth 11 damage.",
               "cards": [
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 1220
+              }
             }
           ]
         },
@@ -35194,7 +35689,11 @@
                 "Backup Charger",
                 "Surveil the Winds",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 1408
+              }
             },
             {
               "order": 2,
@@ -35202,7 +35701,11 @@
               "text": "The reveal triggers chip Tristan to 14. Scout the Land pressures Tristan into laying down cards and leaves few resources for a response.",
               "cards": [
                 "Scout the Land"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 2055
+              }
             },
             {
               "order": 3,
@@ -35211,7 +35714,11 @@
               "cards": [
                 "Lightweaver's Assault",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "5REkWrkvoTU",
+                "seconds": 2082
+              }
             }
           ]
         }
@@ -35253,12 +35760,20 @@
               "text": "Lorraine develops a Crux attack plan with Pendragon, Aela and a stocked memory. Dante keeps Aenean Frozen Shunt for a larger attack while building toward empower.",
               "cards": [
                 "Aenean Frozen Shunt"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 630
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Dante weighs the damage from the Elysian triggers and looks for enough reach to close. Aela’s end-of-main suppression changes which pieces are available in the final exchange."
+              "text": "Dante weighs the damage from the Elysian triggers and looks for enough reach to close. Aela’s end-of-main suppression changes which pieces are available in the final exchange.",
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 1176
+              }
             },
             {
               "order": 3,
@@ -35267,7 +35782,11 @@
               "cards": [
                 "Thanatotic Hemosynth",
                 "Calming Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 1308
+              }
             }
           ]
         },
@@ -35282,17 +35801,29 @@
               "text": "The players keep the same lists. Dante rebuilds early resources with Backup Charger and Powercell, and puts a payoff into the graveyard for later access.",
               "cards": [
                 "Backup Charger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 1473
+              }
             },
             {
               "order": 2,
               "actor": "both",
-              "text": "Loss clears several allies and gives Dante a large empower. RyerGA realizes afterward that he should have played the draw spell while the empower triggers were pending to keep that bonus for a payoff."
+              "text": "Loss clears several allies and gives Dante a large empower. RyerGA realizes afterward that he should have played the draw spell while the empower triggers were pending to keep that bonus for a payoff.",
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 2158
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Dante draws Rising Tide instead of the Hemoflux answer he was looking for. Lorraine’s board remains capable of ending the game even through the recovery Dante considers."
+              "text": "Dante draws Rising Tide instead of the Hemoflux answer he was looking for. Lorraine’s board remains capable of ending the game even through the recovery Dante considers.",
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 2203
+              }
             }
           ]
         },
@@ -35304,7 +35835,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Lorraine uses Aela to suppress Lost Providence and keeps enough board damage available that Dante has to track the threat of Dispersion through several turns."
+              "text": "Lorraine uses Aela to suppress Lost Providence and keeps enough board damage available that Dante has to track the threat of Dispersion through several turns.",
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 3074
+              }
             },
             {
               "order": 2,
@@ -35312,12 +35847,20 @@
               "text": "Dante uses recovery and the Elysian aura to stay in the game. Ghosts of Pendragon gives him another draw window, but the cards he finds do not convert his resources into a finish.",
               "cards": [
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 3808
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "RyerGA goes to Terraforming and looks for an Elysian object to stay alive. The final draw is a Fractal, and he accepts the loss before his end step."
+              "text": "RyerGA goes to Terraforming and looks for an Elysian object to stay alive. The final draw is a Fractal, and he accepts the loss before his end step.",
+              "timestamp": {
+                "videoId": "1OETgZmbdfs",
+                "seconds": 3831
+              }
             }
           ]
         }
@@ -35360,17 +35903,29 @@
               "cards": [
                 "Flame Sweep",
                 "Rending Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 369
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Lorraine levels for safety. RyerGA notes that holding more attack resources would have kept a stronger chance of ending the game before Dante could take another turn."
+              "text": "Lorraine levels for safety. RyerGA notes that holding more attack resources would have kept a stronger chance of ending the game before Dante could take another turn.",
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 732
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Dante builds ten empower. The resulting Fireballs clear the remaining damage threshold before Lorraine gets the chance to attack for lethal."
+              "text": "Dante builds ten empower. The resulting Fireballs clear the remaining damage threshold before Lorraine gets the chance to attack for lethal.",
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 1008
+              }
             }
           ]
         },
@@ -35382,12 +35937,20 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "RyerGA brings in the Clarent package after seeing how much of Dante’s damage comes from repeated spell hits. Clarent turns a sequence that threatens several separate damage instances into a turn Lorraine can survive."
+              "text": "RyerGA brings in the Clarent package after seeing how much of Dante’s damage comes from repeated spell hits. Clarent turns a sequence that threatens several separate damage instances into a turn Lorraine can survive.",
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 1055
+              }
             },
             {
               "order": 2,
               "actor": "p2",
-              "text": "Dante stays in the game through a large Hemoflux Drain and the associated recovery. Lorraine now needs a large weapon hit rather than a few smaller attacks."
+              "text": "Dante stays in the game through a large Hemoflux Drain and the associated recovery. Lorraine now needs a large weapon hit rather than a few smaller attacks.",
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 1943
+              }
             },
             {
               "order": 3,
@@ -35397,7 +35960,11 @@
                 "Hone by Fire",
                 "Rending Flames",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "rVOvdXdVeBo",
+                "seconds": 2069
+              }
             }
           ]
         }
@@ -35439,7 +36006,11 @@
               "text": "RyerGA digs for Slice and Dice without rushing to the highest champion level. The plan needs enough preparation and influence left to pay for the follow-up attacks.",
               "cards": [
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 202
+              }
             },
             {
               "order": 2,
@@ -35447,7 +36018,11 @@
               "text": "Zander puts Veiling Breeze above Nullifying Mirror’s activation and uses Terraforming to protect the bounty hunter. Dante has to spend the attack window dealing with the board.",
               "cards": [
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 984
+              }
             },
             {
               "order": 3,
@@ -35456,7 +36031,11 @@
               "cards": [
                 "Blinding Orb",
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 1350
+              }
             }
           ]
         },
@@ -35473,7 +36052,11 @@
                 "Dream Fairy",
                 "Unbroken Mustang",
                 "Calming Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 1456
+              }
             },
             {
               "order": 2,
@@ -35481,7 +36064,11 @@
               "text": "Sadi and the Windmill trade into the Acolyte. Dante leaves the Engineer in play while playing around Reclaim, giving Zander a chance to recover resources safely.",
               "cards": [
                 "Reclaim"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 1646
+              }
             },
             {
               "order": 3,
@@ -35490,7 +36077,11 @@
               "cards": [
                 "Dungeon Guide",
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "c4DpFq_4Im4",
+                "seconds": 1964
+              }
             }
           ]
         }
@@ -35532,7 +36123,11 @@
               "text": "Ciel keeps potential intercepts and attack prevention while looking for enough Omen resources to start the engine. Diana uses Refreshing Charge as she develops.",
               "cards": [
                 "Refreshing Charge"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 222
+              }
             },
             {
               "order": 2,
@@ -35542,7 +36137,11 @@
                 "Flash Grenade",
                 "Reposition",
                 "Cosmic Focus"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 1053
+              }
             },
             {
               "order": 3,
@@ -35550,7 +36149,11 @@
               "text": "Ciel puts up Terraforming and holds prevention, but even two Veiling Breezes would leave enough damage. Diana commits the remaining cards and attacks for the game.",
               "cards": [
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 1108
+              }
             }
           ]
         },
@@ -35566,12 +36169,20 @@
               "cards": [
                 "Krustallan Archer",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 1506
+              }
             },
             {
               "order": 2,
               "actor": "both",
-              "text": "Moonpiercer and more Aethercharge setup put Ciel under pressure. RyerGA wants the graveyard lock from Censer but does not have it available in the closing sequence."
+              "text": "Moonpiercer and more Aethercharge setup put Ciel under pressure. RyerGA wants the graveyard lock from Censer but does not have it available in the closing sequence.",
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 1763
+              }
             },
             {
               "order": 3,
@@ -35579,7 +36190,11 @@
               "text": "A third Cosmic Focus takes Diana to the stated attack bonus of eight. Ciel asks whether Chris can get past the remaining defender, and concedes when Chris shows the answer.",
               "cards": [
                 "Cosmic Focus"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 2100
+              }
             }
           ]
         }
@@ -35622,7 +36237,11 @@
               "cards": [
                 "Imperious Galebind",
                 "Turbo Charge"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 2880
+              }
             },
             {
               "order": 2,
@@ -35630,7 +36249,11 @@
               "text": "Vern keeps Beguiling Coup live through the protracted exchanges. RyerGA builds Omens and weighs whether to spend them on attacks or continue drawing toward a safer finish.",
               "cards": [
                 "Beguiling Coup"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 4326
+              }
             },
             {
               "order": 3,
@@ -35638,7 +36261,11 @@
               "text": "The last suppression exchange removes Stalwart and Tariff Ring for the turn. Fire Ciel uses lineage recovery, but Wind Ciel still has Umbra damage available after the attack.",
               "cards": [
                 "Tariff Ring"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 4407
+              }
             }
           ]
         },
@@ -35657,7 +36284,11 @@
                 "Tempestuous Conviction",
                 "Turbo Charge",
                 "Fairy Whispers"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 4497
+              }
             },
             {
               "order": 2,
@@ -35666,7 +36297,11 @@
               "cards": [
                 "Dungeon Guide",
                 "Heavy Swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 5000
+              }
             },
             {
               "order": 3,
@@ -35675,7 +36310,11 @@
               "cards": [
                 "Imperious Galebind",
                 "Heavy Swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 5405
+              }
             },
             {
               "order": 4,
@@ -35683,7 +36322,11 @@
               "text": "A final Imperious Galebind on the Cakes and Chevalier reopens those triggers. Vern has no remaining heal for the damage and gives RyerGA the game.",
               "cards": [
                 "Imperious Galebind"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 5813
+              }
             }
           ]
         }
@@ -35726,7 +36369,11 @@
               "cards": [
                 "Creative Shock",
                 "Windmill Engineer"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 5917
+              }
             },
             {
               "order": 2,
@@ -35735,7 +36382,11 @@
               "cards": [
                 "Rending Flames",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 6313
+              }
             },
             {
               "order": 3,
@@ -35743,7 +36394,11 @@
               "text": "Ciel checks the damage through Lorraine’s recovery, waits a turn, then uses the sword, Caterpillar and Tempest Downfall to complete the finish.",
               "cards": [
                 "Tempest Downfall"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 6778
+              }
             }
           ]
         },
@@ -35758,7 +36413,11 @@
               "text": "Lorraine builds an early fire graveyard and sets up Heated Vengeance. Ciel tries to account for the weapon hit while keeping a response for the burn behind it.",
               "cards": [
                 "Heated Vengeance"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 7039
+              }
             },
             {
               "order": 2,
@@ -35767,7 +36426,11 @@
               "cards": [
                 "Veiling Breeze",
                 "Blazing Throw"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 7086
+              }
             }
           ]
         },
@@ -35785,7 +36448,11 @@
                 "Calming Breeze",
                 "Rending Flames",
                 "Blazing Throw"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 7158
+              }
             },
             {
               "order": 2,
@@ -35793,7 +36460,11 @@
               "text": "Ciel draws through the hourglass and clears Xiaoya, removing a source of damage for Lorraine’s final turn. Lorraine still lines up burn and a champion attack.",
               "cards": [
                 "Candlelight Hourglass"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 7810
+              }
             },
             {
               "order": 3,
@@ -35801,7 +36472,11 @@
               "text": "The last attack and burn leave Ciel alive. The Armoire returns Heavy Swing for the finish.",
               "cards": [
                 "Heavy Swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "7KpeGY3aKVk",
+                "seconds": 7904
+              }
             }
           ]
         }
@@ -35840,12 +36515,20 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Diao Chan gets Fractals in play while both sides use Looking Glass. Because the Fractals remain in play, every new token increases the damage Guo Jia must respect."
+              "text": "Diao Chan gets Fractals in play while both sides use Looking Glass. Because the Fractals remain in play, every new token increases the damage Guo Jia must respect.",
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 102
+              }
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Guo Jia levels to increase the damage needed for lethal and uses defenders to keep incidental attacks away from the champion. The spell damage is still live."
+              "text": "Guo Jia levels to increase the damage needed for lethal and uses defenders to keep incidental attacks away from the champion. The spell damage is still live.",
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 207
+              }
             },
             {
               "order": 3,
@@ -35853,7 +36536,11 @@
               "text": "With six Fractals available, the first Burst Asunder represents 14 damage. Guo Jia has one layer of interaction and the second Burst ends the game.",
               "cards": [
                 "Burst Asunder"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 938
+              }
             }
           ]
         },
@@ -35870,7 +36557,11 @@
                 "Topsy Decree",
                 "Calming Breeze",
                 "Innervate Agility"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 965
+              }
             },
             {
               "order": 2,
@@ -35880,7 +36571,11 @@
                 "Burst Asunder",
                 "Topsy Decree",
                 "Song of Frost"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 2174
+              }
             },
             {
               "order": 3,
@@ -35888,7 +36583,11 @@
               "text": "Seiryuu pushes the damage up and Harness Lightning covers the remaining gap.",
               "cards": [
                 "Harness Lightning"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 2206
+              }
             }
           ]
         },
@@ -35900,7 +36599,11 @@
             {
               "order": 1,
               "actor": "both",
-              "text": "Diao Chan adds Fractals while Guo Jia weighs whether the next attack can get through one Glimmering Refusal. Every extra setup turn gives Diao Chan more potential burst."
+              "text": "Diao Chan adds Fractals while Guo Jia weighs whether the next attack can get through one Glimmering Refusal. Every extra setup turn gives Diao Chan more potential burst.",
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 2699
+              }
             },
             {
               "order": 2,
@@ -35910,7 +36613,11 @@
                 "Shimmering Refraction",
                 "Burst Asunder",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 2904
+              }
             },
             {
               "order": 3,
@@ -35918,7 +36625,11 @@
               "text": "The finish goes through one Glimmering Refusal. RyerGA notes that a second copy would have changed the result.",
               "cards": [
                 "Glimmering Refusal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 2985
+              }
             }
           ]
         }
@@ -35957,7 +36668,11 @@
             {
               "order": 1,
               "actor": "both",
-              "text": "Nico develops Lash counters through the graveyard while Guo Jia builds influence. Guo Jia considers leveling sooner but initially uses Thurible to constrain the graveyard."
+              "text": "Nico develops Lash counters through the graveyard while Guo Jia builds influence. Guo Jia considers leveling sooner but initially uses Thurible to constrain the graveyard.",
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 3268
+              }
             },
             {
               "order": 2,
@@ -35967,7 +36682,11 @@
                 "Harness Lightning",
                 "Song of Frost",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 4234
+              }
             },
             {
               "order": 3,
@@ -35975,7 +36694,11 @@
               "text": "Nico leaves Enfeebling Orb unused during the exchange. The players discuss that opening as they move to game two.",
               "cards": [
                 "Enfeebling Orb"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 4251
+              }
             }
           ]
         },
@@ -35992,7 +36715,11 @@
                 "Topsy Decree",
                 "Stifling Trap",
                 "Regal Inquisition"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 4267
+              }
             },
             {
               "order": 2,
@@ -36001,7 +36728,11 @@
               "cards": [
                 "Cerulean Decree",
                 "Tidal Lock"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 4377
+              }
             },
             {
               "order": 3,
@@ -36009,7 +36740,11 @@
               "text": "Baby Green Slime targets Vaporjet Shield as Guo Jia closes. RyerGA points out a possible Temptation’s Facade response in review, and reports that both players considered the remaining damage lethal.",
               "cards": [
                 "Baby Green Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 5300
+              }
             }
           ]
         }
@@ -36053,7 +36788,11 @@
                 "Arthur, Young Heir",
                 "Molten Echo",
                 "Memorite Blade"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 5839
+              }
             },
             {
               "order": 2,
@@ -36062,7 +36801,11 @@
               "cards": [
                 "Veiling Breeze",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 5872
+              }
             }
           ]
         },
@@ -36079,7 +36822,11 @@
                 "Blazing Throw",
                 "Smoke Out",
                 "Dream Fairy"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 6307
+              }
             },
             {
               "order": 2,
@@ -36088,7 +36835,11 @@
               "cards": [
                 "Veiling Breeze",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 6402
+              }
             },
             {
               "order": 3,
@@ -36098,7 +36849,11 @@
                 "Byakko's Command",
                 "Harness Lightning",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 6891
+              }
             }
           ]
         },
@@ -36110,7 +36865,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Merlin uses Molten Echo pressure to build damage and Sheen. Guo Jia holds both Commands while looking for a way to survive the next materialization and attack."
+              "text": "Merlin uses Molten Echo pressure to build damage and Sheen. Guo Jia holds both Commands while looking for a way to survive the next materialization and attack.",
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 7567
+              }
             },
             {
               "order": 2,
@@ -36119,7 +36878,11 @@
               "cards": [
                 "Incapacitate",
                 "Blazing Throw"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 7856
+              }
             },
             {
               "order": 3,
@@ -36128,7 +36891,11 @@
               "cards": [
                 "Seiryuu's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "OH2azVDiX9I",
+                "seconds": 7990
+              }
             }
           ]
         }

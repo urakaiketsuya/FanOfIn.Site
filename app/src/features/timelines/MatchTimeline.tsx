@@ -46,8 +46,8 @@ const TAG_CLASS: Record<BroadcastTimelineTag, string> = {
   stabilize: "border-ctp-green/40 bg-ctp-green/10 text-ctp-green",
 };
 
-function BeatRow({ beat, video, playerName, cardsByName }: { beat: BroadcastTimelineBeat; video: BroadcastTimelineMatch['video']; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
-  const timestamp = beatVideoLink(beat, video);
+function BeatRow({ beat, match, playerName, cardsByName }: { beat: BroadcastTimelineBeat; match: BroadcastTimelineMatch; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
+  const timestamp = beatVideoLink(beat, match.video, match.sourceVideos);
   return (
     <li className="relative pb-8 pl-5 sm:pl-8 last:pb-0">
       <span className="absolute left-0 top-0 bottom-0 w-px bg-ctp-surface1" aria-hidden="true" />
@@ -74,12 +74,12 @@ function BeatRow({ beat, video, playerName, cardsByName }: { beat: BroadcastTime
 
 function GameTimeline({
   game,
-  video,
+  match,
   playerName,
   cardsByName,
 }: {
   game: BroadcastTimelineGame;
-  video: BroadcastTimelineMatch['video'];
+  match: BroadcastTimelineMatch;
   playerName: (a: "p1" | "p2" | "both") => string;
   cardsByName: Map<string, Card>;
 }) {
@@ -91,7 +91,7 @@ function GameTimeline({
       </div>
       <ol>
         {game.beats.map((beat) => (
-          <BeatRow key={beat.order} beat={beat} video={video} playerName={playerName} cardsByName={cardsByName} />
+          <BeatRow key={beat.order} beat={beat} match={match} playerName={playerName} cardsByName={cardsByName} />
         ))}
       </ol>
     </Panel>
@@ -138,7 +138,7 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
       {match.games.length === 0 && <p className="text-sm text-ctp-subtext1">No game recap available.</p>}
       {match.games.map(game => <TabPanel key={game.gameNumber} baseId={baseId} tab={String(game.gameNumber)} active={activeGame}>
         <SideboardNotes match={match} gameNumber={game.gameNumber} />
-        <GameTimeline game={game} video={match.video} playerName={playerName} cardsByName={cardsByName} />
+        <GameTimeline game={game} match={match} playerName={playerName} cardsByName={cardsByName} />
       </TabPanel>)}
       <footer className="mt-6 text-xs text-ctp-subtext0"><p>{match.sourceNote}</p><Link to="/methodology" className="inline-flex min-h-control items-center text-ctp-blue">About broadcast recaps</Link></footer>
     </div>

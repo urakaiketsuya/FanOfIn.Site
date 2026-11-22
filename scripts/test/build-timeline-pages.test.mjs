@@ -50,6 +50,10 @@ test('creator recap links both source uploads and identifies the matchup', () =>
     event: 'RyerGA Match Recaps',
     video: undefined,
     sourceNote: 'Source: RyerGA gameplay and commentary.',
+    games: match.games.map(game => ({
+      ...game,
+      beats: game.beats.map(beat => ({ ...beat, timestamp: { videoId: 'srV_0nDH6Ts', seconds: 65 } })),
+    })),
     sourceVideos: [
       { id: 'srV_0nDH6Ts', label: 'Watch games 1 and 2' },
       { id: '8Oa9sWgLI18', label: 'Watch game 3' },
@@ -58,8 +62,9 @@ test('creator recap links both source uploads and identifies the matchup', () =>
   const html = renderTimelinePage(shell, creatorMatch);
   assert.match(html, /Watch games 1 and 2/);
   assert.match(html, /Watch game 3/);
-  assert.equal((html.match(/youtube\.com\/watch\?v=srV_0nDH6Ts/g) ?? []).length, 2);
+  assert.equal((html.match(/youtube\.com\/watch\?v=srV_0nDH6Ts/g) ?? []).length, 3);
   assert.equal((html.match(/youtube\.com\/watch\?v=8Oa9sWgLI18/g) ?? []).length, 2);
+  assert.match(html, /watch\?v=srV_0nDH6Ts&amp;t=65s" aria-label="Watch key play at 1:05"/);
   assert.match(html, /Source: RyerGA gameplay and commentary/);
   assert.ok(html.includes(creatorMatch.players.map(player => player.deck).join(' vs. ')));
 });

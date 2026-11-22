@@ -1,4 +1,4 @@
-import type { BroadcastTimelineMatch } from './broadcast-timeline-types';
+import type { BroadcastTimelineBeat, BroadcastTimelineMatch } from './broadcast-timeline-types';
 import type { Card } from './api-types';
 import { canonicalSiteUrl } from './seo';
 
@@ -29,6 +29,20 @@ export function timelineVideoLink(video: BroadcastTimelineMatch['video']) {
   if (start !== undefined && (!Number.isInteger(start) || start < 0)) return undefined;
   return { url: `https://www.youtube.com/watch?v=${video.id}${start !== undefined ? `&t=${start}s` : ''}`, label: video.kind === 'match' || start !== undefined ? 'Watch match' : 'Watch broadcast' };
 }
+export function beatVideoLink(beat: BroadcastTimelineBeat, video: BroadcastTimelineMatch['video'], sources?: BroadcastTimelineMatch['sourceVideos']) {
+  const time = beat.timestamp;
+  if (!time) return undefined;
+  const creatorSource = sources?.find(source => source.id === time.videoId);
+  const source = video?.id === time.videoId ? video : creatorSource && { id: creatorSource.id, kind: 'match' as const };
+  if (!source) return undefined;
+  const link = timelineVideoLink({ ...source, startSeconds: time.seconds });
+  if (!link) return undefined;
+  const hours = Math.floor(time.seconds / 3600);
+  const minutes = Math.floor(time.seconds / 60) % 60;
+  const seconds = String(time.seconds % 60).padStart(2, '0');
+  return { url: link.url, label: hours ? `${hours}:${String(minutes).padStart(2, '0')}:${seconds}` : `${minutes}:${seconds}` };
+}
+
 // One representative printing per explicitly named champion, preserving deck-label order.
 export function timelineChampions(deck: string, cards: Card[] = []) {
   const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
