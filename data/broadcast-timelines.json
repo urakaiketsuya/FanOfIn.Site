@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T22:12:03.455Z",
+  "generatedAt": "2026-11-22T22:21:53.767Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -8901,6 +8901,19 @@
             },
             {
               "order": 2,
+              "actor": "p2",
+              "text": "Centratus uses Varuckan Acolyte to destroy Awi’s Lost Providence, cutting off another draw while adding a three-power threat.",
+              "cards": [
+                "Varuckan Acolyte",
+                "Lost Providence"
+              ],
+              "timestamp": {
+                "videoId": "yiXTkbA1am4",
+                "seconds": 17723
+              }
+            },
+            {
+              "order": 3,
               "actor": "p1",
               "text": "Awi uses Topsy Decree to disrupt Centratus’s graveyard setup. The casters initially identify Regal Inquisition in Awi’s hand, then correct it to Lightweaver’s Assault. Centratus struggles to build enough influence for his double Oblation plan.",
               "cards": [
@@ -8916,7 +8929,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Awi pressures with Planted Explosive and Striking Illuminance. Centratus plays two Baleful Oblations around Awi’s Incapacitate and uses Feu Awakening. Awi survives with recovery from Luxem Sight revealed by Lightweaver’s Assault and his Serene release. Centratus concedes after exhausting his Oblations.",
               "cards": [

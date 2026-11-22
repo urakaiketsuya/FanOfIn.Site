@@ -229,3 +229,18 @@ Jayare’s finishing sequence. Round 3 covers Sano’s repeated survival
 plays and the overtime finish. Round 4 covers the hand disruption,
 Nimue’s survival and the overtime draw. Round 8 covers the healing
 disruption and the decisive double Enrage.
+
+### Southeast Asia Nationals Day 1 three-play review
+
+Reviewed all four eligible games. In Round 4 game one, Centratus destroys
+Awi’s Lost Providence with Varuckan Acolyte, denying another draw. The
+[4:55:23 cue](https://www.youtube.com/watch?v=yiXTkbA1am4&t=17723s) was
+verified on the full 11:54:57 broadcast. The transcript ends at 714:56.
+Rows 7679–7681 confirm the removal and added damage. The evidence ledger
+records the source hash and zero-based rows.
+
+Three games stayed at three plays. Round 3 game three already covers
+RubyXillia’s hand disruption and DragonJG’s deck-out. Round 4 game two
+covers both Feu Awakening exchanges and Awi’s recovery. Round 7 game two
+covers the missed level-up and the defensive sequence that keeps
+NeptuneI alive until the final attack.

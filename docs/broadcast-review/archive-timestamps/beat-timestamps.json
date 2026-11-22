@@ -94743,7 +94743,7 @@
   {
     "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
     "gameNumber": 1,
-    "order": 2,
+    "order": 3,
     "text": "Awi uses Topsy Decree to disrupt Centratus’s graveyard setup. The casters initially identify Regal Inquisition in Awi’s hand, then correct it to Lightweaver’s Assault. Centratus struggles to build enough influence for his double Oblation plan.",
     "timestamp": {
       "videoId": "yiXTkbA1am4",
@@ -94952,7 +94952,7 @@
   {
     "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "Awi pressures with Planted Explosive and Striking Illuminance. Centratus plays two Baleful Oblations around Awi’s Incapacitate and uses Feu Awakening. Awi survives with recovery from Luxem Sight revealed by Lightweaver’s Assault and his Serene release. Centratus concedes after exhausting his Oblations.",
     "timestamp": {
       "videoId": "yiXTkbA1am4",
@@ -191377,5 +191377,39 @@
     ],
     "review": "oceania-nationals-day1-three-play-expansion",
     "sourceFile": "YajGY_RVfD4.json"
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Centratus uses Varuckan Acolyte to destroy Awi’s Lost Providence, cutting off another draw while adding a three-power threat.",
+    "timestamp": {
+      "videoId": "yiXTkbA1am4",
+      "seconds": 17723
+    },
+    "sourceRows": [
+      7679,
+      7681
+    ],
+    "sourceSha256": "80d8ff8368df64dd90ccaa02e5ecc83318ce45222645673bae2dac81e4b349dd",
+    "source": [
+      {
+        "row": 7679,
+        "timestamp": "295:23",
+        "text": "Acolyte destroying that Lost Providence,"
+      },
+      {
+        "row": 7680,
+        "timestamp": "295:24",
+        "text": "just dealing an additional three damage"
+      },
+      {
+        "row": 7681,
+        "timestamp": "295:26",
+        "text": "as well. And AI not able to really deal"
+      }
+    ],
+    "review": "sea-nationals-day1-three-play-expansion",
+    "sourceFile": "South East Asia Nationals Day 1  Grand Archive TCG.txt"
   }
 ]
