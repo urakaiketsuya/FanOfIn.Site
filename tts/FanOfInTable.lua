@@ -95,6 +95,15 @@ function foiSeatPoint(color, key)
   return point
 end
 
+--- Which seat and zone a scripting zone GUID belongs to. Used by the replay log.
+function foiZoneInfo(guid)
+  for color, byKey in pairs(zones) do
+    for key, zoneGuid in pairs(byKey) do
+      if zoneGuid == guid then return color, key end
+    end
+  end
+end
+
 local function zoneObject(color, key)
   local guid = zones[color] and zones[color][key]
   return guid and getObjectFromGUID(guid) or nil
@@ -401,6 +410,7 @@ local function homeOf(obj)
 end
 
 function foiGGGoNext(color, player)
+  if foiReplayMark then foiReplayMark(color, "GG Go Next") end
   local seat = seatFor(color)
   if not seat then foiSay(player, "You are not seated in this layout."); return end
   local stack = { main = 0, material = 0, sideboard = 0 }
@@ -534,18 +544,18 @@ local function buildXml()
     return '<Button onClick="' .. handler .. '" preferredHeight="28" fontSize="13">' .. label .. '</Button>'
   end
   local rows = {
-    '<Text color="#FFFFFF" fontSize="15" fontStyle="Bold">Fan of Insight</Text>',
-    '<InputField id="foiDeckUrl" placeholder="Deck URL" onEndEdit="uiSetDeckUrl"/>',
+    '<Text preferredHeight="24" color="#FFFFFF" fontSize="15" fontStyle="Bold">Fan of Insight</Text>',
+    '<InputField preferredHeight="28" id="foiDeckUrl" placeholder="Deck URL" onEndEdit="uiSetDeckUrl"/>',
     button("Import deck", "uiImport"),
-    '<InputField id="foiSleeveUrl" placeholder="Sleeve image URL" onEndEdit="uiSetSleeve"/>',
-    '<InputField id="foiPlaymatUrl" placeholder="Playmat image URL" onEndEdit="uiSetPlaymat"/>',
-    '<InputField id="foiTableUrl" placeholder="Table image URL" onEndEdit="uiSetTable"/>',
+    '<InputField preferredHeight="28" id="foiSleeveUrl" placeholder="Sleeve image URL" onEndEdit="uiSetSleeve"/>',
+    '<InputField preferredHeight="28" id="foiPlaymatUrl" placeholder="Playmat image URL" onEndEdit="uiSetPlaymat"/>',
+    '<InputField preferredHeight="28" id="foiTableUrl" placeholder="Table image URL" onEndEdit="uiSetTable"/>',
     button("2P layout", "uiMode2"), button("4P layout", "uiMode4"),
     button("Spawn die (right-click for marker)", "uiDie"),
     button("Wake up", "uiWakeUp"), button("Recollect", "uiRecollect"),
     button("Reserve (face-down hand cards)", "uiReserve"),
     button("Banish (hover or select)", "uiBanish"), button("Arrange memory", "uiArrange"),
-    '<InputField id="foiGlimpseN" placeholder="Glimpse count (default 3)" onEndEdit="uiSetGlimpse"/>',
+    '<InputField preferredHeight="28" id="foiGlimpseN" placeholder="Glimpse count (default 3)" onEndEdit="uiSetGlimpse"/>',
     button("Glimpse top", "uiGlimpse"), button("Glimpse bottom", "uiGlimpseBottom"),
     button("Return to top", "uiGlimpseReturn"), button("Return to bottom", "uiGlimpseReturnBottom"),
     button("Quick bottom (count above)", "uiQuickBottom"),
@@ -553,11 +563,13 @@ local function buildXml()
   }
   local options = {}
   for _, token in ipairs(STATUS_TOKENS) do table.insert(options, "<Option>" .. token.name .. "</Option>") end
-  table.insert(rows, '<Dropdown id="foiToken" onValueChanged="uiSetToken">' .. table.concat(options) .. '</Dropdown>')
+  table.insert(rows, '<Dropdown preferredHeight="28" id="foiToken" onValueChanged="uiSetToken">' .. table.concat(options) .. '</Dropdown>')
   table.insert(rows, button("Spawn status marker", "uiToken"))
-  return '<Panel id="foiPanel" width="230" height="' .. (#rows * 34 + 10) .. '" '
-    .. 'color="#1E1E28E6" rectAlignment="MiddleLeft" offsetXY="10 0" padding="8 8 8 8">'
-    .. '<VerticalLayout spacing="4" childForceExpandHeight="false">' .. table.concat(rows) .. '</VerticalLayout></Panel>'
+  for _, row in ipairs(FOI_UI_ROWS) do table.insert(rows, row) end
+  return '<Panel id="foiPanel" width="240" height="640" '
+    .. 'color="#1E1E28E6" rectAlignment="MiddleLeft" offsetXY="10 0" padding="6 6 6 6">'
+    .. '<VerticalScrollView><VerticalLayout spacing="4" padding="4 8 4 4" childForceExpandHeight="false">'
+    .. table.concat(rows) .. '</VerticalLayout></VerticalScrollView></Panel>'
 end
 
 local inputs = {}  -- inputs[color] = { deck=, sleeve=, playmat=, glimpse= }
@@ -623,6 +635,11 @@ function foiTableChat(message, player)
   if message == "!gg" then foiGGGoNext(player.color, player); return false end
   local playmat = string.match(message, "^!playmat%s+(https?://%S+)$")
   if playmat then foiSetPlaymat(playmat, player); return false end
+  if foiPackChat then
+    local handled = foiPackChat(message, player)
+    if handled ~= nil then return handled end
+  end
+  if foiReplayChat then return foiReplayChat(message, player) end
 end
 
 -- ===== Save and load =====
@@ -636,6 +653,7 @@ function onLoad(savedState)
     if ok and type(state) == "table" then
       FOI = state.foi or FOI
       FOI.sleeves = FOI.sleeves or {}
+      FOI.replay = FOI.replay or { on = false, events = {} }
       zones, mats = state.zones or {}, state.mats or {}
     end
   end

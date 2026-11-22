@@ -20,6 +20,8 @@ local API_BASE = "https://accounts.fanofin.site/v1/tts/decks/"
 
 -- Shared state. The table module reads and saves it.
 FOI = FOI or { sleeves = {}, defaultSleeve = "", playmat = "", mode = 2 }
+-- Modules append UI rows (XML strings) here. The table module builds the panel from them.
+FOI_UI_ROWS = FOI_UI_ROWS or {}
 
 local FALLBACK_ORIGIN = { x = 0, z = 0 }
 local FALLBACK_SECTIONS = {
@@ -53,14 +55,14 @@ local function sheetEntry(face, back)
   return { FaceURL = face, BackURL = back, NumWidth = 1, NumHeight = 1, BackIsHidden = true, UniqueBack = false, Type = 0 }
 end
 
-local function cardTransform(rotY)
-  return { posX = 0, posY = 0, posZ = 0, rotX = 0, rotY = rotY, rotZ = 180, scaleX = 1, scaleY = 1, scaleZ = 1 }
+local function cardTransform(rotY, faceUp)
+  return { posX = 0, posY = 0, posZ = 0, rotX = 0, rotY = rotY, rotZ = faceUp and 0 or 180, scaleX = 1, scaleY = 1, scaleZ = 1 }
 end
 
 --- Builds the JSON table for one deck section.
 --- `lines` is a list of { name, quantity, imageUrl, backImageUrl }. Lines without an image are
 --- skipped and their names are returned in `missing`.
---- `opts` = { sleeve, rotY, home, position }.
+--- `opts` = { sleeve, rotY, home, position, faceUp }.
 function buildSectionObject(label, title, lines, opts)
   local sleeve, rotY, home, position = opts.sleeve, opts.rotY or 180, opts.home or "", opts.position
   local customDeck, sheetByKey, sheetCount = {}, {}, 0
@@ -92,7 +94,7 @@ function buildSectionObject(label, title, lines, opts)
           GMNotes = "foi-home=" .. home,
           CardID = sheet * 100,
           CustomDeck = { [tostring(sheet)] = customDeck[tostring(sheet)] },
-          Transform = cardTransform(rotY),
+          Transform = cardTransform(rotY, opts.faceUp),
         }
         if backSheet then
           card.States = {
@@ -102,7 +104,7 @@ function buildSectionObject(label, title, lines, opts)
               GMNotes = "foi-home=" .. home,
               CardID = backSheet * 100,
               CustomDeck = { [tostring(backSheet)] = customDeck[tostring(backSheet)] },
-              Transform = cardTransform(rotY),
+              Transform = cardTransform(rotY, opts.faceUp),
             },
           }
         end
@@ -116,7 +118,7 @@ function buildSectionObject(label, title, lines, opts)
 
   local transform = {
     posX = position.x, posY = position.y, posZ = position.z,
-    rotX = 0, rotY = rotY, rotZ = 180, scaleX = 1, scaleY = 1, scaleZ = 1,
+    rotX = 0, rotY = rotY, rotZ = opts.faceUp and 0 or 180, scaleX = 1, scaleY = 1, scaleZ = 1,
   }
   if #cards == 1 then
     cards[1].Transform = transform
