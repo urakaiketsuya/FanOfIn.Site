@@ -64,6 +64,19 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Enfeebling Orb cuts Yadon’s hand below what he needs to play Lightweaver’s Assault at fast speed.",
+              "cards": [
+                "Enfeebling Orb",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36238
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
               "cards": [
@@ -113,6 +126,18 @@
             },
             {
               "order": 3,
+              "actor": "p1",
+              "text": "Yadon finds two copies of Lightweaver’s Assault, but his hand is too small to play one immediately and his next draw fails to give him lethal.",
+              "cards": [
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37014
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
               "cards": [

@@ -61,7 +61,7 @@ test('every Day 2 highlight retains original source evidence and a matching capt
       assert.ok(beat.timestamp!.seconds >= m.video!.startSeconds!);
     }
   }
-  assert.equal(seen.size, 79);
+  assert.equal(seen.size, review.highlightCount);
   assert.equal(seen.size, matches.reduce((n, m) => n + m.games.reduce((n, g) => n + g.beats.length, 0), 0));
 });
 
@@ -77,5 +77,5 @@ test('final capture timestamps stay unpublished while the replay is truncated', 
     assert.equal(beat.text, p.text);
     assert.equal(beatVideoLink(beat, final.video), undefined);
   }
-  assert.equal(matches.flatMap(m => m.games.flatMap(g => g.beats)).filter(b => b.timestamp).length, 69);
+  assert.equal(matches.flatMap(m => m.games.flatMap(g => g.beats)).filter(b => b.timestamp).length, review.publishedTimestampCount);
 });

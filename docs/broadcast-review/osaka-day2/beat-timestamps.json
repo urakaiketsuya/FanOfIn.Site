@@ -14617,6 +14617,42 @@
     ]
   },
   {
+    "text": "Enfeebling Orb cuts Yadon’s hand below what he needs to play Lightweaver’s Assault at fast speed.",
+    "segments": [
+      12317,
+      12319
+    ],
+    "source": [
+      {
+        "row": 12317,
+        "text": "on his turn. Rubyzillia, what is the materialization going to be? There is of course the Enfeebling Orb,",
+        "timestamp": "10:03:58"
+      },
+      {
+        "row": 12318,
+        "text": "and Enfeebling Orb actually puts Yadon out of Lightweaver's Assault range, because he only",
+        "timestamp": "10:04:03"
+      },
+      {
+        "row": 12319,
+        "text": "has 6 cards, so will not be able to use Lightweavers at fast speed with just 4 cards left in hand.",
+        "timestamp": "10:04:07"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+    "gameNumber": 1,
+    "order": 3,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 36238
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      12317,
+      12319
+    ]
+  },
+  {
     "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
     "segments": [
       12322,
@@ -14791,7 +14827,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 36264
@@ -15010,6 +15046,77 @@
     ]
   },
   {
+    "text": "Yadon finds two copies of Lightweaver’s Assault, but his hand is too small to play one immediately and his next draw fails to give him lethal.",
+    "segments": [
+      12465,
+      12474
+    ],
+    "source": [
+      {
+        "row": 12465,
+        "text": "Okay, let's see also the draw from the... Yeah, double Lightweavers here comes and then",
+        "timestamp": "10:16:54"
+      },
+      {
+        "row": 12466,
+        "text": "draw and then you go Lightweavers. Right now, you Lightweavers. That's gonna be 6 damage and",
+        "timestamp": "10:16:59"
+      },
+      {
+        "row": 12467,
+        "text": "then reveal another Lightweavers for another 2. That's 8 damage. I think he just has it.",
+        "timestamp": "10:17:03"
+      },
+      {
+        "row": 12468,
+        "text": "How would he put the cards down? Does he have enough for 4? Does he have 5?",
+        "timestamp": "10:17:09"
+      },
+      {
+        "row": 12469,
+        "text": "He has 4 cards right now. So not able to Lightweaver Pre-Req. So we'll have to see if",
+        "timestamp": "10:17:12"
+      },
+      {
+        "row": 12470,
+        "text": "he can put any cards down now because if he does have a way to use those 2 Lightweavers,",
+        "timestamp": "10:17:17"
+      },
+      {
+        "row": 12471,
+        "text": "it will be 4 damage. Right now, Recollects into 6 card hand Lightweavers for 4 plus 2 plus 1 where",
+        "timestamp": "10:17:22"
+      },
+      {
+        "row": 12472,
+        "text": "1 short. He has to have something that draws. If he has a Gentle Resp... No, that's not gonna",
+        "timestamp": "10:17:28"
+      },
+      {
+        "row": 12473,
+        "text": "do it. It has to be like an Uncover. Let's see what ends up being the draw here for Yadon. I",
+        "timestamp": "10:17:36"
+      },
+      {
+        "row": 12474,
+        "text": "believe it was a Gentle Resp. So not able to find that just yet. But this also means that Rubyzilla",
+        "timestamp": "10:17:41"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+    "gameNumber": 2,
+    "order": 3,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 37014
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      12465,
+      12474
+    ]
+  },
+  {
     "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
     "segments": [
       12493,
@@ -15054,7 +15161,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 37161
