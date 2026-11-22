@@ -222,6 +222,15 @@ function foiSetPlaymat(url, player)
   foiSay(player, "Playmat set.")
 end
 
+--- Switches to a custom rectangular table and paints it with the image.
+--- setTable replaces the table object, so the image is set a few frames later.
+function foiSetTable(url, player)
+  Tables.setTable("Custom Rectangle")
+  Wait.frames(function() Tables.setCustomURL(url) end, 5)
+  FOI.tableUrl = url
+  foiSay(player, "Table surface set.")
+end
+
 -- ===== Quick actions =====
 function foiWakeUp(color, player)
   local seat = seatFor(color)
@@ -471,6 +480,54 @@ function foiSpawnToken(name, color, player)
   end
 end
 
+-- ===== Dice markers =====
+-- Right-click a die and pick a marker type. The die takes the marker's name and color.
+local DICE_MARKERS = {
+  { name = "Damage",      color = { r = 0.9, g = 0.0, b = 0.0 } },
+  { name = "Prevention",  color = { r = 0.1, g = 0.3, b = 0.8 } },
+  { name = "Buff",        color = { r = 0.0, g = 0.0, b = 0.0 } },
+  { name = "Durability",  color = { r = 0.3, g = 0.3, b = 0.3 } },
+  { name = "Level",       color = { r = 0.6, g = 0.1, b = 0.6 } },
+  { name = "Preparation", color = { r = 0.2, g = 0.7, b = 0.2 } },
+  { name = "Enlighten",   color = { r = 0.7, g = 0.4, b = 0.1 } },
+  { name = "Quest",       color = { r = 0.8, g = 0.4, b = 0.9 } },
+  { name = "Glimmer",     color = { r = 0.5, g = 0.4, b = 0.9 } },
+  { name = "Age",         color = { r = 0.6, g = 0.6, b = 0.2 } },
+  { name = "Lash",        color = { r = 0.2, g = 0.2, b = 0.8 } },
+  { name = "Debuff",      color = { r = 0.8, g = 0.2, b = 0.4 } },
+  { name = "Wither",      color = { r = 0.0, g = 0.8, b = 0.8 } },
+  { name = "Aim",         color = { r = 0.7, g = 0.7, b = 0.7 } },
+  { name = "Refinement",  color = { r = 0.4, g = 0.7, b = 0.9 } },
+  { name = "Charge",      color = { r = 0.8, g = 0.6, b = 0.9 } },
+  { name = "Tactic",      color = { r = 0.6, g = 0.7, b = 0.8 } },
+  { name = "Music",       color = { r = 0.6, g = 0.3, b = 0.5 } },
+}
+
+function foiAttachDiceMenu(die)
+  if not die or die.isDestroyed() or die.type ~= "Dice" then return end
+  die.clearContextMenu()
+  for _, marker in ipairs(DICE_MARKERS) do
+    die.addContextMenuItem("Marker: " .. marker.name, function(_, _, target)
+      target.setName(marker.name)
+      target.setColorTint(marker.color)
+    end)
+  end
+end
+
+--- New dice get the menu. The short wait lets the object finish spawning.
+function onObjectSpawn(object)
+  if object.type == "Dice" then
+    Wait.frames(function() foiAttachDiceMenu(object) end, 2)
+  end
+end
+
+--- A six-sided die at the player's field.
+function foiSpawnDie(color, player)
+  local point = foiSeatPoint(color, "field")
+  if not point then foiSay(player, "You are not seated in this layout."); return end
+  spawnObject({ type = "Die_6", position = { point.x, 3, point.z + 2 } })
+end
+
 -- ===== UI =====
 local function buildXml()
   local function button(label, handler)
@@ -482,7 +539,9 @@ local function buildXml()
     button("Import deck", "uiImport"),
     '<InputField id="foiSleeveUrl" placeholder="Sleeve image URL" onEndEdit="uiSetSleeve"/>',
     '<InputField id="foiPlaymatUrl" placeholder="Playmat image URL" onEndEdit="uiSetPlaymat"/>',
+    '<InputField id="foiTableUrl" placeholder="Table image URL" onEndEdit="uiSetTable"/>',
     button("2P layout", "uiMode2"), button("4P layout", "uiMode4"),
+    button("Spawn die (right-click for marker)", "uiDie"),
     button("Wake up", "uiWakeUp"), button("Recollect", "uiRecollect"),
     button("Reserve (face-down hand cards)", "uiReserve"),
     button("Banish (hover or select)", "uiBanish"), button("Arrange memory", "uiArrange"),
@@ -517,6 +576,10 @@ end
 function uiSetPlaymat(player, value)
   if string.match(value or "", "^https?://") then foiSetPlaymat(value, player) end
 end
+function uiSetTable(player, value)
+  if string.match(value or "", "^https?://") then foiSetTable(value, player) end
+end
+function uiDie(player) foiSpawnDie(player.color, player) end
 function uiSetGlimpse(player, value) inputFor(player).glimpse = tonumber(value) end
 
 function uiImport(player) importDeck(inputFor(player).deck or "", player) end
@@ -550,6 +613,9 @@ function foiTableChat(message, player)
   if quick then foiQuickBottom(player.color, tonumber(quick) or 1, player); return false end
   if message == "!unglimpse" then foiGlimpseReturn(player.color, player, false); return false end
   if message == "!unglimpse bottom" then foiGlimpseReturn(player.color, player, true); return false end
+  local tableUrl = string.match(message, "^!table%s+(https?://%S+)$")
+  if tableUrl then foiSetTable(tableUrl, player); return false end
+  if message == "!die" then foiSpawnDie(player.color, player); return false end
   local status = string.match(message, "^!token%s+(.+)$")
   if status then foiSpawnToken(status, player.color, player); return false end
   if message == "!reserve" then foiReserve(player.color, player); return false end
@@ -575,4 +641,5 @@ function onLoad(savedState)
   end
   if next(zones) == nil then foiBuildTable() end
   UI.setXml(buildXml())
+  for _, object in ipairs(getObjects()) do foiAttachDiceMenu(object) end
 end
