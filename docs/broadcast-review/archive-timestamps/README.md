@@ -53,3 +53,18 @@ link targets, no horizontal overflow, keyboard navigation, and Game 2 switching
 with the correct hour-formatted timestamps. Loading was observed. Actual playback
 at every cue and forced network-error states were not exercised; presentation code
 is unchanged in this data-only backfill.
+
+## Ascent London three-play review
+
+Reviewed the only London game with exactly three highlights, Round 10 Game 1
+between CasuaL and V41N. The official [Day 2 replay](https://www.youtube.com/watch?v=41aKdQJ7U1c)
+runs 11:54:57. The supplied transcript's last caption starts at 11:54:56.
+The player opened on the Round 10 table at each cue below. The transcript
+establishes the action within each sequence, and the evidence JSON retains the
+source filename, hash, caption rows and excerpts.
+
+| Replay cue | Turning point |
+| --- | --- |
+| [2:11:04](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=7864s) | V41N's Mad Hatter removes Cheshire Cat in retaliation. |
+| [2:12:54](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=7974s) | CasuaL finds Liu Bei and can keep Perse available for suppression. |
+| [2:16:15](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=8175s) | CasuaL gets Ranger Strides into play before the finishing attacks. |

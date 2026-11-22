@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T20:58:47.457Z",
+  "generatedAt": "2026-11-22T21:12:00.643Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -6475,6 +6475,32 @@
             },
             {
               "order": 2,
+              "actor": "p2",
+              "text": "V41N buffs Mad Hatter and retaliates into Cheshire Cat, removing CasuaL’s immediate attacker.",
+              "cards": [
+                "Mad Hatter, Morose Heritor",
+                "Cheshire Cat, Impish Grin"
+              ],
+              "timestamp": {
+                "videoId": "41aKdQJ7U1c",
+                "seconds": 7864
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "CasuaL finds Liu Bei, giving him an attacker while Perse stays available to suppress a threat.",
+              "cards": [
+                "Liu Bei, Oathkeeper",
+                "Perse, Relentless Raptor"
+              ],
+              "timestamp": {
+                "videoId": "41aKdQJ7U1c",
+                "seconds": 7974
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "CasuaL puts Perse and an Inert Sword into play and removes the Mad Hatter. V41N uses Skirting Step and Backstep to keep his champion distant and digs with Fairy Whispers, but his half of the deck that gives distant does not find any ally to attack with.",
               "cards": [
@@ -6493,7 +6519,20 @@
               }
             },
             {
-              "order": 3,
+              "order": 5,
+              "actor": "p1",
+              "text": "CasuaL’s Mad Hatter misses Ranger Strides on the random banish, but CasuaL still gets Strides into play to set up the finishing attacks.",
+              "cards": [
+                "Mad Hatter, Morose Heritor",
+                "Ranger Strides"
+              ],
+              "timestamp": {
+                "videoId": "41aKdQJ7U1c",
+                "seconds": 8175
+              }
+            },
+            {
+              "order": 6,
               "actor": "p1",
               "text": "V41N uses Tariff Ring during CasuaL’s recollection phase to tax attacks. CasuaL makes Liu Bei distant, gives him additional range with Ranger Strides and attacks for eight. Second Wind wakes Liu Bei for eight more damage and the win.",
               "cards": [

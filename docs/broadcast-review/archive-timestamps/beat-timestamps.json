@@ -178852,7 +178852,7 @@
   {
     "matchId": "ascent-london-2026-day2-round10-casual-vain",
     "gameNumber": 1,
-    "order": 2,
+    "order": 4,
     "text": "CasuaL puts Perse and an Inert Sword into play and removes the Mad Hatter. V41N uses Skirting Step and Backstep to keep his champion distant and digs with Fairy Whispers, but his half of the deck that gives distant does not find any ally to attack with.",
     "timestamp": {
       "videoId": "41aKdQJ7U1c",
@@ -179036,7 +179036,7 @@
   {
     "matchId": "ascent-london-2026-day2-round10-casual-vain",
     "gameNumber": 1,
-    "order": 3,
+    "order": 6,
     "text": "V41N uses Tariff Ring during CasuaL’s recollection phase to tax attacks. CasuaL makes Liu Bei distant, gives him additional range with Ranger Strides and attacks for eight. Second Wind wakes Liu Bei for eight more damage and the win.",
     "timestamp": {
       "videoId": "41aKdQJ7U1c",
@@ -188966,5 +188966,257 @@
         "text": "takes it home. That that was an exciting"
       }
     ]
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round10-casual-vain",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "V41N buffs Mad Hatter and retaliates into Cheshire Cat, removing CasuaL’s immediate attacker.",
+    "timestamp": {
+      "videoId": "41aKdQJ7U1c",
+      "seconds": 7864
+    },
+    "sourceRows": [
+      3330,
+      3336
+    ],
+    "sourceSha256": "37c5a62c061d5b9820104478e762708523d660a5050a276567d248dc529053e2",
+    "source": [
+      {
+        "row": 3330,
+        "timestamp": "131:04",
+        "text": "is buffing up his mad header here and"
+      },
+      {
+        "row": 3331,
+        "timestamp": "131:09",
+        "text": "retaliating into the Sheshire cat."
+      },
+      {
+        "row": 3332,
+        "timestamp": "131:11",
+        "text": "Removing the threat from the board. This"
+      },
+      {
+        "row": 3333,
+        "timestamp": "131:14",
+        "text": "is very big for"
+      },
+      {
+        "row": 3334,
+        "timestamp": "131:17",
+        "text": "vein here. just getting rid of the"
+      },
+      {
+        "row": 3335,
+        "timestamp": "131:19",
+        "text": "Sheshire cat without much issue. That"
+      },
+      {
+        "row": 3336,
+        "timestamp": "131:23",
+        "text": "puts him a little bit more into control"
+      }
+    ],
+    "review": "london-three-play-expansion",
+    "sourceFile": "Ascent London Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round10-casual-vain",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "CasuaL finds Liu Bei, giving him an attacker while Perse stays available to suppress a threat.",
+    "timestamp": {
+      "videoId": "41aKdQJ7U1c",
+      "seconds": 7974
+    },
+    "sourceRows": [
+      3381,
+      3401
+    ],
+    "sourceSha256": "37c5a62c061d5b9820104478e762708523d660a5050a276567d248dc529053e2",
+    "source": [
+      {
+        "row": 3381,
+        "timestamp": "132:54",
+        "text": ">> Oh, I think Kirrick just found what he"
+      },
+      {
+        "row": 3382,
+        "timestamp": "132:56",
+        "text": "needed with the Lube on top."
+      },
+      {
+        "row": 3383,
+        "timestamp": "132:59",
+        "text": ">> Yeah, it looks like the Lube is going on"
+      },
+      {
+        "row": 3384,
+        "timestamp": "132:60",
+        "text": "top. The Lube is going to provide a"
+      },
+      {
+        "row": 3385,
+        "timestamp": "133:02",
+        "text": "pretty solid threat now because the"
+      },
+      {
+        "row": 3386,
+        "timestamp": "133:04",
+        "text": "issue with the purse is that if you ever"
+      },
+      {
+        "row": 3387,
+        "timestamp": "133:05",
+        "text": "try and attack with it, you sort of you"
+      },
+      {
+        "row": 3388,
+        "timestamp": "133:07",
+        "text": "sort of disable your piece of"
+      },
+      {
+        "row": 3389,
+        "timestamp": "133:08",
+        "text": "interaction, right? your ability to to"
+      },
+      {
+        "row": 3390,
+        "timestamp": "133:10",
+        "text": "actually make sure you don't just crack"
+      },
+      {
+        "row": 3391,
+        "timestamp": "133:12",
+        "text": "get cracked back and take a ton of"
+      },
+      {
+        "row": 3392,
+        "timestamp": "133:14",
+        "text": "damage. But now we can actually put"
+      },
+      {
+        "row": 3393,
+        "timestamp": "133:15",
+        "text": "another distant threat on the board and"
+      },
+      {
+        "row": 3394,
+        "timestamp": "133:17",
+        "text": "Lube is going to have this uh very"
+      },
+      {
+        "row": 3395,
+        "timestamp": "133:19",
+        "text": "important ability as well to be able to"
+      },
+      {
+        "row": 3396,
+        "timestamp": "133:22",
+        "text": "sort of share distant. Whenever another"
+      },
+      {
+        "row": 3397,
+        "timestamp": "133:24",
+        "text": "unit becomes distant, she gets to become"
+      },
+      {
+        "row": 3398,
+        "timestamp": "133:25",
+        "text": "distant as well. So that's going to give"
+      },
+      {
+        "row": 3399,
+        "timestamp": "133:28",
+        "text": "Casual a lot of flexibility in how"
+      },
+      {
+        "row": 3400,
+        "timestamp": "133:31",
+        "text": "they're able to manage this purse and"
+      },
+      {
+        "row": 3401,
+        "timestamp": "133:32",
+        "text": "still keep attacking in with this Lube."
+      }
+    ],
+    "review": "london-three-play-expansion",
+    "sourceFile": "Ascent London Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round10-casual-vain",
+    "gameNumber": 1,
+    "order": 5,
+    "text": "CasuaL’s Mad Hatter misses Ranger Strides on the random banish, but CasuaL still gets Strides into play to set up the finishing attacks.",
+    "timestamp": {
+      "videoId": "41aKdQJ7U1c",
+      "seconds": 8175
+    },
+    "sourceRows": [
+      3481,
+      3491
+    ],
+    "sourceSha256": "37c5a62c061d5b9820104478e762708523d660a5050a276567d248dc529053e2",
+    "source": [
+      {
+        "row": 3481,
+        "timestamp": "136:15",
+        "text": "here. Yeah, a Mad Hatter not manag not"
+      },
+      {
+        "row": 3482,
+        "timestamp": "136:18",
+        "text": "not managing to hit the ranger strides"
+      },
+      {
+        "row": 3483,
+        "timestamp": "136:20",
+        "text": "on the on the random banish, but then b"
+      },
+      {
+        "row": 3484,
+        "timestamp": "136:22",
+        "text": "getting the ranger strides out."
+      },
+      {
+        "row": 3485,
+        "timestamp": "136:24",
+        "text": ">> The mad header left the field in the"
+      },
+      {
+        "row": 3486,
+        "timestamp": "136:26",
+        "text": "banish bank just for the strides."
+      },
+      {
+        "row": 3487,
+        "timestamp": "136:28",
+        "text": ">> Yep."
+      },
+      {
+        "row": 3488,
+        "timestamp": "136:29",
+        "text": ">> But it did but it did get the strides"
+      },
+      {
+        "row": 3489,
+        "timestamp": "136:31",
+        "text": "out. It did get the strides out and"
+      },
+      {
+        "row": 3490,
+        "timestamp": "136:32",
+        "text": "that's the important part here. Now"
+      },
+      {
+        "row": 3491,
+        "timestamp": "136:34",
+        "text": "casual has the strides has two diseners."
+      }
+    ],
+    "review": "london-three-play-expansion",
+    "sourceFile": "Ascent London Day 2  Grand Archive TCG.txt"
   }
 ]
