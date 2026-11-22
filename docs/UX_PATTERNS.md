@@ -1101,3 +1101,17 @@ catalog validation and atomic override writes; retries never replay superseded c
 Verification: 390px/1280px fixture-backed submission checks covered the published confirmation,
 failed-save recovery, draft reload, preview/printing scope, keyboard focus, 48px controls,
 and overflow. Backend tests cover automatic approval rollback and concurrent retries.
+
+## Moving deck copies
+
+Move copies replaces the card Actions sheet. Cancel/Escape returns focus to that
+card's Actions control when it remains in the section. Shared sheets explicitly
+close native dialogs on unmount and retain the body scroll lock only while another
+sheet remains open, including when moving every copy removes the source card.
+
+Verification (2026-11-22): isolated production-component checks at 390px and 1280px
+covered partial/full moves, subsequent quantity editing, destination changes,
+Escape/focus restoration, simultaneous nested-sheet teardown, Strict Mode,
+48px controls and horizontal overflow. Missing-catalog name fallback was exercised.
+Native mobile keyboards, production account saves, printing selection and live
+deployment were not exercised.

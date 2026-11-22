@@ -1,16 +1,20 @@
 import { createPortal } from "react-dom";
 import ToastViewport from "./toast/ToastViewport";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import Button from "./Button";
 
+const activeSheets = new Set<HTMLDialogElement>();
+let unlockedOverflow = "";
+
 /** Native modal isolation, focus restoration and explicit draft dismissal for all sheets. */
-export default function DialogSheet({ title, children, onDismiss, dismissLabel = "Close", dismissible = true, dirty = false, footer, fullScreen = false }: {
+export default function DialogSheet({ title, children, onDismiss, dismissLabel = "Close", dismissible = true, dirty = false, footer, fullScreen = false, returnFocusTo }: {
   title: string; children: ReactNode; onDismiss: () => void; dismissLabel?: string;
   dismissible?: boolean; dirty?: boolean; footer?: ReactNode; fullScreen?: boolean;
+  returnFocusTo?: RefObject<HTMLElement | null>;
 }) {
   const titleId = useId();
   const ref = useRef<HTMLDialogElement>(null);
-  const returnFocus = useRef(document.activeElement);
+  const returnFocus = useRef(returnFocusTo?.current ?? document.activeElement);
   const keepEditing = useRef<HTMLButtonElement>(null);
   const [closing, setClosing] = useState(false);
   const dismissed = useRef(false);
@@ -36,11 +40,16 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
   useEffect(() => {
     const dialog = ref.current;
     const previousFocus = returnFocus.current;
-    const previousOverflow = document.body.style.overflow;
+    if (!dialog) return;
+    if (activeSheets.size === 0) unlockedOverflow = document.body.style.overflow;
+    activeSheets.add(dialog);
     document.body.style.overflow = "hidden";
-    if (dialog && !dialog.open) dialog.showModal();
+    if (!dialog.open) dialog.showModal();
     return () => {
-      document.body.style.overflow = previousOverflow;
+      // Release native modal isolation even when a mutation removes the sheet's owner.
+      dialog.close();
+      activeSheets.delete(dialog);
+      if (activeSheets.size === 0) document.body.style.overflow = unlockedOverflow;
       queueMicrotask(() => { if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus({ preventScroll: true }); });
     };
   }, []);

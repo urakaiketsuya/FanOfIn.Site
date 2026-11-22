@@ -8,7 +8,7 @@ import Button from "../ui/Button";
 import CardResult from "../CardResult";
 import CardLegalityBadge from "./CardLegalityBadge";
 import { cardLegalityStatus, type DeckFormat } from "@gatcg/shared";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardArtTile from "../CardArtTile";
@@ -27,6 +27,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   onRemove: () => void; selected?: boolean; onSelect?: () => void; list?: boolean;
 }) {
   const changeRef = useChangeMotion<HTMLElement>(`${section}:${line.quantity}:${JSON.stringify(line.printings ?? [])}`, "highlight");
+  const actionsTrigger = useRef<HTMLButtonElement>(null);
   const [actionsOpen, setActionsOpen] = useState(false);
   const [printingOpen, setPrintingOpen] = useState(false);
   const [reduceTo, setReduceTo] = useState<number | null>(null);
@@ -42,14 +43,14 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
       <div className="min-w-0">
         {title}<CardLegalityBadge card={card} format={format} />
         <div className="mt-1"><QuantityControl name={`${line.card} in ${section}`} quantity={line.quantity} min={0} onChange={quantity => quantity === 0 ? onRemove() : quantity < (line.printings ?? []).reduce((sum, p) => sum + p.quantity, 0) ? setReduceTo(quantity) : onChangeQuantity(quantity)} /></div>
-        <Button variant="ghost" className="mt-1 w-full" aria-label={`Actions for ${line.card} in ${section}`} onClick={() => setActionsOpen(true)}>Actions</Button>
+        <Button ref={actionsTrigger} variant="ghost" className="mt-1 w-full" aria-label={`Actions for ${line.card} in ${section}`} onClick={() => setActionsOpen(true)}>Actions</Button>
         <PrintingSummary line={line} card={card} />
       </div>
     </div>
     {actionsOpen && <EditorDialog title={line.card} doneLabel="Done" onDismiss={() => setActionsOpen(false)}>
       <div className="mx-auto max-w-xs"><CardResult card={card} name={line.card} editionUuid={line.printings?.[0]?.editionUuid} newTab>
         <div className="flex flex-col gap-2">
-          <Button disabled={!destinations.length} onClick={() => { setMoveQuantity(line.quantity); setMovingPrintings(line.printings); setDestination(destinations[0]?.key ?? "maybeboard"); setOpen(true); }}>Move copies</Button>
+          <Button disabled={!destinations.length} onClick={() => { setMoveQuantity(line.quantity); setMovingPrintings(line.printings); setDestination(destinations[0]?.key ?? "maybeboard"); setActionsOpen(false); setOpen(true); }}>Move copies</Button>
           {onPrintings && <Button disabled={!card} onClick={() => { setPrintingOpen(true); }}>{line.printings?.length ? "Change printings" : "Choose printing"}</Button>}
           <Button variant="ghost" onClick={() => { setActionsOpen(false); onRemove(); }}>Remove from {EDITOR_SECTIONS.find(item => item.key === section)?.title}</Button>
         </div>
@@ -58,7 +59,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
     {card && (printingOpen || reduceTo !== null) && <DeckPrintingSheet card={card} line={reduceTo !== null ? { ...line, quantity: reduceTo } : line} onDismiss={() => { setPrintingOpen(false); setReduceTo(null); }} onApply={value => { if (reduceTo !== null) onChangeQuantity(reduceTo, value); else onPrintings?.(value); }} />}
     {stats && <div className="mt-2 border-t border-ctp-surface1 pt-2">{stats}</div>}
     {onSelect && <label className="flex min-h-12 items-center gap-2 px-2 text-xs"><input type="checkbox" checked={selected ?? false} onChange={onSelect} />Select {line.card}</label>}
-    {open && <EditorDialog title={`Move ${line.card}`} doneLabel="Cancel" onDismiss={() => setOpen(false)} footer={<button type="button" disabled={selectedMovePrintings(line, Math.min(moveQuantity,line.quantity), movingPrintings) === null || !destinations.some(item=>item.key===destination)} onClick={()=>{onMove(destination,Math.min(moveQuantity,line.quantity), movingPrintings);setOpen(false);}} className="mt-3 min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Move {Math.min(moveQuantity,line.quantity)} {Math.min(moveQuantity,line.quantity)===1 ? "copy" : "copies"}</button>}>
+    {open && <EditorDialog returnFocusTo={actionsTrigger} title={`Move ${line.card}`} doneLabel="Cancel" onDismiss={() => setOpen(false)} footer={<button type="button" disabled={selectedMovePrintings(line, Math.min(moveQuantity,line.quantity), movingPrintings) === null || !destinations.some(item=>item.key===destination)} onClick={()=>{onMove(destination,Math.min(moveQuantity,line.quantity), movingPrintings);setOpen(false);}} className="mt-3 min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Move {Math.min(moveQuantity,line.quantity)} {Math.min(moveQuantity,line.quantity)===1 ? "copy" : "copies"}</button>}>
       <p className="mb-3 text-sm">{line.quantity} {line.quantity === 1 ? "copy" : "copies"} in {EDITOR_SECTIONS.find(item=>item.key===section)?.title}.</p>
       <label className="block text-sm">Destination<select value={destination} onChange={event=>setDestination(event.target.value as DeckEditSection)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2">{destinations.map(item=><option key={item.key} value={item.key}>{item.title}</option>)}</select></label>
       <p className="mb-2 mt-3 text-sm">Copies to move</p><QuantityControl name={`${line.card} to move`} quantity={Math.min(moveQuantity,line.quantity)} onChange={quantity => { setMoveQuantity(quantity); setMovingPrintings(selectedMovePrintings(line, quantity) ?? []); }} max={line.quantity} />
