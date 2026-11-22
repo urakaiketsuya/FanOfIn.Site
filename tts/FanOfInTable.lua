@@ -208,18 +208,53 @@ function foiBanish(color, player)
   foiSay(player, count > 0 and ("Banished " .. count .. " card(s).") or "Hover over a card, or select cards, to banish.")
 end
 
+-- Memory slots for `total` cards, in seat-local order from left to right.
+local function memorySlot(seat, index, total)
+  local layout = ZONE_LAYOUT.memory
+  local step = math.min(2.2, layout.sx / math.max(total, 1))
+  local start = layout.lx - step * (total - 1) / 2
+  return toWorld(seat, start + (index - 1) * step, layout.lz)
+end
+
+local function sortedMemoryCards(color, seat)
+  local cards = zoneContents(color, "memory")
+  table.sort(cards, function(a, b) return a.getPosition().x * (seat.rot == 180 and -1 or 1) < b.getPosition().x * (seat.rot == 180 and -1 or 1) end)
+  return cards
+end
+
 --- Lays the cards in your memory zone out in a neat row.
 function foiReorganizeMemory(color, player)
-  local seat, layout = seatFor(color), ZONE_LAYOUT.memory
+  local seat = seatFor(color)
   if not seat then return end
-  local cards = zoneContents(color, "memory")
-  local step = math.min(2.2, layout.sx / math.max(#cards, 1))
-  local start = layout.lx - step * (#cards - 1) / 2
+  local cards = sortedMemoryCards(color, seat)
   for index, obj in ipairs(cards) do
-    local point = toWorld(seat, start + (index - 1) * step, layout.lz)
+    local point = memorySlot(seat, index, #cards)
     obj.setPositionSmooth({ point.x, 2, point.z })
   end
   foiSay(player, "Memory arranged (" .. #cards .. ").")
+end
+
+--- Reserve: face-down cards in your hand move into memory, and memory is re-spaced to fit.
+--- This matches the observed behaviour of the Fracturized Reserve button.
+function foiReserve(color, player)
+  local seat = seatFor(color)
+  if not seat then foiSay(player, "You are not seated in this layout."); return end
+  local incoming = {}
+  for _, obj in ipairs(Player[color].getHandObjects()) do
+    if obj.type == "Card" and math.abs(obj.getRotation().z) > 90 then table.insert(incoming, obj) end
+  end
+  local existing = sortedMemoryCards(color, seat)
+  local total = #existing + #incoming
+  for index, obj in ipairs(existing) do
+    local point = memorySlot(seat, index, total)
+    obj.setPositionSmooth({ point.x, 2, point.z })
+  end
+  for offset, obj in ipairs(incoming) do
+    local point = memorySlot(seat, #existing + offset, total)
+    obj.setRotation({ 0, seat.rot, 180 })
+    obj.setPositionSmooth({ point.x, 2, point.z })
+  end
+  foiSay(player, #incoming > 0 and ("Reserved " .. #incoming .. " card(s).") or "Flip cards face-down in your hand first, then press Reserve.")
 end
 
 -- Glimpse: looks at the top cards, visible only to you.
@@ -366,6 +401,7 @@ local function buildXml()
     '<InputField id="foiPlaymatUrl" placeholder="Playmat image URL" onEndEdit="uiSetPlaymat"/>',
     button("2P layout", "uiMode2"), button("4P layout", "uiMode4"),
     button("Wake up", "uiWakeUp"), button("Recollect", "uiRecollect"),
+    button("Reserve (face-down hand cards)", "uiReserve"),
     button("Banish (hover or select)", "uiBanish"), button("Arrange memory", "uiArrange"),
     '<InputField id="foiGlimpseN" placeholder="Glimpse count (default 3)" onEndEdit="uiSetGlimpse"/>',
     button("Glimpse", "uiGlimpse"), button("Return glimpse", "uiGlimpseReturn"),
@@ -402,6 +438,7 @@ function uiMode2(player) foiSetMode(2, player) end
 function uiMode4(player) foiSetMode(4, player) end
 function uiWakeUp(player) foiWakeUp(player.color, player) end
 function uiRecollect(player) foiRecollect(player.color, player) end
+function uiReserve(player) foiReserve(player.color, player) end
 function uiBanish(player) foiBanish(player.color, player) end
 function uiArrange(player) foiReorganizeMemory(player.color, player) end
 function uiGlimpse(player) foiGlimpse(player.color, math.max(1, math.floor(inputFor(player).glimpse or 3)), player) end
@@ -420,6 +457,7 @@ function foiTableChat(message, player)
   local count = string.match(message, "^!glimpse%s*(%d*)$")
   if count then foiGlimpse(player.color, tonumber(count) or 3, player); return false end
   if message == "!unglimpse" then foiGlimpseReturn(player.color, player); return false end
+  if message == "!reserve" then foiReserve(player.color, player); return false end
   if message == "!wake" then foiWakeUp(player.color, player); return false end
   if message == "!gg" then foiGGGoNext(player.color, player); return false end
   local playmat = string.match(message, "^!playmat%s+(https?://%S+)$")
