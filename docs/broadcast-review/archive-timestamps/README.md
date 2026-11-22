@@ -68,3 +68,25 @@ source filename, hash, caption rows and excerpts.
 | [2:11:04](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=7864s) | V41N's Mad Hatter removes Cheshire Cat in retaliation. |
 | [2:12:54](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=7974s) | CasuaL finds Liu Bei and can keep Perse available for suppression. |
 | [2:16:15](https://www.youtube.com/watch?v=41aKdQJ7U1c&t=8175s) | CasuaL gets Ranger Strides into play before the finishing attacks. |
+
+## Ascent Melbourne 2026 three-play review
+
+Reviewed all seven games with exactly three highlights and added eight turning
+points. The [Day 1 replay](https://www.youtube.com/watch?v=W_5i0aO5Es0) runs
+11:27:30 and its caption track ends at 11:27:28. The
+[Day 2 replay](https://www.youtube.com/watch?v=qQrV2I2Uiac) runs 10:36:50 and its
+caption track ends at 10:36:41. Each deep link was tested against the official
+player clock and the corresponding featured table. Cues mark the start of the
+supporting commentary sequence. The evidence JSON records the source filename,
+SHA-256, zero-based inclusive caption rows and excerpts for each new play.
+
+| Round and game | Replay cue | Turning point |
+| --- | --- | --- |
+| Round 2, Game 2 | [2:11:04](https://www.youtube.com/watch?v=W_5i0aO5Es0&t=7864s) | hachico reaches level three with Dungeon Guide before Etsuko can flip Suzaku. |
+| Round 2, Game 2 | [2:12:44](https://www.youtube.com/watch?v=W_5i0aO5Es0&t=7964s) | Etsuko flips Suzaku and pushes hachico to 18 damage. |
+| Round 9, Game 1 | [46:50](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=2810s) | Fracturize limits bobolas’s draw from Chalice of Blood. |
+| Round 9, Game 2 | [1:09:36](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=4176s) | ZutomayoEnjoyer removes Carter and keeps bobolas below the Chalice threshold. |
+| Round 11, Game 2 | [3:16:49](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=11809s) | Launtial cuts Professor’s herb gather with Topsy Decree. |
+| Round 12, Game 2 | [4:40:48](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=16848s) | Bhop uses Creative Shock and Resolute Stand as Pulse recollects with an empty hand. |
+| Round 12, Game 3 | [5:00:32](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=18032s) | Pulse attacks for three, then Bhop reloads with Lost Providence and answers with Heavy Swing. |
+| Semifinal, Game 2 | [7:47:47](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=28067s) | Bhop loses Carter to the level-up banish. |

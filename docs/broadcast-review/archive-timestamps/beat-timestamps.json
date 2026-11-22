@@ -31446,7 +31446,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-11-launtial-professor",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Safeguard Amulet protects a double Dungeon Guide turn; Abnegation restores Launtial’s life.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -31593,7 +31593,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-11-launtial-professor",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Launtial follows with Feu Awakening and Professor concedes.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -31938,7 +31938,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Suppression and repeated Sabella entries assemble weapons for Numinous Monk and Spirit Blade: Dispersion through Resolute Stand.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -32170,7 +32170,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Bhop lines up Feu Awakening with Manxome Armoire and Omen Bringer; Pulse concedes.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -32904,7 +32904,7 @@
   {
     "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Bhop attempts a Feu Awakening and Manxome Armoire sequence, but runs out of cards in the graveyard to omen.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -41040,7 +41040,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
     "gameNumber": 1,
-    "order": 1,
+    "order": 2,
     "text": "Song of Frost ends bobolas’s Beguiling Coup attack.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -41084,7 +41084,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
     "gameNumber": 1,
-    "order": 2,
+    "order": 3,
     "text": "Nightframe, Hound's Bike protects Aquifer Seneschal from Ciel’s damage triggers.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -41153,7 +41153,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "The surviving allies keep attacking, giving ZutomayoEnjoyer a 1–0 lead.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -41251,7 +41251,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Fracturize targets Chalice of Blood during bobolas’s Feu Awakening chain. The revised damage line falls short of lethal.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -41410,7 +41410,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Poisoned Dagger and the remaining allies finish the match before bobolas can force game three.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -166983,7 +166983,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
     "gameNumber": 2,
-    "order": 2,
+    "order": 4,
     "text": "hachico uses Beguiling Coup and Feu Awakening to press the advantage while Etsuko is short on resources.",
     "timestamp": {
       "videoId": "W_5i0aO5Es0",
@@ -167037,7 +167037,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
     "gameNumber": 2,
-    "order": 3,
+    "order": 5,
     "text": "The remaining damage ends the second game and completes the sweep.",
     "timestamp": {
       "videoId": "W_5i0aO5Es0",
@@ -168248,7 +168248,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Bhop considers Feu Awakening and Chalice of Blood responses, then concedes against Pulse’s remaining board.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -168511,7 +168511,7 @@
   {
     "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Pulse digs with Ghosts of Pendragon and suppression but cannot stop the effect-damage line.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -168669,7 +168669,7 @@
   {
     "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Yamikin’s remaining board secures the sweep after the damage line falls short.",
     "timestamp": {
       "videoId": "qQrV2I2Uiac",
@@ -189218,5 +189218,362 @@
     ],
     "review": "london-three-play-expansion",
     "sourceFile": "Ascent London Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "hachico uses Dungeon Guide to reach Ciel, Mirage’s Grave while Etsuko is still short of the quest counters needed to flip Suzaku.",
+    "timestamp": {
+      "videoId": "W_5i0aO5Es0",
+      "seconds": 7864
+    },
+    "sourceRows": [
+      1010,
+      1013
+    ],
+    "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+    "source": [
+      {
+        "row": 1010,
+        "text": "something you can use your extraneous float for. And here comes Dungeon Guide once again going to bring Hashiko up to that level three Mirage's grave. then",
+        "timestamp": "2:11:04"
+      },
+      {
+        "row": 1011,
+        "text": "can easily just Ooh, there was a liinal guide in there. Chose not to throw it.",
+        "timestamp": "2:11:13"
+      },
+      {
+        "row": 1012,
+        "text": "That must have been the draw from the memory. Yeah. So, lost Providence comes out here. Never forget. Going to swing another one and got the Nface trigger",
+        "timestamp": "2:11:16"
+      },
+      {
+        "row": 1013,
+        "text": "topsy decree as well. Is Oh, there's a coup in hand and and Tufu awakenings can't get there. Is Is there enough? He might fire. He might still fire it.",
+        "timestamp": "2:11:24"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "W_5i0aO5Es0.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Etsuko flips Suzaku and follows the attack with Suzaku’s Command, pushing hachico to 18 damage. She has only two cards left in hand for the return turn.",
+    "timestamp": {
+      "videoId": "W_5i0aO5Es0",
+      "seconds": 7964
+    },
+    "sourceRows": [
+      1022,
+      1025
+    ],
+    "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+    "source": [
+      {
+        "row": 1022,
+        "text": "can try and stay alive here Suzaku going to flip here going to flip the bird and then swing for four. There is a command but do you want to commit cards now?",
+        "timestamp": "2:12:44"
+      },
+      {
+        "row": 1023,
+        "text": "She is going to send it. Here is an additional eight damage into Hachiko putting him at 18 total and that means",
+        "timestamp": "2:12:56"
+      },
+      {
+        "row": 1024,
+        "text": "12 more will be game though she might be in danger here.",
+        "timestamp": "2:13:03"
+      },
+      {
+        "row": 1025,
+        "text": "Only two cards in hand means there's no threat to use that restorative flames.",
+        "timestamp": "2:13:08"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "W_5i0aO5Es0.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "ZutomayoEnjoyer uses Fracturize on Chalice of Blood, cutting bobolas’s draw as bobolas looks for Resolute Stand.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 2810
+    },
+    "sourceRows": [
+      327,
+      331
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 327,
+        "text": "Zuktoay and Joy. Now is there anything prereck? Maybe a freezing hail. Oh, we're fracturizing the chalice.",
+        "timestamp": "46:50"
+      },
+      {
+        "row": 328,
+        "text": "Oh, good though. that is an extra resource, but that is not two more cards. And even if it is essentially the a plus one versus a plus two, it's also just not being able to see more of your",
+        "timestamp": "46:59"
+      },
+      {
+        "row": 329,
+        "text": "deck. Look for those resolute stands, three damage, but not popping the poison dagger yet.",
+        "timestamp": "47:07"
+      },
+      {
+        "row": 330,
+        "text": "Yeah, I think doesn't knows he cannot kill yet this turn. Wants to just try and amass more allies here. But that means that Bobas has another chance to",
+        "timestamp": "47:12"
+      },
+      {
+        "row": 331,
+        "text": "try and go for game. That big guy going to swing in for a lot next turn.",
+        "timestamp": "47:19"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "ZutomayoEnjoyer removes Carter after stopping its cleave, then sends the remaining attacks at bobolas while keeping him below the Chalice of Blood threshold.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 4176
+    },
+    "sourceRows": [
+      513,
+      519
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 513,
+        "text": "Carter does indeed die. Recovers Mobile by one. Another 20 minutes left in the round to try and finish up this best of three. Of course, at this 521 score",
+        "timestamp": "1:09:36"
+      },
+      {
+        "row": 514,
+        "text": "line, I'm pretty sure you need four wins to make it to the top eight of today's event. And of course, that is what all of these players are looking for. Now",
+        "timestamp": "1:09:45"
+      },
+      {
+        "row": 515,
+        "text": "damage going to be pushed in from the Nia from the Kazy trapper and we'll see whether this frost one also pushes in the remaining two. Let's also remember",
+        "timestamp": "1:09:54"
+      },
+      {
+        "row": 516,
+        "text": "Bolas is about to hit the five Omen threshold which means he can start getting draws on every single attack.",
+        "timestamp": "1:10:02"
+      },
+      {
+        "row": 517,
+        "text": "This is part of that serial possessions at the five omen threshold when hit him up to 19. Let's see if chooses to try",
+        "timestamp": "1:10:08"
+      },
+      {
+        "row": 518,
+        "text": "and stop the chalice of blood. Doesn't want bubbles to get value if he brings out chalice of blood. Now due to Maya just goes okay fracturize just like last",
+        "timestamp": "1:10:15"
+      },
+      {
+        "row": 519,
+        "text": "game. Banjam armoir is an option will allow Bolas to pick this resolute stand back up. Pal still going to be",
+        "timestamp": "1:10:22"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-11-launtial-professor",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Launtial uses Topsy Decree against Slash and Burn, forcing a discard and cutting Professor’s herb gather to two. Both Ravenous Pyres remain in play.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 11809
+    },
+    "sourceRows": [
+      1539,
+      1542
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 1539,
+        "text": "Is Laio snooker now? Is this too far behind if he doesn't have expel the departed? Topsy topsy decree.",
+        "timestamp": "3:16:49"
+      },
+      {
+        "row": 1540,
+        "text": "Discard a card as well as banish two to stop the gathers. Still going to be able to gather two herbs here, but this is",
+        "timestamp": "3:16:56"
+      },
+      {
+        "row": 1541,
+        "text": "not stopping the ravenous pers's insane amount of damage. And you also use one of your precious spell shroud sources to",
+        "timestamp": "3:17:04"
+      },
+      {
+        "row": 1542,
+        "text": "stop gathering two or is that even worth it?",
+        "timestamp": "3:17:12"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Bhop plays Creative Shock and then Resolute Stand as Pulse recollects with an empty hand. Pulse turns to Numinous Monk for damage through the Stand.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 16848
+    },
+    "sourceRows": [
+      2222,
+      2228
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 2222,
+        "text": "is big. Rereck a recollecting with zero cards and B hop will take that opportunity to use that resolute stand.",
+        "timestamp": "4:40:48"
+      },
+      {
+        "row": 2223,
+        "text": "Prate of shock. Great of shock first into resolute stand. Prate of shock is going to draw two more cards here. Let's keep digging for more resolute stands.",
+        "timestamp": "4:40:56"
+      },
+      {
+        "row": 2224,
+        "text": "Finds another carter which is another potential. Of course, I think false is almost always going to be holding up some way of suppressing him, especially with the AA range field.",
+        "timestamp": "4:41:03"
+      },
+      {
+        "row": 2225,
+        "text": "Aya suppressing the Carter alone would be enough. So, we're counting it out. 13 14 damage.",
+        "timestamp": "4:41:13"
+      },
+      {
+        "row": 2226,
+        "text": "That's enough to put him up to child of blood range, but could also suppress here. So, it's going to be Resolute.",
+        "timestamp": "4:41:19"
+      },
+      {
+        "row": 2227,
+        "text": "Slam that Resolute here. Pulse has no way of negating this. No incapacitates, which means needs to completely rely on",
+        "timestamp": "4:41:23"
+      },
+      {
+        "row": 2228,
+        "text": "Numinous Monk to try and bring this game down here.",
+        "timestamp": "4:41:30"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Pulse chips in for three with Lorraine and Dungeon Guide. Bhop then uses Lost Providence to reload and find the resources for a Heavy Swing.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 18032
+    },
+    "sourceRows": [
+      2399,
+      2405
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 2399,
+        "text": "Three damage done to face with the dungeon guide with Lorraine herself. The man armoire is an option to be materialized. does need to come out eventually.",
+        "timestamp": "5:00:32"
+      },
+      {
+        "row": 2400,
+        "text": "Also has that gale bind. Could Gail bind maybe a Carter that's swinging to try and do some extra damage. An ally that's trying to poke in backup chargers. Oh,",
+        "timestamp": "5:00:42"
+      },
+      {
+        "row": 2401,
+        "text": "has to Oh, wow. Has to pop the Providence here, meaning the double. Oh, Resolute Stand has been found. We're just looking for damage here.",
+        "timestamp": "5:00:51"
+      },
+      {
+        "row": 2402,
+        "text": "Maybe we're going for the heavy swing line. We have enough hand for it now. That is a lot of damage. 20 10 damage now.",
+        "timestamp": "5:00:58"
+      },
+      {
+        "row": 2403,
+        "text": "And can hold up the resolute free play. Three cards down. One card down.",
+        "timestamp": "5:01:05"
+      },
+      {
+        "row": 2404,
+        "text": "Put the resolute down. Okay. Six damage.",
+        "timestamp": "5:01:12"
+      },
+      {
+        "row": 2405,
+        "text": "Seven damage. That's going to put Paul needs 11. Has a foo in hand. Doesn't have the Manshome. Doesn't have enough omens to activate Omen bringinger.",
+        "timestamp": "5:01:16"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Bhop banishes Carter while leveling to Ciel, Mirage’s Grave. Short on cards, he loses the chance to use Carter to clear Yamikin’s allies.",
+    "timestamp": {
+      "videoId": "qQrV2I2Uiac",
+      "seconds": 28067
+    },
+    "sourceRows": [
+      3493,
+      3495
+    ],
+    "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+    "source": [
+      {
+        "row": 3493,
+        "text": "completely on the back foot here. Carter actually getting banished on the level up. going to go up to three and it kind of has to just like bluff on a resolute stand to try and stay in this game.",
+        "timestamp": "7:47:47"
+      },
+      {
+        "row": 3494,
+        "text": "Might even have to foo to kill allies.",
+        "timestamp": "7:47:57"
+      },
+      {
+        "row": 3495,
+        "text": "Well, five damage on board if he doesn't clear anything. Obviously, he can clear the RCOO or the hair with the dungeon guide. So, four damage coming the other",
+        "timestamp": "7:48:00"
+      }
+    ],
+    "review": "melbourne-three-play-expansion",
+    "sourceFile": "qQrV2I2Uiac.json"
   }
 ]
