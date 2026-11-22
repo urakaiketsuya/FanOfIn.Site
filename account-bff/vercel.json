@@ -11,6 +11,9 @@
     },
     "api/deck-page.ts": {
       "maxDuration": 30
+    },
+    "api/tts-deck.ts": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
@@ -21,6 +24,10 @@
     {
       "source": "/render/decks/:slug",
       "destination": "/api/deck-page?slug=:slug"
+    },
+    {
+      "source": "/v1/tts/decks/:slug",
+      "destination": "/api/tts-deck?slug=:slug"
     },
     {
       "source": "/share/decks/:slug/image.png",
