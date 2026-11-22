@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T21:36:13.201Z",
+  "generatedAt": "2026-11-22T21:44:39.293Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -73,6 +73,19 @@
             {
               "order": 3,
               "actor": "p1",
+              "text": "Z3US materializes Everflame Staff. The Firebloom Flourish triggers have already charged it for four damage, giving him a threat during Schwarzer’s next materialization.",
+              "cards": [
+                "Everflame Staff",
+                "Firebloom Flourish"
+              ],
+              "timestamp": {
+                "videoId": "bfhumlDXjrE",
+                "seconds": 1866
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
               "text": "As Schwarzer attempts to materialize Tristan, Hired Blade, Z3US uses Shimmering Refraction and Everflame Staff for four damage each. The eight damage ends the game before Tristan gains the level-two life total.",
               "cards": [
                 "Shimmering Refraction",
@@ -117,6 +130,20 @@
             },
             {
               "order": 2,
+              "actor": "p2",
+              "text": "Schwarzer brings out Windwalker Boots. Its end-of-turn preparation counter and Sadi’s return to hand set up a Slice and Dice threat for the next turn.",
+              "cards": [
+                "Windwalker Boots",
+                "Sadi, Blood Harvester",
+                "Slice and Dice"
+              ],
+              "timestamp": {
+                "videoId": "bfhumlDXjrE",
+                "seconds": 2557
+              }
+            },
+            {
+              "order": 3,
               "actor": "p1",
               "text": "A second Scatter Essence removes Z3US’s next Firebloom Flourish, but Fractal of Sparks, Fanatical Devotee and Acolyte of Cultivation keep dealing damage. Schwarzer develops preparation counters, levels through Dungeon Guide and materializes Shadow’s Claw. Searing Rebuke stops him committing to the attack line; Z3US recovers with Fast Cure and later materializes Tariff Ring.",
               "cards": [
@@ -139,7 +166,32 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
+              "actor": "p1",
+              "text": "Z3US materializes Censer of Restful Peace, cutting off Schwarzer’s floating memory as Tristan prepares to level again.",
+              "cards": [
+                "Censer of Restful Peace"
+              ],
+              "timestamp": {
+                "videoId": "bfhumlDXjrE",
+                "seconds": 2706
+              }
+            },
+            {
+              "order": 5,
+              "actor": "p1",
+              "text": "Z3US uses Cinder Geyser to force Schwarzer to spend Safeguard Amulet, removing one layer of protection before the next attacks.",
+              "cards": [
+                "Cinder Geyser",
+                "Safeguard Amulet"
+              ],
+              "timestamp": {
+                "videoId": "bfhumlDXjrE",
+                "seconds": 2953
+              }
+            },
+            {
+              "order": 6,
               "actor": "p1",
               "text": "Schwarzer redirects an attack, then negates Searing Rebuke with Incapacitate as he materializes Censer of Restful Peace. The spent cards and preparation counters leave him short of lethal. On Z3US’s next turn, Schwarzer uses Innervate Agility and chooses stealth. Z3US plays another Searing Rebuke and targets himself with Fractal of Sparks, dealing the final three damage to Tristan after the delevel reduces his life total.",
               "cards": [

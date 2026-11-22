@@ -42912,7 +42912,7 @@
   {
     "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "As Schwarzer attempts to materialize Tristan, Hired Blade, Z3US uses Shimmering Refraction and Everflame Staff for four damage each. The eight damage ends the game before Tristan gains the level-two life total.",
     "timestamp": {
       "videoId": "bfhumlDXjrE",
@@ -43355,7 +43355,7 @@
   {
     "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "A second Scatter Essence removes Z3US’s next Firebloom Flourish, but Fractal of Sparks, Fanatical Devotee and Acolyte of Cultivation keep dealing damage. Schwarzer develops preparation counters, levels through Dungeon Guide and materializes Shadow’s Claw. Searing Rebuke stops him committing to the attack line; Z3US recovers with Fast Cure and later materializes Tariff Ring.",
     "timestamp": {
       "videoId": "bfhumlDXjrE",
@@ -44064,7 +44064,7 @@
   {
     "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
     "gameNumber": 2,
-    "order": 3,
+    "order": 6,
     "text": "Schwarzer redirects an attack, then negates Searing Rebuke with Incapacitate as he materializes Censer of Restful Peace. The spent cards and preparation counters leave him short of lethal. On Z3US’s next turn, Schwarzer uses Innervate Agility and chooses stealth. Z3US plays another Searing Rebuke and targets himself with Fractal of Sparks, dealing the final three damage to Tristan after the delevel reduces his life total.",
     "timestamp": {
       "videoId": "bfhumlDXjrE",
@@ -189922,5 +189922,246 @@
     ],
     "review": "manila-three-play-expansion",
     "sourceFile": "Ascent Manila Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Z3US materializes Everflame Staff. The Firebloom Flourish triggers have already charged it for four damage, giving him a threat during Schwarzer’s next materialization.",
+    "timestamp": {
+      "videoId": "bfhumlDXjrE",
+      "seconds": 1866
+    },
+    "sourceRows": [
+      962,
+      970
+    ],
+    "sourceSha256": "e119073928d845908bdb830566124fddcadba9f8f543c2ae906083110c898ffe",
+    "source": [
+      {
+        "row": 962,
+        "timestamp": "31:06",
+        "text": "we've got Zeus here materializes the"
+      },
+      {
+        "row": 963,
+        "timestamp": "31:07",
+        "text": "everflame staff so each the fire"
+      },
+      {
+        "row": 964,
+        "timestamp": "31:10",
+        "text": "flourishes at the start of recollection."
+      },
+      {
+        "row": 965,
+        "timestamp": "31:11",
+        "text": "They count they each count as a spell."
+      },
+      {
+        "row": 966,
+        "timestamp": "31:13",
+        "text": "So he's already triggered the three."
+      },
+      {
+        "row": 967,
+        "timestamp": "31:15",
+        "text": ">> Yeah, exactly. The everflame staff just"
+      },
+      {
+        "row": 968,
+        "timestamp": "31:17",
+        "text": "ends up being a zerocost for damage"
+      },
+      {
+        "row": 969,
+        "timestamp": "31:20",
+        "text": "activation, which is how this deck is"
+      },
+      {
+        "row": 970,
+        "timestamp": "31:22",
+        "text": "able to just push so much damage so"
+      }
+    ],
+    "review": "akihabara-three-play-expansion",
+    "sourceFile": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
+  },
+  {
+    "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Schwarzer brings out Windwalker Boots. Its end-of-turn preparation counter and Sadi’s return to hand set up a Slice and Dice threat for the next turn.",
+    "timestamp": {
+      "videoId": "bfhumlDXjrE",
+      "seconds": 2557
+    },
+    "sourceRows": [
+      1337,
+      1346
+    ],
+    "sourceSha256": "e119073928d845908bdb830566124fddcadba9f8f543c2ae906083110c898ffe",
+    "source": [
+      {
+        "row": 1337,
+        "timestamp": "42:37",
+        "text": "going to see the Windalker boots coming"
+      },
+      {
+        "row": 1338,
+        "timestamp": "42:38",
+        "text": "down being able to start building that"
+      },
+      {
+        "row": 1339,
+        "timestamp": "42:40",
+        "text": "preparation counters. Look at the math"
+      },
+      {
+        "row": 1340,
+        "timestamp": "42:41",
+        "text": "here. Right now, we are already going to"
+      },
+      {
+        "row": 1341,
+        "timestamp": "42:44",
+        "text": "the point we're going to be slice and"
+      },
+      {
+        "row": 1342,
+        "timestamp": "42:45",
+        "text": "dice ready next turn with the uh boots"
+      },
+      {
+        "row": 1343,
+        "timestamp": "42:48",
+        "text": "giving a preparation counter to end turn"
+      },
+      {
+        "row": 1344,
+        "timestamp": "42:50",
+        "text": "and then the sadi being able to be"
+      },
+      {
+        "row": 1345,
+        "timestamp": "42:51",
+        "text": "returned to hand for an additional"
+      },
+      {
+        "row": 1346,
+        "timestamp": "42:52",
+        "text": "preparation counter."
+      }
+    ],
+    "review": "akihabara-three-play-expansion",
+    "sourceFile": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
+  },
+  {
+    "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Z3US materializes Censer of Restful Peace, cutting off Schwarzer’s floating memory as Tristan prepares to level again.",
+    "timestamp": {
+      "videoId": "bfhumlDXjrE",
+      "seconds": 2706
+    },
+    "sourceRows": [
+      1420,
+      1425
+    ],
+    "sourceSha256": "e119073928d845908bdb830566124fddcadba9f8f543c2ae906083110c898ffe",
+    "source": [
+      {
+        "row": 1420,
+        "timestamp": "45:06",
+        "text": "own."
+      },
+      {
+        "row": 1421,
+        "timestamp": "45:06",
+        "text": ">> Yeah. So we got here Zeus materializing"
+      },
+      {
+        "row": 1422,
+        "timestamp": "45:08",
+        "text": "the sensor of wrist piece. That's going"
+      },
+      {
+        "row": 1423,
+        "timestamp": "45:10",
+        "text": "to stop the uh uh disable the floating"
+      },
+      {
+        "row": 1424,
+        "timestamp": "45:12",
+        "text": "memory. Here we've got the so uh fractal"
+      },
+      {
+        "row": 1425,
+        "timestamp": "45:15",
+        "text": "spark. Sorry. Uh yeah, fractal sparks"
+      }
+    ],
+    "review": "akihabara-three-play-expansion",
+    "sourceFile": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
+  },
+  {
+    "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+    "gameNumber": 2,
+    "order": 5,
+    "text": "Z3US uses Cinder Geyser to force Schwarzer to spend Safeguard Amulet, removing one layer of protection before the next attacks.",
+    "timestamp": {
+      "videoId": "bfhumlDXjrE",
+      "seconds": 2953
+    },
+    "sourceRows": [
+      1559,
+      1566
+    ],
+    "sourceSha256": "e119073928d845908bdb830566124fddcadba9f8f543c2ae906083110c898ffe",
+    "source": [
+      {
+        "row": 1559,
+        "timestamp": "49:13",
+        "text": "have the demolition here. I believe that"
+      },
+      {
+        "row": 1560,
+        "timestamp": "49:14",
+        "text": "is a sorry cynergis. Synergiser here"
+      },
+      {
+        "row": 1561,
+        "timestamp": "49:17",
+        "text": "forcing the pop of the uh safeguard"
+      },
+      {
+        "row": 1562,
+        "timestamp": "49:19",
+        "text": "amulet. And now Zeus is going to"
+      },
+      {
+        "row": 1563,
+        "timestamp": "49:22",
+        "text": "potentially try and play into another"
+      },
+      {
+        "row": 1564,
+        "timestamp": "49:24",
+        "text": "lethal play here. But that intervate"
+      },
+      {
+        "row": 1565,
+        "timestamp": "49:25",
+        "text": "agility might be the thing that keeps"
+      },
+      {
+        "row": 1566,
+        "timestamp": "49:26",
+        "text": "Schwarzer alive. Schwarzer's going all"
+      }
+    ],
+    "review": "akihabara-three-play-expansion",
+    "sourceFile": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
   }
 ]

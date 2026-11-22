@@ -107,3 +107,19 @@ original transcript filename, SHA-256, zero-based inclusive rows, and excerpts.
 
 The replay card callout identifies Beastsoul Visage in Round 13. The transcript
 captures the attack into Fluffy Shopkeep and the Resolute Stand response.
+
+## Ascent Akihabara three-play review
+
+Reviewed both games of Z3US vs. Schwarzer in Round 9 using the transcript for
+the [standalone match replay](https://www.youtube.com/watch?v=bfhumlDXjrE).
+The player displayed 1:04:17–1:04:18 and the final transcript caption starts
+at 1:03:59. Each cue opened at the requested clock on the Round 9 table.
+Times are relative to this match upload. The evidence JSON retains the
+transcript filename, SHA-256, zero-based inclusive rows, and caption excerpts.
+
+| Game | Replay cue | Turning point |
+| --- | --- | --- |
+| 1 | [31:06](https://www.youtube.com/watch?v=bfhumlDXjrE&t=1866s) | Firebloom Flourish has already charged Everflame Staff when Z3US materializes it. |
+| 2 | [42:37](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2557s) | Windwalker Boots and Sadi give Schwarzer a path to the preparation counters needed for Slice and Dice. |
+| 2 | [45:06](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2706s) | Z3US deploys Censer of Restful Peace to cut off floating memory. |
+| 2 | [49:13](https://www.youtube.com/watch?v=bfhumlDXjrE&t=2953s) | Cinder Geyser forces Schwarzer to spend Safeguard Amulet before the next attacks. |
