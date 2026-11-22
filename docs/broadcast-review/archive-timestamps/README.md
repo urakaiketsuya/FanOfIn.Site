@@ -164,3 +164,28 @@ Polaris, ally-clear and Shadowstrike sequences. The quarterfinal already
 covers the Cloudstriker and Razorgale pivots. The semifinal opener's proposed
 Polaris line remains uncertain. The final already covers Magistrate, the
 survival and Seiryuu sequences, and the decisive wind chains.
+
+## Ascent Auckland three-play recap review
+
+Reviewed 16 games across ten matches. The [Day 1 replay](https://www.youtube.com/watch?v=6XU9azcBukk)
+runs 10:58:16 through the final cached caption at 10:57:45. The
+[Day 2 replay](https://www.youtube.com/watch?v=idcMDSZRmIE) runs 11:54:59
+through the final cached caption at 11:53:47. All four additions use the
+original clock and were checked in playback. The source filenames, SHA-256
+hashes and zero-based caption ranges are in `beat-timestamps.json`.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| Nathan vs OneEyedOwl, game 2 | [10:35:29](https://www.youtube.com/watch?v=6XU9azcBukk&t=38129s) | Stifling Trap and Incapacitate contest Sadi's trigger. The casters count four fewer preparation counters afterward. |
+| Dragowil vs LegitJesusKun, game 1 | [4:19:11](https://www.youtube.com/watch?v=idcMDSZRmIE&t=15551s) | The level-up costs LegitJesusKun a Dungeon Guide and Sadi's two draws both find Reclaim. |
+| TeamTrueCaban vs Dragowil, semifinal game 3 | [9:57:53](https://www.youtube.com/watch?v=idcMDSZRmIE&t=35873s) | Clarent comes down with two swords to banish. The casters later count four swords in banishment. |
+| Emp vs TeamTrueCaban, final game 3 | [11:13:48](https://www.youtube.com/watch?v=idcMDSZRmIE&t=40428s) | The second Bagua glimpse finds Three Visits and Veiling Breeze and leaves those draws on top while Emp is at six life. |
+
+Twelve games stayed at three plays. Round 1 game one and round 2 game two
+already cover the board pressure and finishing damage. Both Sherlock–endYR
+games cover the Genbu board or the Razorgale recovery. Pulse–Johnbed game
+three and Lifdrasyl–ShingTsang game two cover the key defensive and
+disruption sequences. Round 12 game two and both quarterfinal games cover
+the relevant resource exchanges and finishes. Semifinal game two already
+captures the loss of both Ghosts and the counter denial. Finals games one
+and two retain the weapon disruption and the decisive Devastating Blows.

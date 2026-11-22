@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T21:55:31.775Z",
+  "generatedAt": "2026-11-22T22:01:57.199Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -27192,6 +27192,21 @@
             },
             {
               "order": 2,
+              "actor": "both",
+              "text": "Stifling Trap catches Sadi’s trigger, and the ensuing Incapacitate exchange drains responses. OneEyedOwl loses four preparation counters, weakening the threat of Mastermind Scheme.",
+              "cards": [
+                "Stifling Trap",
+                "Sadi, Blood Harvester",
+                "Incapacitate",
+                "Mastermind Scheme"
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 38129
+              }
+            },
+            {
+              "order": 3,
               "actor": "p1",
               "text": "Nathan chips with Mercenary's Blade, then Scout the Land finds Reclaim. Returning Dungeon Guide supplies the extra card needed for the finish.",
               "cards": [
@@ -27206,7 +27221,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Blinding Orb and Lightweaver’s Assault complete the exact-damage line.",
               "cards": [
@@ -27642,6 +27657,20 @@
             {
               "order": 2,
               "actor": "p2",
+              "text": "LegitJesusKun loses one Dungeon Guide on the level-up but uses Sadi to reach four preparation counters. The two draws are both Reclaim, leaving Dragowil’s pressure in place.",
+              "cards": [
+                "Dungeon Guide",
+                "Sadi, Blood Harvester",
+                "Reclaim"
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 15551
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
               "text": "LegitJesusKun uses Incapacitate on Crux Sight, allowing Dragowil’s subsequent Ascension line through.",
               "cards": [
                 "Incapacitate",
@@ -27653,7 +27682,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Dragowil shows two Fireballs; LegitJesusKun concedes.",
               "cards": [
@@ -27995,6 +28024,18 @@
             {
               "order": 2,
               "actor": "p1",
+              "text": "Caban brings out Clarent, Reimagined with two swords already available to banish. He keeps adding swords to banishment, making Clarent a growing damage threat.",
+              "cards": [
+                "Clarent, Reimagined"
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 35873
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
               "text": "Surreptitious Scheme removes Merlin’s level counter while Ghosts of Pendragon keep the board and hand stocked.",
               "cards": [
                 "Surreptitious Scheme",
@@ -28006,7 +28047,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Spirit Blade: Ascension brings in Prismatic Edge for damage. Devastating Blow then finishes through the remaining defenses.",
               "cards": [
@@ -28176,6 +28217,19 @@
             },
             {
               "order": 3,
+              "actor": "p1",
+              "text": "At six life remaining, EMP glimpses Three Visits and Veiling Breeze with a second Bagua activation. He keeps them on top, setting up recovery and defense before the finishing burst.",
+              "cards": [
+                "Three Visits",
+                "Veiling Breeze"
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 40428
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Ventus and Cyclical Breeze extend the Tempest Downfall chain. Three Tempest copies plus the replay deliver the title-winning burst.",
               "cards": [

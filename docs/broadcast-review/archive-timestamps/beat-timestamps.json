@@ -36542,7 +36542,7 @@
   {
     "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Nathan chips with Mercenary's Blade, then Scout the Land finds Reclaim. Returning Dungeon Guide supplies the extra card needed for the finish.",
     "timestamp": {
       "videoId": "6XU9azcBukk",
@@ -38172,7 +38172,7 @@
   {
     "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
     "gameNumber": 1,
-    "order": 2,
+    "order": 3,
     "text": "LegitJesusKun uses Incapacitate on Crux Sight, allowing Dragowil’s subsequent Ascension line through.",
     "timestamp": {
       "videoId": "idcMDSZRmIE",
@@ -38279,7 +38279,7 @@
   {
     "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "Dragowil shows two Fireballs; LegitJesusKun concedes.",
     "timestamp": {
       "videoId": "idcMDSZRmIE",
@@ -39815,7 +39815,7 @@
   {
     "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Surreptitious Scheme removes Merlin’s level counter while Ghosts of Pendragon keep the board and hand stocked.",
     "timestamp": {
       "videoId": "idcMDSZRmIE",
@@ -39857,7 +39857,7 @@
   {
     "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Spirit Blade: Ascension brings in Prismatic Edge for damage. Devastating Blow then finishes through the remaining defenses.",
     "timestamp": {
       "videoId": "idcMDSZRmIE",
@@ -40491,7 +40491,7 @@
   {
     "matchId": "ascent-auckland-2025-final-emp-teamtruecaban",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Ventus and Cyclical Breeze extend the Tempest Downfall chain. Three Tempest copies plus the replay deliver the title-winning burst.",
     "timestamp": {
       "videoId": "idcMDSZRmIE",
@@ -170980,7 +170980,7 @@
   {
     "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Blinding Orb and Lightweaver’s Assault complete the exact-damage line.",
     "timestamp": {
       "videoId": "6XU9azcBukk",
@@ -190785,5 +190785,381 @@
     ],
     "review": "niagara-three-play-expansion",
     "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Stifling Trap catches Sadi’s trigger, and the ensuing Incapacitate exchange drains responses. OneEyedOwl loses four preparation counters, weakening the threat of Mastermind Scheme.",
+    "timestamp": {
+      "videoId": "6XU9azcBukk",
+      "seconds": 38129
+    },
+    "sourceRows": [
+      4822,
+      4836
+    ],
+    "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+    "source": [
+      {
+        "row": 4822,
+        "timestamp": "10:35:29",
+        "text": "No way of bouncing this back to hand to reuse it potentially. Oh, snipling trapped the Sadi."
+      },
+      {
+        "row": 4823,
+        "timestamp": "10:35:37",
+        "text": "Yeah, but he can just return the SD to hand. Look at that smile on his face."
+      },
+      {
+        "row": 4824,
+        "timestamp": "10:35:41",
+        "text": "He can just return sad to hand and just play it again."
+      },
+      {
+        "row": 4825,
+        "timestamp": "10:35:43",
+        "text": "Yeah, he could he could play it again and do it again. Or you could actually just kill it. I mean, he could Yeah, hit the sad. Or I would if he's just going to play it again."
+      },
+      {
+        "row": 4826,
+        "timestamp": "10:35:53",
+        "text": "I mean like that's that's another three cards down."
+      },
+      {
+        "row": 4827,
+        "timestamp": "10:35:56",
+        "text": "Yeah, but you do get agility trigger. So essentially paying for itself. Yeah."
+      },
+      {
+        "row": 4828,
+        "timestamp": "10:36:01",
+        "text": "I mean we still get the we still get the bluff that incapacitate. So yeah, but I think the regal is going to resolve here because he only has one in capacity. He's going incapacitate incapacitate."
+      },
+      {
+        "row": 4829,
+        "timestamp": "10:36:10",
+        "text": "So he's got another one. Oh [laughter] my god. He really doesn't want to give him that."
+      },
+      {
+        "row": 4830,
+        "timestamp": "10:36:17",
+        "text": "Yeah, I think he really wants to pull off as if if however if however like um so cipher trap if he"
+      },
+      {
+        "row": 4831,
+        "timestamp": "10:36:24",
+        "text": "forces him to use the um yeah incapacitate next turn one at he's he can use his uh regal positions without cuz I don't think yeah Nathan doesn't"
+      },
+      {
+        "row": 4832,
+        "timestamp": "10:36:32",
+        "text": "have a second one in the memory so he he can either just force the encap here yeah but I think in the best I mean like"
+      },
+      {
+        "row": 4833,
+        "timestamp": "10:36:40",
+        "text": "in the best option he best option would probably just just get this back or just leave it just let it"
+      },
+      {
+        "row": 4834,
+        "timestamp": "10:36:47",
+        "text": "I mean, Sadi, it's an important card, but you're already level three."
+      },
+      {
+        "row": 4835,
+        "timestamp": "10:36:52",
+        "text": "That one just went minus four prep counters."
+      },
+      {
+        "row": 4836,
+        "timestamp": "10:36:54",
+        "text": "Yes, four. That's That's a lot. So, you know, the the thresholds for our mastermind schemes are definitely much lower now. Going to use that surveil here."
+      }
+    ],
+    "review": "auckland-three-play-expansion",
+    "sourceFile": "6XU9azcBukk.json"
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "LegitJesusKun loses one Dungeon Guide on the level-up but uses Sadi to reach four preparation counters. The two draws are both Reclaim, leaving Dragowil’s pressure in place.",
+    "timestamp": {
+      "videoId": "idcMDSZRmIE",
+      "seconds": 15551
+    },
+    "sourceRows": [
+      2095,
+      2098
+    ],
+    "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+    "source": [
+      {
+        "row": 2095,
+        "timestamp": "4:19:11",
+        "text": "Hey, legit. You're going to lose a dungeon guy. He had two of them, so he's fine."
+      },
+      {
+        "row": 2096,
+        "timestamp": "4:19:15",
+        "text": "Yep. Two cards with Sadi. Going to full prep. Draw two. Reclaim and reclaim."
+      },
+      {
+        "row": 2097,
+        "timestamp": "4:19:23",
+        "text": "Hey, we are reclaiming. We are like really reclaiming. Yeah."
+      },
+      {
+        "row": 2098,
+        "timestamp": "4:19:27",
+        "text": "So, I think I think Drago is in a great spot. He It's unlikely that Legit can get rid of all these. I mean, obviously, the Cheshure he's not getting rid of, but"
+      }
+    ],
+    "review": "auckland-three-play-expansion",
+    "sourceFile": "idcMDSZRmIE.json"
+  },
+  {
+    "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Caban brings out Clarent, Reimagined with two swords already available to banish. He keeps adding swords to banishment, making Clarent a growing damage threat.",
+    "timestamp": {
+      "videoId": "idcMDSZRmIE",
+      "seconds": 35873
+    },
+    "sourceRows": [
+      4643,
+      4677
+    ],
+    "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+    "source": [
+      {
+        "row": 4643,
+        "timestamp": "9:57:53",
+        "text": "You're in threat of some big damage here. Clarin coming down getting rid of two swords."
+      },
+      {
+        "row": 4644,
+        "timestamp": "9:58:00",
+        "text": "Has another DG right in hand. I think Cable looking very strong in this. Mhm."
+      },
+      {
+        "row": 4645,
+        "timestamp": "9:58:05",
+        "text": "Mhm. I believe a home by fire is in hand too as well. Looking for a response window."
+      },
+      {
+        "row": 4646,
+        "timestamp": "9:58:15",
+        "text": "Ruin swordman is in hand. All right. Craft shock in response. Might as well."
+      },
+      {
+        "row": 4647,
+        "timestamp": "9:58:23",
+        "text": "Let me look at some more cards. DG."
+      },
+      {
+        "row": 4648,
+        "timestamp": "9:58:29",
+        "text": "DG's nice. Flame. Oh, flame swordsman there. Yeah. Drop it down. Right. 2D champ."
+      },
+      {
+        "row": 4649,
+        "timestamp": "9:58:37",
+        "text": "Yeah, using CL. Yep. Cool. That's very smart."
+      },
+      {
+        "row": 4650,
+        "timestamp": "9:58:59",
+        "text": "Okay. Over to now true cabin. Is that a fast cure? It's a fast cure."
+      },
+      {
+        "row": 4651,
+        "timestamp": "9:59:06",
+        "text": "Fast cure being played. It's the alternate art. We got the heal there and the floating."
+      },
+      {
+        "row": 4652,
+        "timestamp": "9:59:13",
+        "text": "I thought it was ascent. It's a fast cure, guys. Oh, right."
+      },
+      {
+        "row": 4653,
+        "timestamp": "9:59:17",
+        "text": "I thought I was I thought it was an ascension for some reason. Yeah, it's a fast cure."
+      },
+      {
+        "row": 4654,
+        "timestamp": "9:59:21",
+        "text": "I'm sorry. Mhm. Fast score. So, he got the fast, got the recover because he had lower influence. Good use, but I don't think it's enough."
+      },
+      {
+        "row": 4655,
+        "timestamp": "9:59:27",
+        "text": "You're in spicy spot here. I think like Gavin's counting for lethal, man. Can he get there?"
+      },
+      {
+        "row": 4656,
+        "timestamp": "9:59:35",
+        "text": "What is it like? Uh 18 damage. 17 damage."
+      },
+      {
+        "row": 4657,
+        "timestamp": "9:59:38",
+        "text": "So what I'm looking at here 17 is not crazy. Can he he DG it and then get the kill?"
+      },
+      {
+        "row": 4658,
+        "timestamp": "9:59:42",
+        "text": "Three four five. No, he's already got he's already level two on that one. Yeah."
+      },
+      {
+        "row": 4659,
+        "timestamp": "9:59:45",
+        "text": "So yeah. So three or five to 10. All cards are down."
+      },
+      {
+        "row": 4660,
+        "timestamp": "9:59:55",
+        "text": "DG Ascension. You got to put the pressure on one. fighting memory on Drago's side."
+      },
+      {
+        "row": 4661,
+        "timestamp": "10:00:06",
+        "text": "This is tough."
+      },
+      {
+        "row": 4662,
+        "timestamp": "10:00:15",
+        "text": "Something's some judge calls here or something coming through."
+      },
+      {
+        "row": 4663,
+        "timestamp": "10:00:24",
+        "text": "Something has been missed. I'm being something to do with the claron I think."
+      },
+      {
+        "row": 4664,
+        "timestamp": "10:00:37",
+        "text": "Ah, yes. Now we're just checking. So the the previous creative shock."
+      },
+      {
+        "row": 4665,
+        "timestamp": "10:00:42",
+        "text": "Yeah, the creative shock. No. So basically creative shock cable was not able to use the clar in response to the flame the the damage from the fl from"
+      },
+      {
+        "row": 4666,
+        "timestamp": "10:00:51",
+        "text": "the flame room swordsman. You have to respond before creative shock resolves. Right."
+      },
+      {
+        "row": 4667,
+        "timestamp": "10:00:57",
+        "text": "Yeah. So they basically they've rewinded it that uh they've rewound so that CB will um gets his third counter back uh third dribbling counter back and he will just take the two damage. He was not"
+      },
+      {
+        "row": 4668,
+        "timestamp": "10:01:05",
+        "text": "able to actually respond then uh after God the guy there's so many people watching this rules. Thank you for all the players who are watching this. You"
+      },
+      {
+        "row": 4669,
+        "timestamp": "10:01:12",
+        "text": "know those little ink is going to be so missed."
+      },
+      {
+        "row": 4670,
+        "timestamp": "10:01:17",
+        "text": "Puts a little damage on but still pressure is on. Puts him to nine."
+      },
+      {
+        "row": 4671,
+        "timestamp": "10:01:29",
+        "text": "These games are hella spicy if you're playing at home. I mean, you're in such a strong spot."
+      },
+      {
+        "row": 4672,
+        "timestamp": "10:01:35",
+        "text": "You've got allies on board. You don't have to deal with pen dragons. You know, level three can come. There's a bit of float on Drago's side."
+      },
+      {
+        "row": 4673,
+        "timestamp": "10:01:41",
+        "text": "I think he's great play. I mean, he loves the fluffy shopkeep. It adds more swords. He gets that intercept. We saw how much Drago struggles to get through if he doesn't get those dragons down."
+      },
+      {
+        "row": 4674,
+        "timestamp": "10:01:50",
+        "text": "All right, draw blade back up. Nice."
+      },
+      {
+        "row": 4675,
+        "timestamp": "10:01:55",
+        "text": "You're drawn to memory. Nearly missed that trigger. Good on board too."
+      },
+      {
+        "row": 4676,
+        "timestamp": "10:02:05",
+        "text": "Swing. Yep. Two damage to face. Boom. Four swords."
+      },
+      {
+        "row": 4677,
+        "timestamp": "10:02:12",
+        "text": "Four swords. Yeah, four swords of banishment making his clar hits even harder."
+      }
+    ],
+    "review": "auckland-three-play-expansion",
+    "sourceFile": "idcMDSZRmIE.json"
+  },
+  {
+    "matchId": "ascent-auckland-2025-final-emp-teamtruecaban",
+    "gameNumber": 3,
+    "order": 3,
+    "text": "At six life remaining, EMP glimpses Three Visits and Veiling Breeze with a second Bagua activation. He keeps them on top, setting up recovery and defense before the finishing burst.",
+    "timestamp": {
+      "videoId": "idcMDSZRmIE",
+      "seconds": 40428
+    },
+    "sourceRows": [
+      5245,
+      5250
+    ],
+    "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+    "source": [
+      {
+        "row": 5245,
+        "timestamp": "11:13:48",
+        "text": "22nd glimpsing again. Three visits. Veiling Breeze. Heals defense. Going to keep all three on top."
+      },
+      {
+        "row": 5246,
+        "timestamp": "11:13:56",
+        "text": "Wow, that's lucky. We loves that. Thank you."
+      },
+      {
+        "row": 5247,
+        "timestamp": "11:14:00",
+        "text": "You know why I even bother stacking the deck? I knew I was just going to if I was going to just draw these three."
+      },
+      {
+        "row": 5248,
+        "timestamp": "11:14:05",
+        "text": "Draw for turn. Getting deeper and deeper."
+      },
+      {
+        "row": 5249,
+        "timestamp": "11:14:09",
+        "text": "really need to hope that Cain can find some source of very tall damage here because most assuredly his veiling is"
+      },
+      {
+        "row": 5250,
+        "timestamp": "11:14:17",
+        "text": "going to take a big big take big take a big stop at this turn. Zephyr Zephr also a big concern. You know, if you ever try"
+      }
+    ],
+    "review": "auckland-three-play-expansion",
+    "sourceFile": "idcMDSZRmIE.json"
   }
 ]
