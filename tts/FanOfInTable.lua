@@ -39,6 +39,13 @@ local ZONE_LAYOUT = {
 -- The importer asks for "main"; the deck zone holds it.
 local ZONE_ALIAS = { main = "deck" }
 local GLIMPSE_LOCAL = { lx = 0, lz = -8 }
+-- Hand zone and damage counter sit on the player's side of the mat.
+local HAND_LAYOUT = { lx = 0, lz = -12.5, sx = 20, sy = 8, sz = 5 }
+local COUNTER_LAYOUT = { lx = 11, lz = -9.5 }
+local SEAT_COLORS = {
+  Red = { r = 0.856, g = 0.10, b = 0.094 }, Blue = { r = 0.118, g = 0.53, b = 1.0 },
+  Green = { r = 0.192, g = 0.701, b = 0.168 }, Purple = { r = 0.627, g = 0.125, b = 0.941 },
+}
 local RECOLLECT = { from = "memory", to = "hand" }
 
 -- Status markers: one colored marker per status, named on the object. No art is needed.
@@ -64,7 +71,7 @@ local STATUS_TOKENS = {
 
 -- ===== State =====
 local zones = {}        -- zones[color][key] = guid
-local mats = {}         -- list of playmat guids
+local mats = {}         -- list of playmat, hand zone and counter guids
 local glimpsed = {}     -- glimpsed[color] = list of card objects, top first
 
 local function seatsForMode() return SEATS_BY_MODE[FOI.mode] or SEATS_BY_MODE[2] end
@@ -156,11 +163,49 @@ local function spawnZones(seat)
   end
 end
 
+--- A hand zone owned by the seat color. Owner is set with FogColor, as in saved TTS tables.
+local function spawnHand(seat)
+  local point = toWorld(seat, HAND_LAYOUT.lx, HAND_LAYOUT.lz)
+  local tint = SEAT_COLORS[seat.color] or { r = 1, g = 1, b = 1 }
+  local object = spawnObjectJSON({ json = JSON.encode({
+    Name = "HandTrigger",
+    Nickname = "Hand (" .. seat.color .. ")",
+    Locked = true,
+    FogColor = seat.color,
+    ColorDiffuse = { r = tint.r, g = tint.g, b = tint.b, a = 0 },
+    Transform = {
+      posX = point.x, posY = 4, posZ = point.z, rotX = 0, rotY = seat.rot, rotZ = 0,
+      scaleX = HAND_LAYOUT.sx, scaleY = HAND_LAYOUT.sy, scaleZ = HAND_LAYOUT.sz,
+    },
+  }) })
+  if object then table.insert(mats, object.getGUID()) end
+end
+
+--- One damage counter per seat, for the champion.
+local function spawnCounter(seat)
+  local point = toWorld(seat, COUNTER_LAYOUT.lx, COUNTER_LAYOUT.lz)
+  local tint = SEAT_COLORS[seat.color] or { r = 1, g = 1, b = 1 }
+  local object = spawnObjectJSON({ json = JSON.encode({
+    Name = "Counter",
+    Nickname = "Champion Damage (" .. seat.color .. ")",
+    Locked = true,
+    ColorDiffuse = { r = tint.r, g = tint.g, b = tint.b },
+    Counter = { value = 0 },
+    Transform = {
+      posX = point.x, posY = 3, posZ = point.z, rotX = 0, rotY = seat.rot, rotZ = 0,
+      scaleX = 2.5, scaleY = 1.2, scaleZ = 2.5,
+    },
+  }) })
+  if object then table.insert(mats, object.getGUID()) end
+end
+
 function foiBuildTable()
   clearTable()
   for _, seat in ipairs(seatsForMode()) do
     spawnMat(seat)
     spawnZones(seat)
+    spawnHand(seat)
+    spawnCounter(seat)
   end
 end
 
@@ -269,25 +314,35 @@ function foiReserve(color, player)
   foiSay(player, #incoming > 0 and ("Reserved " .. #incoming .. " card(s).") or "Flip cards face-down in your hand first, then press Reserve.")
 end
 
--- Glimpse: looks at the top cards, visible only to you.
+-- Glimpse: looks at cards from the top or bottom of your deck, visible only to you.
 local function findMainDeck(color)
   for _, obj in ipairs(zoneContents(color, "deck")) do
     if obj.type == "Deck" then return obj end
   end
 end
 
-function foiGlimpse(color, count, player)
+--- opts.fromBottom: take from the bottom. opts.thenBottom: send the cards to the bottom when done (quick bottom).
+function foiGlimpse(color, count, player, opts)
+  opts = opts or {}
   local seat, deck = seatFor(color), findMainDeck(color)
   if not seat or not deck then foiSay(player, "No main deck found in your deck zone."); return end
   if glimpsed[color] and #glimpsed[color] > 0 then foiSay(player, "Return your glimpsed cards first."); return end
   glimpsed[color] = {}
-  local hidden = otherColors(color)
+  local hidden = opts.thenBottom and {} or otherColors(color)
   local function takeNext(index)
-    if index > count or not deck or deck.isDestroyed() then return end
+    if index > count or deck.isDestroyed() then
+      if opts.thenBottom then
+        Wait.time(function() foiGlimpseReturn(color, player, true) end, 0.3)
+      elseif index <= count then
+        foiSay(player, "Deck ran out after " .. (index - 1) .. " card(s).")
+      end
+      return
+    end
     local point = toWorld(seat, GLIMPSE_LOCAL.lx + (index - 1) * 2.4, GLIMPSE_LOCAL.lz)
     deck.takeObject({
       position = { point.x, 2, point.z },
       rotation = { 0, seat.rot, 0 },
+      top = not opts.fromBottom,
       callback_function = function(card)
         card.setInvisibleTo(hidden)
         table.insert(glimpsed[color], card)
@@ -298,13 +353,22 @@ function foiGlimpse(color, count, player)
   takeNext(1)
 end
 
---- Puts glimpsed cards back on top in their original order.
-function foiGlimpseReturn(color, player)
+--- Quick bottom: moves the top cards to the bottom of the deck without a look.
+function foiQuickBottom(color, count, player)
+  foiGlimpse(color, count, player, { thenBottom = true })
+end
+
+--- Puts glimpsed cards back. Top: original order. Bottom: first card ends highest of the group.
+--- The API puts a card at the end of the deck nearest to it in height, so cards are placed just
+--- above or just below the deck before putObject.
+function foiGlimpseReturn(color, player, toBottom)
   local cards = glimpsed[color]
   if not cards or #cards == 0 then foiSay(player, "No glimpsed cards."); return end
   local seat = seatFor(color)
+  local first, last, step = #cards, 1, -1
+  if toBottom then first, last, step = 1, #cards, 1 end
   local function putBack(index)
-    if index < 1 then glimpsed[color] = {}; return end
+    if (step == -1 and index < last) or (step == 1 and index > last) then glimpsed[color] = {}; return end
     local deck = findMainDeck(color)
     local card = cards[index]
     if not deck or not card or card.isDestroyed() then
@@ -312,12 +376,14 @@ function foiGlimpseReturn(color, player)
       glimpsed[color] = {}
       return
     end
+    local at = deck.getPosition()
     card.setInvisibleTo({})
     card.setRotation({ 0, seat.rot, 180 })
+    card.setPosition({ at.x, at.y + (toBottom and -1 or 2), at.z })
     deck.putObject(card)
-    Wait.time(function() putBack(index - 1) end, 0.2)
+    Wait.time(function() putBack(index + step) end, 0.2)
   end
-  putBack(#cards)
+  putBack(first)
 end
 
 -- GG Go Next: sends every card home and shuffles the main deck.
@@ -421,7 +487,9 @@ local function buildXml()
     button("Reserve (face-down hand cards)", "uiReserve"),
     button("Banish (hover or select)", "uiBanish"), button("Arrange memory", "uiArrange"),
     '<InputField id="foiGlimpseN" placeholder="Glimpse count (default 3)" onEndEdit="uiSetGlimpse"/>',
-    button("Glimpse", "uiGlimpse"), button("Return glimpse", "uiGlimpseReturn"),
+    button("Glimpse top", "uiGlimpse"), button("Glimpse bottom", "uiGlimpseBottom"),
+    button("Return to top", "uiGlimpseReturn"), button("Return to bottom", "uiGlimpseReturnBottom"),
+    button("Quick bottom (count above)", "uiQuickBottom"),
     button("GG Go Next", "uiGG"),
   }
   local options = {}
@@ -460,7 +528,11 @@ function uiReserve(player) foiReserve(player.color, player) end
 function uiBanish(player) foiBanish(player.color, player) end
 function uiArrange(player) foiReorganizeMemory(player.color, player) end
 function uiGlimpse(player) foiGlimpse(player.color, math.max(1, math.floor(inputFor(player).glimpse or 3)), player) end
-function uiGlimpseReturn(player) foiGlimpseReturn(player.color, player) end
+local function glimpseCount(player) return math.max(1, math.floor(inputFor(player).glimpse or 3)) end
+function uiGlimpseBottom(player) foiGlimpse(player.color, glimpseCount(player), player, { fromBottom = true }) end
+function uiGlimpseReturn(player) foiGlimpseReturn(player.color, player, false) end
+function uiGlimpseReturnBottom(player) foiGlimpseReturn(player.color, player, true) end
+function uiQuickBottom(player) foiQuickBottom(player.color, glimpseCount(player), player) end
 function uiGG(player) foiGGGoNext(player.color, player) end
 
 function uiSetToken(player, value) inputFor(player).token = value end
@@ -472,7 +544,12 @@ function foiTableChat(message, player)
   if message == "!4p" then foiSetMode(4, player); return false end
   local count = string.match(message, "^!glimpse%s*(%d*)$")
   if count then foiGlimpse(player.color, tonumber(count) or 3, player); return false end
-  if message == "!unglimpse" then foiGlimpseReturn(player.color, player); return false end
+  local bottomCount = string.match(message, "^!glimpsebottom%s*(%d*)$")
+  if bottomCount then foiGlimpse(player.color, tonumber(bottomCount) or 3, player, { fromBottom = true }); return false end
+  local quick = string.match(message, "^!bottom%s*(%d*)$")
+  if quick then foiQuickBottom(player.color, tonumber(quick) or 1, player); return false end
+  if message == "!unglimpse" then foiGlimpseReturn(player.color, player, false); return false end
+  if message == "!unglimpse bottom" then foiGlimpseReturn(player.color, player, true); return false end
   local status = string.match(message, "^!token%s+(.+)$")
   if status then foiSpawnToken(status, player.color, player); return false end
   if message == "!reserve" then foiReserve(player.color, player); return false end
