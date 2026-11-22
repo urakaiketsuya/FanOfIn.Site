@@ -62645,7 +62645,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 1,
-    "order": 2,
+    "order": 3,
     "text": "Tress builds preparation counters, advances through level two with Dungeon Guide to Shadowdancer, and deploys Shadow’s Claw and Ominous Shadows. His allies clear Isaac’s Ghosts of Pendragon while the shadow attacks push damage.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -62764,7 +62764,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "Isaac finds Flame Sweep with Hasty Messenger, but Tress goes for Slice and Dice first. Assassin’s Ripper supports attacks for six and nine, and Isaac concedes.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -63172,7 +63172,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Tress’s Tariff Ring leaves Isaac one card short of Flame Sweep on the Lorraine level-two turn. The casters discuss a possible Slice and Dice line into Isaac’s held Resolute Stand, but Tress instead levels through Dungeon Guide to Shadowreaver and attacks with allies.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -63281,7 +63281,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Isaac materializes Drawn Blade and uses Flame Sweep to clear the board. Tress chooses Grand Crusader’s Ring rather than Shadowdancer. Isaac then reaches Krux Knight and plays Devastating Blow for twelve; a Resolute Stand found among Shadowreaver’s stolen cards is insufficient, and Tress loses game two.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -63554,7 +63554,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Isaac’s Flame Sweep is blunted when Tress returns Sadi, Reclaims Aesan Protector and plays Veiling Breeze. Tress loses Slice and Dice while leveling to Tristan. Isaac’s later Dungeon Guide resolves after Tress’s Surveil the Winds fails to find a stopping response.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -63688,7 +63688,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Tress uses Innervate Agility and drops back to Spirit of Wind. Isaac recognizes the opening: Sword of Seeking gives Devastating Blow true sight, bypassing stealth and dealing exact lethal before Tress can recover.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -69045,7 +69045,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round12-asa-orabomb",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "After time is called, AuraBomb lands a Cosmic Bolt and hard-activates another from hand. Asuna answers with Crystallized Destiny, retaining Incapacitate. Horticounter is in AuraBomb’s hand, but the casters judge his remaining cards and herbs insufficient to overcome Asuna’s influence.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -69159,7 +69159,7 @@
   {
     "matchId": "ascent-niagara-falls-day2-round12-asa-orabomb",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Asuna passes with cards available for defense. AuraBomb finds more Cosmic Bolts, including one through Nascent Barrier’s glimpse, but Asuna answers with Incapacitate. The final turns expire without a game-two winner, so Asuna wins the match 1–0.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -71743,7 +71743,7 @@
   {
     "matchId": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Bratus reaches level three with Dungeon Guide. Portentous Tanggu supplies the tenth quest counter, letting him transform Fabled Azurite Fatestone and play Seiryuu’s Command.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -71847,7 +71847,7 @@
   {
     "matchId": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Fruitcake finds Resolute Stand, but Seiryuu’s attacks still push damage through. Bratus follows with Arcane Blast to win game two and the match 2-0.",
     "timestamp": {
       "videoId": "YEdMx87UqeE",
@@ -190445,5 +190445,345 @@
     ],
     "review": "taipei-three-play-expansion",
     "sourceFile": "Ascent Taipei Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Isaac follows the natural level-up with Ghosts of Pendragon. The play rebuilds his board after Tariff Ring and gives Tress an ally to clear before his finishing attacks.",
+    "timestamp": {
+      "videoId": "YEdMx87UqeE",
+      "seconds": 2447
+    },
+    "sourceRows": [
+      869,
+      875
+    ],
+    "sourceSha256": "7e855b180aa27f0fe2b5e7076298042add9e7cadd376a6a2808655660e3d37c4",
+    "source": [
+      {
+        "row": 869,
+        "timestamp": "40:47",
+        "text": "And speaking of ghosts, here we are. So,"
+      },
+      {
+        "row": 870,
+        "timestamp": "40:49",
+        "text": "ghost of pen dragon coming out uh ready"
+      },
+      {
+        "row": 871,
+        "timestamp": "40:52",
+        "text": "to return the looking glass back to the"
+      },
+      {
+        "row": 872,
+        "timestamp": "40:55",
+        "text": "material deck and give Isaac some much"
+      },
+      {
+        "row": 873,
+        "timestamp": "40:57",
+        "text": "needed value. His influence dropping"
+      },
+      {
+        "row": 874,
+        "timestamp": "40:59",
+        "text": "precipitously because of that natural"
+      },
+      {
+        "row": 875,
+        "timestamp": "41:01",
+        "text": "level up."
+      }
+    ],
+    "review": "niagara-three-play-expansion",
+    "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Tress levels to Tristan and uses Sadi to take out Stalwart Shieldmate. The attack chips Isaac for one, and another Lookout gives Tress a second ally to press the advantage.",
+    "timestamp": {
+      "videoId": "YEdMx87UqeE",
+      "seconds": 3463
+    },
+    "sourceRows": [
+      1357,
+      1365
+    ],
+    "sourceSha256": "7e855b180aa27f0fe2b5e7076298042add9e7cadd376a6a2808655660e3d37c4",
+    "source": [
+      {
+        "row": 1357,
+        "timestamp": "57:43",
+        "text": "agility off of Sadi as Sadi kills that"
+      },
+      {
+        "row": 1358,
+        "timestamp": "57:45",
+        "text": "stalwart shieldmate. one extra damage"
+      },
+      {
+        "row": 1359,
+        "timestamp": "57:48",
+        "text": "going into Isaac's champion, leaving"
+      },
+      {
+        "row": 1360,
+        "timestamp": "57:50",
+        "text": "Isaac at two of 20 and another wind"
+      },
+      {
+        "row": 1361,
+        "timestamp": "57:53",
+        "text": "bless lookout coming down for Tess. Uh"
+      },
+      {
+        "row": 1362,
+        "timestamp": "57:55",
+        "text": "so definitely taking advantage of that"
+      },
+      {
+        "row": 1363,
+        "timestamp": "57:57",
+        "text": "agility in order to play several cards"
+      },
+      {
+        "row": 1364,
+        "timestamp": "58:00",
+        "text": "out this turn and try and gain some"
+      },
+      {
+        "row": 1365,
+        "timestamp": "58:02",
+        "text": "board advantage."
+      }
+    ],
+    "review": "niagara-three-play-expansion",
+    "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Aesan Protector takes out Fluffy Shopkeep, but Isaac has already gained enough cards from the Shopkeep to level Lorraine and still afford Flame Sweep through Tariff Ring.",
+    "timestamp": {
+      "videoId": "YEdMx87UqeE",
+      "seconds": 4430
+    },
+    "sourceRows": [
+      1825,
+      1833
+    ],
+    "sourceSha256": "7e855b180aa27f0fe2b5e7076298042add9e7cadd376a6a2808655660e3d37c4",
+    "source": [
+      {
+        "row": 1825,
+        "timestamp": "73:50",
+        "text": "turn four now. and Asian Protector"
+      },
+      {
+        "row": 1826,
+        "timestamp": "73:52",
+        "text": "clearing that fluffy shocky kind of as"
+      },
+      {
+        "row": 1827,
+        "timestamp": "73:54",
+        "text": "expected. And uh Terrafinger is much"
+      },
+      {
+        "row": 1828,
+        "timestamp": "73:57",
+        "text": "lower value here though because we do"
+      },
+      {
+        "row": 1829,
+        "timestamp": "73:59",
+        "text": "because of that double fluffy from the"
+      },
+      {
+        "row": 1830,
+        "timestamp": "74:02",
+        "text": "Dream Fairy, we have a lot more cards in"
+      },
+      {
+        "row": 1831,
+        "timestamp": "74:04",
+        "text": "the hand for Isaac. So we actually have"
+      },
+      {
+        "row": 1832,
+        "timestamp": "74:05",
+        "text": "enough cards to to level to two and"
+      },
+      {
+        "row": 1833,
+        "timestamp": "74:07",
+        "text": "flame sweep. Not the biggest value here"
+      }
+    ],
+    "review": "niagara-three-play-expansion",
+    "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round12-asa-orabomb",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "AuraBomb glimpses into Cosmic Bolt and deals damage before time is called, then materializes Cosmic Astroscope to keep finding bolts.",
+    "timestamp": {
+      "videoId": "YEdMx87UqeE",
+      "seconds": 19218
+    },
+    "sourceRows": [
+      8123,
+      8131
+    ],
+    "sourceSha256": "7e855b180aa27f0fe2b5e7076298042add9e7cadd376a6a2808655660e3d37c4",
+    "source": [
+      {
+        "row": 8123,
+        "timestamp": "320:18",
+        "text": "Aura Bomb's turn. Got a nice glimpse off"
+      },
+      {
+        "row": 8124,
+        "timestamp": "320:20",
+        "text": "of an Oasite into a cosmic bolt. So,"
+      },
+      {
+        "row": 8125,
+        "timestamp": "320:23",
+        "text": "little bit of damage pointed at Asuna's"
+      },
+      {
+        "row": 8126,
+        "timestamp": "320:25",
+        "text": "head. That is one cosmic bolt now in the"
+      },
+      {
+        "row": 8127,
+        "timestamp": "320:28",
+        "text": "yard and moving into the cosmic"
+      },
+      {
+        "row": 8128,
+        "timestamp": "320:31",
+        "text": "astroscope materialize. So burning yet"
+      },
+      {
+        "row": 8129,
+        "timestamp": "320:34",
+        "text": "another piece of influence in order to"
+      },
+      {
+        "row": 8130,
+        "timestamp": "320:36",
+        "text": "start getting that glimpse train"
+      },
+      {
+        "row": 8131,
+        "timestamp": "320:38",
+        "text": "rolling."
+      }
+    ],
+    "review": "niagara-three-play-expansion",
+    "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+  },
+  {
+    "matchId": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Fruitcake uses Dungeon Guide to reach Arisanna level two and gets a draw and recovery from Suspicious Concoction. He materializes Polaris before spending herbs for more cards.",
+    "timestamp": {
+      "videoId": "YEdMx87UqeE",
+      "seconds": 31289
+    },
+    "sourceRows": [
+      12230,
+      12244
+    ],
+    "sourceSha256": "7e855b180aa27f0fe2b5e7076298042add9e7cadd376a6a2808655660e3d37c4",
+    "source": [
+      {
+        "row": 12230,
+        "timestamp": "521:29",
+        "text": "guide, taking advantage of that"
+      },
+      {
+        "row": 12231,
+        "timestamp": "521:30",
+        "text": "suspicious concoction the moment that he"
+      },
+      {
+        "row": 12232,
+        "timestamp": "521:32",
+        "text": "materializes it. So, gets that extra"
+      },
+      {
+        "row": 12233,
+        "timestamp": "521:34",
+        "text": "card draw, gets that extra recover, and"
+      },
+      {
+        "row": 12234,
+        "timestamp": "521:36",
+        "text": "moves up to level two here."
+      },
+      {
+        "row": 12235,
+        "timestamp": "521:40",
+        "text": "So we are getting the Polaris banishing"
+      },
+      {
+        "row": 12236,
+        "timestamp": "521:42",
+        "text": "a gentle respite."
+      },
+      {
+        "row": 12237,
+        "timestamp": "521:44",
+        "text": ">> Mhm."
+      },
+      {
+        "row": 12238,
+        "timestamp": "521:46",
+        "text": ">> Yep. And he that's definitely something"
+      },
+      {
+        "row": 12239,
+        "timestamp": "521:47",
+        "text": "that he wanted to do before he moved on"
+      },
+      {
+        "row": 12240,
+        "timestamp": "521:49",
+        "text": "to his endstep here because he has that"
+      },
+      {
+        "row": 12241,
+        "timestamp": "521:51",
+        "text": "Arasana level two. He is planning on"
+      },
+      {
+        "row": 12242,
+        "timestamp": "521:53",
+        "text": "sacrificing those herbs in order to get"
+      },
+      {
+        "row": 12243,
+        "timestamp": "521:55",
+        "text": "the card draw. So he definitely wants to"
+      },
+      {
+        "row": 12244,
+        "timestamp": "521:57",
+        "text": "have the Polaris out to start building"
+      }
+    ],
+    "review": "niagara-three-play-expansion",
+    "sourceFile": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
   }
 ]

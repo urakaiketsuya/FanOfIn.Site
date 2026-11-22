@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T21:48:50.925Z",
+  "generatedAt": "2026-11-22T21:55:31.775Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -2965,6 +2965,19 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "Isaac follows the natural level-up with Ghosts of Pendragon. The play rebuilds his board after Tariff Ring and gives Tress an ally to clear before his finishing attacks.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Tariff Ring"
+              ],
+              "timestamp": {
+                "videoId": "YEdMx87UqeE",
+                "seconds": 2447
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Tress builds preparation counters, advances through level two with Dungeon Guide to Shadowdancer, and deploys Shadow’s Claw and Ominous Shadows. His allies clear Isaac’s Ghosts of Pendragon while the shadow attacks push damage.",
               "cards": [
@@ -2983,7 +2996,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "Isaac finds Flame Sweep with Hasty Messenger, but Tress goes for Slice and Dice first. Assassin’s Ripper supports attacks for six and nine, and Isaac concedes.",
               "cards": [
@@ -3026,6 +3039,19 @@
             {
               "order": 2,
               "actor": "p2",
+              "text": "Tress levels to Tristan and uses Sadi to take out Stalwart Shieldmate. The attack chips Isaac for one, and another Lookout gives Tress a second ally to press the advantage.",
+              "cards": [
+                "Sadi, Blood Harvester",
+                "Stalwart Shieldmate"
+              ],
+              "timestamp": {
+                "videoId": "YEdMx87UqeE",
+                "seconds": 3463
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
               "text": "Tress’s Tariff Ring leaves Isaac one card short of Flame Sweep on the Lorraine level-two turn. The casters discuss a possible Slice and Dice line into Isaac’s held Resolute Stand, but Tress instead levels through Dungeon Guide to Shadowreaver and attacks with allies.",
               "cards": [
                 "Tariff Ring",
@@ -3044,7 +3070,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Isaac materializes Drawn Blade and uses Flame Sweep to clear the board. Tress chooses Grand Crusader’s Ring rather than Shadowdancer. Isaac then reaches Krux Knight and plays Devastating Blow for twelve; a Resolute Stand found among Shadowreaver’s stolen cards is insufficient, and Tress loses game two.",
               "cards": [
@@ -3088,6 +3114,21 @@
             },
             {
               "order": 2,
+              "actor": "both",
+              "text": "Aesan Protector takes out Fluffy Shopkeep, but Isaac has already gained enough cards from the Shopkeep to level Lorraine and still afford Flame Sweep through Tariff Ring.",
+              "cards": [
+                "Aesan Protector",
+                "Fluffy Shopkeep",
+                "Tariff Ring",
+                "Flame Sweep"
+              ],
+              "timestamp": {
+                "videoId": "YEdMx87UqeE",
+                "seconds": 4430
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Isaac’s Flame Sweep is blunted when Tress returns Sadi, Reclaims Aesan Protector and plays Veiling Breeze. Tress loses Slice and Dice while leveling to Tristan. Isaac’s later Dungeon Guide resolves after Tress’s Surveil the Winds fails to find a stopping response.",
               "cards": [
@@ -3109,7 +3150,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Tress uses Innervate Agility and drops back to Spirit of Wind. Isaac recognizes the opening: Sword of Seeking gives Devastating Blow true sight, bypassing stealth and dealing exact lethal before Tress can recover.",
               "cards": [
@@ -3667,6 +3708,20 @@
             {
               "order": 2,
               "actor": "p2",
+              "text": "AuraBomb glimpses into Cosmic Bolt and deals damage before time is called, then materializes Cosmic Astroscope to keep finding bolts.",
+              "cards": [
+                "Astra Sight",
+                "Cosmic Bolt",
+                "Cosmic Astroscope"
+              ],
+              "timestamp": {
+                "videoId": "YEdMx87UqeE",
+                "seconds": 19218
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
               "text": "After time is called, AuraBomb lands a Cosmic Bolt and hard-activates another from hand. Asuna answers with Crystallized Destiny, retaining Incapacitate. Horticounter is in AuraBomb’s hand, but the casters judge his remaining cards and herbs insufficient to overcome Asuna’s influence.",
               "cards": [
                 "Cosmic Bolt",
@@ -3682,7 +3737,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Asuna passes with cards available for defense. AuraBomb finds more Cosmic Bolts, including one through Nascent Barrier’s glimpse, but Asuna answers with Incapacitate. The final turns expire without a game-two winner, so Asuna wins the match 1–0.",
               "cards": [
@@ -3961,6 +4016,21 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "Fruitcake uses Dungeon Guide to reach Arisanna level two and gets a draw and recovery from Suspicious Concoction. He materializes Polaris before spending herbs for more cards.",
+              "cards": [
+                "Dungeon Guide",
+                "Arisanna, Master Alchemist",
+                "Suspicious Concoction",
+                "Polaris, Twinkling Cauldron"
+              ],
+              "timestamp": {
+                "videoId": "YEdMx87UqeE",
+                "seconds": 31289
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Bratus reaches level three with Dungeon Guide. Portentous Tanggu supplies the tenth quest counter, letting him transform Fabled Azurite Fatestone and play Seiryuu’s Command.",
               "cards": [
@@ -3978,7 +4048,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "Fruitcake finds Resolute Stand, but Seiryuu’s attacks still push damage through. Bratus follows with Arcane Blast to win game two and the match 2-0.",
               "cards": [

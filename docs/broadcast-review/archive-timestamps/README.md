@@ -139,3 +139,28 @@ filename and SHA-256 are in `beat-timestamps.json`.
 - Grand final, ProAnnn vs Apaul. At [11:39:45](https://www.youtube.com/watch?v=oHCCZOZBvKM&t=41985s),
   Apaul's Portentous Tanggu draw finds Dungeon Guide at 18 damage. The cue
   starts with the draw sequence, before the existing level-three highlight.
+
+## Ascent Niagara Falls three-play recap review
+
+Reviewed 17 games across seven Day 2 matches. The [public Day 2 replay](https://www.youtube.com/watch?v=YEdMx87UqeE)
+runs 10:58:08 and reaches beyond the last caption at 10:57:58. The five
+additions were checked in playback at the original broadcast clock. The
+source filename, SHA-256 and caption excerpts are in `beat-timestamps.json`.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| TeamTrueIsaac vs Tress, game 1 | [40:47](https://www.youtube.com/watch?v=YEdMx87UqeE&t=2447s) | Isaac follows his natural level-up with Ghosts of Pendragon after Tress uses Tariff Ring. |
+| TeamTrueIsaac vs Tress, game 2 | [57:43](https://www.youtube.com/watch?v=YEdMx87UqeE&t=3463s) | Tress levels Tristan, takes out Stalwart Shieldmate with Sadi and plays another Lookout. |
+| TeamTrueIsaac vs Tress, game 3 | [1:13:50](https://www.youtube.com/watch?v=YEdMx87UqeE&t=4430s) | Aesan Protector clears Fluffy Shopkeep. The casters explain how the Shopkeep's earlier card advantage lets Isaac afford Flame Sweep through Tariff Ring. |
+| Asuna vs AuraBomb, game 2 | [5:20:18](https://www.youtube.com/watch?v=YEdMx87UqeE&t=19218s) | AuraBomb hits with a Cosmic Bolt found by glimpse and materializes Cosmic Astroscope before time. |
+| Fruitcake vs Bratus, game 2 | [8:41:29](https://www.youtube.com/watch?v=YEdMx87UqeE&t=31289s) | Dungeon Guide advances Fruitcake to Arisanna level two with Suspicious Concoction and Polaris supporting the herb draw setup. |
+
+The broadcast labels TeamTrueIsaac vs Tress Round 9. Its existing match ID
+retains the older Round 7 label. The other 12 games stayed at three plays.
+Round 10 already covers the disrupted Arcane setup, Ciel's comeback and the
+timed draw. Round 11 already covers the mirror's floating-memory denial,
+level-ups and Fireball finishes. Round 12 game one already covers the major
+Polaris, ally-clear and Shadowstrike sequences. The quarterfinal already
+covers the Cloudstriker and Razorgale pivots. The semifinal opener's proposed
+Polaris line remains uncertain. The final already covers Magistrate, the
+survival and Seiryuu sequences, and the decisive wind chains.
