@@ -21,6 +21,15 @@
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 1,
     "order": 3,
+    "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory.",
+    "videoId": "VOlVotCfOU0",
+    "captureSeconds": 44195,
+    "reason": "Captured audio includes this play, but the YouTube player currently ends at 12:00:03 while the archive is post_live. Recheck playable duration and clock alignment before enabling this link."
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+    "gameNumber": 1,
+    "order": 4,
     "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
     "videoId": "VOlVotCfOU0",
     "captureSeconds": 44409,
@@ -39,6 +48,15 @@
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 2,
     "order": 2,
+    "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure.",
+    "videoId": "VOlVotCfOU0",
+    "captureSeconds": 45383,
+    "reason": "Captured audio includes this play, but the YouTube player currently ends at 12:00:03 while the archive is post_live. Recheck playable duration and clock alignment before enabling this link."
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+    "gameNumber": 2,
+    "order": 3,
     "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
     "videoId": "VOlVotCfOU0",
     "captureSeconds": 45478,
@@ -47,7 +65,7 @@
   {
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
     "videoId": "VOlVotCfOU0",
     "captureSeconds": 45569,

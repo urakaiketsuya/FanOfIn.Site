@@ -21,6 +21,7 @@ test('all Osaka highlights have traceable timestamps bound to the reviewed uploa
   const read = (p: string) => JSON.parse(readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
   const data: BroadcastTimelines = read('data/broadcast-timelines.json');
   const evidence = read('docs/broadcast-review/osaka-day1/beat-timestamps.json');
+  const capture = read('docs/broadcast-review/osaka-day1/cleaned-transcript.json');
   let count = 0;
   for (const match of data.matches.filter(m => m.video?.id === 'g3NNFcNpw3k')) for (const game of match.games) for (const b of game.beats) {
     const e = evidence.find((e: { matchId: string; gameNumber: number; order: number }) => e.matchId === match.id && e.gameNumber === game.gameNumber && e.order === b.order);
@@ -28,11 +29,20 @@ test('all Osaka highlights have traceable timestamps bound to the reviewed uploa
     assert.equal(e.text, b.text);
     assert.equal(b.timestamp?.seconds, Math.floor(e.source.seconds));
     assert.equal(b.timestamp?.videoId, 'g3NNFcNpw3k');
+    if (e.supportingSegments) {
+      for (const [i, { row, ...segment }] of e.supportingSegments.entries()) {
+        assert.equal(row, e.source.segmentIndex + i);
+        assert.deepEqual(segment, capture.segments[row]);
+      }
+      const first = e.supportingSegments[0];
+      assert.equal(first.text, e.source.text);
+      assert.equal(first.timestamp.split(':').reduce((n: number, part: string) => n * 60 + Number(part), 0), e.startSeconds);
+    }
     assert.ok(b.timestamp!.seconds < 42898);
     assert.ok(beatVideoLink(b, match.video));
     count++;
   }
-  assert.equal(count, 80);
+  assert.equal(count, 81);
 });
 
 test('archive backfill retains source excerpts and matches current highlights and uploads', () => {
@@ -86,7 +96,6 @@ test('every remaining broadcast highlight has a documented source or game-assign
     assert.ok(e.reason.length > 0);
     return `${e.matchId}/${e.gameNumber}/${e.order}`;
   });
-  assert.equal(actual.length, 10);
   assert.deepEqual(actual.sort(), expected.sort());
 });
 

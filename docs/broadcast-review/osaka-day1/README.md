@@ -43,7 +43,7 @@ Round 9 continuation recheck (2026-10-31): the live archive metadata still repor
 
 ### Key-play timestamps
 
-`beat-timestamps.json` maps all 80 published Osaka highlights to the start of their
+`beat-timestamps.json` maps all 81 published Osaka highlights to the start of their
 supporting commentary. Original transcript segment references use that transcript's
 absolute clock. Recovered audio references use the recorded absolute `startSeconds`,
 or chunk 23's 41,400-second base plus the raw capture offset for Round 9. The
@@ -53,7 +53,7 @@ frame-exact action boundaries. Multi-action highlights link to their first cited
 segment. Superseded candidate wording was excluded; the corrected Round 4 Storm
 of Thorns highlight retains its original 4242–4250 evidence.
 
-Verification: all 80 associations checked against published highlight text; link
+Verification: all 81 associations checked against published highlight text; link
 validation covers zero, hour boundaries, invalid offsets and mismatched uploads.
 Mobile (390px) and desktop (1280px) layouts, 48px targets, keyboard navigation and
 game switching checked. Video playback at every cue and forced network failures

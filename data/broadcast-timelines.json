@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T20:41:54.522Z",
+  "generatedAt": "2026-11-22T20:58:47.457Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -31755,6 +31755,16 @@
             },
             {
               "order": 3,
+              "actor": "p1",
+              "text": "SoSollys uses Cardistry before recollection, then attacks with the suited allies to pile damage onto NoobTinnn.",
+              "timestamp": {
+                "videoId": "g3NNFcNpw3k",
+                "seconds": 38908
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Suzaku attacks, then Undeniable Truth enables its sacrifice and return. After a brief judge check about quest counters, casters confirm NoobTinnn’s second win.",
               "cards": [
@@ -31962,7 +31972,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Refracting Missile starts the pressure as Rain8715 builds to eight Fractals.",
+              "text": "Rain8715 starts the pressure with Refracting Missile, pushing metari211 into range of a follow-up.",
               "cards": [
                 "Refracting Missile",
                 "Fractal of Rain",
@@ -31978,6 +31988,20 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Rain8715 brings out Viridian Protective Trinket, making Water Barrier harder for metari211 to hold up.",
+              "cards": [
+                "Viridian Protective Trinket",
+                "Water Barrier"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 3850
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Rain8715 chains Refracting Missile and Shimmering Refraction into the level-up window; the spirit release and healing herbs cannot save metari211.",
               "cards": [
@@ -32172,6 +32196,22 @@
             },
             {
               "order": 2,
+              "actor": "p2",
+              "text": "ExcitedCat takes the Fanned Synchron damage but uses Aesan Protector to return Ghosts of Pendragon to hand, saving it from Polaris.",
+              "cards": [
+                "Fanned Synchron",
+                "Aesan Protector",
+                "Ghosts of Pendragon",
+                "Polaris, Twinkling Cauldron"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 9203
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
               "actor": "p1",
               "text": "Zefier brews to three Essence Crucible counters and uses his own potions to trigger two Searing Rebukes.",
               "cards": [
@@ -32189,7 +32229,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "ExcitedCat rebuilds after Polaris, then Annul Spell stops the lethal Intensified Pyre and secures the match.",
               "cards": [
@@ -32260,6 +32300,19 @@
             {
               "order": 2,
               "actor": "p1",
+              "text": "DeRealDeal brings out Nullifying Lantern with seven water cards in Lifdrasyl’s graveyard, turning those cards norm before they can fuel Lifdrasyl’s water payoffs.",
+              "cards": [
+                "Nullifying Lantern"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 11944
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
               "text": "Slip Away targets a defender and draws Engulf, opening another fight over Lifdrasyl’s blocking board.",
               "cards": [
                 "Slip Away",
@@ -32274,7 +32327,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Undying Dreams and successive Poitiers force Song of Frost and a Genbu flip; another Slip Away prompts Lifdrasyl’s concession.",
               "cards": [
@@ -32431,6 +32484,20 @@
             },
             {
               "order": 3,
+              "actor": "both",
+              "text": "Legilus starts a Feu Awakening chain in response to Lightweaver’s Assault, and Yadon releases his spirit to recover while the chain is still on the stack.",
+              "cards": [
+                "Feu Awakening",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 16423
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Topsy Decree blocks Ciel’s damage triggers, leaving Yadon free to finish with Lightweaver’s Assault.",
               "cards": [
@@ -32567,6 +32634,20 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "hachico uses Topsy Decree to banish floating memory and Seaside Ringleader while setting up Ciel’s level-up.",
+              "cards": [
+                "Topsy Decree",
+                "Seaside Ringleader"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 20596
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Engulf stops hachico’s Dungeon Guide and keeps Ciel at level 2.",
               "cards": [
@@ -32582,7 +32663,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "Genbu flips and Resonating Fugue converts its life into a game-ending attack.",
               "cards": [
@@ -32639,6 +32720,20 @@
             },
             {
               "order": 3,
+              "actor": "both",
+              "text": "Cerulean Decree reduces Ciel’s attack power, but hachico’s Devastating Blow still lands for five damage.",
+              "cards": [
+                "Cerulean Decree",
+                "Devastating Blow"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 21396
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Feu Awakening and Devouring Malice combine during EnochLok123’s materialization to tie the match.",
               "cards": [
@@ -33184,7 +33279,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+              "text": "Enfeebling Orb cuts down Yadon’s options just as RubyXillia prepares to flip Suzaku.",
               "cards": [
                 "Enfeebling Orb",
                 "Fabled Ruby Fatestone"
@@ -33197,6 +33292,20 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Fiery Interference and Fabled Ruby Fatestone supply RubyXillia’s last two quest counters before Suzaku enters.",
+              "cards": [
+                "Fiery Interference",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37764
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Suzaku’s Command and Peppered Chef force Resolute Stand; Vermilion Decree supplies the last damage.",
               "cards": [
@@ -33276,6 +33385,19 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Noel brings out Safeguard Amulet, forcing PokerKT to find a way through it before committing to the finishing damage.",
+              "cards": [
+                "Safeguard Amulet"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39630
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
               "cards": [
@@ -33409,6 +33531,16 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory.",
+              "cards": [
+                "Fracturize",
+                "Censer of Restful Peace"
+              ],
+              "tags": []
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
               "cards": [
@@ -33438,6 +33570,15 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure.",
+              "cards": [
+                "Avatar of Suzaku"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
               "cards": [
@@ -33449,7 +33590,7 @@
               "tags": []
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
               "cards": [

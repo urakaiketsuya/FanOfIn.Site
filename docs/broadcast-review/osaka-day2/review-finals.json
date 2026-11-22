@@ -173,7 +173,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+              "text": "Enfeebling Orb cuts down Yadon’s options just as RubyXillia prepares to flip Suzaku.",
               "cards": [
                 "Enfeebling Orb",
                 "Fabled Ruby Fatestone"
@@ -185,6 +185,19 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Fiery Interference and Fabled Ruby Fatestone supply RubyXillia’s last two quest counters before Suzaku enters.",
+              "cards": [
+                "Fiery Interference",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37764
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Suzaku’s Command and Peppered Chef force Resolute Stand; Vermilion Decree supplies the last damage.",
               "cards": [
@@ -260,6 +273,18 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Noel brings out Safeguard Amulet, forcing PokerKT to find a way through it before committing to the finishing damage.",
+              "cards": [
+                "Safeguard Amulet"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39630
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
               "cards": [
@@ -395,6 +420,15 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory.",
+              "cards": [
+                "Fracturize",
+                "Censer of Restful Peace"
+              ]
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
               "cards": [
@@ -430,6 +464,14 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure.",
+              "cards": [
+                "Avatar of Suzaku"
+              ]
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
               "cards": [
@@ -444,7 +486,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
               "cards": [
@@ -1520,7 +1562,7 @@
       }
     },
     {
-      "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+      "text": "Enfeebling Orb cuts down Yadon’s options just as RubyXillia prepares to flip Suzaku.",
       "segments": [
         12599,
         12611
@@ -1598,6 +1640,67 @@
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 37740
+      }
+    },
+    {
+      "text": "Fiery Interference and Fabled Ruby Fatestone supply RubyXillia’s last two quest counters before Suzaku enters.",
+      "segments": [
+        12604,
+        12612
+      ],
+      "source": [
+        {
+          "row": 12604,
+          "text": "just gonna he has to let go it just cannot preempt these fiery interference now we're gonna use that",
+          "timestamp": "10:29:24"
+        },
+        {
+          "row": 12605,
+          "text": "to get our sixth counter notably we actually haven't gotten our counter from fabled ruby",
+          "timestamp": "10:29:29"
+        },
+        {
+          "row": 12606,
+          "text": "fate stone yet second fiery interference in the hand so Yadon's gonna be forced to get a less than",
+          "timestamp": "10:29:34"
+        },
+        {
+          "row": 12607,
+          "text": "ideal fiery interference uh sorry release because if Rubyzillia had done this after the fabled ruby",
+          "timestamp": "10:29:39"
+        },
+        {
+          "row": 12608,
+          "text": "fate stone had pinged he would have taken he would only recover five uh five instead of six",
+          "timestamp": "10:29:44"
+        },
+        {
+          "row": 12609,
+          "text": "but fiery interference has resolved Yadon has allowed that to happen the",
+          "timestamp": "10:29:50"
+        },
+        {
+          "row": 12610,
+          "text": "fabled ruby fate stone pings happen and now seven quest counters are on",
+          "timestamp": "10:29:54"
+        },
+        {
+          "row": 12611,
+          "text": "Guo Jia, chosen disciple, will Ruby Zillia be doing anything else pre-wreck or are we",
+          "timestamp": "10:29:59"
+        },
+        {
+          "row": 12612,
+          "text": "gonna see Suzaku make his advent already?",
+          "timestamp": "10:30:04"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 3,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 37764
       }
     },
     {
@@ -1730,7 +1833,7 @@
       ],
       "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
       "gameNumber": 3,
-      "order": 3,
+      "order": 4,
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 37807
@@ -2029,6 +2132,72 @@
       }
     },
     {
+      "text": "Noel brings out Safeguard Amulet, forcing PokerKT to find a way through it before committing to the finishing damage.",
+      "segments": [
+        13017,
+        13026
+      ],
+      "source": [
+        {
+          "row": 13017,
+          "text": "Okay, so Noelle has going to re-wake up all these fractals.",
+          "timestamp": "11:00:30"
+        },
+        {
+          "row": 13018,
+          "text": "It's actually really interesting.",
+          "timestamp": "11:00:35"
+        },
+        {
+          "row": 13019,
+          "text": "She could do a bunch of stuff in the Recollection phase here with these fractals.",
+          "timestamp": "11:00:36"
+        },
+        {
+          "row": 13020,
+          "text": "Could go for a backup, could go for a Prison Fire, actually just gonna go for her own safeguard.",
+          "timestamp": "11:00:40"
+        },
+        {
+          "row": 13021,
+          "text": "Very measured, very safe.",
+          "timestamp": "11:00:44"
+        },
+        {
+          "row": 13022,
+          "text": "Neither of these players have unstable fractals notably, so it's Fracturize or Mirror or Bust.",
+          "timestamp": "11:00:45"
+        },
+        {
+          "row": 13023,
+          "text": "That is correct.",
+          "timestamp": "11:00:50"
+        },
+        {
+          "row": 13024,
+          "text": "So not gonna be able to break through the defense of Noelle very easily.",
+          "timestamp": "11:00:51"
+        },
+        {
+          "row": 13025,
+          "text": "Still need at least two materializations, but at the very least, PokerKT with that safeguard",
+          "timestamp": "11:00:55"
+        },
+        {
+          "row": 13026,
+          "text": "amulet is no longer in such danger, such peril that Noelle was presenting just one turn prior.",
+          "timestamp": "11:00:59"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 2,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 39630
+      }
+    },
+    {
       "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
       "segments": [
         13112,
@@ -2108,7 +2277,7 @@
       ],
       "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
       "gameNumber": 2,
-      "order": 3,
+      "order": 4,
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 39950
@@ -2931,6 +3100,67 @@
       }
     },
     {
+      "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory.",
+      "segments": [
+        14220,
+        14228
+      ],
+      "source": [
+        {
+          "row": 14220,
+          "text": "The Censor...",
+          "timestamp": "12:16:35"
+        },
+        {
+          "row": 14221,
+          "text": "The Censor gets Fracturized!",
+          "timestamp": "12:16:37"
+        },
+        {
+          "row": 14222,
+          "text": "So we've given Rubyzillia",
+          "timestamp": "12:16:39"
+        },
+        {
+          "row": 14223,
+          "text": "an additional point of influence, and BrokerKT",
+          "timestamp": "12:16:41"
+        },
+        {
+          "row": 14224,
+          "text": "has had to delete 2 Censors",
+          "timestamp": "12:16:43"
+        },
+        {
+          "row": 14225,
+          "text": "from the game. I have never seen this game.",
+          "timestamp": "12:16:45"
+        },
+        {
+          "row": 14226,
+          "text": "This game is crazy. This is extremely",
+          "timestamp": "12:16:47"
+        },
+        {
+          "row": 14227,
+          "text": "funny, honestly. Because, yeah,",
+          "timestamp": "12:16:49"
+        },
+        {
+          "row": 14228,
+          "text": "this Fracturized resolves. I'll take a plus 1 influence.",
+          "timestamp": "12:16:51"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 1,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 44195
+      }
+    },
+    {
       "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
       "segments": [
         14327,
@@ -3190,7 +3420,7 @@
       ],
       "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
       "gameNumber": 1,
-      "order": 3,
+      "order": 4,
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 44409
@@ -3268,6 +3498,77 @@
       }
     },
     {
+      "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure.",
+      "segments": [
+        14743,
+        14753
+      ],
+      "source": [
+        {
+          "row": 14743,
+          "text": "but we are going to flip Suzaku.",
+          "timestamp": "12:36:23"
+        },
+        {
+          "row": 14744,
+          "text": "Even Peppered Chef will do it.",
+          "timestamp": "12:36:25"
+        },
+        {
+          "row": 14745,
+          "text": "Exactly, Peppered Chef will do it.",
+          "timestamp": "12:36:26"
+        },
+        {
+          "row": 14746,
+          "text": "It could be a repeat of game 1,",
+          "timestamp": "12:36:27"
+        },
+        {
+          "row": 14747,
+          "text": "but Suzaku Vermillion Phoenix has hit the board.",
+          "timestamp": "12:36:29"
+        },
+        {
+          "row": 14748,
+          "text": "4 damage has hit PokerKT's face,",
+          "timestamp": "12:36:32"
+        },
+        {
+          "row": 14749,
+          "text": "and Ruby Zillia has only 1 action left to take to finish the game.",
+          "timestamp": "12:36:35"
+        },
+        {
+          "row": 14750,
+          "text": "The question is, which will it be?",
+          "timestamp": "12:36:40"
+        },
+        {
+          "row": 14751,
+          "text": "Three cards down, it's going to be...",
+          "timestamp": "12:36:43"
+        },
+        {
+          "row": 14752,
+          "text": "It's going to be the Avatar, right?",
+          "timestamp": "12:36:46"
+        },
+        {
+          "row": 14753,
+          "text": "That's right, the Avatar of Suzaku.",
+          "timestamp": "12:36:48"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 2,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 45383
+      }
+    },
+    {
       "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
       "segments": [
         14778,
@@ -3337,7 +3638,7 @@
       ],
       "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
       "gameNumber": 2,
-      "order": 2,
+      "order": 3,
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 45478
@@ -3573,7 +3874,7 @@
       ],
       "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
       "gameNumber": 2,
-      "order": 3,
+      "order": 4,
       "timestamp": {
         "videoId": "VOlVotCfOU0",
         "seconds": 45569

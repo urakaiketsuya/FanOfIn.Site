@@ -4,7 +4,7 @@ Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtub
 
 ## Latest review — Osaka Day 2
 
-All 15,458 supplied segments are reviewed: nine new recaps, 23 games and 81 highlights. See [Day 2 review](broadcast-review/osaka-day2/README.md). 71 timestamp links are enabled; the final’s ten links are held because the public player currently ends around its opening, despite the complete captured audio. The source remains `post_live`; verify the processed replay before enabling those links.
+All 15,458 supplied segments are reviewed: nine new recaps, 23 games and 91 highlights. See [Day 2 review](broadcast-review/osaka-day2/README.md). 79 timestamp links are enabled; the final’s twelve links are held because the public player currently ends around its opening, despite the complete captured audio. The source remains `post_live`; verify the processed replay before enabling those links.
 
 ## Video links
 

@@ -15,6 +15,11 @@
       {
         "gameNumber": 1,
         "order": 3,
+        "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory."
+      },
+      {
+        "gameNumber": 1,
+        "order": 4,
         "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game."
       },
       {
@@ -25,11 +30,16 @@
       {
         "gameNumber": 2,
         "order": 2,
-        "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack."
+        "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure."
       },
       {
         "gameNumber": 2,
         "order": 3,
+        "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack."
+      },
+      {
+        "gameNumber": 2,
+        "order": 4,
         "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame."
       },
       {

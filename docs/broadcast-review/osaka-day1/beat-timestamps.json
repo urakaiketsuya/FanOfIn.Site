@@ -770,6 +770,116 @@
     "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
     "gameNumber": 2,
     "order": 3,
+    "text": "SoSollys uses Cardistry before recollection, then attacks with the suited allies to pile damage onto NoobTinnn.",
+    "startSeconds": 38908,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8771,
+      "seconds": 38908,
+      "text": "we are going to activate the Cardistry right now,"
+    },
+    "supportingSegments": [
+      {
+        "row": 8771,
+        "text": "we are going to activate the Cardistry right now,",
+        "timestamp": "10:48:28"
+      },
+      {
+        "row": 8772,
+        "text": "I believe.",
+        "timestamp": "10:48:29"
+      },
+      {
+        "row": 8773,
+        "text": "We are going to draw 1 to memory,",
+        "timestamp": "10:48:30"
+      },
+      {
+        "row": 8774,
+        "text": "and probably gain a lot of stats,",
+        "timestamp": "10:48:31"
+      },
+      {
+        "row": 8775,
+        "text": "I believe,",
+        "timestamp": "10:48:32"
+      },
+      {
+        "row": 8776,
+        "text": "all.",
+        "timestamp": "10:48:33"
+      },
+      {
+        "row": 8777,
+        "text": "Yeah, so,",
+        "timestamp": "10:48:34"
+      },
+      {
+        "row": 8778,
+        "text": "but once again, you are seeing, right,",
+        "timestamp": "10:48:35"
+      },
+      {
+        "row": 8779,
+        "text": "the entire turn has been eaten up",
+        "timestamp": "10:48:36"
+      },
+      {
+        "row": 8780,
+        "text": "in playing the Suda cards,",
+        "timestamp": "10:48:38"
+      },
+      {
+        "row": 8781,
+        "text": "and,",
+        "timestamp": "10:48:40"
+      },
+      {
+        "row": 8782,
+        "text": "oh, that was on pre-rec.",
+        "timestamp": "10:48:41"
+      },
+      {
+        "row": 8783,
+        "text": "Pre-rec, yeah.",
+        "timestamp": "10:48:42"
+      },
+      {
+        "row": 8784,
+        "text": "Right, right, right, it was on pre-rec,",
+        "timestamp": "10:48:43"
+      },
+      {
+        "row": 8785,
+        "text": "so now,",
+        "timestamp": "10:48:44"
+      },
+      {
+        "row": 8786,
+        "text": "actually, this is a pretty good spot,",
+        "timestamp": "10:48:45"
+      },
+      {
+        "row": 8787,
+        "text": "so SoSollys is going to start doing a ton of damage here.",
+        "timestamp": "10:48:46"
+      },
+      {
+        "row": 8788,
+        "text": "This is 2 damage, 3 damage,",
+        "timestamp": "10:48:49"
+      },
+      {
+        "row": 8789,
+        "text": "and all on allies that are a bit difficult to clear.",
+        "timestamp": "10:48:50"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 2,
+    "order": 4,
     "text": "Suzaku attacks, then Undeniable Truth enables its sacrifice and return. After a brief judge check about quest counters, casters confirm NoobTinnn\u2019s second win.",
     "startSeconds": 39027,
     "review": "review-r7-r8.json",
@@ -789,7 +899,7 @@
     "source": {
       "sourceFile": "bounded-04-1260.json",
       "sourceIndex": 0,
-      "seconds": 8460.0,
+      "seconds": 8460,
       "text": "interesting one the creative shock in the hand is creative liminal as well"
     }
   },
@@ -942,7 +1052,7 @@
     "source": {
       "sourceFile": "bounded-14-0000.json",
       "sourceIndex": 0,
-      "seconds": 25200.0,
+      "seconds": 25200,
       "text": "going to go up the Tristan level one here,"
     }
   },
@@ -970,7 +1080,7 @@
     "source": {
       "sourceFile": "bounded-14-0840.json",
       "sourceIndex": 2,
-      "seconds": 26047.0,
+      "seconds": 26047,
       "text": "I like gaming. I mean at this point, oh Regal Inquisition we are going to do it. We gotta see it."
     }
   },

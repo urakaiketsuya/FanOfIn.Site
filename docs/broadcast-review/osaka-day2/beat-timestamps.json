@@ -918,7 +918,7 @@
     "matchId": "ascent-osaka-2026-day2-round10-metari211-rain8715",
     "gameNumber": 2,
     "order": 2,
-    "text": "Refracting Missile starts the pressure as Rain8715 builds to eight Fractals.",
+    "text": "Rain8715 starts the pressure with Refracting Missile, pushing metari211 into range of a follow-up.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 3840
@@ -1030,6 +1030,42 @@
     "matchId": "ascent-osaka-2026-day2-round10-metari211-rain8715",
     "gameNumber": 2,
     "order": 3,
+    "text": "Rain8715 brings out Viridian Protective Trinket, making Water Barrier harder for metari211 to hold up.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 3850
+    },
+    "sourceRows": [
+      680,
+      682
+    ],
+    "source": [
+      {
+        "row": 680,
+        "text": "board so uh versus under is actually within range now here is the viridian protective trinket as",
+        "timestamp": "1:04:10"
+      },
+      {
+        "row": 681,
+        "text": "well going to deny something like the water barrier from preventing damage to matari uh",
+        "timestamp": "1:04:15"
+      },
+      {
+        "row": 682,
+        "text": "memory invocation now getting to draw two cards for rain is there anything else pre-recollection",
+        "timestamp": "1:04:21"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      680,
+      682
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round10-metari211-rain8715",
+    "gameNumber": 2,
+    "order": 4,
     "text": "Rain8715 chains Refracting Missile and Shimmering Refraction into the level-up window; the spirit release and healing herbs cannot save metari211.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -2448,6 +2484,72 @@
     "matchId": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
     "gameNumber": 3,
     "order": 2,
+    "text": "ExcitedCat takes the Fanned Synchron damage but uses Aesan Protector to return Ghosts of Pendragon to hand, saving it from Polaris.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 9203
+    },
+    "sourceRows": [
+      1997,
+      2005
+    ],
+    "source": [
+      {
+        "row": 1997,
+        "text": "Zephyr to deal 1 damage back with the Fan Synchron, but he has an Ace of Protector now",
+        "timestamp": "2:33:23"
+      },
+      {
+        "row": 1998,
+        "text": "going to be used to return this Ghost of Pendragon back to the hand of Exciter Cat it looks like,",
+        "timestamp": "2:33:27"
+      },
+      {
+        "row": 1999,
+        "text": "and once again, he's going to take 3 damage for this, but that means the Ghost of Pendragon",
+        "timestamp": "2:33:32"
+      },
+      {
+        "row": 2000,
+        "text": "is safe from the Polaris, and that might be important enough for Zephyr to allow to resolve.",
+        "timestamp": "2:33:36"
+      },
+      {
+        "row": 2001,
+        "text": "He does have the Cinder Geyser still, so it is allowed to resolve, the Fan Synchron",
+        "timestamp": "2:33:41"
+      },
+      {
+        "row": 2002,
+        "text": "does deal 3 damage to Exciter Cat, but Ace of Protector does return Ghost of Pendragon",
+        "timestamp": "2:33:48"
+      },
+      {
+        "row": 2003,
+        "text": "to Exciter Cat's hand, he will be able to use that next turn, and then get this damage",
+        "timestamp": "2:33:52"
+      },
+      {
+        "row": 2004,
+        "text": "off from the Ace and the Dungeon Guide before he puts his Pendragon in the way of a Polaris",
+        "timestamp": "2:33:57"
+      },
+      {
+        "row": 2005,
+        "text": "again.",
+        "timestamp": "2:34:02"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      1997,
+      2005
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
+    "gameNumber": 3,
+    "order": 3,
     "text": "Zefier brews to three Essence Crucible counters and uses his own potions to trigger two Searing Rebukes.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -2644,7 +2746,7 @@
   {
     "matchId": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "ExcitedCat rebuilds after Polaris, then Annul Spell stops the lethal Intensified Pyre and secures the match.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -3024,6 +3126,102 @@
     "matchId": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
     "gameNumber": 1,
     "order": 2,
+    "text": "DeRealDeal brings out Nullifying Lantern with seven water cards in Lifdrasyl’s graveyard, turning those cards norm before they can fuel Lifdrasyl’s water payoffs.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 11944
+    },
+    "sourceRows": [
+      2653,
+      2667
+    ],
+    "source": [
+      {
+        "row": 2653,
+        "text": "this is about 7 right now",
+        "timestamp": "3:19:04"
+      },
+      {
+        "row": 2654,
+        "text": "7 water cards",
+        "timestamp": "3:19:05"
+      },
+      {
+        "row": 2655,
+        "text": "there comes the Lantern",
+        "timestamp": "3:19:06"
+      },
+      {
+        "row": 2656,
+        "text": "very good time",
+        "timestamp": "3:19:07"
+      },
+      {
+        "row": 2657,
+        "text": "to drop that right here",
+        "timestamp": "3:19:08"
+      },
+      {
+        "row": 2658,
+        "text": "especially if there",
+        "timestamp": "3:19:09"
+      },
+      {
+        "row": 2659,
+        "text": "can be a Spirel",
+        "timestamp": "3:19:10"
+      },
+      {
+        "row": 2660,
+        "text": "on the back side",
+        "timestamp": "3:19:11"
+      },
+      {
+        "row": 2661,
+        "text": "that can protect this",
+        "timestamp": "3:19:12"
+      },
+      {
+        "row": 2662,
+        "text": "from a",
+        "timestamp": "3:19:13"
+      },
+      {
+        "row": 2663,
+        "text": "potential",
+        "timestamp": "3:19:14"
+      },
+      {
+        "row": 2664,
+        "text": "Mustang",
+        "timestamp": "3:19:15"
+      },
+      {
+        "row": 2665,
+        "text": "yep",
+        "timestamp": "3:19:16"
+      },
+      {
+        "row": 2666,
+        "text": "I do see the Spirel",
+        "timestamp": "3:19:17"
+      },
+      {
+        "row": 2667,
+        "text": "being played",
+        "timestamp": "3:19:18"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      2653,
+      2667
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
+    "gameNumber": 1,
+    "order": 3,
     "text": "Slip Away targets a defender and draws Engulf, opening another fight over Lifdrasyl’s blocking board.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -3270,7 +3468,7 @@
   {
     "matchId": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "Undying Dreams and successive Poitiers force Song of Frost and a Genbu flip; another Slip Away prompts Lifdrasyl’s concession.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -4355,6 +4553,82 @@
     "matchId": "ascent-osaka-2026-day2-round13-yadon-legilus",
     "gameNumber": 1,
     "order": 3,
+    "text": "Legilus starts a Feu Awakening chain in response to Lightweaver’s Assault, and Yadon releases his spirit to recover while the chain is still on the stack.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 16423
+    },
+    "sourceRows": [
+      4325,
+      4335
+    ],
+    "source": [
+      {
+        "row": 4325,
+        "text": "Because, oh wait a minute! No, he is going to go for it now!",
+        "timestamp": "4:33:43"
+      },
+      {
+        "row": 4326,
+        "text": "Here's the Full Awakening! He is not actually short!",
+        "timestamp": "4:33:47"
+      },
+      {
+        "row": 4327,
+        "text": "There is going to be the 2nd Full Awakening available!",
+        "timestamp": "4:33:49"
+      },
+      {
+        "row": 4328,
+        "text": "So here's the 1st Full Awakening now!",
+        "timestamp": "4:33:52"
+      },
+      {
+        "row": 4329,
+        "text": "We're going to add the 2nd Full Awakening that was in the memory into the Omen now.",
+        "timestamp": "4:33:54"
+      },
+      {
+        "row": 4330,
+        "text": "Then we also have Lost Providence plus Dimension of Amor.",
+        "timestamp": "4:33:58"
+      },
+      {
+        "row": 4331,
+        "text": "This lets him pick up the Full Awakening in the banishment.",
+        "timestamp": "4:34:01"
+      },
+      {
+        "row": 4332,
+        "text": "But I don't know if that's enough damage yet.",
+        "timestamp": "4:34:04"
+      },
+      {
+        "row": 4333,
+        "text": "Yaron, in response to the 1st Full Awakening, has to make a decision.",
+        "timestamp": "4:34:07"
+      },
+      {
+        "row": 4334,
+        "text": "Firstly, we're going to release the Serene Spirit of Fire going down to 10 damage counters.",
+        "timestamp": "4:34:11"
+      },
+      {
+        "row": 4335,
+        "text": "That is still on the stack, and Legeless now still has the opportunity to make that switch.",
+        "timestamp": "4:34:14"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      4325,
+      4335
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round13-yadon-legilus",
+    "gameNumber": 1,
+    "order": 4,
     "text": "Topsy Decree blocks Ciel’s damage triggers, leaving Yadon free to finish with Lightweaver’s Assault.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -5192,6 +5466,47 @@
     "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
     "gameNumber": 1,
     "order": 2,
+    "text": "hachico uses Topsy Decree to banish floating memory and Seaside Ringleader while setting up Ciel’s level-up.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 20596
+    },
+    "sourceRows": [
+      5235,
+      5238
+    ],
+    "source": [
+      {
+        "row": 5235,
+        "text": "Is that going to be... ah, is that a Topsy?",
+        "timestamp": "5:43:16"
+      },
+      {
+        "row": 5236,
+        "text": "Oh, we're actually going to get rid of some of the key cards here.",
+        "timestamp": "5:43:17"
+      },
+      {
+        "row": 5237,
+        "text": "A Floating Memory and of course that Seaside Ring Leader.",
+        "timestamp": "5:43:20"
+      },
+      {
+        "row": 5238,
+        "text": "Plus, having 3 cards down allows him to go up to level 2.",
+        "timestamp": "5:43:23"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      5235,
+      5238
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+    "gameNumber": 1,
+    "order": 3,
     "text": "Engulf stops hachico’s Dungeon Guide and keeps Ciel at level 2.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -5268,7 +5583,7 @@
   {
     "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "text": "Genbu flips and Resonating Fugue converts its life into a game-ending attack.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -5595,6 +5910,102 @@
     "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
     "gameNumber": 2,
     "order": 3,
+    "text": "Cerulean Decree reduces Ciel’s attack power, but hachico’s Devastating Blow still lands for five damage.",
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 21396
+    },
+    "sourceRows": [
+      5637,
+      5651
+    ],
+    "source": [
+      {
+        "row": 5637,
+        "text": "as well, so here we go with",
+        "timestamp": "5:56:36"
+      },
+      {
+        "row": 5638,
+        "text": "the Devastating Blow now into the face",
+        "timestamp": "5:56:38"
+      },
+      {
+        "row": 5639,
+        "text": "of Enoch Lock. This is going to be a Cerulean",
+        "timestamp": "5:56:40"
+      },
+      {
+        "row": 5640,
+        "text": "Decree attempted. Will this be",
+        "timestamp": "5:56:42"
+      },
+      {
+        "row": 5641,
+        "text": "Negation or Minus",
+        "timestamp": "5:56:44"
+      },
+      {
+        "row": 5642,
+        "text": "3?",
+        "timestamp": "5:56:46"
+      },
+      {
+        "row": 5643,
+        "text": "So it's Minus 3, 2 CL and also",
+        "timestamp": "5:56:48"
+      },
+      {
+        "row": 5644,
+        "text": "Draw into Memory, it looks like.",
+        "timestamp": "5:56:50"
+      },
+      {
+        "row": 5645,
+        "text": "Hmm, interesting.",
+        "timestamp": "5:56:52"
+      },
+      {
+        "row": 5646,
+        "text": "That is allowed to resolve.",
+        "timestamp": "5:56:54"
+      },
+      {
+        "row": 5647,
+        "text": "And Hachiko does",
+        "timestamp": "5:56:56"
+      },
+      {
+        "row": 5648,
+        "text": "no... Oh no, it is allowed to resolve so",
+        "timestamp": "5:56:58"
+      },
+      {
+        "row": 5649,
+        "text": "the Devastating Blow still does 5 damage",
+        "timestamp": "5:57:00"
+      },
+      {
+        "row": 5650,
+        "text": "and it pushes Enoch",
+        "timestamp": "5:57:02"
+      },
+      {
+        "row": 5651,
+        "text": "Lock up to 11 already.",
+        "timestamp": "5:57:04"
+      }
+    ],
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "segments": [
+      5637,
+      5651
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+    "gameNumber": 2,
+    "order": 4,
     "text": "Feu Awakening and Devouring Malice combine during EnochLok123’s materialization to tie the match.",
     "timestamp": {
       "videoId": "VOlVotCfOU0",
@@ -15299,7 +15710,7 @@
     ]
   },
   {
-    "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+    "text": "Enfeebling Orb cuts down Yadon’s options just as RubyXillia prepares to flip Suzaku.",
     "segments": [
       12599,
       12611
@@ -15382,6 +15793,72 @@
     "sourceRows": [
       12599,
       12611
+    ]
+  },
+  {
+    "text": "Fiery Interference and Fabled Ruby Fatestone supply RubyXillia’s last two quest counters before Suzaku enters.",
+    "segments": [
+      12604,
+      12612
+    ],
+    "source": [
+      {
+        "row": 12604,
+        "text": "just gonna he has to let go it just cannot preempt these fiery interference now we're gonna use that",
+        "timestamp": "10:29:24"
+      },
+      {
+        "row": 12605,
+        "text": "to get our sixth counter notably we actually haven't gotten our counter from fabled ruby",
+        "timestamp": "10:29:29"
+      },
+      {
+        "row": 12606,
+        "text": "fate stone yet second fiery interference in the hand so Yadon's gonna be forced to get a less than",
+        "timestamp": "10:29:34"
+      },
+      {
+        "row": 12607,
+        "text": "ideal fiery interference uh sorry release because if Rubyzillia had done this after the fabled ruby",
+        "timestamp": "10:29:39"
+      },
+      {
+        "row": 12608,
+        "text": "fate stone had pinged he would have taken he would only recover five uh five instead of six",
+        "timestamp": "10:29:44"
+      },
+      {
+        "row": 12609,
+        "text": "but fiery interference has resolved Yadon has allowed that to happen the",
+        "timestamp": "10:29:50"
+      },
+      {
+        "row": 12610,
+        "text": "fabled ruby fate stone pings happen and now seven quest counters are on",
+        "timestamp": "10:29:54"
+      },
+      {
+        "row": 12611,
+        "text": "Guo Jia, chosen disciple, will Ruby Zillia be doing anything else pre-wreck or are we",
+        "timestamp": "10:29:59"
+      },
+      {
+        "row": 12612,
+        "text": "gonna see Suzaku make his advent already?",
+        "timestamp": "10:30:04"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+    "gameNumber": 3,
+    "order": 3,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 37764
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      12604,
+      12612
     ]
   },
   {
@@ -15514,7 +15991,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 37807
@@ -15828,6 +16305,77 @@
     ]
   },
   {
+    "text": "Noel brings out Safeguard Amulet, forcing PokerKT to find a way through it before committing to the finishing damage.",
+    "segments": [
+      13017,
+      13026
+    ],
+    "source": [
+      {
+        "row": 13017,
+        "text": "Okay, so Noelle has going to re-wake up all these fractals.",
+        "timestamp": "11:00:30"
+      },
+      {
+        "row": 13018,
+        "text": "It's actually really interesting.",
+        "timestamp": "11:00:35"
+      },
+      {
+        "row": 13019,
+        "text": "She could do a bunch of stuff in the Recollection phase here with these fractals.",
+        "timestamp": "11:00:36"
+      },
+      {
+        "row": 13020,
+        "text": "Could go for a backup, could go for a Prison Fire, actually just gonna go for her own safeguard.",
+        "timestamp": "11:00:40"
+      },
+      {
+        "row": 13021,
+        "text": "Very measured, very safe.",
+        "timestamp": "11:00:44"
+      },
+      {
+        "row": 13022,
+        "text": "Neither of these players have unstable fractals notably, so it's Fracturize or Mirror or Bust.",
+        "timestamp": "11:00:45"
+      },
+      {
+        "row": 13023,
+        "text": "That is correct.",
+        "timestamp": "11:00:50"
+      },
+      {
+        "row": 13024,
+        "text": "So not gonna be able to break through the defense of Noelle very easily.",
+        "timestamp": "11:00:51"
+      },
+      {
+        "row": 13025,
+        "text": "Still need at least two materializations, but at the very least, PokerKT with that safeguard",
+        "timestamp": "11:00:55"
+      },
+      {
+        "row": 13026,
+        "text": "amulet is no longer in such danger, such peril that Noelle was presenting just one turn prior.",
+        "timestamp": "11:00:59"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+    "gameNumber": 2,
+    "order": 3,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 39630
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      13017,
+      13026
+    ]
+  },
+  {
     "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
     "segments": [
       13112,
@@ -15907,7 +16455,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 39950
@@ -16765,6 +17313,72 @@
     ]
   },
   {
+    "text": "PokerKT uses Fracturize to remove RubyXillia’s Censer of Restful Peace and reopen access to floating memory.",
+    "segments": [
+      14220,
+      14228
+    ],
+    "source": [
+      {
+        "row": 14220,
+        "text": "The Censor...",
+        "timestamp": "12:16:35"
+      },
+      {
+        "row": 14221,
+        "text": "The Censor gets Fracturized!",
+        "timestamp": "12:16:37"
+      },
+      {
+        "row": 14222,
+        "text": "So we've given Rubyzillia",
+        "timestamp": "12:16:39"
+      },
+      {
+        "row": 14223,
+        "text": "an additional point of influence, and BrokerKT",
+        "timestamp": "12:16:41"
+      },
+      {
+        "row": 14224,
+        "text": "has had to delete 2 Censors",
+        "timestamp": "12:16:43"
+      },
+      {
+        "row": 14225,
+        "text": "from the game. I have never seen this game.",
+        "timestamp": "12:16:45"
+      },
+      {
+        "row": 14226,
+        "text": "This game is crazy. This is extremely",
+        "timestamp": "12:16:47"
+      },
+      {
+        "row": 14227,
+        "text": "funny, honestly. Because, yeah,",
+        "timestamp": "12:16:49"
+      },
+      {
+        "row": 14228,
+        "text": "this Fracturized resolves. I'll take a plus 1 influence.",
+        "timestamp": "12:16:51"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+    "gameNumber": 1,
+    "order": 3,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 44195
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      14220,
+      14228
+    ]
+  },
+  {
     "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
     "segments": [
       14327,
@@ -17024,7 +17638,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 1,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 44409
@@ -17112,6 +17726,169 @@
     ]
   },
   {
+    "text": "RubyXillia flips Suzaku for four damage and follows with Avatar of Suzaku, leaving PokerKT under immediate lethal pressure.",
+    "segments": [
+      14743,
+      14753
+    ],
+    "source": [
+      {
+        "row": 14743,
+        "text": "but we are going to flip Suzaku.",
+        "timestamp": "12:36:23"
+      },
+      {
+        "row": 14744,
+        "text": "Even Peppered Chef will do it.",
+        "timestamp": "12:36:25"
+      },
+      {
+        "row": 14745,
+        "text": "Exactly, Peppered Chef will do it.",
+        "timestamp": "12:36:26"
+      },
+      {
+        "row": 14746,
+        "text": "It could be a repeat of game 1,",
+        "timestamp": "12:36:27"
+      },
+      {
+        "row": 14747,
+        "text": "but Suzaku Vermillion Phoenix has hit the board.",
+        "timestamp": "12:36:29"
+      },
+      {
+        "row": 14748,
+        "text": "4 damage has hit PokerKT's face,",
+        "timestamp": "12:36:32"
+      },
+      {
+        "row": 14749,
+        "text": "and Ruby Zillia has only 1 action left to take to finish the game.",
+        "timestamp": "12:36:35"
+      },
+      {
+        "row": 14750,
+        "text": "The question is, which will it be?",
+        "timestamp": "12:36:40"
+      },
+      {
+        "row": 14751,
+        "text": "Three cards down, it's going to be...",
+        "timestamp": "12:36:43"
+      },
+      {
+        "row": 14752,
+        "text": "It's going to be the Avatar, right?",
+        "timestamp": "12:36:46"
+      },
+      {
+        "row": 14753,
+        "text": "That's right, the Avatar of Suzaku.",
+        "timestamp": "12:36:48"
+      }
+    ],
+    "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+    "gameNumber": 2,
+    "order": 2,
+    "timestamp": {
+      "videoId": "VOlVotCfOU0",
+      "seconds": 45383
+    },
+    "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+    "sourceRows": [
+      14743,
+      14753
+    ],
+    "additionalContext": [
+      {
+        "row": 14761,
+        "text": "I believe you can still use the Mirror to actually remove the Twinkler right there,",
+        "timestamp": "12:37:07"
+      },
+      {
+        "row": 14762,
+        "text": "but even then, that is...",
+        "timestamp": "12:37:11"
+      },
+      {
+        "row": 14763,
+        "text": "Do you really want to do that?",
+        "timestamp": "12:37:13"
+      },
+      {
+        "row": 14764,
+        "text": "We need a quick check on Ruby Zillia's hand size, but if we...",
+        "timestamp": "12:37:15"
+      },
+      {
+        "row": 14765,
+        "text": "I think it's 4 or 3.",
+        "timestamp": "12:37:20"
+      },
+      {
+        "row": 14766,
+        "text": "It should be 3, right?",
+        "timestamp": "12:37:22"
+      },
+      {
+        "row": 14767,
+        "text": "I think it is 3 cards in hand.",
+        "timestamp": "12:37:22"
+      },
+      {
+        "row": 14768,
+        "text": "If PokerKT wanted, he could try for a Frostbind,",
+        "timestamp": "12:37:24"
+      },
+      {
+        "row": 14769,
+        "text": "and then shoot this with the Shimmering Refraction,",
+        "timestamp": "12:37:28"
+      },
+      {
+        "row": 14770,
+        "text": "but how would PokerKT find lethal?",
+        "timestamp": "12:37:33"
+      },
+      {
+        "row": 14771,
+        "text": "This one action may not be enough to finish the game off,",
+        "timestamp": "12:37:36"
+      },
+      {
+        "row": 14772,
+        "text": "may not be enough to propel Ruby Zillia to the World Gauntlet.",
+        "timestamp": "12:37:41"
+      },
+      {
+        "row": 14773,
+        "text": "I think the concern here is that if you actually use the Mirror to pop this,",
+        "timestamp": "12:37:44"
+      },
+      {
+        "row": 14774,
+        "text": "and then Ruby Zillia responds by doing some sort of damage move,",
+        "timestamp": "12:37:48"
+      },
+      {
+        "row": 14775,
+        "text": "and then PokerKT is forced to negate that or actually just loses his game.",
+        "timestamp": "12:37:52"
+      },
+      {
+        "row": 14776,
+        "text": "So I think that was the concern right there.",
+        "timestamp": "12:37:56"
+      },
+      {
+        "row": 14777,
+        "text": "That's right, of course.",
+        "timestamp": "12:37:57"
+      }
+    ]
+  },
+  {
     "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
     "segments": [
       14778,
@@ -17181,7 +17958,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 45478
@@ -17509,7 +18286,7 @@
     ],
     "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "timestamp": {
       "videoId": "VOlVotCfOU0",
       "seconds": 45569

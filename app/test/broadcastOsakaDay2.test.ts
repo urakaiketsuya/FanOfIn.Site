@@ -67,14 +67,18 @@ test('every Day 2 highlight retains original source evidence and a matching capt
 
 test('final capture timestamps stay unpublished while the replay is truncated', () => {
   const pending = read(`${root}pending-playback.json`);
+  const evidence = read(`${root}beat-timestamps.json`);
   const check = read(`${root}playback-check.json`);
   const final = matches.find(m => m.round === 'Final')!;
   assert.equal(final.video!.startSeconds, undefined);
-  assert.equal(pending.length, 10);
+  assert.equal(pending.length, review.pendingTimestampCount);
   for (const p of pending) {
     assert.ok(p.captureSeconds > check.browser.durationSeconds);
     const beat = final.games.find(g => g.gameNumber === p.gameNumber)!.beats.find(b => b.order === p.order)!;
     assert.equal(beat.text, p.text);
+    const cue = evidence.find((e: { matchId: string; gameNumber: number; order: number }) =>
+      e.matchId === final.id && e.gameNumber === p.gameNumber && e.order === p.order);
+    assert.deepEqual(cue?.timestamp, { videoId: p.videoId, seconds: p.captureSeconds });
     assert.equal(beatVideoLink(beat, final.video), undefined);
   }
   assert.equal(matches.flatMap(m => m.games.flatMap(g => g.beats)).filter(b => b.timestamp).length, review.publishedTimestampCount);
