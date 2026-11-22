@@ -16753,7 +16753,7 @@
   {
     "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Hymn of Gaia’s Grace finds Storm Slime during recollection. Storm clears Paladin and Limitless Slime supplies the finishing attack.",
     "timestamp": {
       "videoId": "YajGY_RVfD4",
@@ -17640,7 +17640,7 @@
   {
     "matchId": "oce-nationals-2026-round-7-limelight-glenyboi",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Baleful Oblation clears the board despite Clarent prevention. Varuckan Acolyte adds damage, then Extorting Blackjack and Feu Awakening finish the match.",
     "timestamp": {
       "videoId": "YajGY_RVfD4",
@@ -176432,7 +176432,7 @@
   {
     "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Flash Grenade reduces the Storm Slime turn. thomasli2 builds another attack but holds back from the full commitment and plays Paladin.",
     "timestamp": {
       "videoId": "YajGY_RVfD4",
@@ -191299,5 +191299,83 @@
     ],
     "review": "eu-nationals-day1-three-play-expansion",
     "sourceFile": "European Nationals Day 1  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "ThomasLi2’s Cerulean Decree stops the draw from Undeniable Truth, but HolySamurai’s ally is already sacrificed as the cost. ThomasLi2 loses the chance to glimpse off that ally.",
+    "timestamp": {
+      "videoId": "YajGY_RVfD4",
+      "seconds": 24200
+    },
+    "sourceRows": [
+      3329,
+      3330
+    ],
+    "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+    "source": [
+      {
+        "row": 3329,
+        "timestamp": "6:43:20",
+        "text": "Yeah, it's a creation ritual at fast feed. So, so actually this ceruan here still negates. Yeah, it negates. So you deny the draw one,"
+      },
+      {
+        "row": 3330,
+        "timestamp": "6:43:28",
+        "text": "but you still don't get the glimpse off of your Aquamari. That is rough."
+      }
+    ],
+    "review": "oceania-nationals-day1-three-play-expansion",
+    "sourceFile": "YajGY_RVfD4.json"
+  },
+  {
+    "matchId": "oce-nationals-2026-round-7-limelight-glenyboi",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "GlenyBoi swaps swords with Spirit Blade: Ascension. Prismatic Edge deals three damage and strips a card from Limelight’s memory before Limelight can set up Baleful Oblation.",
+    "timestamp": {
+      "videoId": "YajGY_RVfD4",
+      "seconds": 32670
+    },
+    "sourceRows": [
+      4490,
+      4495
+    ],
+    "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+    "source": [
+      {
+        "row": 4490,
+        "timestamp": "9:04:30",
+        "text": "Yeah, absolutely. Especially for a deck like this that doesn't really do a lot of damage. You have to take every single piece that you can. Ascension. Yeah. Okay. Ascension the sword away."
+      },
+      {
+        "row": 4491,
+        "timestamp": "9:04:39",
+        "text": "Get the risatic edge. Rip some cards out."
+      },
+      {
+        "row": 4492,
+        "timestamp": "9:04:41",
+        "text": "Oh, okay. There's one fire. There's one fire. Okay, so he's going to take three. Rip one of those cards away."
+      },
+      {
+        "row": 4493,
+        "timestamp": "9:04:46",
+        "text": "I think you definitely want the devastating glow gone."
+      },
+      {
+        "row": 4494,
+        "timestamp": "9:04:48",
+        "text": "Yep. Pour gone. All right, this is a pull. Yeah, honestly, these are not particularly useful cards."
+      },
+      {
+        "row": 4495,
+        "timestamp": "9:04:54",
+        "text": "So, this can Yeah, now at the end step going to put three more cards in. So, you can't get those cards ripped out of a memory."
+      }
+    ],
+    "review": "oceania-nationals-day1-three-play-expansion",
+    "sourceFile": "YajGY_RVfD4.json"
   }
 ]

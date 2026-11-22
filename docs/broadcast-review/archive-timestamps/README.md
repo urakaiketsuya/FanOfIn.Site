@@ -210,3 +210,22 @@ the response chains and their outcomes. The round 5 recaps already cover
 the decisive attack and counterspell sequences. A possible Conniving
 Plans cue in round 5 game one at 5:56:11 was left out because the replay
 showed Purifying Thurible and did not confirm the captioned play.
+
+### Oceania Nationals 2026 three-play review
+
+Reviewed all seven three-play recaps, all from Day 1. The complete replay
+runs 10:52:05, and the cached captions end during the sign-off at 10:49:28.
+Playback confirmed both cues on the broadcast clock. The evidence ledger
+records the source SHA-256 and zero-based caption rows.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| HolySamurai vs ThomasLi2, game 3 | [6:43:20](https://www.youtube.com/watch?v=YajGY_RVfD4&t=24200s) | The casters explain that Cerulean Decree denies the Undeniable Truth draw and the ally is already gone as the sacrifice cost. |
+| Limelight vs GlenyBoi, game 2 | [9:04:30](https://www.youtube.com/watch?v=YajGY_RVfD4&t=32670s) | Ascension brings in Prismatic Edge. The casters call three damage and a card removed from Limelight’s memory. |
+
+Five recaps stayed at three plays. Round 1 already covers the Blackjack
+attack and Polaris setup. Round 2 covers Blink’s stalled board and
+Jayare’s finishing sequence. Round 3 covers Sano’s repeated survival
+plays and the overtime finish. Round 4 covers the hand disruption,
+Nimue’s survival and the overtime draw. Round 8 covers the healing
+disruption and the decisive double Enrage.

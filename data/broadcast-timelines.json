@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T22:08:35.536Z",
+  "generatedAt": "2026-11-22T22:12:03.455Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -28905,6 +28905,19 @@
             },
             {
               "order": 2,
+              "actor": "both",
+              "text": "ThomasLi2’s Cerulean Decree stops the draw from Undeniable Truth, but HolySamurai’s ally is already sacrificed as the cost. ThomasLi2 loses the chance to glimpse off that ally.",
+              "cards": [
+                "Undeniable Truth",
+                "Cerulean Decree"
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 24200
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "Flash Grenade reduces the Storm Slime turn. thomasli2 builds another attack but holds back from the full commitment and plays Paladin.",
               "cards": [
@@ -28918,7 +28931,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Hymn of Gaia’s Grace finds Storm Slime during recollection. Storm clears Paladin and Limitless Slime supplies the finishing attack.",
               "cards": [
@@ -29133,6 +29146,19 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "GlenyBoi swaps swords with Spirit Blade: Ascension. Prismatic Edge deals three damage and strips a card from Limelight’s memory before Limelight can set up Baleful Oblation.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 32670
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Baleful Oblation clears the board despite Clarent prevention. Varuckan Acolyte adds damage, then Extorting Blackjack and Feu Awakening finish the match.",
               "cards": [
