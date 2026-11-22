@@ -73750,7 +73750,7 @@
   {
     "matchId": "eu-nationals-2026-day1-round1-zelage-cubone",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Enfeebling Orb forces Qbone to use Manxome Armoire, exchanging Topsy Decree for Vanish from Sight. In response to Vanish, Xelomage draws Incapacitate with Lost Providence and negates it. Seiryuu’s Command and Byakko’s Command then deliver repeated dragon attacks and empowered blasts for the 2–0 finish.",
     "timestamp": {
       "videoId": "JKKl7AYwv3c",
@@ -75194,7 +75194,7 @@
   {
     "matchId": "eu-nationals-2026-day1-round3-asuna-sangorio",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "sungorio uses Gaia’s Songbird to find Ethereal Slime and keeps pushing damage instead of holding defensive cards. Asuna responds to the slime attack with recovery.",
     "timestamp": {
       "videoId": "JKKl7AYwv3c",
@@ -75308,7 +75308,7 @@
   {
     "matchId": "eu-nationals-2026-day1-round3-asuna-sangorio",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "sungorio plays Slime Eruption in response to Asuna’s protector activation. Its three damage resolves for lethal and ties the match.",
     "timestamp": {
       "videoId": "JKKl7AYwv3c",
@@ -191161,5 +191161,143 @@
     ],
     "review": "auckland-three-play-expansion",
     "sourceFile": "idcMDSZRmIE.json"
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round1-zelage-cubone",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Xelomage flips Seiryuu to take out Fluffy Shopkeep while Qbone’s champion has stealth. That clears the ally but leaves Seiryuu unable to taunt on Qbone’s next turn.",
+    "timestamp": {
+      "videoId": "JKKl7AYwv3c",
+      "seconds": 4372
+    },
+    "sourceRows": [
+      1679,
+      1686
+    ],
+    "sourceSha256": "bf977419983ec1d63ebc5af421b8b8407829db25ce7ae81d853a67be2e86521c",
+    "source": [
+      {
+        "row": 1679,
+        "timestamp": "72:52",
+        "text": ">> Yeah. So, we see Zel Mage just flipping"
+      },
+      {
+        "row": 1680,
+        "timestamp": "72:54",
+        "text": "the seru anyway to get rid of the fluffy"
+      },
+      {
+        "row": 1681,
+        "timestamp": "72:56",
+        "text": "shopkeep. It's the perfect turn to do"
+      },
+      {
+        "row": 1682,
+        "timestamp": "72:57",
+        "text": "that cuz you can't attack the champion"
+      },
+      {
+        "row": 1683,
+        "timestamp": "72:59",
+        "text": "anyway. But it does mean that the Seru"
+      },
+      {
+        "row": 1684,
+        "timestamp": "73:01",
+        "text": "is not even going to be taunting on the"
+      },
+      {
+        "row": 1685,
+        "timestamp": "73:02",
+        "text": "next turn here too. And Cubone is going"
+      },
+      {
+        "row": 1686,
+        "timestamp": "73:04",
+        "text": "to be pretty well set up. Uh it looks"
+      }
+    ],
+    "review": "eu-nationals-day1-three-play-expansion",
+    "sourceFile": "European Nationals Day 1  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round3-asuna-sangorio",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Asuna survives sungorio’s first lethal Storm Slime attempt. Three Visits recovers life and Calming Breeze prevents three damage, buying Asuna another turn.",
+    "timestamp": {
+      "videoId": "JKKl7AYwv3c",
+      "seconds": 11857
+    },
+    "sourceRows": [
+      4595,
+      4606
+    ],
+    "sourceSha256": "bf977419983ec1d63ebc5af421b8b8407829db25ce7ae81d853a67be2e86521c",
+    "source": [
+      {
+        "row": 4595,
+        "timestamp": "197:37",
+        "text": "working out here. But we did have the"
+      },
+      {
+        "row": 4596,
+        "timestamp": "197:38",
+        "text": "three visits which recovered just enough"
+      },
+      {
+        "row": 4597,
+        "timestamp": "197:41",
+        "text": "for Asa to stay alive as well. So that"
+      },
+      {
+        "row": 4598,
+        "timestamp": "197:43",
+        "text": "was the other out to this."
+      },
+      {
+        "row": 4599,
+        "timestamp": "197:45",
+        "text": ">> And he has a calming breeze which"
+      },
+      {
+        "row": 4600,
+        "timestamp": "197:47",
+        "text": "prevents exactly three."
+      },
+      {
+        "row": 4601,
+        "timestamp": "197:49",
+        "text": ">> Wow, that's crazy. If the storm slime"
+      },
+      {
+        "row": 4602,
+        "timestamp": "197:51",
+        "text": "just had a single buff counter on it if"
+      },
+      {
+        "row": 4603,
+        "timestamp": "197:54",
+        "text": "there was a forest cake in play or"
+      },
+      {
+        "row": 4604,
+        "timestamp": "197:55",
+        "text": "something then this would have been the"
+      },
+      {
+        "row": 4605,
+        "timestamp": "197:57",
+        "text": "game for Saro. But Asa gets one more"
+      },
+      {
+        "row": 4606,
+        "timestamp": "197:59",
+        "text": "turn. Of course really on the back foot"
+      }
+    ],
+    "review": "eu-nationals-day1-three-play-expansion",
+    "sourceFile": "European Nationals Day 1  Grand Archive TCG.txt"
   }
 ]

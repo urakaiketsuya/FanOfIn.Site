@@ -70,7 +70,7 @@ test('archive backfill retains source excerpts and matches current highlights an
     assert.equal(b.timestamp!.seconds, Math.floor(seconds), key);
     assert.ok(b.timestamp!.seconds >= (match.video!.startSeconds ?? 0), key);
   }
-  assert.equal(seen.size, 1109);
+  assert.equal(seen.size, 1111);
   assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 204);
 });
 

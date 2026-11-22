@@ -189,3 +189,24 @@ disruption sequences. Round 12 game two and both quarterfinal games cover
 the relevant resource exchanges and finishes. Semifinal game two already
 captures the loss of both Ghosts and the counter denial. Finals games one
 and two retain the weapon disruption and the decisive Devastating Blows.
+
+### European Nationals Day 1 three-play review
+
+Reviewed all nine three-play games across rounds 1, 2, 3 and 5. Day 2 has
+no three-play games. The Day 1 replay runs 10:43:12 on the player, in line
+with the last transcript row at 643:11. Both new links were checked against
+the replay. The source file hash and zero-based row ranges are recorded in
+`beat-timestamps.json`.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| Xelomage vs Qbone, game 2 | [1:12:52](https://www.youtube.com/watch?v=JKKl7AYwv3c&t=4372s) | Rows 1679–1686 describe Seiryuu flipping to remove Fluffy Shopkeep and losing taunt for the next turn. |
+| Asuna vs sungorio, game 2 | [3:17:37](https://www.youtube.com/watch?v=JKKl7AYwv3c&t=11857s) | Rows 4595–4606 describe Three Visits and Calming Breeze saving Asuna from the Storm Slime attack. |
+
+Seven games stayed at three plays. Round 1 game one already covers the
+countermeasure and decision to hold the combo. Both round 2 recaps cover
+the decisive disruption and damage. Round 3 games one and three cover
+the response chains and their outcomes. The round 5 recaps already cover
+the decisive attack and counterspell sequences. A possible Conniving
+Plans cue in round 5 game one at 5:56:11 was left out because the replay
+showed Purifying Thurible and did not confirm the captioned play.

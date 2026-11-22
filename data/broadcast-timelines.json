@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T22:01:57.199Z",
+  "generatedAt": "2026-11-22T22:08:35.536Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -4349,6 +4349,18 @@
             {
               "order": 3,
               "actor": "p1",
+              "text": "Xelomage flips Seiryuu to take out Fluffy Shopkeep while Qbone’s champion has stealth. That clears the ally but leaves Seiryuu unable to taunt on Qbone’s next turn.",
+              "cards": [
+                "Fluffy Shopkeep"
+              ],
+              "timestamp": {
+                "videoId": "JKKl7AYwv3c",
+                "seconds": 4372
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
               "text": "Enfeebling Orb forces Qbone to use Manxome Armoire, exchanging Topsy Decree for Vanish from Sight. In response to Vanish, Xelomage draws Incapacitate with Lost Providence and negates it. Seiryuu’s Command and Byakko’s Command then deliver repeated dragon attacks and empowered blasts for the 2–0 finish.",
               "cards": [
                 "Enfeebling Orb",
@@ -4630,6 +4642,20 @@
             },
             {
               "order": 2,
+              "actor": "p1",
+              "text": "Asuna survives sungorio’s first lethal Storm Slime attempt. Three Visits recovers life and Calming Breeze prevents three damage, buying Asuna another turn.",
+              "cards": [
+                "Storm Slime",
+                "Three Visits",
+                "Calming Breeze"
+              ],
+              "timestamp": {
+                "videoId": "JKKl7AYwv3c",
+                "seconds": 11857
+              }
+            },
+            {
+              "order": 3,
               "actor": "p2",
               "text": "sungorio uses Gaia’s Songbird to find Ethereal Slime and keeps pushing damage instead of holding defensive cards. Asuna responds to the slime attack with recovery.",
               "cards": [
@@ -4643,7 +4669,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "sungorio plays Slime Eruption in response to Asuna’s protector activation. Its three damage resolves for lethal and ties the match.",
               "cards": [
