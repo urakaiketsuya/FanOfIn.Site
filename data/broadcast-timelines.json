@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T21:31:45.112Z",
+  "generatedAt": "2026-11-22T21:36:13.201Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -413,6 +413,31 @@
             {
               "order": 1,
               "actor": "p1",
+              "text": "Muck1234 reaches Rai’s level-three champion with Dungeon Guide and brings out Lost Providence. Six banished Arcane cards already bring Rai’s effective level to nine.",
+              "cards": [
+                "Dungeon Guide",
+                "Lost Providence"
+              ],
+              "timestamp": {
+                "videoId": "8fnn-hbArSk",
+                "seconds": 2967
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Muck1234 casts Peer into Mana and spends Enlightenment counters to draw into a larger hand for the next turn.",
+              "cards": [
+                "Peer into Mana"
+              ],
+              "timestamp": {
+                "videoId": "8fnn-hbArSk",
+                "seconds": 3273
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
               "text": "Muck1234’s Topsy Decree interrupts the anticipated Guide sequence as ZeRoMagus reaches level 3, leaving Merlin low on influence.",
               "cards": [
                 "Topsy Decree",
@@ -424,7 +449,7 @@
               }
             },
             {
-              "order": 2,
+              "order": 4,
               "actor": "p1",
               "text": "Enfeebling Orb forces cards down. Muck1234 uses Arcane Sight, Spirit of Purity’s ability and Tome of Sacred Lightning to build levels before Advent of the Stormcaller banishes more Arcane cards.",
               "cards": [
@@ -440,7 +465,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 5,
               "actor": "p1",
               "text": "At level 21, Muck1234 casts Erratic Bolt for 21 after the Advent damage. The casters count total damage well beyond lethal even with Harmonious Mantra; the additional Blast lines they discuss are unnecessary.",
               "cards": [
@@ -718,6 +743,20 @@
           "beats": [
             {
               "order": 1,
+              "actor": "both",
+              "text": "Lance attacks Fluffy Shopkeep with an ally boosted by Beastsoul Visage. Egg answers with the first Resolute Stand, keeping the blocker alive for the next turn.",
+              "cards": [
+                "Beastsoul Visage",
+                "Fluffy Shopkeep",
+                "Resolute Stand"
+              ],
+              "timestamp": {
+                "videoId": "8fnn-hbArSk",
+                "seconds": 11378
+              }
+            },
+            {
+              "order": 2,
               "actor": "p1",
               "text": "Lance reaches Vanitas level 3, but Egg skips a taxed materialization and develops Fluffy Shopkeep. Two Resolute Stands keep the blocker alive across successive turns.",
               "cards": [
@@ -730,7 +769,7 @@
               }
             },
             {
-              "order": 2,
+              "order": 3,
               "actor": "p1",
               "text": "Egg reaches Lorraine, Spirit Ruler and develops Ghosts of Pendragon. Lance eventually removes Fluffy with Dream Fairy, after Egg’s engine is established.",
               "cards": [
@@ -744,7 +783,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p1",
               "text": "Creative Shock and Hone by Fire set up a Rending Flames attack well beyond lethal. Egg completes the 2–0; game 1 was already over when the broadcast joined the table.",
               "cards": [

@@ -48948,7 +48948,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round10-muck-zero",
     "gameNumber": 2,
-    "order": 1,
+    "order": 3,
     "text": "Muck1234’s Topsy Decree interrupts the anticipated Guide sequence as ZeRoMagus reaches level 3, leaving Merlin low on influence.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -49117,7 +49117,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round10-muck-zero",
     "gameNumber": 2,
-    "order": 2,
+    "order": 4,
     "text": "Enfeebling Orb forces cards down. Muck1234 uses Arcane Sight, Spirit of Purity’s ability and Tome of Sacred Lightning to build levels before Advent of the Stormcaller banishes more Arcane cards.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -49246,7 +49246,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round10-muck-zero",
     "gameNumber": 2,
-    "order": 3,
+    "order": 5,
     "text": "At level 21, Muck1234 casts Erratic Bolt for 21 after the Advent damage. The casters count total damage well beyond lethal even with Harmonious Mantra; the additional Blast lines they discuss are unnecessary.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -51026,7 +51026,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round13-egg-lance",
     "gameNumber": 2,
-    "order": 1,
+    "order": 2,
     "text": "Lance reaches Vanitas level 3, but Egg skips a taxed materialization and develops Fluffy Shopkeep. Two Resolute Stands keep the blocker alive across successive turns.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -51210,7 +51210,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round13-egg-lance",
     "gameNumber": 2,
-    "order": 2,
+    "order": 3,
     "text": "Egg reaches Lorraine, Spirit Ruler and develops Ghosts of Pendragon. Lance eventually removes Fluffy with Dream Fairy, after Egg’s engine is established.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -51334,7 +51334,7 @@
   {
     "matchId": "ascent-manila-2026-day2-round13-egg-lance",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Creative Shock and Hone by Fire set up a Rending Flames attack well beyond lethal. Egg completes the 2–0; game 1 was already over when the broadcast joined the table.",
     "timestamp": {
       "videoId": "8fnn-hbArSk",
@@ -189575,5 +189575,352 @@
     ],
     "review": "melbourne-three-play-expansion",
     "sourceFile": "qQrV2I2Uiac.json"
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round10-muck-zero",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Muck1234 reaches Rai’s level-three champion with Dungeon Guide and brings out Lost Providence. Six banished Arcane cards already bring Rai’s effective level to nine.",
+    "timestamp": {
+      "videoId": "8fnn-hbArSk",
+      "seconds": 2967
+    },
+    "sourceRows": [
+      1457,
+      1467
+    ],
+    "sourceSha256": "a7b39380755521ea45028ddf0a0a7981929f9132536b3cb8d766aaa53ed7edf2",
+    "source": [
+      {
+        "row": 1457,
+        "timestamp": "49:27",
+        "text": "to level three here with with five"
+      },
+      {
+        "row": 1458,
+        "timestamp": "49:29",
+        "text": "arcing cards already."
+      },
+      {
+        "row": 1459,
+        "timestamp": "49:32",
+        "text": ">> Oh, okay. He he drew a card already."
+      },
+      {
+        "row": 1460,
+        "timestamp": "49:33",
+        "text": "Okay. Okay."
+      },
+      {
+        "row": 1461,
+        "timestamp": "49:34",
+        "text": ">> Must have missed that. Okay. We're going"
+      },
+      {
+        "row": 1462,
+        "timestamp": "49:35",
+        "text": "to bring on Lost Providence."
+      },
+      {
+        "row": 1463,
+        "timestamp": "49:36",
+        "text": ">> Lost Providence. I think this is not the"
+      },
+      {
+        "row": 1464,
+        "timestamp": "49:38",
+        "text": "turn to to kill, I believe."
+      },
+      {
+        "row": 1465,
+        "timestamp": "49:40",
+        "text": ">> So, we have six arcane cards in"
+      },
+      {
+        "row": 1466,
+        "timestamp": "49:41",
+        "text": "planetary. So, we're currently level"
+      },
+      {
+        "row": 1467,
+        "timestamp": "49:43",
+        "text": "nine."
+      }
+    ],
+    "review": "manila-three-play-expansion",
+    "sourceFile": "Ascent Manila Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round10-muck-zero",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Muck1234 casts Peer into Mana and spends Enlightenment counters to draw into a larger hand for the next turn.",
+    "timestamp": {
+      "videoId": "8fnn-hbArSk",
+      "seconds": 3273
+    },
+    "sourceRows": [
+      1634,
+      1667
+    ],
+    "sourceSha256": "a7b39380755521ea45028ddf0a0a7981929f9132536b3cb8d766aaa53ed7edf2",
+    "source": [
+      {
+        "row": 1634,
+        "timestamp": "54:33",
+        "text": ">> Yeah, I think M's just going to do it. M"
+      },
+      {
+        "row": 1635,
+        "timestamp": "54:36",
+        "text": "just going to go into the pier here."
+      },
+      {
+        "row": 1636,
+        "timestamp": "54:37",
+        "text": "Might actually not this might not be"
+      },
+      {
+        "row": 1637,
+        "timestamp": "54:39",
+        "text": "this turn that Mark win, I think."
+      },
+      {
+        "row": 1638,
+        "timestamp": "54:41",
+        "text": ">> Oh yeah, now seven."
+      },
+      {
+        "row": 1639,
+        "timestamp": "54:44",
+        "text": "So 7 8 9 10 11."
+      },
+      {
+        "row": 1640,
+        "timestamp": "54:47",
+        "text": ">> So that's going to be 13 enlightenment"
+      },
+      {
+        "row": 1641,
+        "timestamp": "54:49",
+        "text": "counters."
+      },
+      {
+        "row": 1642,
+        "timestamp": "54:51",
+        "text": ">> My"
+      },
+      {
+        "row": 1643,
+        "timestamp": "54:51",
+        "text": ">> and actually no 14 because of level two"
+      },
+      {
+        "row": 1644,
+        "timestamp": "54:53",
+        "text": "inherited effect. We also have that as"
+      },
+      {
+        "row": 1645,
+        "timestamp": "54:54",
+        "text": "well."
+      },
+      {
+        "row": 1646,
+        "timestamp": "54:56",
+        "text": ">> That's so much alignment counter."
+      },
+      {
+        "row": 1647,
+        "timestamp": "54:59",
+        "text": ">> 1 2 3 4 5"
+      },
+      {
+        "row": 1648,
+        "timestamp": "55:02",
+        "text": "is showcasing his entire arcane deck"
+      },
+      {
+        "row": 1649,
+        "timestamp": "55:04",
+        "text": "here. I believe it's mostly blinked out"
+      },
+      {
+        "row": 1650,
+        "timestamp": "55:06",
+        "text": "too."
+      },
+      {
+        "row": 1651,
+        "timestamp": "55:07",
+        "text": ">> Yeah. So that's seven. Yeah, that was"
+      },
+      {
+        "row": 1652,
+        "timestamp": "55:08",
+        "text": "seven eight 9 10 11. So that would be"
+      },
+      {
+        "row": 1653,
+        "timestamp": "55:13",
+        "text": "12. Then then Ry effect. So 13"
+      },
+      {
+        "row": 1654,
+        "timestamp": "55:16",
+        "text": "[laughter]"
+      },
+      {
+        "row": 1655,
+        "timestamp": "55:17",
+        "text": "13 alignment cars. That's Yeah. He's"
+      },
+      {
+        "row": 1656,
+        "timestamp": "55:19",
+        "text": "like, \"How many how many enlightment"
+      },
+      {
+        "row": 1657,
+        "timestamp": "55:20",
+        "text": "cards I how many what draws do I have?\""
+      },
+      {
+        "row": 1658,
+        "timestamp": "55:23",
+        "text": ">> I think the judges are also trying to"
+      },
+      {
+        "row": 1659,
+        "timestamp": "55:24",
+        "text": "help out. They're like, \"Okay, we're"
+      },
+      {
+        "row": 1660,
+        "timestamp": "55:26",
+        "text": "just making sure that the maps are"
+      },
+      {
+        "row": 1661,
+        "timestamp": "55:27",
+        "text": "right. Nothing is gone missing.\" This"
+      },
+      {
+        "row": 1662,
+        "timestamp": "55:30",
+        "text": "shows you how complex can really be."
+      },
+      {
+        "row": 1663,
+        "timestamp": "55:33",
+        "text": ">> Hey, we're drawing a little broke. Will"
+      },
+      {
+        "row": 1664,
+        "timestamp": "55:35",
+        "text": "broke."
+      },
+      {
+        "row": 1665,
+        "timestamp": "55:36",
+        "text": ">> All right."
+      },
+      {
+        "row": 1666,
+        "timestamp": "55:36",
+        "text": ">> We want to keep drawing more. Let's draw"
+      },
+      {
+        "row": 1667,
+        "timestamp": "55:38",
+        "text": "more cards. Why not?"
+      }
+    ],
+    "review": "manila-three-play-expansion",
+    "sourceFile": "Ascent Manila Day 2  Grand Archive TCG.txt"
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round13-egg-lance",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Lance attacks Fluffy Shopkeep with an ally boosted by Beastsoul Visage. Egg answers with the first Resolute Stand, keeping the blocker alive for the next turn.",
+    "timestamp": {
+      "videoId": "8fnn-hbArSk",
+      "seconds": 11378
+    },
+    "sourceRows": [
+      5372,
+      5384
+    ],
+    "sourceSha256": "a7b39380755521ea45028ddf0a0a7981929f9132536b3cb8d766aaa53ed7edf2",
+    "source": [
+      {
+        "row": 5372,
+        "timestamp": "189:38",
+        "text": ">> Yeah. Yeah. So Volo gonna come in here"
+      },
+      {
+        "row": 5373,
+        "timestamp": "189:39",
+        "text": "on the fluffy. Egg is thinking here."
+      },
+      {
+        "row": 5374,
+        "timestamp": "189:42",
+        "text": ">> Oh, I wonder if he doesn't have"
+      },
+      {
+        "row": 5375,
+        "timestamp": "189:43",
+        "text": "anything. I mean, if he has a crystized,"
+      },
+      {
+        "row": 5376,
+        "timestamp": "189:45",
+        "text": "he could also crystallize on the Vanitas"
+      },
+      {
+        "row": 5377,
+        "timestamp": "189:46",
+        "text": "swing here. Resolute is ideal. Resolute"
+      },
+      {
+        "row": 5378,
+        "timestamp": "189:48",
+        "text": "on the fluffy to keep her around for"
+      },
+      {
+        "row": 5379,
+        "timestamp": "189:50",
+        "text": "another turn. There we go. Ideal."
+      },
+      {
+        "row": 5380,
+        "timestamp": "189:52",
+        "text": ">> Resolute right here. I don't think Lance"
+      },
+      {
+        "row": 5381,
+        "timestamp": "189:54",
+        "text": "will be able to do anything right here."
+      },
+      {
+        "row": 5382,
+        "timestamp": "189:56",
+        "text": ">> Yeah, Lance cannot go."
+      },
+      {
+        "row": 5383,
+        "timestamp": "189:58",
+        "text": ">> Fluffy is going to stick around for one"
+      },
+      {
+        "row": 5384,
+        "timestamp": "189:59",
+        "text": "more turn. We get to use that float."
+      }
+    ],
+    "review": "manila-three-play-expansion",
+    "sourceFile": "Ascent Manila Day 2  Grand Archive TCG.txt"
   }
 ]

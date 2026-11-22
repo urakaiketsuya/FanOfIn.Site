@@ -90,3 +90,20 @@ SHA-256, zero-based inclusive caption rows and excerpts for each new play.
 | Round 12, Game 2 | [4:40:48](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=16848s) | Bhop uses Creative Shock and Resolute Stand as Pulse recollects with an empty hand. |
 | Round 12, Game 3 | [5:00:32](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=18032s) | Pulse attacks for three, then Bhop reloads with Lost Providence and answers with Heavy Swing. |
 | Semifinal, Game 2 | [7:47:47](https://www.youtube.com/watch?v=qQrV2I2Uiac&t=28067s) | Bhop loses Carter to the level-up banish. |
+
+## Ascent Manila three-play review
+
+Reviewed both three-play games from the [official Day 2 replay](https://www.youtube.com/watch?v=8fnn-hbArSk).
+The player displayed a duration of 8:45:43–8:45:44 across the checks, and the
+transcript’s final caption starts at 8:45:42. Each deep link opened at the
+requested clock on the featured match table. The evidence JSON records the
+original transcript filename, SHA-256, zero-based inclusive rows, and excerpts.
+
+| Round and game | Replay cue | Turning point |
+| --- | --- | --- |
+| Round 10, Game 2 | [49:27](https://www.youtube.com/watch?v=8fnn-hbArSk&t=2967s) | Dungeon Guide takes Muck1234 to Rai’s level-three champion, and Lost Providence comes down. |
+| Round 10, Game 2 | [54:33](https://www.youtube.com/watch?v=8fnn-hbArSk&t=3273s) | Peer into Mana builds Enlightenment counters that Muck1234 spends to draw cards before passing. |
+| Round 13, Game 2 | [3:09:38](https://www.youtube.com/watch?v=8fnn-hbArSk&t=11378s) | Lance’s Beastsoul Visage attack draws Egg’s first Resolute Stand, preserving Fluffy Shopkeep. |
+
+The replay card callout identifies Beastsoul Visage in Round 13. The transcript
+captures the attack into Fluffy Shopkeep and the Resolute Stand response.
