@@ -24143,7 +24143,7 @@
   {
     "matchId": "na-nationals-2026-day2-round12-tlux-superior",
     "gameNumber": 2,
-    "order": 3,
+    "order": 4,
     "text": "Superior flips Genbu, reaches Guo Jia level three and activates Genbu. TLux responds with Psychopomp’s Gale; Superior uses Tidal Lock, and TLux activates Enfeebling Orb before Superior follows with Engulf. Gale is negated. Superior’s own Orb pressures TLux’s hand, and Veiling Breeze prevents only four before the 27-damage finishing attack. Superior reaches 8-0-4.",
     "timestamp": {
       "videoId": "tFC-3k0uxcM",
@@ -26105,7 +26105,7 @@
   {
     "matchId": "na-nationals-2026-grand-finals-quarax-jett",
     "gameNumber": 3,
-    "order": 2,
+    "order": 3,
     "text": "Jett levels to Arisanna, imbues Skirting Step, and develops Razorgale Calling. Dream Fairy sends Cheshire Cat to memory. Quarax materializes Seeker’s Aetherwing and loads Prudent Nock, but Jett reclaims Dream Fairy in response to its attack.",
     "timestamp": {
       "videoId": "tFC-3k0uxcM",
@@ -26141,7 +26141,7 @@
   {
     "matchId": "na-nationals-2026-grand-finals-quarax-jett",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "Jett develops Essence Crucible and brews a potion. Quarax’s Expel the Departed removes Razorgale Calling, but Cyclical Breeze retrieves it without a Reforging response. The replayed Calling and Aesan Protector bring Quarax within two damage of defeat. Jett waits until Quarax attempts Reposition, then plays Veiling Breeze; the Razorgale trigger deals lethal damage and wins the title.",
     "timestamp": {
       "videoId": "tFC-3k0uxcM",
@@ -191668,5 +191668,93 @@
     ],
     "review": "na-nationals-day1-three-play-expansion",
     "sourceFile": "Razorgale Arisanna vs Water Luxem Zander  Grand Archive TCG North American Nationals Round 9.txt"
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round12-tlux-superior",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "TLux targets Fractal of Polar Depths with Expel the Departed. Superior sacrifices the Fractal in response, taking a smaller mill now before more water cards can build up in the graveyard.",
+    "timestamp": {
+      "videoId": "tFC-3k0uxcM",
+      "seconds": 13493
+    },
+    "sourceRows": [
+      1697,
+      1699
+    ],
+    "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+    "source": [
+      {
+        "row": 1697,
+        "timestamp": "3:44:53",
+        "text": "So superior very importantly here is going to and respond to that expel that departed here. Get a little mill in."
+      },
+      {
+        "row": 1698,
+        "timestamp": "3:44:59",
+        "text": "Here's the example here too where this does matter where you target the you just simply target the expel right now in wreck or target the polar death right now in wreck which forces superior to"
+      },
+      {
+        "row": 1699,
+        "timestamp": "3:45:08",
+        "text": "pop it now which does deny it being bigger and bigger on future turns. So Tox is just saying I'm going to rip the band-aid off right now and he is dying"
+      }
+    ],
+    "review": "na-nationals-day2-three-play-expansion",
+    "sourceFile": "tFC-3k0uxcM.json"
+  },
+  {
+    "matchId": "na-nationals-2026-grand-finals-quarax-jett",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Jett uses Reclaim to save Bandit, Gaze Leader from Cheshire Cat’s attack and keeps Protector Raccoon ready. With Bandit off the board, Quarax can choose which graveyard card to banish if the Raccoon activates.",
+    "timestamp": {
+      "videoId": "tFC-3k0uxcM",
+      "seconds": 41216
+    },
+    "sourceRows": [
+      5291,
+      5297
+    ],
+    "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+    "source": [
+      {
+        "row": 5291,
+        "timestamp": "11:26:56",
+        "text": "Oh, curious are saving the bandit here."
+      },
+      {
+        "row": 5292,
+        "timestamp": "11:26:59",
+        "text": "Keeping that Protector Raccoon up instead of using that damage prevention on it here."
+      },
+      {
+        "row": 5293,
+        "timestamp": "11:27:06",
+        "text": "Back to hand he goes."
+      },
+      {
+        "row": 5294,
+        "timestamp": "11:27:08",
+        "text": "Yeah, and there's just the Protector Raccoon left in play now, negating the attack from the Chesure Cat. If Corax does try to play a floating memory now,"
+      },
+      {
+        "row": 5295,
+        "timestamp": "11:27:16",
+        "text": "it will basically force Ali's hand in playing the second Protector Raccoon if Ali wants to be able to get it off of the or out of the graveyard. That first"
+      },
+      {
+        "row": 5296,
+        "timestamp": "11:27:25",
+        "text": "Protector Raccoon activation gives Quorax the option of what to banish."
+      },
+      {
+        "row": 5297,
+        "timestamp": "11:27:30",
+        "text": "Yes, is Bandit's ability, the blanket statement of a target card in the graveyard is now gone. But it also gives"
+      }
+    ],
+    "review": "na-nationals-day2-three-play-expansion",
+    "sourceFile": "tFC-3k0uxcM.json"
   }
 ]

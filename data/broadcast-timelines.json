@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-23T21:41:32.440Z",
+  "generatedAt": "2026-11-23T21:50:54.188Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -20531,6 +20531,19 @@
             },
             {
               "order": 3,
+              "actor": "both",
+              "text": "TLux targets Fractal of Polar Depths with Expel the Departed. Superior sacrifices the Fractal in response, taking a smaller mill now before more water cards can build up in the graveyard.",
+              "cards": [
+                "Expel the Departed",
+                "Fractal of Polar Depths"
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 13493
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Superior flips Genbu, reaches Guo Jia level three and activates Genbu. TLux responds with Psychopomp’s Gale; Superior uses Tidal Lock, and TLux activates Enfeebling Orb before Superior follows with Engulf. Gale is negated. Superior’s own Orb pressures TLux’s hand, and Veiling Breeze prevents only four before the 27-damage finishing attack. Superior reaches 8-0-4.",
               "cards": [
@@ -21764,6 +21777,21 @@
             {
               "order": 2,
               "actor": "p2",
+              "text": "Jett uses Reclaim to save Bandit, Gaze Leader from Cheshire Cat’s attack and keeps Protector Raccoon ready. With Bandit off the board, Quarax can choose which graveyard card to banish if the Raccoon activates.",
+              "cards": [
+                "Reclaim",
+                "Bandit, Gaze Leader",
+                "Cheshire Cat, Impish Grin",
+                "Protector Raccoon"
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 41216
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
               "text": "Jett levels to Arisanna, imbues Skirting Step, and develops Razorgale Calling. Dream Fairy sends Cheshire Cat to memory. Quarax materializes Seeker’s Aetherwing and loads Prudent Nock, but Jett reclaims Dream Fairy in response to its attack.",
               "cards": [
                 "Reclaim",
@@ -21781,7 +21809,7 @@
               }
             },
             {
-              "order": 3,
+              "order": 4,
               "actor": "p2",
               "text": "Jett develops Essence Crucible and brews a potion. Quarax’s Expel the Departed removes Razorgale Calling, but Cyclical Breeze retrieves it without a Reforging response. The replayed Calling and Aesan Protector bring Quarax within two damage of defeat. Jett waits until Quarax attempts Reposition, then plays Veiling Breeze; the Razorgale trigger deals lethal damage and wins the title.",
               "cards": [

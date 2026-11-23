@@ -265,3 +265,22 @@ graveyard fight and the Razorgale finish. Both Round 6 games cover the
 combat denial and contrasting Diana outcomes. Round 7 game two covers
 Tariff Ring and the Rai damage chain. Round 9 game three already covers
 the graveyard denial, Blanche exchange and combo finish.
+
+### North American Nationals Day 2 three-play review
+
+Reviewed all 18 eligible games. Both added cues were verified on the full
+11:47:35 broadcast. Cached captions end at 11:47:02, and the evidence
+ledger records the source SHA-256 and zero-based caption ranges.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| TLux vs Superior, game 2 | [3:44:53](https://www.youtube.com/watch?v=tFC-3k0uxcM&t=13493s) | Expel the Departed forces Superior to sacrifice Fractal of Polar Depths early for a smaller mill. |
+| Quarax vs Jett, final game 3 | [11:26:56](https://www.youtube.com/watch?v=tFC-3k0uxcM&t=41216s) | Jett returns Bandit with Reclaim during Cheshire Cat’s attack and keeps Protector Raccoon ready, giving Quarax the choice of what to banish if it activates. |
+
+Sixteen games stayed at three plays. The other Swiss recaps already cover
+the decisive Genbu and Suzaku setups, the two ChemCollapse–mDuo13
+resource fights, and the Diana–Zander damage and recovery exchanges.
+The quarterfinals retain the level-up denial, combat retreat and
+Razorgale finish. Both semifinal recaps cover the graveyard control,
+Priestess interaction or finishing triggers. Final game two already
+covers Quarax stopping Jett’s defenses and closing with the Archer.
