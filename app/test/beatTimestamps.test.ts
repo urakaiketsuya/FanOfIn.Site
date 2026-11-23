@@ -70,7 +70,7 @@ test('archive backfill retains source excerpts and matches current highlights an
     assert.equal(b.timestamp!.seconds, Math.floor(seconds), key);
     assert.ok(b.timestamp!.seconds >= (match.video!.startSeconds ?? 0), key);
   }
-  assert.equal(seen.size, 1114);
+  assert.equal(seen.size, 1117);
   assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 204);
 });
 
@@ -117,7 +117,7 @@ test('NA round nine uses its separate replay clock and persistent video mapping'
   assert.equal(mapping.videoId, match.video!.id);
   assert.equal(mapping.kind, 'match');
   const beats = match.games.flatMap(g => g.beats);
-  assert.equal(beats.length, 9);
+  assert.equal(beats.length, 11);
   for (const beat of beats) {
     assert.equal(beat.timestamp?.videoId, match.video!.id);
     assert.ok(beat.timestamp!.seconds < 59 * 60 + 37);

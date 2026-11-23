@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T22:21:53.767Z",
+  "generatedAt": "2026-11-23T21:41:32.440Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -19385,6 +19385,20 @@
             },
             {
               "order": 3,
+              "actor": "p1",
+              "text": "Anjuhro levels into Tristan, Shadowreaver and banishes four cards from Hyouka’s deck. The cards include Arcane Elemental, and Anjuhro plays the stolen Scry the Skies to draw into memory.",
+              "cards": [
+                "Tristan, Shadowreaver",
+                "Arcane Elemental",
+                "Scry the Skies"
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 33929
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Arcane Elemental and Disorienting Winds return the elemental to hand to attack again. Anjuhro cannot keep up, and Hyouka wins game 1 without losing influence.",
               "cards": [
@@ -19747,6 +19761,20 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Vernosius reaches Zander, Deft Executor, but the level-up banishes Resolute Stand and Lightweaver’s Assault from memory, costing him both a defensive card and a damage source.",
+              "cards": [
+                "Zander, Deft Executor",
+                "Resolute Stand",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 362
+              }
+            },
+            {
+              "order": 4,
               "actor": "p1",
               "text": "Bailey levels to Arisanna, plays two Razorgales, then Essence Crucible. A Speed Potion brewed after the second Razorgale deals big damage with each trigger, and Bailey wins with the potion plus Windmill Engineer.",
               "cards": [
@@ -19804,6 +19832,19 @@
             },
             {
               "order": 3,
+              "actor": "p2",
+              "text": "Vernosius puts down Blanche, Sheltering Saint to blunt the Razorgale damage, then uses Shroud in Mist to keep Bailey from attacking Blanche that turn.",
+              "cards": [
+                "Blanche, Sheltering Saint",
+                "Shroud in Mist"
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 1509
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "Vernosius plays Striking Illuminance with Lightweaver's Assault, and Incap on Bailey's Skirting Step. Bailey is still on Spirit of Wind and takes lethal. The casters say Bailey waited too long to level.",
               "cards": [

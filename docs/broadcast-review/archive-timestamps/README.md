@@ -244,3 +244,24 @@ RubyXillia’s hand disruption and DragonJG’s deck-out. Round 4 game two
 covers both Feu Awakening exchanges and Awi’s recovery. Round 7 game two
 covers the missed level-up and the defensive sequence that keeps
 NeptuneI alive until the final attack.
+
+### North American Nationals Day 1 three-play review
+
+Reviewed all nine eligible games. The Day 1 broadcast ran 11:54:55 in
+playback, with its last cached caption at 11:54:52. The separate complete
+Round 9 replay displayed 59:36. Each new cue was checked on the replay
+that supplied its captions. Source hashes and zero-based rows are in the
+evidence ledger.
+
+| Match and game | Verified cue | Transcript evidence |
+| --- | --- | --- |
+| Anjuhro vs Hyouka, game 1 | [9:25:29](https://www.youtube.com/watch?v=ljQZR8Yu1XM&t=33929s) | Shadowreaver takes four cards, including Arcane Elemental, and Anjuhro uses the stolen Scry the Skies to draw into memory. |
+| likeBAILEY vs Vernosius, game 1 | [6:02](https://www.youtube.com/watch?v=lt8xG0pelpw&t=362s) | The level-up costs Vernosius Resolute Stand and Lightweaver’s Assault. |
+| likeBAILEY vs Vernosius, game 2 | [25:09](https://www.youtube.com/watch?v=lt8xG0pelpw&t=1509s) | Vernosius deploys Blanche to resist Razorgale damage and gives Blanche stealth with Shroud in Mist. |
+
+Six games stayed at three plays. Round 2 game two already covers the
+Hearts protection and halted Verita. Round 5 game one covers the
+graveyard fight and the Razorgale finish. Both Round 6 games cover the
+combat denial and contrasting Diana outcomes. Round 7 game two covers
+Tariff Ring and the Rai damage chain. Round 9 game three already covers
+the graveyard denial, Blanche exchange and combo finish.
