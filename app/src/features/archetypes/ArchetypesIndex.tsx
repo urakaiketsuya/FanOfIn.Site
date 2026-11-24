@@ -1,3 +1,7 @@
+import { useBrowseParams } from "../../lib/useBrowseParams";
+import { useTabParam } from "../../lib/useTabParam";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useBrowseState } from "../../lib/useBrowseState";
 import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
 import { lazy, Suspense, useMemo, useState } from "react";
@@ -29,7 +33,8 @@ const SORT_LABELS: Record<SortMode, string> = {
   avgPrice: "Avg price",
 };
 
-type ViewMode = "archetypes" | "builds" | "validation" | "hurtYou";
+const VIEW_TABS = ["archetypes", "builds", "validation", "hurtYou"] as const;
+type ViewMode = typeof VIEW_TABS[number];
 type ConfidenceFilter = "established" | "all";
 const BUILD_PAGE_SIZE = 40;
 
@@ -58,10 +63,20 @@ export default function ArchetypesIndex() {
   const seo = discoveryIndexMetadata("archetypes");
   useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
   const data = useArchetypeTaxonomyData();
-  const [championFilter, setChampionFilter] = useBrowseState<string | null>('archetypes/ArchetypesIndex.championFilter', null);
+  const status = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
+  const [params, setParams] = useBrowseParams();
+  const championFilter = params.get("champion");
+  function setChampionFilter(champion: string | null) {
+    setParams(previous => {
+      const next = new URLSearchParams(previous);
+      if (champion) next.set("champion", champion);
+      else next.delete("champion");
+      return next;
+    }, { replace: true });
+  }
   const [seasonId, setSeasonId] = useBrowseState<number | null>('archetypes/ArchetypesIndex.seasonId', null);
   const [sortMode, setSortMode] = useBrowseState<SortMode>('archetypes/ArchetypesIndex.sortMode', "players");
-  const [view, setView] = useBrowseState<ViewMode>('archetypes/ArchetypesIndex.view', "archetypes");
+  const [view, setView] = useTabParam("tab", VIEW_TABS, "archetypes");
   const [confidenceFilter, setConfidenceFilter] = useBrowseState<ConfidenceFilter>('archetypes/ArchetypesIndex.confidenceFilter', "established");
   const [buildVisibleCount, setBuildVisibleCount] = useState(BUILD_PAGE_SIZE);
   const [selectedCompareIds, setSelectedCompareIds] = useState<Set<string>>(new Set());
@@ -82,7 +97,11 @@ export default function ArchetypesIndex() {
   const championsPresent = useMemo(() => {
     if (!data) return [];
     const names = new Set<string>();
-    for (const c of data.clusters) for (const b of c.championBreakdown ?? []) names.add(b.championName);
+    for (const cluster of data.clusters) {
+      names.add(cluster.championName);
+      for (const entry of cluster.championBreakdown ?? []) names.add(entry.championName);
+    }
+    for (const route of data.materialArchetypes ?? []) names.add(route.championName);
     return Array.from(names).sort();
   }, [data]);
 
@@ -206,6 +225,7 @@ export default function ArchetypesIndex() {
         <Link to="/archetypes/mine/themes" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Themes</Link>
         <Link to="/methodology#coverage" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Data coverage</Link>
       </nav>
+      <PublishedSourceStatus label="Archetype data" status={status} hasData={!!data} />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
       <div className="mt-4">
         <Tabs<ViewMode> variant="pill" wrap baseId="archetype-view" label="Archetype view" active={view}
@@ -216,8 +236,9 @@ export default function ArchetypesIndex() {
       <TabPanel baseId="archetype-view" tab="archetypes" active={view}>
           <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
             <label className="sr-only" htmlFor="archetype-champion">Champion</label>
-            <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => setChampionFilter(event.target.value || null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+            <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => { setChampionFilter(event.target.value || null); setBuildVisibleCount(BUILD_PAGE_SIZE); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
               <option value="">All champions</option>
+              {championFilter && !championsPresent.includes(championFilter) && <option value={championFilter}>{championFilter}</option>}
               {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
             </select>
             <label className="sr-only" htmlFor="archetype-confidence">Confidence</label>
@@ -226,7 +247,6 @@ export default function ArchetypesIndex() {
               <option value="all">Established + emerging</option>
             </select>
           </div>
-          {!data && <InlineState className="mt-6">Loading…</InlineState>}
           {data && materialArchetypes.length === 0 && <InlineState className="mt-6">No material archetypes match these filters.</InlineState>}
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {materialArchetypes.map((route) => {
@@ -253,6 +273,7 @@ export default function ArchetypesIndex() {
           className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="">All champions</option>
+          {championFilter && !championsPresent.includes(championFilter) && <option value={championFilter}>{championFilter}</option>}
           {championsPresent.map((name) => (
             <option key={name} value={name}>
               {name}
@@ -310,7 +331,6 @@ export default function ArchetypesIndex() {
         /></details>
       )}
 
-      {!data && <InlineState className="mt-6">Loading…</InlineState>}
       {data && rows.length === 0 && (
         <InlineState className="mt-6">
           {seasonId !== null ? "No builds were played in this season yet." : "No builds have cleared the sample-size threshold yet."}

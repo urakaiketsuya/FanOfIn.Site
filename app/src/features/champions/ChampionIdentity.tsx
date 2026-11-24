@@ -4,9 +4,10 @@ import CardArtTile from "../../components/CardArtTile";
 import { useCardCatalog } from "../cards/useCardCatalog";
 
 /** Catalog-backed identity, including champions without promotional cutout artwork. */
-export default function ChampionIdentity({ championName, fallbackNames }: {
+export default function ChampionIdentity({ championName, fallbackNames, contained = false }: {
   championName: string;
   fallbackNames: string[];
+  contained?: boolean;
 }) {
   const catalog = useCardCatalog();
   const identityCards = useMemo(() => catalog
@@ -20,7 +21,7 @@ export default function ChampionIdentity({ championName, fallbackNames }: {
   const identityByName = new Map(identityCards.map((card) => [card.name, card]));
 
   return (
-    <section aria-label={`${championName} card portraits`} className="identity-surface mb-4 mt-4 rounded-3xl border border-ctp-surface1 p-4">
+    <section aria-label={`${championName} card portraits`} className={contained ? "mt-4" : "identity-surface mb-4 mt-4 rounded-3xl border border-ctp-surface1 p-4"}>
       <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-4 lg:grid-cols-6">
         {(identityNames.length > 0 ? identityNames : [championName]).map((cardName) => {
           const card = identityByName.get(cardName);

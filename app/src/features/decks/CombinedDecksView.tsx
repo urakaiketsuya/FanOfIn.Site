@@ -12,8 +12,9 @@ import DeckContentFilterControls from "./DeckContentFilterControls";
 import { deckContentFilterCount, deckMatchesContentFilters } from "./deckContentFilters";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
-import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useEffectEvent, useMemo, useState, useTransition } from "react";
+import { useBrowseParams } from "../../lib/useBrowseParams";
+import { DECK_QUERY_DELAY_MS } from "../../components/deck-search/useDeckSearch";
 import type { PublicDeckSummary } from "@gatcg/shared";
 import { deckDateInRange } from "./deckDateRange";
 import DeckSightingsView from "./DeckSightingsView";
@@ -33,7 +34,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   contentFilters: DeckContentFilterState;
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
-  const [params, setParams] = useSearchParams();
+  const [params, setParams] = useBrowseParams();
   const source = ["shared", "tournament", "collected"].includes(params.get("source") ?? "") ? params.get("source")! : "all";
   const showCollected = source === "all" || source === "collected";
   const collected = useCollectedDecks(showCollected);
@@ -44,7 +45,22 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   const [visitedTournament, setVisitedTournament] = useState(source === "tournament");
   useEffect(() => { if (source === "tournament") setVisitedTournament(true); }, [source]);
   const query = params.get("q") ?? "";
-  const deferredQuery = useDeferredValue(query);
+  const [draft, setDraft] = useState({ value: query, committed: query });
+  const searchText = draft.committed === query ? draft.value : query;
+  if (draft.committed !== query) setDraft({ value: query, committed: query });
+  const commitSearch = useEffectEvent((value: string) => update("q", value));
+  useEffect(() => {
+    if (searchText === query) return;
+    const timer = setTimeout(() => commitSearch(searchText), DECK_QUERY_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [searchText, query]);
+  function editSearch(value: string) {
+    setDraft({ value, committed: query });
+  }
+  function clearSearch() {
+    editSearch("");
+    update("q", "");
+  }
   const format = params.get("format") ?? "";
   const champion = params.get("champion") ?? "";
   const [shared, setShared] = useState<PublicDeckSummary[]>([]);
@@ -88,7 +104,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   }, [retry]);
   const champions = useMemo(() => [...new Set([...collectedBuilds.map(d => d.championName), ...shared.map(d => d.championName), ...(sightings?.sightings ?? []).map(d => d.championName)].filter((name): name is string => Boolean(name)))].sort(), [shared, sightings, collectedBuilds]);
   const rows = useMemo(() => {
-    const search = deferredQuery.trim().toLowerCase();
+    const search = query.trim().toLowerCase();
     const matches = (name: string | null, text: string) => (!champion || deckSearchChampion(champion) === deckSearchChampion(name)) && (!search || text.toLowerCase().includes(search));
     const collectedRows = showCollected && sightings ? collectedBuilds.filter(d => isCollectedOnlyBuild(d, tournamentHashes) && (!format || d.format === format) && matches(d.championName, d.title) && (!contentActive || deckMatchesContentFilters(d.lines, contentFilters, cardsByName)) && deckDateInRange(d.collectedAt, dateFrom, dateTo)).map(deck => ({ kind: "collected" as const, id: deck.id, date: deck.collectedAt, deck })) : [];
     const sharedSignatures = new Set(source === "all" ? shared.filter(d => d.buildSignature && (!format || d.format === format) && matches(d.championName, `${d.title} ${d.championName ?? ""} ${d.owner.displayName}`) && deckDateInRange(d.publishedAt, dateFrom, dateTo) && (!contentActive || (d.cardNames && deckMatchesContentFilters(d.cardNames.map(name => ({ name, quantity: 1 })), contentFilters, cardsByName)))).map(d => `${d.format}:${d.buildSignature}`) : []);
@@ -103,15 +119,16 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
       return (sort === "oldest" ? -byDate : sort === "champion" ? byChampion || byDate : byDate)
         || a.kind.localeCompare(b.kind) || a.id.localeCompare(b.id);
     });
-  }, [source, shared, sightings, deferredQuery, champion, format, playerName, dateFrom, dateTo, sort, contentActive, contentFilters, cardsByName, matchingIds, showCollected, collectedBuilds, tournamentHashes]);
+  }, [source, shared, sightings, query, champion, format, playerName, dateFrom, dateTo, sort, contentActive, contentFilters, cardsByName, matchingIds, showCollected, collectedBuilds, tournamentHashes]);
   function update(key: string, value: string) {
     const apply = () => { setParams(previous => { const next = new URLSearchParams(previous); if (value) next.set(key, value); else next.delete(key); next.delete("page"); return next; }, { replace: true }); setVisibleCount(30); };
     startTransition(apply);
   }
   const activeItems: ActiveDeckFilter[] = [
-    ...[['champion', champion], ['format', format], ['from', dateFrom], ['to', dateTo], ['q', query]].filter(([, value]) => value).map(([key, value]) => ({ key, label: `${({ champion: 'Champion', format: 'Format', from: 'From', to: 'Through', q: 'Search' } as Record<string, string>)[key]}: ${value}`, remove: () => update(key, '') })),
+    ...[['champion', champion], ['format', format], ['from', dateFrom], ['to', dateTo], ['q', query]].filter(([, value]) => value).map(([key, value]) => ({ key, label: `${({ champion: 'Champion', format: 'Format', from: 'From', to: 'Through', q: 'Search' } as Record<string, string>)[key]}: ${value}`, remove: () => key === "q" ? clearSearch() : update(key, '') })),
   ];
   function clearFilters() {
+    editSearch("");
     startTransition(() => {
       setParams(previous => {
         const next = new URLSearchParams(previous);
@@ -129,12 +146,12 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
       <label className="flex flex-col gap-1 text-xs">Source<Select aria-label="Deck source" value={source} onChange={e => update("source", e.target.value)}><option value="all">All sources</option><option value="shared">Shared decks</option><option value="collected">Collected builds</option><option value="tournament">Tournament decks</option></Select></label>
     </div>
     {(source === "tournament" || visitedTournament) && <div hidden={source !== "tournament"}>
-      <DeckSightingsView championName={champion || null} setChampionName={value => update("champion", value ?? "")} query={query} setQuery={value => update("q", value)} contentFilters={contentFilters} setContentFilters={setContentFilters} />
+      <DeckSightingsView championName={champion || null} setChampionName={value => update("champion", value ?? "")} query={query} searchText={searchText} onSearchTextChange={editSearch} onClearSearch={clearSearch} contentFilters={contentFilters} setContentFilters={setContentFilters} />
     </div>}
     {source !== "tournament" && <>
     <div className="mt-4 flex flex-wrap items-end gap-2">
       <label className="flex min-w-0 basis-full flex-col gap-1 text-xs sm:flex-1">Search decks
-        <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} />
+        <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={searchText} onChange={e => editSearch(e.target.value)} />
       </label>
     </div>
     <BrowseDeckFilters filters={contentFilters} setFilters={setContentFilters} items={activeItems} onClear={clearFilters} resultLabel={`Show ${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}>
@@ -162,7 +179,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     {(source === "all" || source === "shared") && loading && <InlineState className="mt-4">Loading shared decks…</InlineState>}
     {(source === "all" || source === "shared") && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
     {showCollected && <PublishedSourceStatus label="Collected builds" status={collectedStatus} hasData={!!collected} />}
-    <DeckResultsOrder summary={<>{waiting && !rows.length ? "Loading decks…" : `${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</>} label={sort === 'oldest' ? 'Oldest first' : sort === 'champion' ? 'Champion A–Z' : 'Newest first'}>
+    <DeckResultsOrder summary={<>{waiting && !rows.length ? "Loading decks…" : `${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}{pending ? " · Recalculating…" : ""}</>} label={sort === 'oldest' ? 'Oldest first' : sort === 'champion' ? 'Champion A–Z' : 'Newest first'}>
       <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">Sort by
         <Select aria-label="Sort decks" value={sort} onChange={e => update("sort", e.target.value)}>
           <option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="champion">Champion A–Z</option>

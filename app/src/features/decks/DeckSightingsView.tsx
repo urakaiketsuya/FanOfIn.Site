@@ -10,7 +10,7 @@ import { deckDateInRange } from "./deckDateRange";
 import { balancedSort, type SortPriority } from "@gatcg/shared";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
-import { useSearchParams } from "react-router-dom";
+import { useBrowseParams } from "../../lib/useBrowseParams";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { decodeCardLines, EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import LoadMore from "../../components/LoadMore";
@@ -48,18 +48,22 @@ export default function DeckSightingsView({
   championName,
   setChampionName,
   query,
-  setQuery,
+  searchText,
+  onSearchTextChange,
+  onClearSearch,
   contentFilters,
   setContentFilters,
 }: {
   query: string;
-  setQuery: (value: string) => void;
+  searchText: string;
+  onSearchTextChange: (value: string) => void;
+  onClearSearch: () => void;
   championName: string | null;
   setChampionName: (v: string | null) => void;
   contentFilters: DeckContentFilterState;
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
-  const [, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useBrowseParams();
   const sightingsData = useDeckSightingsData();
   const sightingsStatus = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
   const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", deckContentFilterCount(contentFilters) > 0);
@@ -202,7 +206,7 @@ export default function DeckSightingsView({
   const visible = filtered.slice(0, visibleCount);
   const activeItems: ActiveDeckFilter[] = [
     ...(championName ? [{ key: 'champion', label: `Champion: ${championName}`, remove: () => setChampionName(null) }] : []),
-    ...(query ? [{ key: 'query', label: `Search: ${query}`, remove: () => setQuery('') }] : []),
+    ...(query ? [{ key: 'query', label: `Search: ${query}`, remove: onClearSearch }] : []),
     ...(dateFrom || dateTo ? [{ key: 'dates', label: `Event dates: ${dateFrom || 'Any'} – ${dateTo || 'Any'}`, remove: () => { setDateFrom(''); setDateTo(''); } }] : []),
     ...(category ? [{ key: 'category', label: EVENT_CATEGORY_LABELS[category] ?? category, remove: () => setCategory(null) }] : []),
     ...(seasonId !== null ? [{ key: 'season', label: seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? `Season ${seasonId}`, remove: () => setSeasonId(null) }] : []),
@@ -212,6 +216,7 @@ export default function DeckSightingsView({
     ...(outcome !== 'all' ? [{ key: 'outcome', label: OUTCOME_LABELS[outcome], remove: () => setOutcome('all') }] : []),
   ];
   function clearFilters() {
+    onClearSearch();
     startTransition(() => {
       setDateFrom(''); setDateTo(''); setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome('all');
       setSearchParams(previous => { const next = new URLSearchParams(previous); for (const key of [...next.keys()]) if (key.startsWith('content-') || key === 'champion' || key === 'q') next.delete(key); return next; });
@@ -223,8 +228,8 @@ export default function DeckSightingsView({
     <>
       <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:flex sm:flex-wrap sm:items-center">
         <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={searchText}
+          onChange={(e) => onSearchTextChange(e.target.value)}
           placeholder="Search player, event, or champion…"
           aria-label="Search tournament results"
           className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:min-w-64 sm:flex-1"

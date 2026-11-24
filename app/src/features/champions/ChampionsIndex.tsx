@@ -79,7 +79,7 @@ export default function ChampionsIndex() {
 
   return (
     <PageLayout width="fluid" data-component="ChampionsIndex">
-      <PageHeader title="Choose a champion" description="Explore their cards and builds." />
+      <PageHeader title="Champions" />
 
       <PublishedSourceStatus label="Champion statistics" status={dataStatus} hasData={!!data} />
       <PublishedSourceStatus label="Champion trends" status={trendStatus} hasData={!!trendsData} />
@@ -98,7 +98,6 @@ export default function ChampionsIndex() {
       {view !== "race" && <label className="mt-3 block max-w-lg text-sm text-ctp-subtext1">Find a champion or spirit
         <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Name, class, or element" className="mt-1 min-h-control w-full rounded-xl border border-ctp-surface1 bg-ctp-mantle px-3 text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" />
       </label>}
-      {showStats && view !== "race" && <p className="mt-3 text-sm text-ctp-subtext1">Statistics cover the published tournament sample.</p>}
       <TabPanel baseId="champion-directory" tab="champions" active={view} keepMounted>
         {archetypes?.length === 0 && <p role="status" className="mt-6 text-ctp-subtext1">No champions have been published yet.</p>}
         {!!archetypes?.length && visibleChampions?.length === 0 && <p role="status" className="mt-4">No champions match your search.</p>}

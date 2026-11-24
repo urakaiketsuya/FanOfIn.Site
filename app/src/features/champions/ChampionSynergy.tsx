@@ -1,15 +1,12 @@
 import { championMetadata, discoverySocial } from "@gatcg/shared";
 import ChampionIdentity from "./ChampionIdentity";
 import ChampionRelationships from "./ChampionRelationships";
-import ReviewedChampionFamilies from "./ReviewedChampionFamilies";
-import DiaoArchetypeFamilies from "./DiaoArchetypeFamilies";
 import ChampionDecks from "./ChampionDecks";
 import ChampionSeasonSnapshot from "./ChampionSeasonSnapshot";
 import ChampionStaples from "./ChampionStaples";
 import ChampionPackage from "./ChampionPackage";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import Button from "../../components/ui/Button";
-import ArchetypePreview from "../archetypes/ArchetypePreview";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Card, CardImpactEntry, CardInclusionEntry, PlayerTopCard, TopCardsBySection } from "@gatcg/shared";
@@ -21,7 +18,7 @@ import TopCardsSections from "../../components/TopCardsSections";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import CardArtTile from "../../components/CardArtTile";
 import DisclosureChevron from "../../components/DisclosureChevron";
-import { VisualCardTile, VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
+import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByName";
@@ -40,29 +37,18 @@ import { NewReleaseComboFooter } from "./ChampionSynergyCards";
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
 
 const JUMP_SECTIONS = [
-  { id: "decks", label: "Decks" },
   { id: "cards", label: "Cards" },
+  { id: "decks", label: "Decks" },
   { id: "season", label: "Season" },
-  { id: "new", label: "New Releases" },
+  { id: "new", label: "New releases" },
   { id: "relationships", label: "Shared cards" },
-  { id: "archetypes", label: "Build families" },
 ];
 
-/**
- * A single-page "pick a Champion, then narrow by Element/Spirit, see everything at once" view –
- * the EDHRec-commander-page experience translated to Grand Archive. Deliberately separate from
- * `ChampionDetail.tsx` (which stays tabbed, one section at a time, per the earlier page-density
- * work) rather than another tab there: this page shows every section simultaneously, which is
- * exactly the layout a jump-nav earns its keep on.
- *
- * "Level" is informational only, not a data filter – deck-composition/win-rate stats aren't
- * tracked per Champion-print level anywhere in the pipeline (a deck can run any level copy of its
- * Champion), so picking a level only changes which exact print is linked/portrayed.
- */
 export default function ChampionSynergy() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
   const seo = championMetadata(championName);
+  const archetypesPath = `/archetypes/champion/${championNameToSlug(championName)}`;
   useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
 
   const archetypeData = useArchetypeData();
@@ -100,26 +86,14 @@ export default function ChampionSynergy() {
 
   const catalogByName = useMemo(() => new Map(catalog.map((c) => [c.name, c])), [catalog]);
 
-  const championPrints = useMemo(
-    () =>
-      catalog
-        .filter((c) => c.types.includes("CHAMPION") && !c.subtypes.includes("SPIRIT") && c.name.startsWith(`${championName}, `))
-        .sort((a, b) => (a.level ?? 0) - (b.level ?? 0)),
-    [catalog, championName],
-  );
-
-  const [level, setLevel] = useState<number | null>(null);
   const [showAllReleases, setShowAllReleases] = useState(false);
-  const [showAllPackages, setShowAllPackages] = useState(false);
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
   const [typeFilter, setTypeFilter] = useState<string | "all">("all");
 
   const prevChampionNameRef = useRef(championName);
   useEffect(() => {
     if (prevChampionNameRef.current !== championName) {
-      setLevel(null);
       setShowAllReleases(false);
-      setShowAllPackages(false);
       setSpiritFilter({ kind: "all" });
       setTypeFilter("all");
       prevChampionNameRef.current = championName;
@@ -129,8 +103,6 @@ export default function ChampionSynergy() {
   useEffect(() => {
     setTypeFilter("all");
   }, [spiritFilter]);
-
-  const selectedPrint = championPrints.find((c) => c.level === level) ?? championPrints[championPrints.length - 1];
 
   const spiritsForElement = useMemo(() => {
     if (!champion || spiritFilter.kind === "all") return [];
@@ -233,16 +205,7 @@ export default function ChampionSynergy() {
     return names.map((n) => catalogByName.get(n)).filter((c): c is Card => c !== undefined);
   }, [deckShellTopCards, catalogByName]);
 
-  // Elements this Champion (or, on a named-Spirit page, the Spirit itself) can actually cast –
-  // scoped to whichever bucket is currently displayed so a card only reachable via a *different*
-  // Spirit/element than the one shown isn't recommended as a New Release connection. Reads straight
-  // off the archetype data's own `elements`/`spiritElement` fields rather than a catalog card's
-  // `.elements`: `championPrints` (and so `selectedPrint`) is always empty on a named-Spirit page
-  // (its Champion-type card is SPIRIT-subtype, filtered out by that query), which previously left
-  // `identityElements` empty there – and an empty set makes `isElementCompatible` pass every card
-  // through unfiltered, so e.g. an Exia card could get "recommended" for a Spirit with no Exia
-  // access at all. `champion.elements` is already the same field the header above renders for both
-  // Champions and named Spirits, so it's a real, populated value in both cases.
+  // Scope new-release candidates to the elements playable by the selected decks.
   const identityElements = useMemo(() => {
     if (!champion) return new Set<string>();
     if (spiritFilter.kind === "element") return new Set([spiritFilter.element]);
@@ -258,12 +221,6 @@ export default function ChampionSynergy() {
     const includedNames = new Set(representativeDeckCards.map((c) => c.name));
     return computeNewReleaseCards(catalogByName.values(), representativeDeckCards, identityElements, includedNames);
   }, [catalogByName, representativeDeckCards, identityElements]);
-
-  const engines = useMemo(() => (taxonomyData?.clusters ?? [])
-    .filter((build) => build.championBreakdown.some((entry) => entry.championName === championName))
-    .map((build) => ({ ...build, seedBuildId: build.id, relationships: (taxonomyData?.engineArchetypes ?? [])
-      .filter((engine) => engine.buildIds.includes(build.id) && engine.championBreakdown.length > 1) }))
-    .sort((a, b) => b.playerCount - a.playerCount || a.id.localeCompare(b.id)), [taxonomyData, championName]);
 
   // Real tournament win rate for a linked card, not simulator telemetry – Card Impact is published
   // per named build (cluster), so when a card shows up in more than one of this Champion's builds,
@@ -329,13 +286,15 @@ export default function ChampionSynergy() {
                 </span>
               </div>
             }
-            actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Full stats &amp; season history &rarr;</Link>}
+            actions={<div id="archetypes" className="flex scroll-mt-24 flex-wrap gap-x-4">
+              <Link to={archetypesPath} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Browse archetypes</Link>
+              <Link to={`/champions/${championNameToSlug(championName)}/stats`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Tournament stats</Link>
+            </div>}
           />
+          <ChampionIdentity championName={championName} fallbackNames={champ.topCards.material.map((card) => card.name)} contained />
           </div>
 
-          <ChampionIdentity championName={championName} fallbackNames={champ.topCards.material.map((card) => card.name)} />
-
-          <nav className="mb-6 mt-4 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs sm:mt-6">
+          <nav aria-label="On this champion page" className="mb-6 mt-4 flex flex-wrap gap-x-4 border-b border-ctp-surface1 text-sm">
             {JUMP_SECTIONS.map((s) => (
               <a key={s.id} href={`#${s.id}`} className="inline-flex min-h-control items-center rounded px-2 text-ctp-blue hover:underline focus-visible:outline-2">
                 {s.label}
@@ -344,58 +303,10 @@ export default function ChampionSynergy() {
           </nav>
 
           <div className="space-y-8">
-            <ChampionDecks key={championName} championName={championName} />
-            <Section id="cards" className="scroll-mt-48" title="Staples" description="The cards players bring with this champion, from tournament decks. These are the same numbers as the Staples page. Spirit and element views are available below.">
+            <Section id="cards" className="scroll-mt-48" title="Staples">
               <ChampionStaples key={championName} championName={championName} embedded />
               <details className="group/cards mt-4 border-t border-ctp-surface1">
                 <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">Browse by Spirit and element<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
-                <p className="mb-4 text-sm text-ctp-subtext1">Element here means the element of the Spirit a deck plays, not the element of a card. These filters apply to the lists below and to new release connections. Staples above, decks, and season results do not change.</p>
-                {championPrints.length > 1 && (
-                  <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
-                    <h3 className="text-sm text-ctp-subtext1">Champion print · Lv{selectedPrint?.level ?? "?"}</h3>
-                    <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-                      {championPrints.map((c) => {
-                        const selected = selectedPrint?.name === c.name;
-                        return (
-                          <button
-                            key={c.name}
-                            type="button"
-                            onClick={() => setLevel(c.level ?? null)}
-                            aria-pressed={selected}
-                            className={`relative min-h-control rounded-lg border p-1.5 text-left transition-all duration-200 ease-out active:scale-[0.97] ${
-                              selected
-                                ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/20"
-                                : "border-ctp-surface1 bg-ctp-mantle hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
-                            }`}
-                          >
-                            {selected && (
-                              <span className="absolute right-1 top-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-ctp-blue text-ctp-base">
-                                <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                  <path d="M3 8.5l3 3 7-7" />
-                                </svg>
-                              </span>
-                            )}
-                            <VisualCardTile
-                              line={{ card: c.name, quantity: 1 }}
-                              card={c}
-                              unitPrice={priceByName.get(c.name)}
-                              priceTrend={priceTrendByName.get(c.name)}
-                              simulatorEvidence={simulatorEvidenceByName.get(c.name)}
-                              communityEntry={communityInclusionByName?.get(c.name)}
-                              fields={visualFields}
-                              linkToCard={false}
-                            />
-                            <div className={`mt-1 text-center text-xs ${selected ? "font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>
-                              Lv{c.level ?? "?"} · {c.name.split(",")[1]?.trim()}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-2 text-xs text-ctp-subtext0">Changes the linked print, not the deck statistics.</div>
-                  </div>
-                )}
-
                 {champ.elementBreakdown.length > 1 && (
                   <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm">
                     <span className="text-ctp-subtext0">Element:</span>
@@ -436,6 +347,7 @@ export default function ChampionSynergy() {
                 {displayed && <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} initialVisible={4} />}
               </details>
             </Section>
+            <ChampionDecks key={championName} championName={championName} />
             <ChampionPackage key={`package-${championName}`} championName={championName} />
             <ChampionSeasonSnapshot key={`season-${championName}`} championName={championName} />
 
@@ -469,55 +381,7 @@ export default function ChampionSynergy() {
 
             <ChampionRelationships championName={championName} taxonomy={taxonomyData} catalog={catalogByName} error={taxonomyStatus.phase === "error" ? taxonomyStatus.error : undefined} onRetry={taxonomyStatus.retry} />
 
-            <Section
-              id="archetypes"
-              className="scroll-mt-48"
-              title={["Diao Chan", "Silvie", "Guo Jia", "Rai", "Zander", "Tristan", "Alice", "Allen", "Arisanna", "Ciel", "Diana", "Jin", "Kongming", "Lorraine", "Merlin", "Mordred", "Nico", "Polkhawk", "Tonoris", "Vanitas"].includes(championName) ? "Archetypes and build variants" : "Build families"}
-              description="Explore the cards that distinguish each family. A family can contain several different decklists."
-              actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
-            >
-              {!taxonomyData ? (
-                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><span className="block">{taxonomyStatus.error}</span><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry archetype analysis</button></> : "Loading archetype analysis…"}</InlineState>
-              ) : championName === "Diao Chan" ? (
-                <DiaoArchetypeFamilies taxonomy={taxonomyData} catalog={catalogByName} />
-              ) : championName === "Silvie" || championName === "Guo Jia" || championName === "Rai" || championName === "Zander" || championName === "Tristan" || championName === "Alice" || championName === "Allen" || championName === "Arisanna" || championName === "Ciel" || championName === "Diana" || championName === "Jin" || championName === "Kongming" || championName === "Lorraine" || championName === "Merlin" || championName === "Mordred" || championName === "Nico" || championName === "Polkhawk" || championName === "Tonoris" || championName === "Vanitas" ? (
-                <ReviewedChampionFamilies championName={championName} taxonomy={taxonomyData} catalog={catalogByName} />
-              ) : engines.length === 0 ? (
-                <InlineState className="mt-2 text-sm">No named builds have cleared the sample-size threshold yet.</InlineState>
-              ) : (
-                <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">
-                  {(showAllPackages ? engines : engines.slice(0, 2)).map((engine) => {
-                    const namingCards = engine.namingCards ?? engine.definingCards.slice(0, 3).map((card) => card.name);
-                    return (
-                      <article key={engine.id} className="identity-surface min-w-0 rounded-3xl rounded-br-lg p-4 sm:p-5">
-                        <ArchetypePreview names={namingCards} cardImages={catalogByName} />
-                        <div className="mt-3 flex items-center gap-2">
-                          <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded text-lg font-semibold text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
-                        </div>
-                        <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
-                        <details className="group/build mt-2 border-t border-ctp-surface1 text-sm text-ctp-subtext1"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards<DisclosureChevron className="group-open/build:rotate-180" /></summary><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} />
-                        {engine.relationships.map((relationship) => (
-                          <div key={relationship.id} className="mt-4 border-t border-ctp-surface1 pt-3 text-sm text-ctp-subtext1">
-                            <h4 className="font-medium text-ctp-text">{relationship.name}</h4>
-                            {[{ label: "Common core", cards: relationship.commonCore ?? relationship.definingCards }, { label: `${championName}-specific cards`, cards: relationship.championEvidence?.find((entry) => entry.championName === championName)?.differentiatorCards ?? [] }].filter(section => section.cards.length > 0).map((section) => <div key={section.label} className="mt-3">
-                              <p className="mb-2 font-medium">{section.label}</p>
-                              <div className="grid grid-cols-3 gap-2">{section.cards.map((entry) => {
-                                const card = catalogByName.get(entry.name);
-                                const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-1 block">{entry.name}</span></>;
-                                return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2">{content}</Link> : <div key={entry.name}>{content}</div>;
-                              })}</div>
-                            </div>)}
-                          </div>
-                        ))}
-                        </details>
-                        <Link className="inline-flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2" to={`/archetypes/mine?build=${engine.id}`}>Curate this family</Link>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-              {!["Diao Chan", "Silvie", "Guo Jia", "Rai", "Zander", "Tristan", "Alice", "Allen", "Arisanna", "Ciel", "Diana", "Jin", "Kongming", "Lorraine", "Merlin", "Mordred", "Nico", "Polkhawk", "Tonoris", "Vanitas"].includes(championName) && engines.length > 2 && <Button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer families" : `Show all ${engines.length} families`}</Button>}
-            </Section>
+
           </div>
         </>
         );

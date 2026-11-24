@@ -1,9 +1,9 @@
 import { useBrowseState } from "../../lib/useBrowseState";
 import { deckMatchesSearch } from "@gatcg/shared";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
-import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
+import { useDebouncedDeckQuery, useDeckSearch } from "../../components/deck-search/useDeckSearch";
 import DeckPreviewListActions from "../../components/DeckPreviewListActions";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CommunityDeckSearchEntry, CommunityDeckSource, DeckFormat, DeckLine } from "@gatcg/shared";
 import DeckCardPreview from "../../components/DeckCardPreview";
 import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPreviewCard";
@@ -41,8 +41,8 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
   const champion = deckFilter.champion;
   const [source, setSource] = useBrowseState<CommunityDeckSource | "">('community/CommunityDeckSearch.source', "");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const deferredQuery = useDeferredValue(query);
-  const normalizedQuery = deferredQuery.trim().toLocaleLowerCase();
+  const normalizedQuery = useDebouncedDeckQuery(query).trim().toLocaleLowerCase();
+  useEffect(() => setVisibleCount(PAGE_SIZE), [normalizedQuery]);
   const filtered = useMemo(() => (index?.decks ?? []).filter((deck) => {
     if (!deckMatchesSearch(deck.champion, deck.cardIndexes.map(i => index!.cardNames[i]), deckFilter)) return false;
     if (source && deck.source !== source) return false;
@@ -54,7 +54,7 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
 
   return <div>
     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-      <input value={query} onChange={(event) => { setQuery(event.target.value); resetPage(); }} placeholder="Search title, player, Champion, or card…" aria-label="Search community decklists" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:col-span-2" />
+      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search title, player, Champion, or card…" aria-label="Search community decklists" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:col-span-2" />
 
       <select value={source} onChange={(event) => { setSource(event.target.value as CommunityDeckSource | ""); resetPage(); }} aria-label="Community deck source" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All sources</option>{Object.entries(SOURCE_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
     </div>

@@ -112,6 +112,7 @@ const AchievementDetail = lazy(() => import("./features/achievements/Achievement
 const DraftThemeReview = lazy(() => import("./features/archetypes/DraftThemeReview"));
 const ReferenceStrategies = lazy(() => import("./features/archetypes/ReferenceStrategies"));
 const MyArchetypes = lazy(() => import("./features/archetypes/MyArchetypes"));
+const ChampionArchetypes = lazy(() => import("./features/archetypes/ChampionArchetypes"));
 const ArchetypesIndex = lazy(() => import("./features/archetypes/ArchetypesIndex"));
 const ArchetypeDetail = lazy(() => import("./features/archetypes/ArchetypeDetail"));
 const ArchetypeCompare = lazy(() => import("./features/archetypes/ArchetypeCompare"));
@@ -232,6 +233,7 @@ export default function AppRoutes() {
         <Route path="/achievements" element={<AchievementsIndex />} />
         <Route path="/achievements/:id" element={<AchievementDetail />} />
         <Route path="/archetypes" element={<ArchetypesIndex />} />
+        <Route path="/archetypes/champion/:name" element={<ChampionArchetypes />} />
         <Route path="/archetypes/compare" element={<ArchetypeCompare />} />
         <Route path="/archetypes/mine/reference" element={<ReferenceStrategies />} />
         <Route path="/archetypes/mine/themes" element={<DraftThemeReview />} />

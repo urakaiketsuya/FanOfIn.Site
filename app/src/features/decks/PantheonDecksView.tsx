@@ -3,7 +3,7 @@ import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { deckMatchesSearch } from "@gatcg/shared";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
-import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
+import { useDebouncedDeckQuery, useDeckSearch } from "../../components/deck-search/useDeckSearch";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { sortDeckCardsByElement, type Card, type ShoutAtYourDecksDeckSummary } from "@gatcg/shared";
@@ -39,10 +39,12 @@ export default function PantheonDecksView() {
   const [sort, setSort] = useBrowseState<"champion" | "main">('decks/PantheonDecksView.sort', "champion");
   const [visibleCount, setVisibleCount] = useState(30);
   const decks = useMemo(() => index?.decks ?? [], [index]);
-  const filtered = useMemo(() => decks.filter((deck) => deckMatchesSearch(deck.champion, deck.searchCardNames, deckFilter) && (!query || `${deck.champion ?? ""} ${(deck.cardNames ?? []).join(" ")} ${(deck.boonNames ?? []).join(" ")}`.toLowerCase().includes(query.toLowerCase()))).sort((a, b) => sort === "main" ? (b.mainCount ?? 0) - (a.mainCount ?? 0) || formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion)) : formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion))), [decks, deckFilter, query, sort]);
+  const settledQuery = useDebouncedDeckQuery(query).toLowerCase();
+  useEffect(() => setVisibleCount(30), [settledQuery]);
+  const filtered = useMemo(() => decks.filter((deck) => deckMatchesSearch(deck.champion, deck.searchCardNames, deckFilter) && (!settledQuery || `${deck.champion ?? ""} ${(deck.cardNames ?? []).join(" ")} ${(deck.boonNames ?? []).join(" ")}`.toLowerCase().includes(settledQuery))).sort((a, b) => sort === "main" ? (b.mainCount ?? 0) - (a.mainCount ?? 0) || formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion)) : formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion))), [decks, deckFilter, settledQuery, sort]);
   return <div className="mt-5">
     <div className="grid grid-cols-2 gap-2">
-      <input value={query} onChange={(event) => { setQuery(event.target.value); setVisibleCount(30); }} placeholder="Search Champion, card, or Boon…" aria-label="Search Pantheon decks" className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0" />
+      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Champion, card, or Boon…" aria-label="Search Pantheon decks" className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0" />
 
       <select value={sort} onChange={(event) => { setSort(event.target.value as "champion" | "main"); setVisibleCount(30); }} aria-label="Sort Pantheon decks" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="champion">Champion A–Z</option><option value="main">Largest main deck</option></select>
     </div>
