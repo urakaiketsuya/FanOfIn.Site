@@ -8,12 +8,13 @@ function period() {
   return { recorded: 0, decks: 0, classified: 0, missing: 0, events: new Set<number>(), builds: new Map<string, number>(), champions: new Map<string, ChampionPool>(), cardDecks: 0, sideboards: 0, sections: { main: new Map<string, number>(), material: new Map<string, number>(), sideboard: new Map<string, number>() } };
 }
 /** Descriptive adjacent-period comparison; never a performance or enjoyment score. */
-export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; prepEventTier?: string; seasons?: { current: number; previous?: number } }, asOf: string) {
+export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; prepEventTiers?: readonly string[]; seasons?: { current: number; previous?: number } }, asOf: string) {
   const end = Date.parse(asOf), middle = end - scope.days * 86400000, start = middle - scope.days * 86400000;
   const eligible = new Map(events.filter(e => e.format === scope.format && e.status === 'complete' && Date.parse(e.date) <= end && (scope.seasons ? e.seasonId === scope.seasons.current || (scope.seasons.previous !== undefined && e.seasonId === scope.seasons.previous) : Date.parse(e.date) > start)).map(e => [e.id, e]));
   const lists = new Map(index.decks.map(d => [d.deckId, d]));
   const membership = buildMembership(taxonomy);
   const current = period(), previous = period();
+  const prepEventTiers = new Set(scope.prepEventTiers);
   let prepDecks = 0;
   const prepEvents = new Set<number>();
   const prepEvidence = new Map<string, { count: number; points: number; matches: number; lists: Map<string, number> }>();
@@ -27,7 +28,7 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
     // Require readable nonempty Main and Material; sideboards never define the build.
     if (!deck || !deck.main.length || !deck.material.length || [...deck.main, ...deck.material].some(([id, q]) => !index.cardNames[id] || !Number.isInteger(q) || q <= 0)) { bucket.missing++; continue; }
     bucket.decks++; bucket.events.add(entry.eventId);
-    const inPrepScope = scope.tournamentPrep && isCurrent && (!scope.prepEventTier || event.category === scope.prepEventTier);
+    const inPrepScope = scope.tournamentPrep && isCurrent && (!prepEventTiers.size || prepEventTiers.has(event.category));
     if (inPrepScope) {
       prepDecks++;
       prepEvents.add(entry.eventId);

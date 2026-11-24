@@ -1,4 +1,4 @@
-import { useMemo, useTransition } from 'react';
+import { useMemo, useOptimistic, useTransition } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDeckCardIndexData, useArchetypeTaxonomyData } from '../archetypes/data';
 import { useDeckPopularityIndexData } from '../topdecks/data';
@@ -26,14 +26,29 @@ export default function Metagame() {
   const selected = history.find(r=>`season-${r.season.id}`===requested);
   const period = selected ? requested : requested==='90'?'90':'30';
   const buildId = params.get('build') || '';
-  const requestedTier = params.get('eventTier') ?? '';
-  const eventTier = EVENT_CATEGORY_ORDER.includes(requestedTier) ? requestedTier : '';
+  const eventTiers = useMemo(() => {
+    const requestedTiers = params.getAll('eventTier');
+    return EVENT_CATEGORY_ORDER.filter(tier => requestedTiers.includes(tier));
+  }, [params]);
+  const [selectedEventTiers, setSelectedEventTiers] = useOptimistic(eventTiers);
   const section = sections.includes(params.get('section') as typeof sections[number]) ? params.get('section') as typeof sections[number] : 'main';
-  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,prepEventTier:eventTier,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,eventTier,selected,asOf]);
+  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,prepEventTiers:eventTiers,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,eventTiers,selected,asOf]);
   const formats = useMemo(()=>[...new Set(events?.events.map(e=>e.format) ?? ['standard'])].sort(),[events]);
   const champions = useMemo(()=>[...new Set(popularity?.entries.map(e=>e.championName).filter((n): n is string=>!!n) ?? [])].sort(),[popularity]);
   function change(key: string, value: string) {
     startTransition(()=>setParams(prev=>{const next=new URLSearchParams(prev); if(value) next.set(key,value); else next.delete(key); if(['format','champion','period'].includes(key)) next.delete('build'); return next;}));
+  }
+  function changeEventTiers(tiers: string[]) {
+    const selectedTiers = EVENT_CATEGORY_ORDER.filter(tier => tiers.includes(tier));
+    startTransition(() => {
+      setSelectedEventTiers(selectedTiers);
+      setParams(previous => {
+        const next = new URLSearchParams(previous);
+        next.delete('eventTier');
+        for (const tier of selectedTiers) next.append('eventTier', tier);
+        return next;
+      });
+    });
   }
   const control = 'mt-1 block min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-3';
   return <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
@@ -49,7 +64,7 @@ export default function Metagame() {
     <PublishedSourceStatus label="Build groups" status={taxonomyStatus} hasData={!!taxonomy}/>
     {pending && <p role="status">Recalculating…</p>}
     {report && <div className="space-y-6" aria-busy={pending}>
-      <TournamentPrep prep={report.tournamentPrep} format={format} eventTier={eventTier} onEventTier={tier=>change('eventTier',tier)} />
+      <TournamentPrep prep={report.tournamentPrep} format={format} eventTiers={selectedEventTiers} onEventTiersChange={changeEventTiers} />
       <SeasonTrends history={history} selected={selected?.season.id} onSelect={id=>change('period',`season-${id}`)}/>
       <div className="space-y-1 border-y border-ctp-surface0 py-3">
         <h2 className="font-semibold">{selected ? `${selected.season.name} vs. ${selected.previousSeason?.name ?? 'no earlier season'}` : `Last ${period} days vs. previous ${period} days`}</h2>

@@ -105,35 +105,43 @@ test('tournament prep uses current-period list share, pooled match results and a
   assert.equal(candidate.deckHash, 'common');
 });
 
-test('event tier scopes both prep rankings, samples and report selection independently of trends', () => {
+test('event tiers pool matches before ranking and leave trends independent', () => {
   const { index, entries, taxonomy } = fixture();
   const scopedEvents = [
     { ...events[0], category: 'regionals' },
     { ...events[1], category: 'regionals' },
     { ...events[0], id: 3, category: 'store-championships' },
   ];
-  Object.assign(entries[0], { wins: 15, losses: 4, ties: 1, deckHash: 'regional' });
-  Object.assign(entries[1], { wins: 19, losses: 0, ties: 1, deckHash: 'store', eventId: 3, deckId: '3:1' });
+  Object.assign(entries[0], { wins: 7, losses: 2, ties: 1, deckHash: 'regional' });
+  Object.assign(entries[1], { wins: 9, losses: 0, ties: 1, deckHash: 'store', eventId: 3, deckId: '3:1' });
   Object.assign(entries[2], { eventId: 3, deckId: '3:2' });
   index.decks[1].deckId = entries[1].deckId;
   index.decks[2].deckId = entries[2].deckId;
   taxonomy.clusters[0].deckIds = [entries[0].deckId, entries[1].deckId];
   Object.assign(entries[3], { wins: 40, losses: 0, ties: 0, deckHash: 'earlier' });
-  const report = (prepEventTier?: string) => metaFreshness(index, entries, scopedEvents, taxonomy, {
-    ...scope, tournamentPrep: true, prepEventTier,
+  const report = (...prepEventTiers: string[]) => metaFreshness(index, entries, scopedEvents, taxonomy, {
+    ...scope, tournamentPrep: true, prepEventTiers,
   }, '2026-10-30');
 
   const regional = report('regionals');
   assert.equal(regional.tournamentPrep.events, 1);
   assert.equal(regional.tournamentPrep.decks, 1);
   assert.equal(regional.tournamentPrep.likelyOpponents[0].share, 100);
-  assert.equal(regional.tournamentPrep.worthTesting[0].deckHash, 'regional');
-  assert.equal(regional.tournamentPrep.worthTesting[0].matches, 20);
+  assert.equal(regional.tournamentPrep.likelyOpponents[0].deckHash, 'regional');
+  assert.deepEqual(regional.tournamentPrep.worthTesting, []);
 
   const store = report('store-championships').tournamentPrep;
   assert.equal(store.decks, 2);
   assert.equal(store.likelyOpponents[0].share, 50);
-  assert.equal(store.worthTesting[0].deckHash, 'store');
+  assert.equal(store.likelyOpponents[0].deckHash, 'store');
+  assert.deepEqual(store.worthTesting, []);
+
+  const combined = report('regionals', 'store-championships', 'regionals').tournamentPrep;
+  assert.equal(combined.events, 2);
+  assert.equal(combined.decks, 3);
+  assert.equal(combined.likelyOpponents[0].share, 200 / 3);
+  assert.equal(combined.worthTesting[0].matches, 20);
+  assert.equal(combined.worthTesting[0].adjustedScore, 22 / 30);
   assert.equal(report().tournamentPrep.likelyOpponents[0].count, 2);
   assert.deepEqual(report('worlds').tournamentPrep, { decks: 0, events: 0, likelyOpponents: [], worthTesting: [] });
   assert.deepEqual(regional.current, report().current);

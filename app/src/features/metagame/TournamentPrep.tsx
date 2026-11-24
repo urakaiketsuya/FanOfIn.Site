@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom';
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type metaFreshness } from '@gatcg/shared';
+import DisclosureChevron from '../../components/DisclosureChevron';
+import Button from '../../components/ui/Button';
 import { CardIdentity } from '../events/EventReportVisuals';
 import { useChampionCardImages } from '../players/useChampionCardImages';
 
 type Prep = ReturnType<typeof metaFreshness>['tournamentPrep'];
 const percent = (value: number) => `${value.toFixed(1)}%`;
 
-export default function TournamentPrep({ prep, format, eventTier, onEventTier }: {
+export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange }: {
   prep: Prep;
   format: string;
-  eventTier: string;
-  onEventTier: (value: string) => void;
+  eventTiers: string[];
+  onEventTiersChange: (tiers: string[]) => void;
 }) {
+  const tierSummary = eventTiers.length
+    ? eventTiers.map(tier => EVENT_CATEGORY_LABELS[tier]).join(', ')
+    : 'All event tiers';
   const { likelyOpponents, worthTesting } = prep;
   const images = useChampionCardImages([...likelyOpponents, ...worthTesting].map(build => build.champion));
   const groups = [
@@ -21,20 +26,46 @@ export default function TournamentPrep({ prep, format, eventTier, onEventTier }:
 
   return (
     <section aria-labelledby="tournament-prep-heading" className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 id="tournament-prep-heading" className="text-xl font-semibold">Tournament prep</h2>
           <p className="mt-1 text-sm text-ctp-subtext1" role="status">
             {prep.decks.toLocaleString()} public decks · {prep.events.toLocaleString()} events
           </p>
         </div>
-        <label className="min-w-0 text-sm sm:w-52">
-          Event tier
-          <select className="mt-1 block min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" value={eventTier} onChange={event => onEventTier(event.target.value)}>
-            <option value="">All event tiers</option>
-            {EVENT_CATEGORY_ORDER.map(tier => <option key={tier} value={tier}>{EVENT_CATEGORY_LABELS[tier]}</option>)}
-          </select>
-        </label>
+        <details className="group min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base sm:w-80">
+          <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
+            <span className="min-w-0">
+              <span className="block font-semibold">Event tiers</span>
+              <span className="block break-words text-ctp-subtext1">{tierSummary}</span>
+            </span>
+            <DisclosureChevron className="group-open:rotate-180" />
+          </summary>
+          <div className="border-t border-ctp-surface1 p-2">
+            <fieldset>
+              <legend className="sr-only">Event tiers</legend>
+              {EVENT_CATEGORY_ORDER.map(tier => {
+                const checked = eventTiers.includes(tier);
+                return (
+                  <label key={tier} className="flex min-h-control cursor-pointer items-center gap-3 rounded px-3 text-sm hover:bg-ctp-mantle">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      className="size-5 accent-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue"
+                      onChange={event => onEventTiersChange(event.target.checked
+                        ? [...eventTiers, tier]
+                        : eventTiers.filter(selected => selected !== tier))}
+                    />
+                    {EVENT_CATEGORY_LABELS[tier]}
+                  </label>
+                );
+              })}
+            </fieldset>
+            <Button variant="ghost" aria-disabled={eventTiers.length === 0} onClick={() => {
+              if (eventTiers.length) onEventTiersChange([]);
+            }}>Reset to all tiers</Button>
+          </div>
+        </details>
       </div>
       <div className="grid gap-5 lg:grid-cols-2">
         {groups.map(({ title, builds, empty, testing }) => (
