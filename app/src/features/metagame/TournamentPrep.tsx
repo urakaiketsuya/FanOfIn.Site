@@ -6,6 +6,12 @@ import { CardIdentity } from '../events/EventReportVisuals';
 import { useChampionCardImages } from '../players/useChampionCardImages';
 
 type Prep = ReturnType<typeof metaFreshness>['tournamentPrep'];
+type PrepGroup = {
+  title: string;
+  builds: (Prep['likelyOpponents'][number] | Prep['worthTesting'][number])[];
+  empty: string;
+  testing: boolean;
+};
 const percent = (value: number) => `${value.toFixed(1)}%`;
 
 export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange }: {
@@ -19,7 +25,7 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
     : 'All event tiers';
   const { likelyOpponents, worthTesting } = prep;
   const images = useChampionCardImages([...likelyOpponents, ...worthTesting].map(build => build.champion));
-  const groups = [
+  const groups: PrepGroup[] = [
     { title: 'Likely opponents', builds: likelyOpponents, empty: 'No classified decks in this scope.', testing: false },
     { title: 'Worth testing', builds: worthTesting, empty: 'No build scored above 50% with at least 20 recorded matches.', testing: true },
   ];
@@ -87,6 +93,15 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
                         <p className="text-sm text-ctp-subtext1">
                           {testing ? `${percent(build.adjustedScore * 100)} adjusted match score · ${build.matches.toLocaleString()} matches` : `${percent(build.share)} of public lists · ${build.count.toLocaleString()} decks`}
                         </p>
+                        {'matchesByTier' in build && (
+                          <ul aria-label="Matches by event tier" className="flex flex-wrap gap-2">
+                            {build.matchesByTier.map(({ tier, matches }) => (
+                              <li key={tier} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-text">
+                                {EVENT_CATEGORY_LABELS[tier] ?? tier} <strong className="tabular-nums">{matches.toLocaleString()}</strong>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
                       <Link to={deckUrl} aria-label={`${build.name} ${reportLabel}`} className="inline-flex min-h-control items-center justify-center rounded-lg border border-ctp-surface1 px-3 text-sm font-semibold text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue">
                         {reportLabel}

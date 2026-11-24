@@ -142,6 +142,16 @@ test('event tiers pool matches before ranking and leave trends independent', () 
   assert.equal(combined.likelyOpponents[0].share, 200 / 3);
   assert.equal(combined.worthTesting[0].matches, 20);
   assert.equal(combined.worthTesting[0].adjustedScore, 22 / 30);
+  const breakdown = [
+    { tier: 'regionals', matches: 10 },
+    { tier: 'store-championships', matches: 10 },
+  ];
+  assert.deepEqual(combined.worthTesting[0].matchesByTier, breakdown);
+  assert.deepEqual(report().tournamentPrep.worthTesting[0].matchesByTier, breakdown);
+  assert.deepEqual(report('regionals', 'worlds', 'store-championships').tournamentPrep.worthTesting[0].matchesByTier, [
+    { tier: 'worlds', matches: 0 },
+    ...breakdown,
+  ]);
   assert.equal(report().tournamentPrep.likelyOpponents[0].count, 2);
   assert.deepEqual(report('worlds').tournamentPrep, { decks: 0, events: 0, likelyOpponents: [], worthTesting: [] });
   assert.deepEqual(regional.current, report().current);

@@ -1,5 +1,5 @@
 import { decodeCardLines, type ArchetypeTaxonomyData, type DeckCardIndexData, type DeckPopularityEntry } from './analysis-types';
-import type { OmnidexEventSummary, OmnidexSeasonSummary } from './omnidex-index-types';
+import { EVENT_CATEGORY_ORDER, type OmnidexEventSummary, type OmnidexSeasonSummary } from './omnidex-index-types';
 import { buildMembership } from './competitionReports';
 import { shrinkWinRate } from './winRateShrinkage';
 
@@ -17,7 +17,13 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
   const prepEventTiers = new Set(scope.prepEventTiers);
   let prepDecks = 0;
   const prepEvents = new Set<number>();
-  const prepEvidence = new Map<string, { count: number; points: number; matches: number; lists: Map<string, number> }>();
+  const prepEvidence = new Map<string, {
+    count: number;
+    points: number;
+    matches: number;
+    matchesByTier: Map<string, number>;
+    lists: Map<string, number>;
+  }>();
   for (const entry of new Map(entries.map(e => [e.deckId, e])).values()) {
     const event = eligible.get(entry.eventId), champion = entry.championName ?? 'Unknown';
     if (!event || (scope.champion && champion !== scope.champion)) continue;
@@ -38,10 +44,14 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
       bucket.classified++;
       bucket.builds.set(build, (bucket.builds.get(build) ?? 0) + 1);
       if (inPrepScope) {
-        const evidence = prepEvidence.get(build) ?? { count: 0, points: 0, matches: 0, lists: new Map<string, number>() };
+        const evidence = prepEvidence.get(build) ?? {
+          count: 0, points: 0, matches: 0, matchesByTier: new Map(), lists: new Map(),
+        };
+        const matches = entry.wins + entry.losses + entry.ties;
         evidence.count++;
         evidence.points += entry.wins + entry.ties / 2;
-        evidence.matches += entry.wins + entry.losses + entry.ties;
+        evidence.matches += matches;
+        evidence.matchesByTier.set(event.category, (evidence.matchesByTier.get(event.category) ?? 0) + matches);
         if (entry.deckHash) evidence.lists.set(entry.deckHash, (evidence.lists.get(entry.deckHash) ?? 0) + 1);
         prepEvidence.set(build, evidence);
       }
@@ -82,7 +92,15 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
     likelyOpponents: prepBuilds.slice(0, 3),
     worthTesting: prepBuilds.filter(build => build.matches >= 20 && build.adjustedScore > 0.5)
       .sort((a, b) => b.adjustedScore - a.adjustedScore || b.matches - a.matches || a.id.localeCompare(b.id))
-      .slice(0, 3),
+      .slice(0, 3)
+      .map(build => {
+        const counts = prepEvidence.get(build.id)!.matchesByTier;
+        const tiers = new Set([...EVENT_CATEGORY_ORDER, ...prepEventTiers, ...counts.keys()]);
+        const matchesByTier = [...tiers]
+          .filter(tier => prepEventTiers.size ? prepEventTiers.has(tier) : (counts.get(tier) ?? 0) > 0)
+          .map(tier => ({ tier, matches: counts.get(tier) ?? 0 }));
+        return { ...build, matchesByTier };
+      }),
   };
   const buildChanges = [...new Set([...current.builds.keys(), ...previous.builds.keys()])].map(id => {
     const now = share(current.builds.get(id) ?? 0, current.decks), before = share(previous.builds.get(id) ?? 0, previous.decks);
