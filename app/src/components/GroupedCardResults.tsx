@@ -6,12 +6,13 @@ import { Select } from './ui/FormControl';
 import Button from './ui/Button';
 
 /** Groups the full filtered pool before applying each section's display limit. */
-export default function GroupedCardResults<T>({ items, cardFor, children, pageSize = 24, resultKey, grouping: controlledGrouping, onGrouping, arrangeGroups = groupCardResults, toolbar }: {
+export default function GroupedCardResults<T>({ items, cardFor, children, pageSize = 24, resultKey, grouping: controlledGrouping, onGrouping, arrangeGroups = groupCardResults, toolbar, itemLabel = "card" }: {
   items: readonly T[]; cardFor: (item: T) => Card | undefined;
   children: (items: T[]) => ReactNode; pageSize?: number;
   resultKey?: string;
   arrangeGroups?: typeof groupCardResults<T>;
   toolbar?: ReactNode;
+  itemLabel?: string;
   grouping?: CardGrouping; onGrouping?: (value: CardGrouping) => void;
 }) {
   const [localGrouping, setGrouping] = useBrowseState<CardGrouping>('cardResults.grouping', 'none');
@@ -33,9 +34,9 @@ export default function GroupedCardResults<T>({ items, cardFor, children, pageSi
     {groups.map(group => {
       const limit = limits[group.label] ?? pageSize;
       return <section key={group.label} aria-label={group.label || 'Card results'} className="mb-4 min-w-0">
-        {group.label && <h3 className="mt-4 flex flex-wrap items-center gap-2 text-base font-semibold">{group.label}<span className="text-sm font-normal text-ctp-subtext1">{group.items.length} {group.items.length === 1 ? 'card' : 'cards'}</span></h3>}
+        {group.label && <h3 className="mt-4 flex flex-wrap items-center gap-2 text-base font-semibold">{group.label}<span className="text-sm font-normal text-ctp-subtext1">{group.items.length} {group.items.length === 1 ? itemLabel : `${itemLabel}s`}</span></h3>}
         {children(group.items.slice(0, limit))}
-        {group.items.length > limit && <Button className="mt-3" onClick={() => setPagination(current => ({ resultKey, limits: { ...current.limits, [group.label]: limit + pageSize } }))}>Show more{group.label ? ` · ${group.label}` : ' cards'} ({group.items.length - limit})</Button>}
+        {group.items.length > limit && <Button className="mt-3" onClick={() => setPagination(current => ({ resultKey, limits: { ...current.limits, [group.label]: limit + pageSize } }))}>Show more{group.label ? ` · ${group.label}` : ` ${itemLabel}s`} ({group.items.length - limit})</Button>}
       </section>;
     })}
   </div>;

@@ -3,7 +3,7 @@ import { parseFilterQuery } from "@gatcg/shared";
 import { searchCardPool } from "../features/cards/filters";
 import type { Card } from "@gatcg/shared";
 import spoilers from "../../../data/reference/card-spoilers-2026-11-01.json";
-import { mergePreviewCards } from "./previewCards";
+import { mergePreviewCards, type PreviewCardRecord } from "./previewCards";
 
 /** Shared display catalog: official records supersede editorial previews. */
 export function withSpoilerCards(cards: Card[]): Card[] {
@@ -11,12 +11,14 @@ export function withSpoilerCards(cards: Card[]): Card[] {
 }
 
 /** Spoiler browsing historically includes class/type/element words in bare searches. */
-export function searchSpoilers(query: string) {
+export function searchSpoilers(query: string): typeof spoilers.cards;
+export function searchSpoilers<T extends PreviewCardRecord>(query: string, records: readonly T[]): T[];
+export function searchSpoilers(query: string, records: readonly PreviewCardRecord[] = spoilers.cards) {
   const parsed = parseFilterQuery(query);
-  const matches = new Set(searchCardPool(spoilers.cards, mergePreviewCards([], spoilers.cards, true), query).map(card => card.name));
   const plain = !parsed.error && !parsed.expression && !Object.keys(parsed.facets).length && !parsed.numeric?.length
     && parsed.clauses.every(clause => clause.field === 'any' && !clause.exclude && !clause.exact);
-  return spoilers.cards.filter(card => matches.has(card.name) || (plain &&
+  // Match each printing independently: shared names must not leak matches across sets.
+  return records.filter(card => searchCardPool([card], mergePreviewCards([], [card], true), query).length > 0 || (plain &&
     [card.name, card.effect, ...card.classes, ...card.types, ...card.subtypes, ...card.elements].join(' ').toLowerCase().includes(query.trim().toLowerCase())));
 }
 

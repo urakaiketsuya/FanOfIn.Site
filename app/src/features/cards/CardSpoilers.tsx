@@ -16,9 +16,9 @@ import DialogSheet from "../../components/ui/DialogSheet";
 import { Select } from "../../components/ui/FormControl";
 import { groupSpoilers, groupSpoilerResults, sortSpoilers, searchSpoilers, spoilerSetKey } from "../../lib/spoilerCatalog";
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import spoilers from "../../../../data/reference/card-spoilers-2026-11-01.json";
-import CardArtTile from "../../components/CardArtTile";
+import CardResult from "../../components/CardResult";
+import { expandSpoilerPrintings } from "../../lib/spoilerPrintings";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Button from "../../components/ui/Button";
@@ -30,9 +30,10 @@ const facets = ["classes", "types", "subtypes", "elements"] as const;
 const allowed: SearchFacet[] = [...facets, "sets", "printingSets", "rarities"];
 const facetOptions = Object.fromEntries(facets.map(key => [key, [...new Set(spoilers.cards.flatMap(card => card[key]))].sort().map(value => ({ value, text: value }))]));
 const sortOptions = { newest: "Newest added", oldest: "Oldest added", name: "Name A to Z", "name-desc": "Name Z to A" } as const;
-const sets = groupSpoilers(spoilers.cards);
+const printings = expandSpoilerPrintings(spoilers.cards);
+const sets = groupSpoilers(printings);
 // A reveal can be a new printing of an official card: retain the revealed art.
-const artwork = new Map(mergePreviewCards([], spoilers.cards, true).map(card => [card.name, card]));
+const artwork = new Map(printings.map(printing => [printing.printingId, mergePreviewCards([], [printing], true)[0]]));
 const addedDate = (value: string) => new Date(value.length === 10 ? `${value}T12:00:00-05:00` : value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
 
 export default function CardSpoilers() {
@@ -51,10 +52,11 @@ export default function CardSpoilers() {
   const rawSet = params.get("set") ?? "";
   // Preserve links to the former umbrella filter.
   const set = rawSet === "asphodel-cantabile" ? "" : spoilerSetKey(rawSet);
-  const shown = searchSpoilers(query).filter(card => !set || spoilerSetKey(card.setPrefix) === set);
+  const shown = useMemo(() => searchSpoilers(query, printings).filter(card => !set || spoilerSetKey(card.setPrefix) === set), [query, set]);
   const rawGrouping = params.get("group") ?? "none";
   const grouping = Object.hasOwn(CARD_GROUPS, rawGrouping) ? rawGrouping as CardGrouping : "none";
   const sorted = sortSpoilers(shown, sort);
+  const shownCards = new Set(shown.map(card => card.name)).size;
   const activeCount = Object.values(parsed.facets).reduce((count, values) => count + (values?.size ?? 0), 0) + (set ? 1 : 0);
   const clearFilters = () => setParams(previous => {
     const next = new URLSearchParams(previous);
@@ -77,7 +79,7 @@ export default function CardSpoilers() {
         {(query || set) && <Button variant="ghost" onClick={clearFilters}>Clear filters</Button>}
       </>} />
     </div>
-    {filtersOpen && <DialogSheet title="Filter spoilers" onDismiss={() => setFiltersOpen(false)} footer={<Button variant="primary" onClick={() => setFiltersOpen(false)}>Show {shown.length} spoilers</Button>}>
+    {filtersOpen && <DialogSheet title="Filter spoilers" onDismiss={() => setFiltersOpen(false)} footer={<Button variant="primary" onClick={() => setFiltersOpen(false)}>Show {shown.length} printings</Button>}>
       <div className="space-y-4 [&_button]:min-h-12 [&_button]:min-w-12">
         {facets.map(key => {
           const props = {
@@ -93,13 +95,13 @@ export default function CardSpoilers() {
       </div>
     </DialogSheet>}
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <p role="status" className="text-sm text-ctp-subtext1">{shown.length} of {spoilers.cards.length} spoilers</p>
+      <p role="status" className="text-sm text-ctp-subtext1">{shown.length} of {printings.length} printings · {shownCards} {shownCards === 1 ? "card" : "cards"}</p>
       <Select aria-label="Filter by set" className="max-w-full" value={set} onChange={event => update("set", event.target.value)}>
         <option value="">All sets</option>
         {sets.map(group => <option key={group.prefix} value={group.prefix}>{group.name}</option>)}
       </Select>
     </div>
-    <GroupedCardResults items={sorted} cardFor={card => artwork.get(card.name)} grouping={grouping}
+    <GroupedCardResults itemLabel="printing" items={sorted} cardFor={card => artwork.get(card.printingId)} grouping={grouping}
       onGrouping={value => update("group", value)} arrangeGroups={groupSpoilerResults}
       resultKey={JSON.stringify([query, set, sort, grouping])} pageSize={48}
       toolbar={<>
@@ -115,15 +117,17 @@ export default function CardSpoilers() {
       </>}>
       {visible => <div className={`spoiler-grid spoiler-grid--${gridSize} mt-4`} style={{ "--spoiler-card-min": CARD_GRID_MINIMUM[gridSize] } as CSSProperties}>
           {visible.map(card => {
+            const preview = artwork.get(card.printingId);
             const catalogCard = byName.get(card.name);
-            const content = <><CardArtTile card={artwork.get(card.name)} name={card.name} /><span className="block break-words py-2 text-sm font-medium">{card.name}</span></>;
-            return <div key={`${card.setPrefix}:${card.name}`} className="min-w-0">
-              {catalogCard ? <Link aria-label={card.name} to={`/cards/${catalogCard.slug}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : content}
-              <p className="text-xs text-ctp-subtext1">Added <time dateTime={card.addedAt}>{addedDate(card.addedAt)}</time></p>
-            </div>;
+            // Preserve this printing's art while linking to the canonical card identity.
+            const displayCard = preview && { ...preview, slug: catalogCard?.slug ?? preview.slug };
+            return <CardResult key={card.printingId} card={displayCard} name={card.name}>
+              <p className="break-words text-xs text-ctp-subtext0">{[card.setPrefix, card.collectorNumber && `#${card.collectorNumber}`, card.rarity].filter(Boolean).join(" · ")}</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Added <time dateTime={card.addedAt}>{addedDate(card.addedAt)}</time></p>
+            </CardResult>;
           })}
       </div>}
     </GroupedCardResults>
-    {shown.length === 0 && <div className="space-y-3 py-6"><p>No spoilers match your filters.</p><Button onClick={clearFilters}>Clear filters</Button></div>}
+    {shown.length === 0 && <div className="space-y-3 py-6"><p>No printings match your filters.</p><Button onClick={clearFilters}>Clear filters</Button></div>}
   </PageLayout>;
 }
