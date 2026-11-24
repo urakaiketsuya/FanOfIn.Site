@@ -82,3 +82,25 @@ test('linked comparison includes disappeared builds and section-specific card ch
  assert.deepEqual(selected.buildChanges,r.buildChanges);
  assert.equal(selected.returning,r.returning);
 });
+
+test('tournament prep uses current-period list share, pooled match results and an in-scope report', () => {
+  const { index, entries, taxonomy } = fixture();
+  Object.assign(entries[0], { wins: 6, losses: 3, ties: 1, deckHash: 'common' });
+  Object.assign(entries[1], { wins: 7, losses: 2, ties: 1, deckHash: 'common' });
+  Object.assign(entries[2], { wins: 9, losses: 0, ties: 0, deckHash: 'rare' });
+  Object.assign(entries[3], { wins: 70, losses: 0, ties: 0, deckHash: 'previous' });
+  taxonomy.clusters[0].deckIds = entries.filter((_, i) => i !== 2).map(entry => entry.deckId);
+  taxonomy.clusters.push({ ...taxonomy.clusters[0], id: 'rare', deckIds: [entries[2].deckId] });
+
+  const { tournamentPrep } = metaFreshness(index, [...entries, entries[0]], events, taxonomy, {
+    ...scope, tournamentPrep: true,
+  }, '2026-10-30');
+  assert.deepEqual(tournamentPrep.likelyOpponents.map(build => build.id), ['a', 'rare']);
+  assert.deepEqual(tournamentPrep.worthTesting.map(build => build.id), ['a']);
+  const [candidate] = tournamentPrep.worthTesting;
+  assert.equal(candidate.count, 2);
+  assert.equal(candidate.share, 200 / 3);
+  assert.equal(candidate.matches, 20);
+  assert.equal(candidate.adjustedScore, 19 / 30);
+  assert.equal(candidate.deckHash, 'common');
+});
