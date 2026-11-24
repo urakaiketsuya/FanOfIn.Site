@@ -94,10 +94,17 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
                           {testing ? `${percent(build.adjustedScore * 100)} adjusted match score · ${build.matches.toLocaleString()} matches` : `${percent(build.share)} of public lists · ${build.count.toLocaleString()} decks`}
                         </p>
                         {'matchesByTier' in build && (
-                          <ul aria-label="Matches by event tier" className="flex flex-wrap gap-2">
-                            {build.matchesByTier.map(({ tier, matches }) => (
+                          <ul aria-label="Match records by event tier" className="flex flex-wrap gap-2">
+                            {build.matchesByTier.map(({ tier, matches, wins, losses, ties }) => (
                               <li key={tier} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-text">
-                                {EVENT_CATEGORY_LABELS[tier] ?? tier} <strong className="tabular-nums">{matches.toLocaleString()}</strong>
+                                {EVENT_CATEGORY_LABELS[tier] ?? tier}{' '}
+                                <strong className="tabular-nums">{matches.toLocaleString()}</strong> {matches === 1 ? 'match' : 'matches'}
+                                <span aria-hidden="true" className="whitespace-nowrap tabular-nums">
+                                  {' · '}{wins.toLocaleString()}–{losses.toLocaleString()}–{ties.toLocaleString()} W–L–D
+                                </span>
+                                <span className="sr-only">
+                                  {', '}{wins.toLocaleString()} wins, {losses.toLocaleString()} losses, {ties.toLocaleString()} draws
+                                </span>
                               </li>
                             ))}
                           </ul>

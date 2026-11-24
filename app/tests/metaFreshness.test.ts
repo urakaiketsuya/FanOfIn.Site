@@ -143,13 +143,13 @@ test('event tiers pool matches before ranking and leave trends independent', () 
   assert.equal(combined.worthTesting[0].matches, 20);
   assert.equal(combined.worthTesting[0].adjustedScore, 22 / 30);
   const breakdown = [
-    { tier: 'regionals', matches: 10 },
-    { tier: 'store-championships', matches: 10 },
+    { tier: 'regionals', matches: 10, wins: 7, losses: 2, ties: 1 },
+    { tier: 'store-championships', matches: 10, wins: 9, losses: 0, ties: 1 },
   ];
   assert.deepEqual(combined.worthTesting[0].matchesByTier, breakdown);
   assert.deepEqual(report().tournamentPrep.worthTesting[0].matchesByTier, breakdown);
   assert.deepEqual(report('regionals', 'worlds', 'store-championships').tournamentPrep.worthTesting[0].matchesByTier, [
-    { tier: 'worlds', matches: 0 },
+    { tier: 'worlds', matches: 0, wins: 0, losses: 0, ties: 0 },
     ...breakdown,
   ]);
   assert.equal(report().tournamentPrep.likelyOpponents[0].count, 2);
