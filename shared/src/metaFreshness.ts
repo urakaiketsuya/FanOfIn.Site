@@ -8,13 +8,15 @@ function period() {
   return { recorded: 0, decks: 0, classified: 0, missing: 0, events: new Set<number>(), builds: new Map<string, number>(), champions: new Map<string, ChampionPool>(), cardDecks: 0, sideboards: 0, sections: { main: new Map<string, number>(), material: new Map<string, number>(), sideboard: new Map<string, number>() } };
 }
 /** Descriptive adjacent-period comparison; never a performance or enjoyment score. */
-export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; seasons?: { current: number; previous?: number } }, asOf: string) {
+export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; prepEventTier?: string; seasons?: { current: number; previous?: number } }, asOf: string) {
   const end = Date.parse(asOf), middle = end - scope.days * 86400000, start = middle - scope.days * 86400000;
   const eligible = new Map(events.filter(e => e.format === scope.format && e.status === 'complete' && Date.parse(e.date) <= end && (scope.seasons ? e.seasonId === scope.seasons.current || (scope.seasons.previous !== undefined && e.seasonId === scope.seasons.previous) : Date.parse(e.date) > start)).map(e => [e.id, e]));
   const lists = new Map(index.decks.map(d => [d.deckId, d]));
   const membership = buildMembership(taxonomy);
   const current = period(), previous = period();
-  const prepEvidence = new Map<string, { points: number; matches: number; lists: Map<string, number> }>();
+  let prepDecks = 0;
+  const prepEvents = new Set<number>();
+  const prepEvidence = new Map<string, { count: number; points: number; matches: number; lists: Map<string, number> }>();
   for (const entry of new Map(entries.map(e => [e.deckId, e])).values()) {
     const event = eligible.get(entry.eventId), champion = entry.championName ?? 'Unknown';
     if (!event || (scope.champion && champion !== scope.champion)) continue;
@@ -25,12 +27,18 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
     // Require readable nonempty Main and Material; sideboards never define the build.
     if (!deck || !deck.main.length || !deck.material.length || [...deck.main, ...deck.material].some(([id, q]) => !index.cardNames[id] || !Number.isInteger(q) || q <= 0)) { bucket.missing++; continue; }
     bucket.decks++; bucket.events.add(entry.eventId);
+    const inPrepScope = scope.tournamentPrep && isCurrent && (!scope.prepEventTier || event.category === scope.prepEventTier);
+    if (inPrepScope) {
+      prepDecks++;
+      prepEvents.add(entry.eventId);
+    }
     const build = membership(entry.deckId);
     if (build !== 'ambiguous' && build !== 'unclassified') {
       bucket.classified++;
       bucket.builds.set(build, (bucket.builds.get(build) ?? 0) + 1);
-      if (scope.tournamentPrep && isCurrent) {
-        const evidence = prepEvidence.get(build) ?? { points: 0, matches: 0, lists: new Map<string, number>() };
+      if (inPrepScope) {
+        const evidence = prepEvidence.get(build) ?? { count: 0, points: 0, matches: 0, lists: new Map<string, number>() };
+        evidence.count++;
         evidence.points += entry.wins + entry.ties / 2;
         evidence.matches += entry.wins + entry.losses + entry.ties;
         if (entry.deckHash) evidence.lists.set(entry.deckHash, (evidence.lists.get(entry.deckHash) ?? 0) + 1);
@@ -55,18 +63,21 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
   const returning = [...current.builds].filter(([id]) => (previous.builds.get(id) ?? 0) >= 3).reduce((n, [,count]) => n + count, 0);
   const buildById = new Map(taxonomy.clusters.map(b => [b.id,b]));
   const builds = [...current.builds].map(([id, count]) => ({ id, name: buildById.get(id)!.name, champion: buildById.get(id)!.championName, count, previousCount: previous.builds.get(id) ?? 0, share: share(count,current.decks)!, previousShare: share(previous.builds.get(id) ?? 0,previous.decks) })).sort((a,b) => b.count-a.count || a.id.localeCompare(b.id));
-  const prepBuilds = builds.flatMap(build => {
-    const evidence = prepEvidence.get(build.id);
-    if (!evidence) return [];
+  const prepBuilds = [...prepEvidence].map(([id, evidence]) => {
+    const build = buildById.get(id)!;
     const [deckHash] = [...evidence.lists].sort(([a, aCount], [b, bCount]) => bCount - aCount || a.localeCompare(b))[0] ?? [];
     return {
-      ...build,
+      id, name: build.name, champion: build.championName,
+      count: evidence.count,
+      share: 100 * evidence.count / prepDecks,
       deckHash,
       matches: evidence.matches,
       adjustedScore: shrinkWinRate(evidence.points, evidence.matches, 10).adjustedWinRate,
     };
-  });
+  }).sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
   const tournamentPrep = {
+    decks: prepDecks,
+    events: prepEvents.size,
     likelyOpponents: prepBuilds.slice(0, 3),
     worthTesting: prepBuilds.filter(build => build.matches >= 20 && build.adjustedScore > 0.5)
       .sort((a, b) => b.adjustedScore - a.adjustedScore || b.matches - a.matches || a.id.localeCompare(b.id))

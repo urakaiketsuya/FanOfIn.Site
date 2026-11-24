@@ -91,7 +91,7 @@ Linked-flow validation: seven shared-calculation fixtures passed, including disa
 
 ### Tournament prep
 
-Tournament prep uses completed events in the current side of the selected Metagame comparison, with the same format and champion filters. Likely opponents are the three most common classified builds. Share uses all readable public lists in scope, including unclassified lists.
+Tournament prep uses completed events in the current side of the selected Metagame comparison, with the same format and champion filters. Its optional event tier limits both rankings, sample counts, and representative deck reports to the selected Omnidex event category. The adjacent-period comparison uses its original scope. Likely opponents are the three most common classified builds. Share uses all readable public lists in scope, including unclassified lists.
 
 Worth testing shows up to three builds with at least 20 recorded match results and an adjusted match score above 50%. Each win earns one point and each tie earns half a point. The shared 10-match neutral prior adjusts the pooled score to `(wins + ties / 2 + 5) / (matches + 10)`. Counts are from the build's deck records, so a mirror contributes one result per entrant. These are recent observed results and include the effects of pilot skill and the actual opponents faced.
 

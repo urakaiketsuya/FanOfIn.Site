@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom';
-import type { metaFreshness } from '@gatcg/shared';
+import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type metaFreshness } from '@gatcg/shared';
 import { CardIdentity } from '../events/EventReportVisuals';
 import { useChampionCardImages } from '../players/useChampionCardImages';
 
-type Report = ReturnType<typeof metaFreshness>;
+type Prep = ReturnType<typeof metaFreshness>['tournamentPrep'];
 const percent = (value: number) => `${value.toFixed(1)}%`;
 
-export default function TournamentPrep({ report, format }: { report: Report; format: string }) {
-  const { likelyOpponents, worthTesting } = report.tournamentPrep;
+export default function TournamentPrep({ prep, format, eventTier, onEventTier }: {
+  prep: Prep;
+  format: string;
+  eventTier: string;
+  onEventTier: (value: string) => void;
+}) {
+  const { likelyOpponents, worthTesting } = prep;
   const images = useChampionCardImages([...likelyOpponents, ...worthTesting].map(build => build.champion));
   const groups = [
     { title: 'Likely opponents', builds: likelyOpponents, empty: 'No classified decks in this scope.', testing: false },
@@ -16,11 +21,20 @@ export default function TournamentPrep({ report, format }: { report: Report; for
 
   return (
     <section aria-labelledby="tournament-prep-heading" className="space-y-4">
-      <div>
-        <h2 id="tournament-prep-heading" className="text-xl font-semibold">Tournament prep</h2>
-        <p className="mt-1 text-sm text-ctp-subtext1">
-          {report.current.decks.toLocaleString()} public decks · {report.current.events.toLocaleString()} events
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 id="tournament-prep-heading" className="text-xl font-semibold">Tournament prep</h2>
+          <p className="mt-1 text-sm text-ctp-subtext1" role="status">
+            {prep.decks.toLocaleString()} public decks · {prep.events.toLocaleString()} events
+          </p>
+        </div>
+        <label className="min-w-0 text-sm sm:w-52">
+          Event tier
+          <select className="mt-1 block min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" value={eventTier} onChange={event => onEventTier(event.target.value)}>
+            <option value="">All event tiers</option>
+            {EVENT_CATEGORY_ORDER.map(tier => <option key={tier} value={tier}>{EVENT_CATEGORY_LABELS[tier]}</option>)}
+          </select>
+        </label>
       </div>
       <div className="grid gap-5 lg:grid-cols-2">
         {groups.map(({ title, builds, empty, testing }) => (

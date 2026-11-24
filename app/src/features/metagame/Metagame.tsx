@@ -5,7 +5,7 @@ import { useDeckPopularityIndexData } from '../topdecks/data';
 import { useOmnidexIndex, useOmnidexIndexStatus } from '../tournaments/data';
 import { usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import PublishedSourceStatus from '../../components/PublishedSourceStatus';
-import { metaFreshness, seasonalMetaFreshness } from '@gatcg/shared';
+import { EVENT_CATEGORY_ORDER, metaFreshness, seasonalMetaFreshness } from '@gatcg/shared';
 import MetaFreshness, { SeasonTrends } from './MetaFreshness';
 import TournamentPrep from './TournamentPrep';
 
@@ -26,8 +26,10 @@ export default function Metagame() {
   const selected = history.find(r=>`season-${r.season.id}`===requested);
   const period = selected ? requested : requested==='90'?'90':'30';
   const buildId = params.get('build') || '';
+  const requestedTier = params.get('eventTier') ?? '';
+  const eventTier = EVENT_CATEGORY_ORDER.includes(requestedTier) ? requestedTier : '';
   const section = sections.includes(params.get('section') as typeof sections[number]) ? params.get('section') as typeof sections[number] : 'main';
-  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,selected,asOf]);
+  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,prepEventTier:eventTier,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,eventTier,selected,asOf]);
   const formats = useMemo(()=>[...new Set(events?.events.map(e=>e.format) ?? ['standard'])].sort(),[events]);
   const champions = useMemo(()=>[...new Set(popularity?.entries.map(e=>e.championName).filter((n): n is string=>!!n) ?? [])].sort(),[popularity]);
   function change(key: string, value: string) {
@@ -47,7 +49,7 @@ export default function Metagame() {
     <PublishedSourceStatus label="Build groups" status={taxonomyStatus} hasData={!!taxonomy}/>
     {pending && <p role="status">Recalculating…</p>}
     {report && <div className="space-y-6" aria-busy={pending}>
-      <TournamentPrep report={report} format={format} />
+      <TournamentPrep prep={report.tournamentPrep} format={format} eventTier={eventTier} onEventTier={tier=>change('eventTier',tier)} />
       <SeasonTrends history={history} selected={selected?.season.id} onSelect={id=>change('period',`season-${id}`)}/>
       <div className="space-y-1 border-y border-ctp-surface0 py-3">
         <h2 className="font-semibold">{selected ? `${selected.season.name} vs. ${selected.previousSeason?.name ?? 'no earlier season'}` : `Last ${period} days vs. previous ${period} days`}</h2>
