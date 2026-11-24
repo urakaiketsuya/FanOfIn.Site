@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-23T21:50:54.188Z",
+  "generatedAt": "2026-11-24T02:28:04.879Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -13757,6 +13757,20 @@
             },
             {
               "order": 3,
+              "actor": "both",
+              "text": "Lifdrasyl loses Cleansing Reunion to banishment after reaching Lorraine, Spirit Ruler. That leaves Asuna’s Cyclical Breeze free to retrieve Veiling Breeze and keep the game going.",
+              "cards": [
+                "Cleansing Reunion",
+                "Cyclical Breeze",
+                "Veiling Breeze"
+              ],
+              "timestamp": {
+                "videoId": "MAgS0ISYLtI",
+                "seconds": 17517
+              }
+            },
+            {
+              "order": 4,
               "actor": "p2",
               "text": "In overtime, both players keep Veiling Breeze available. Lifdrasyl materializes Sword of Seeking and shows Spirit Blade: Retribution, but lacks enough influence to activate it. Neither player wins the game; the broadcast confirms a 1–1 draw, worth no match points in this Worlds format.",
               "cards": [

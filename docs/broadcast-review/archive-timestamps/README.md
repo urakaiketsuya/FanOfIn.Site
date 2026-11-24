@@ -284,3 +284,16 @@ The quarterfinals retain the level-up denial, combat retreat and
 Razorgale finish. Both semifinal recaps cover the graveyard control,
 Priestess interaction or finishing triggers. Final game two already
 covers Quarax stopping Jett’s defenses and closing with the Archer.
+
+### Worlds 2026 Swiss Stage three-play review
+
+Reviewed all 23 eligible games. In Asuna vs Lifdrasyl game three, the
+broadcast shows Lifdrasyl leveling to Spirit Ruler and the casters call
+out Cleansing Reunion going to banishment. Asuna can then recycle Veiling
+Breeze with Cyclical Breeze. The [4:51:57 cue](https://www.youtube.com/watch?v=MAgS0ISYLtI&t=17517s)
+was checked on the complete 11:20:42 broadcast. The local transcript ends
+at 680:32. The source hash and caption-row range are in the evidence ledger.
+
+The other 22 recaps stayed at three plays. The existing beats cover the
+decisive graveyard fights, level-up disruption, fractal and Oblation
+finishes, and the two Lorraine players’ Prismatic Edge exchanges.

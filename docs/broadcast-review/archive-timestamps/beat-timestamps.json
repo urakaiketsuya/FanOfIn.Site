@@ -132058,7 +132058,7 @@
   {
     "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
     "gameNumber": 3,
-    "order": 3,
+    "order": 4,
     "text": "In overtime, both players keep Veiling Breeze available. Lifdrasyl materializes Sword of Seeking and shows Spirit Blade: Retribution, but lacks enough influence to activate it. Neither player wins the game; the broadcast confirms a 1–1 draw, worth no match points in this Worlds format.",
     "timestamp": {
       "videoId": "MAgS0ISYLtI",
@@ -191756,5 +191756,39 @@
     ],
     "review": "na-nationals-day2-three-play-expansion",
     "sourceFile": "tFC-3k0uxcM.json"
+  },
+  {
+    "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+    "gameNumber": 3,
+    "order": 3,
+    "text": "Lifdrasyl loses Cleansing Reunion to banishment after reaching Lorraine, Spirit Ruler. That leaves Asuna’s Cyclical Breeze free to retrieve Veiling Breeze and keep the game going.",
+    "timestamp": {
+      "videoId": "MAgS0ISYLtI",
+      "seconds": 17517
+    },
+    "sourceRows": [
+      3740,
+      3742
+    ],
+    "sourceSha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+    "source": [
+      {
+        "row": 3740,
+        "timestamp": "291:57",
+        "text": "here. Cleansing reunion going to the banishment means no way of stopping the"
+      },
+      {
+        "row": 3741,
+        "timestamp": "292:02",
+        "text": "cyclical from reclaiming the veiling breezes now. So, the stall game has"
+      },
+      {
+        "row": 3742,
+        "timestamp": "292:06",
+        "text": "become a real issue. and remembers Dling Guyire still on field stopping these"
+      }
+    ],
+    "review": "worlds-swiss-three-play-expansion",
+    "sourceFile": "Worlds Swiss Stage 2026  Grand Archive TCG.txt"
   }
 ]
