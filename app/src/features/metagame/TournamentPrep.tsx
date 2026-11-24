@@ -14,15 +14,19 @@ type PrepGroup = {
 };
 const percent = (value: number) => `${value.toFixed(1)}%`;
 
-export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange }: {
+export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange, sortTier, onSortTierChange }: {
   prep: Prep;
   format: string;
   eventTiers: string[];
   onEventTiersChange: (tiers: string[]) => void;
+  sortTier: string;
+  onSortTierChange: (tier: string) => void;
 }) {
   const tierSummary = eventTiers.length
     ? eventTiers.map(tier => EVENT_CATEGORY_LABELS[tier]).join(', ')
     : 'All event tiers';
+  const sortOptions = eventTiers.length ? eventTiers : EVENT_CATEGORY_ORDER;
+  const sortLabel = EVENT_CATEGORY_LABELS[sortTier];
   const { likelyOpponents, worthTesting } = prep;
   const images = useChampionCardImages([...likelyOpponents, ...worthTesting].map(build => build.champion));
   const groups: PrepGroup[] = [
@@ -77,6 +81,19 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
         {groups.map(({ title, builds, empty, testing }) => (
           <div key={title} className="min-w-0 space-y-2">
             <h3 className="font-semibold">{title}</h3>
+            {testing && (
+              <label className="block text-sm sm:max-w-80">
+                Sort by adjusted match score
+                <select
+                  className="mt-1 block min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"
+                  value={sortOptions.includes(sortTier) ? sortTier : ''}
+                  onChange={event => onSortTierChange(event.target.value)}
+                >
+                  <option value="">Combined results</option>
+                  {sortOptions.map(tier => <option key={tier} value={tier}>{EVENT_CATEGORY_LABELS[tier]}</option>)}
+                </select>
+              </label>
+            )}
             {builds.length === 0 ? <p className="text-sm text-ctp-subtext1">{empty}</p> : (
               <ul className="grid gap-2">
                 {builds.map(build => {
@@ -91,8 +108,15 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
                         <CardIdentity name={build.champion} card={images.get(build.champion)} />
                         <p className="break-words text-sm font-semibold">{build.name}</p>
                         <p className="text-sm text-ctp-subtext1">
-                          {testing ? `${percent(build.adjustedScore * 100)} adjusted match score · ${build.matches.toLocaleString()} matches` : `${percent(build.share)} of public lists · ${build.count.toLocaleString()} decks`}
+                          {testing ? `${percent(build.adjustedScore * 100)} combined adjusted match score · ${build.matches.toLocaleString()} matches` : `${percent(build.share)} of public lists · ${build.count.toLocaleString()} decks`}
                         </p>
+                        {sortTier && 'tierAdjustedScore' in build && (
+                          <p className="text-sm font-medium text-ctp-text">
+                            {build.tierAdjustedScore === null
+                              ? `${sortLabel} · No recorded matches`
+                              : `${sortLabel} · ${percent(build.tierAdjustedScore * 100)} adjusted match score`}
+                          </p>
+                        )}
                         {'matchesByTier' in build && (
                           <ul aria-label="Match records by event tier" className="flex flex-wrap gap-2">
                             {build.matchesByTier.map(({ tier, matches, wins, losses, ties }) => (

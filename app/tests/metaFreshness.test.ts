@@ -157,3 +157,47 @@ test('event tiers pool matches before ranking and leave trends independent', () 
   assert.deepEqual(regional.current, report().current);
   assert.deepEqual(regional.cardChanges, report().cardChanges);
 });
+
+test('tier score ranks combined-eligible builds before taking the top three', () => {
+  const data = fixture();
+  const scopedEvents = [
+    { ...events[0], category: 'regionals' },
+    { ...events[0], id: 3, category: 'store-championships' },
+  ];
+  const records = [
+    { id: 'a', results: [[1, 2, 8, 0], [3, 30, 0, 0]] },
+    { id: 'b', results: [[1, 4, 6, 0], [3, 23, 7, 0]] },
+    { id: 'c', results: [[3, 20, 10, 0]] },
+    { id: 'd', results: [[1, 8, 1, 1], [3, 9, 11, 0]] },
+    { id: 'e', results: [[1, 10, 0, 0], [3, 0, 20, 0]] },
+  ];
+  const entries = records.flatMap(({ id, results }, player) =>
+    results.map(([eventId, wins, losses, ties]) => ({
+      ...data.entries[0], deckId: `${eventId}:${player}`, eventId, player, wins, losses, ties, deckHash: id,
+    })),
+  );
+  const index = { ...data.index, decks: entries.map(entry => ({ ...data.index.decks[0], deckId: entry.deckId })) };
+  const taxonomy = {
+    clusters: records.map(({ id, results }, player) => ({
+      ...data.taxonomy.clusters[0], id, deckIds: results.map(([eventId]) => `${eventId}:${player}`),
+    })),
+  };
+  const report = (prepSortTier?: string) => metaFreshness(index, entries, scopedEvents, taxonomy, {
+    ...scope, tournamentPrep: true, prepEventTiers: ['regionals', 'store-championships', 'worlds'], prepSortTier,
+  }, '2026-10-30').tournamentPrep;
+  const combined = report();
+  assert.deepEqual(combined.worthTesting.map(build => build.id), ['a', 'b', 'c']);
+
+  const sorted = report('regionals');
+  assert.deepEqual(sorted.worthTesting.map(build => build.id), ['d', 'b', 'a']);
+  assert.deepEqual(sorted.likelyOpponents, combined.likelyOpponents);
+  const [first, second] = sorted.worthTesting;
+  assert.equal(first.tierAdjustedScore, 13.5 / 20);
+  assert.equal(first.adjustedScore, 22.5 / 40);
+  assert.equal(first.matches, 30);
+  assert.equal(first.deckHash, 'd');
+  assert.deepEqual(second.matchesByTier, combined.worthTesting[1].matchesByTier);
+
+  const noMatches = report('worlds');
+  assert.deepEqual(noMatches.worthTesting, combined.worthTesting);
+});

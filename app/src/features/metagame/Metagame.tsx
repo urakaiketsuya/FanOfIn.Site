@@ -30,9 +30,11 @@ export default function Metagame() {
     const requestedTiers = params.getAll('eventTier');
     return EVENT_CATEGORY_ORDER.filter(tier => requestedTiers.includes(tier));
   }, [params]);
+  const requestedSortTier = params.get('prepSort') ?? '';
+  const sortTier = (eventTiers.length ? eventTiers : EVENT_CATEGORY_ORDER).includes(requestedSortTier) ? requestedSortTier : '';
   const [selectedEventTiers, setSelectedEventTiers] = useOptimistic(eventTiers);
   const section = sections.includes(params.get('section') as typeof sections[number]) ? params.get('section') as typeof sections[number] : 'main';
-  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,prepEventTiers:eventTiers,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,eventTiers,selected,asOf]);
+  const report = useMemo(()=>index && popularity && events && taxonomy ? metaFreshness(index,popularity.entries,events.events,taxonomy,{format,champion,days:period==='90'?90:30,buildId,tournamentPrep:true,prepEventTiers:eventTiers,prepSortTier:sortTier,seasons:selected?{current:selected.season.id,previous:selected.previousSeason?.id}:undefined},asOf):undefined,[index,popularity,events,taxonomy,format,champion,period,buildId,eventTiers,sortTier,selected,asOf]);
   const formats = useMemo(()=>[...new Set(events?.events.map(e=>e.format) ?? ['standard'])].sort(),[events]);
   const champions = useMemo(()=>[...new Set(popularity?.entries.map(e=>e.championName).filter((n): n is string=>!!n) ?? [])].sort(),[popularity]);
   function change(key: string, value: string) {
@@ -46,6 +48,7 @@ export default function Metagame() {
         const next = new URLSearchParams(previous);
         next.delete('eventTier');
         for (const tier of selectedTiers) next.append('eventTier', tier);
+        if (selectedTiers.length && !selectedTiers.includes(next.get('prepSort') ?? '')) next.delete('prepSort');
         return next;
       });
     });
@@ -64,7 +67,7 @@ export default function Metagame() {
     <PublishedSourceStatus label="Build groups" status={taxonomyStatus} hasData={!!taxonomy}/>
     {pending && <p role="status">Recalculating…</p>}
     {report && <div className="space-y-6" aria-busy={pending}>
-      <TournamentPrep prep={report.tournamentPrep} format={format} eventTiers={selectedEventTiers} onEventTiersChange={changeEventTiers} />
+      <TournamentPrep prep={report.tournamentPrep} format={format} eventTiers={selectedEventTiers} onEventTiersChange={changeEventTiers} sortTier={sortTier} onSortTierChange={tier => change('prepSort', tier)} />
       <SeasonTrends history={history} selected={selected?.season.id} onSelect={id=>change('period',`season-${id}`)}/>
       <div className="space-y-1 border-y border-ctp-surface0 py-3">
         <h2 className="font-semibold">{selected ? `${selected.season.name} vs. ${selected.previousSeason?.name ?? 'no earlier season'}` : `Last ${period} days vs. previous ${period} days`}</h2>
