@@ -11,7 +11,7 @@ function period() {
   return { recorded: 0, decks: 0, classified: 0, missing: 0, events: new Set<number>(), builds: new Map<string, number>(), champions: new Map<string, ChampionPool>(), cardDecks: 0, sideboards: 0, sections: { main: new Map<string, number>(), material: new Map<string, number>(), sideboard: new Map<string, number>() } };
 }
 /** Descriptive adjacent-period comparison; never a performance or enjoyment score. */
-export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; prepEventTiers?: readonly string[]; prepSortTier?: string; seasons?: { current: number; previous?: number } }, asOf: string) {
+export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityEntry[], events: OmnidexEventSummary[], taxonomy: Pick<ArchetypeTaxonomyData, 'clusters'>, scope: { format: string; champion: string; days: 30 | 90; buildId?: string; tournamentPrep?: boolean; prepEventTiers?: readonly string[]; prepSortTier?: string; prepTierMinMatches?: number; seasons?: { current: number; previous?: number } }, asOf: string) {
   const end = Date.parse(asOf), middle = end - scope.days * 86400000, start = middle - scope.days * 86400000;
   const eligible = new Map(events.filter(e => e.format === scope.format && e.status === 'complete' && Date.parse(e.date) <= end && (scope.seasons ? e.seasonId === scope.seasons.current || (scope.seasons.previous !== undefined && e.seasonId === scope.seasons.previous) : Date.parse(e.date) > start)).map(e => [e.id, e]));
   const lists = new Map(index.decks.map(d => [d.deckId, d]));
@@ -94,18 +94,20 @@ export function metaFreshness(index: DeckCardIndexData, entries: DeckPopularityE
     };
   }).sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
   const sortTier = scope.prepSortTier;
+  const tierMinMatches = sortTier ? (scope.prepTierMinMatches ?? 0) : 0;
   const tournamentPrep = {
     decks: prepDecks,
     events: prepEvents.size,
     likelyOpponents: prepBuilds.slice(0, 3),
     worthTesting: prepBuilds.filter(build => build.matches >= 20 && build.adjustedScore > 0.5)
-      .map(build => {
+      .flatMap(build => {
         const record = sortTier ? prepEvidence.get(build.id)!.recordsByTier.get(sortTier) : undefined;
         const matches = record ? record.wins + record.losses + record.ties : 0;
+        if (matches < tierMinMatches) return [];
         const tierAdjustedScore = record && matches > 0
           ? shrinkWinRate(record.wins + record.ties / 2, matches, 10).adjustedWinRate
           : null;
-        return { ...build, tierAdjustedScore };
+        return [{ ...build, tierAdjustedScore }];
       })
       .sort((a, b) => (b.tierAdjustedScore ?? -1) - (a.tierAdjustedScore ?? -1)
         || b.adjustedScore - a.adjustedScore || b.matches - a.matches || a.id.localeCompare(b.id))

@@ -166,7 +166,7 @@ test('tier score ranks combined-eligible builds before taking the top three', ()
   ];
   const records = [
     { id: 'a', results: [[1, 2, 8, 0], [3, 30, 0, 0]] },
-    { id: 'b', results: [[1, 4, 6, 0], [3, 23, 7, 0]] },
+    { id: 'b', results: [[1, 5, 7, 0], [3, 25, 5, 0]] },
     { id: 'c', results: [[3, 20, 10, 0]] },
     { id: 'd', results: [[1, 8, 1, 1], [3, 9, 11, 0]] },
     { id: 'e', results: [[1, 10, 0, 0], [3, 0, 20, 0]] },
@@ -182,8 +182,8 @@ test('tier score ranks combined-eligible builds before taking the top three', ()
       ...data.taxonomy.clusters[0], id, deckIds: results.map(([eventId]) => `${eventId}:${player}`),
     })),
   };
-  const report = (prepSortTier?: string) => metaFreshness(index, entries, scopedEvents, taxonomy, {
-    ...scope, tournamentPrep: true, prepEventTiers: ['regionals', 'store-championships', 'worlds'], prepSortTier,
+  const report = (prepSortTier?: string, prepTierMinMatches?: number) => metaFreshness(index, entries, scopedEvents, taxonomy, {
+    ...scope, tournamentPrep: true, prepEventTiers: ['regionals', 'store-championships', 'worlds'], prepSortTier, prepTierMinMatches,
   }, '2026-10-30').tournamentPrep;
   const combined = report();
   assert.deepEqual(combined.worthTesting.map(build => build.id), ['a', 'b', 'c']);
@@ -198,6 +198,14 @@ test('tier score ranks combined-eligible builds before taking the top three', ()
   assert.equal(first.deckHash, 'd');
   assert.deepEqual(second.matchesByTier, combined.worthTesting[1].matchesByTier);
 
-  const noMatches = report('worlds');
-  assert.deepEqual(noMatches.worthTesting, combined.worthTesting);
+  assert.deepEqual(report('regionals', 0), sorted);
+  assert.deepEqual(report('regionals', 10), sorted);
+  const filtered = report('regionals', 12);
+  assert.deepEqual(filtered.worthTesting, [second]);
+  assert.equal(filtered.worthTesting[0].matches, 42);
+  assert.deepEqual(filtered.likelyOpponents, combined.likelyOpponents);
+  assert.deepEqual(report('regionals', 13).worthTesting, []);
+  assert.deepEqual(report(undefined, 13), combined);
+  assert.deepEqual(report('worlds').worthTesting, combined.worthTesting);
+  assert.deepEqual(report('worlds', 1).worthTesting, []);
 });

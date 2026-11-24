@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type metaFreshness } from '@gatcg/shared';
 import DisclosureChevron from '../../components/DisclosureChevron';
@@ -14,13 +15,54 @@ type PrepGroup = {
 };
 const percent = (value: number) => `${value.toFixed(1)}%`;
 
-export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange, sortTier, onSortTierChange }: {
+function TierMinimum({ tier, minimum, onChange }: {
+  tier: string;
+  minimum: number;
+  onChange: (matches: number) => void;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (input.current) input.current.value = minimum ? String(minimum) : '';
+  }, [minimum]);
+
+  return (
+    <form className="flex flex-wrap items-end gap-2 sm:max-w-80" onSubmit={event => {
+      event.preventDefault();
+      const field = input.current;
+      if (!field) return;
+      const matches = field.value === '' ? 0 : field.valueAsNumber;
+      if (!Number.isSafeInteger(matches) || matches < 0) return;
+      field.value = matches ? String(matches) : '';
+      if (matches !== minimum) onChange(matches);
+    }}>
+      <label className="min-w-0 flex-1 basis-44 text-sm">
+        Minimum matches in {tier}
+        <input
+          ref={input}
+          type="number"
+          min={0}
+          max={Number.MAX_SAFE_INTEGER}
+          step={1}
+          inputMode="numeric"
+          placeholder="No minimum"
+          defaultValue={minimum || ''}
+          className="mt-1 block min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"
+        />
+      </label>
+      <Button type="submit">Apply</Button>
+    </form>
+  );
+}
+
+export default function TournamentPrep({ prep, format, eventTiers, onEventTiersChange, sortTier, onSortTierChange, tierMinMatches, onTierMinimumChange }: {
   prep: Prep;
   format: string;
   eventTiers: string[];
   onEventTiersChange: (tiers: string[]) => void;
   sortTier: string;
   onSortTierChange: (tier: string) => void;
+  tierMinMatches: number;
+  onTierMinimumChange: (matches: number) => void;
 }) {
   const tierSummary = eventTiers.length
     ? eventTiers.map(tier => EVENT_CATEGORY_LABELS[tier]).join(', ')
@@ -31,7 +73,9 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
   const images = useChampionCardImages([...likelyOpponents, ...worthTesting].map(build => build.champion));
   const groups: PrepGroup[] = [
     { title: 'Likely opponents', builds: likelyOpponents, empty: 'No classified decks in this scope.', testing: false },
-    { title: 'Worth testing', builds: worthTesting, empty: 'No build scored above 50% with at least 20 recorded matches.', testing: true },
+    { title: 'Worth testing', builds: worthTesting, empty: tierMinMatches
+      ? `No eligible decks have at least ${tierMinMatches.toLocaleString()} matches in ${sortLabel}.`
+      : 'No build scored above 50% with at least 20 recorded matches.', testing: true },
   ];
 
   return (
@@ -93,6 +137,9 @@ export default function TournamentPrep({ prep, format, eventTiers, onEventTiersC
                   {sortOptions.map(tier => <option key={tier} value={tier}>{EVENT_CATEGORY_LABELS[tier]}</option>)}
                 </select>
               </label>
+            )}
+            {testing && sortTier && (
+              <TierMinimum key={sortTier} tier={sortLabel} minimum={tierMinMatches} onChange={onTierMinimumChange} />
             )}
             {builds.length === 0 ? <p className="text-sm text-ctp-subtext1">{empty}</p> : (
               <ul className="grid gap-2">
