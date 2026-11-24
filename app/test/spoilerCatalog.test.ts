@@ -87,7 +87,7 @@ test('gallery additions resolve in CBL searches with artwork and printed costs',
   }
   for (const card of catalog.filter(card => card.types.includes('REGALIA'))) {
     assert.equal(card.cost.type, 'memory', card.name);
-    assert.equal(card.cost_memory, card.name === 'Cognoid Cycler' ? 2 : 0, card.name);
+    assert.equal(card.cost_memory, ['Cognoid Cycler', 'Cognoid Energizer', 'Cognoid Revitalizer'].includes(card.name) ? 2 : 0, card.name);
     assert.equal(card.cost_reserve, null, card.name);
   }
   assert.equal(searchSetPrefix('CBLOS'), 'CBL');

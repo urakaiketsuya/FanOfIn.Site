@@ -15,7 +15,8 @@
     "reprintOf: the same card text already exists in the catalog under that set prefix.",
     "Song cards are Unlockable Actions: they can only be registered in an unlockable deck (the Song deck). Opening Refrain is a normal Melody action in Main and copies a card from the Song deck.",
     "image / altPrintings[].image are local image assets in app/public/images/spoilers/. Records with sourceImageUrl use gallery artwork; remaining assets are supplied screenshots or stream screenshot crops.",
-    "addedAt records first catalog addition, recovered from Git history for existing cards. Desktop import sourceFile values identify supplied images; addition dates are independent of reveal dates."
+    "addedAt records first catalog addition, recovered from Git history for existing cards. Desktop import sourceFile values identify supplied images; addition dates are independent of reveal dates.",
+    "Cocytean Relic’s printed card-and-arrow activation-cost glyph is transcribed as [reserve]."
   ],
   "sets": {
     "Re:C-SKY": "Casella reveal cards (Cleric, arcane)",
@@ -23,7 +24,8 @@
     "CBL": "Set prefix printed on cards shown with the Casella and Beatrice reveals",
     "CBLP": "Set prefix printed on the Pantheon (boon/devotion) cards",
     "CBLOS": "Asphodel/Cantabile Opus song printings",
-    "P26": "2026 Promos"
+    "P26": "2026 Promos",
+    "EVP": "Event Pack printing shown in the reveal gallery"
   },
   "cards": [
     {
@@ -322,7 +324,17 @@
       "deckSection": "song",
       "effect": "On Premiere: Banish up to three cards from your memory. For each card banished this way, draw a card.\nFinale — If there are four or more face up cards in your Song deck, each ally you control gets +X power until end of turn, where X is the amount of arcane element cards in your banishment. X is capped at 6.",
       "sourceImageUrl": "https://shoutatyourdecks.com/images/let-my-thunder-be-heard-cblos.jpg",
-      "addedAt": "2026-11-01T15:11:09-05:00"
+      "addedAt": "2026-11-01T15:11:09-05:00",
+      "altPrintings": [
+        {
+          "setPrefix": "Re:C-SKY",
+          "collectorNumber": "016",
+          "rarity": "SR",
+          "image": "let-my-thunder-be-heard-rec-sky.jpg",
+          "sourceImageUrl": "https://shoutatyourdecks.com/images/let-my-thunder-be-heard-rec-sky.jpg",
+          "addedAt": "2026-11-24"
+        }
+      ]
     },
     {
       "name": "Opening Refrain",
@@ -2754,7 +2766,7 @@
     },
     {
       "name": "Singularity Directive",
-      "collectorNumber": null,
+      "collectorNumber": "188",
       "rarity": "CSR",
       "image": "singularity-directive.png",
       "types": [
@@ -3189,7 +3201,17 @@
       "speed": "slow",
       "effect": "Casella Bonus This card costs 2 less to activate for each face up card in your Song deck.\nCasella Bonus For each arcane element card in your banishment, put four aria counters on your champion. Then Casella sings four times.",
       "sourceFile": "codex-clipboard-8b49359b-89e1-4732-a0ca-b3ffbb6852d8.png",
-      "addedAt": "2026-11-20"
+      "addedAt": "2026-11-20",
+      "altPrintings": [
+        {
+          "setPrefix": "CBL 1st",
+          "collectorNumber": "171",
+          "rarity": "CSR",
+          "image": "voxilis-finale-ultimo-blc1e-csr.jpg",
+          "sourceImageUrl": "https://shoutatyourdecks.com/images/voxilis-finale-ultimo-blc1e-csr.jpg",
+          "addedAt": "2026-11-24"
+        }
+      ]
     },
     {
       "name": "Auxiliary Power",
@@ -3258,7 +3280,7 @@
     {
       "name": "Enthusiastic Concertgoers",
       "setPrefix": "CBL",
-      "collectorNumber": "048",
+      "collectorNumber": "046",
       "rarity": "R",
       "image": "enthusiastic-concertgoers.png",
       "types": [
@@ -3287,6 +3309,1064 @@
       "addedAt": "2026-11-20",
       "flavor": "“I can’t wait for the concert! It’s a good thing we bought VIP tickets—that line was brutal!”",
       "exalted": true
+    },
+    {
+      "name": "Servitor",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "021",
+      "rarity": "C",
+      "image": "servitor.jpg",
+      "types": [
+        "TOKEN",
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": 1,
+      "life": 1,
+      "speed": null,
+      "effect": "Beatrice Bonus As long as Servitor is linked to another object, Servitor gets +1 POWER and +1 LIFE.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/servitor-rec-mst.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "Only within its cold steel eye can Paradise truly be found."
+    },
+    {
+      "name": "Magus Initiate",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "020",
+      "rarity": "C",
+      "image": "magus-initiate.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 1,
+      "life": 1,
+      "speed": null,
+      "effect": "Class Bonus On Enter: Empower 2. (Apply this effect only if your champion’s class matches this card’s class.)\nOn Death: Draw a card.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/magus-initiate-rec-sky.jpg",
+      "addedAt": "2026-11-24",
+      "reprintOf": "PRDSD",
+      "flavor": "“It’s dangerous to get lost here.”"
+    },
+    {
+      "name": "Performance Enthusiast",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "022",
+      "rarity": "C",
+      "image": "performance-enthusiast.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 1,
+      "life": 2,
+      "speed": null,
+      "effect": "Whenever you activate a Harmony or Melody card, if there are no buff counters on Performance Enthusiast, put a buff counter on Performance Enthusiast. (Allies get +1 POWER and +1 LIFE for each buff counter on them.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/performance-enthusiast-rec-sky.jpg",
+      "addedAt": "2026-11-24",
+      "reprintOf": "PRD"
+    },
+    {
+      "name": "Arclight Onslaught",
+      "setPrefix": "CBL 1st",
+      "collectorNumber": "159",
+      "rarity": "UR",
+      "image": "arclight-onslaught.jpg",
+      "types": [
+        "ATTACK"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "SWORD"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "power": 4,
+      "life": null,
+      "speed": null,
+      "effect": "Lorraine Bonus This card costs 1 less to activate for every two static counters on your champion.\nLorraine Bonus On Hit: Whenever you remove a static counter from an object you control for the next four times this turn, you may return a card from your memory to your hand.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/arclight-onslaught-cbl1e.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Avarita's Mire",
+      "setPrefix": "CBL",
+      "collectorNumber": "029",
+      "rarity": "R",
+      "image": "avarita-s-mire.jpg",
+      "types": [
+        "UNIQUE",
+        "DOMAIN"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "SIEGEABLE",
+        "MARKET"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "6"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "At the beginning of each player’s end phase, that player may pay (1). When they do, depending on D6+D6—\n• 2 to 5— Avarita’s Mire’s controller draws a card.\n• 6 to 8— Nothing happens.\n• 9 to 11— That player draws a card.\n• 12— That player draws two cards.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/avaritas-mire-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "durability": 4
+    },
+    {
+      "name": "Avatar of Harmonia",
+      "setPrefix": "CBL 1st",
+      "collectorNumber": "030",
+      "rarity": "UR",
+      "image": "avatar-of-harmonia.jpg",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA",
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "AVATAR",
+        "HUMAN",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "6"
+      },
+      "power": 3,
+      "life": 3,
+      "speed": null,
+      "effect": "Whenever you activate a Harmony or Melody card, put a buff counter on each ally you control.\nOn Enter: The next three Harmony and/or Melody cards you activate this turn cost 2 less to activate. Until end of turn, you may activate Harmony and/or Melody cards from your memory.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/avatar-of-harmonia-cbl1e.jpg",
+      "addedAt": "2026-11-24",
+      "exalted": true
+    },
+    {
+      "name": "Capacitor Core",
+      "setPrefix": "CBL",
+      "collectorNumber": "035",
+      "rarity": "C",
+      "image": "capacitor-core.jpg",
+      "types": [
+        "ITEM"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "POWERCELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Active Memory (While paying for a memory cost, you may sacrifice this object to pay for 1 of that cost.)\nOn Sacrifice: Automaton allies that enter the field under your control the next time this turn each enter with an additional buff counter on them.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/capacitor-core-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Ciacco, Cerberus Butcher",
+      "setPrefix": "EVP",
+      "collectorNumber": "025",
+      "rarity": "CSR",
+      "image": "ciacco-cerberus-butcher.jpg",
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "classes": [
+        "ASSASSIN",
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 3,
+      "speed": null,
+      "effect": "Vigor\nClass Bonus Ambush\nClass Bonus On Enter: If your champion’s lineage has no basic element champion cards in it, put a buff counter on Ciacco.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/ciacco-cerberus-butcher-cbl1e-csr.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Ciriatto, Turbine Overdroid",
+      "setPrefix": "CBL",
+      "collectorNumber": "143",
+      "rarity": "SR",
+      "image": "ciriatto-turbine-overdroid.jpg",
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 2,
+      "speed": null,
+      "effect": "Class Bonus Powercell objects you control have active memory. (While paying for a memory cost, you may sacrifice an object with active memory to pay for 1 of that cost.)\nOn Enter: Ciriatto gains stealth until the beginning of your next turn.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/ciriatto-turbine-overdroid-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "The little hog had become a mechanical terror.",
+      "altPrintings": [
+        {
+          "setPrefix": "CBL 1st",
+          "collectorNumber": "143",
+          "rarity": "CSR",
+          "image": "ciriatto-turbine-overdroid-cbl1e-csr.jpg",
+          "sourceImageUrl": "https://shoutatyourdecks.com/images/ciriatto-turbine-overdroid-cbl1e-csr.jpg",
+          "addedAt": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "name": "Cocytean Relic",
+      "setPrefix": "CBL",
+      "collectorNumber": "018",
+      "rarity": "SR",
+      "image": "cocytean-relic.jpg",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ARTIFACT"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Activated abilities of other regalia objects without divine relic cost (3) more to activate.\n[reserve]: Destroy Cocytean Relic.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/cocytean-relic-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "An offering dish made of the finest silver."
+    },
+    {
+      "name": "Cognoid Energizer",
+      "setPrefix": "CBL",
+      "collectorNumber": "020",
+      "rarity": "R",
+      "image": "cognoid-energizer.jpg",
+      "types": [
+        "REGALIA",
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "2"
+      },
+      "power": 3,
+      "life": 3,
+      "speed": null,
+      "effect": "Beatrice Bonus This card costs 1 less to materialize.\nPay only using active memory for this card’s memory cost.\nOn Enter: Summon a Powercell token rested.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/cognoid-energizer-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Cognoid Revitalizer",
+      "setPrefix": "CBL",
+      "collectorNumber": "019",
+      "rarity": "R",
+      "image": "cognoid-revitalizer.jpg",
+      "types": [
+        "REGALIA",
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "2"
+      },
+      "power": 2,
+      "life": 4,
+      "speed": null,
+      "effect": "Beatrice Bonus This card costs 1 less to materialize.\nPay only using active memory for this card’s memory cost.\nOn Attack: Recover 3.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/cognoid-revitalizer-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Condense Aura",
+      "setPrefix": "CBL",
+      "collectorNumber": "119",
+      "rarity": "SR",
+      "image": "condense-aura.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Materialize a champion card from your material deck. Pay only using floating memory for that card’s memory cost.\nWhenever your champion levels up the next time this turn, wake up your champion.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/condense-aura-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Contrapasso Sequence",
+      "setPrefix": "CBL",
+      "collectorNumber": "038",
+      "rarity": "R",
+      "image": "contrapasso-sequence.jpg",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Spellshroud\nBeatrice Bonus At the beginning of your recollection phase, for each Automaton and/or Program object you control, cascade—\n• 1 to 99— Disabling consciousness...\n• 100— Sacrifice Contrapasso Sequence and destroy all non-Automaton allies. For the rest of the game, non-Automaton allies enter the field with two additional debuff counters on them.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/contrapasso-sequence-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Debrided Emanation",
+      "setPrefix": "CBL 1st",
+      "collectorNumber": "173",
+      "rarity": "UR",
+      "image": "debrided-emanation.jpg",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "AENEAN",
+        "SPELL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "8"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Champion Link\nLevel 9+ This card costs 3 less to activate.\nClass Bonus Whenever your champion takes an amount of damage, deal X unpreventable damage to linked champion, where X is that amount. X is capped at 4.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/debrided-emanation-cbl1e.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Exia Elemental",
+      "setPrefix": "CBL",
+      "collectorNumber": "174",
+      "rarity": "SR",
+      "image": "exia-elemental.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "MAGE",
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "ELEMENTAL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "10"
+      },
+      "power": 0,
+      "life": 7,
+      "speed": null,
+      "effect": "This card costs 1 less to activate for every four damage counters on your champion.\nWhenever your champion is dealt an amount of damage, Exia Elemental gets +X POWER until end of turn, where X is that amount.\nOn Enter: As a Spell, deal 4 damage to target unit.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/exia-elemental-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "First Mistake",
+      "setPrefix": "CBL",
+      "collectorNumber": "048",
+      "rarity": "U",
+      "image": "first-mistake.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "RANGER"
+      ],
+      "subtypes": [
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "You may put a card from your hand on the bottom of your deck. If you do, draw a card.\nFloating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/first-mistake-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Galvanic Necklace",
+      "setPrefix": "CBL",
+      "collectorNumber": "161",
+      "rarity": "U",
+      "image": "galvanic-necklace.jpg",
+      "types": [
+        "ITEM"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "VELTECH",
+        "ACCESSORY"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Champion Link\nGalvanic Necklace enters the field with two static counters on it.\nClass Bonus On Enter: If your influence is six or less, draw a card.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/galvanic-necklace-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Hydrofilter Biroid",
+      "setPrefix": "CBL",
+      "collectorNumber": "123",
+      "rarity": "U",
+      "image": "hydrofilter-biroid.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 1,
+      "life": 2,
+      "speed": null,
+      "effect": "Whenever a Program object becomes linked to Hydrofilter Biroid, scavenge 3 for a card with floating memory. Put that card into your graveyard rather than putting it into your hand.\nClass Bonus Floating Memory",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/hydrofilter-biroid-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Kizuna AI, Virtual Artist",
+      "setPrefix": "CBL 1st",
+      "collectorNumber": "055",
+      "rarity": "CSR",
+      "image": "kizuna-ai-virtual-artist.jpg",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA",
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "RESONATOR",
+        "PROGRAM"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 1,
+      "life": 3,
+      "speed": null,
+      "effect": "Whenever you activate an unlockable Song card, if that card’s aria cost is greater than the amount of buff counters on Kizuna AI, put a buff counter on Kizuna AI.\nCasella Bonus On Enter: Casella sings.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/kizuna-ai-virtual-artist-cbl1e-csr.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Klutzy Waiter",
+      "setPrefix": "CBL",
+      "collectorNumber": "100",
+      "rarity": "U",
+      "image": "klutzy-waiter.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "KITCHEN",
+        "HUMAN"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 1,
+      "life": 3,
+      "speed": null,
+      "effect": "On Enter: Summon a Delicious Pastry token. Then if D6 is even, rest Klutzy Waiter and sacrifice a Food item. When you do, deal 4 damage to target unit.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/klutzy-waiter-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "“Oh dear, are you okay? I hope I didn’t spill anything on you!”"
+    },
+    {
+      "name": "Leviathan Irruption",
+      "setPrefix": "CBL",
+      "collectorNumber": "126",
+      "rarity": "SR",
+      "image": "leviathan-irruption.jpg",
+      "types": [
+        "ATTACK"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "SWORD"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 3,
+      "life": null,
+      "speed": null,
+      "effect": "Class Bonus On Hit: Banish up to three cards with floating memory from your graveyard. Depending on the amount of cards banished this way—\n• 1 or more— Wake up the attacker.\n• 2 or more— Draw two cards.\n• 3— The attacker’s next attack this turn gets +6 POWER.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/leviathan-irruption-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Lightning's Premonition",
+      "setPrefix": "CBL",
+      "collectorNumber": "162",
+      "rarity": "U",
+      "image": "lightning-s-premonition.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "You may ignore this card’s elemental requirements as you activate it. If you do, it costs 2 more to activate.\nDraw a card into your memory. Banish Lightning’s Premonition.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/lightnings-premonition-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Master Cerebral Equalizer",
+      "setPrefix": "CBL 1st",
+      "collectorNumber": "013",
+      "rarity": "UR",
+      "image": "master-cerebral-equalizer.jpg",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ARTIFACT"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Divine Relic\nBanish Master Cerebral Equalizer: Each player chooses all but seven cards from their hand and/or memory and puts them on the bottom of their deck in any order.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/master-cerebral-equalizer-cbl1e.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Maundy, VelTech Chief",
+      "setPrefix": "CBL",
+      "collectorNumber": "060",
+      "rarity": "SR",
+      "image": "maundy-veltech-chief.jpg",
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "classes": [
+        "RANGER"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 2,
+      "speed": null,
+      "effect": "True Sight\nOn Enter: If you haven’t materialized a VelTech card this game, you may rest Maundy. If you do, materialize a VelTech card from your material deck.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/maundy-veltech-chief-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "A CEO determined to make tech accessible for all."
+    },
+    {
+      "name": "Memory Extraction",
+      "setPrefix": "CBL",
+      "collectorNumber": "128",
+      "rarity": "SR",
+      "image": "memory-extraction.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Choose a non-advanced element card name. Target opponent reveals all cards in their memory. If one or more cards with the chosen name is revealed this way, that opponent discards one of them.\nFloating Memory",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/memory-extraction-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Morbid Curiosity",
+      "setPrefix": "CBL",
+      "collectorNumber": "063",
+      "rarity": "C",
+      "image": "morbid-curiosity.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Scavenge 8 for an Automaton, Elysian, or Program card. (To scavenge an amount, reveal cards from the top of your deck until you reveal that many cards or until you reveal the specified card. Put the specified card into your hand and the rest on the bottom of your deck in a random order.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/morbid-curiosity-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Phlebotomize",
+      "setPrefix": "CBL",
+      "collectorNumber": "176",
+      "rarity": "R",
+      "image": "phlebotomize.jpg",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "AENEAN",
+        "SPELL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "10"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Efficiency (This card costs LV less to activate. LV refers to your champion’s level.)\nChoose one—\n• Recover 6.\n• Deal 6 damage to target unit.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/phlebotomize-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Protocol/VIGOR",
+      "setPrefix": "CBL",
+      "collectorNumber": "152",
+      "rarity": "C",
+      "image": "protocol-vigor.jpg",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally has vigor. (At the beginning of your end phase, wake up allies with vigor.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/protocolvigor-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "An extra boost to any droid that needs more energy."
+    },
+    {
+      "name": "Sordelle's Optimization",
+      "setPrefix": "CBL",
+      "collectorNumber": "075",
+      "rarity": "SR",
+      "image": "sordelle-s-optimization.jpg",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "AUTOMATON",
+        "SIGNATURE",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Powercell objects you control lose all activated abilities.\nOn Enter: Summon two Powercell tokens. If you control an ally named Sordelle, Unmoored Exception, draw a card into your memory.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/sordelles-optimization-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "altPrintings": [
+        {
+          "setPrefix": "CBL 1st",
+          "collectorNumber": "075",
+          "rarity": "CSR",
+          "image": "sordelles-optimization-cbl1e-csr.jpg",
+          "sourceImageUrl": "https://shoutatyourdecks.com/images/sordelles-optimization-cbl1e-csr.jpg",
+          "addedAt": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "name": "Spirit of Trials",
+      "setPrefix": "CBL",
+      "collectorNumber": "001",
+      "rarity": "SR",
+      "image": "spirit-of-trials.jpg",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [],
+      "subtypes": [
+        "SPIRIT"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 0,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": 15,
+      "speed": null,
+      "effect": "If this card is the only Spirit card in your starting material deck, you may reveal it and begin the game with a norm element Trial phantasia card from your deck on the field.\nOn Enter: Draw six cards.",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/spirit-of-trials-cbl.jpg",
+      "addedAt": "2026-11-24"
+    },
+    {
+      "name": "Transient Surgeblade",
+      "setPrefix": "CBL",
+      "collectorNumber": "170",
+      "rarity": "U",
+      "image": "transient-surgeblade.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 3,
+      "life": 4,
+      "speed": null,
+      "effect": "Class Bonus On Enter: Put D6 static counters on Transient Surgeblade. (Roll a six-sided die to determine each instance of D6 as this effect resolves.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/transient-surgeblade-cbl.jpg",
+      "addedAt": "2026-11-24",
+      "flavor": "“I wonder what the storm will bring in today?”"
+    },
+    {
+      "name": "Unstable Bot",
+      "setPrefix": "CBL",
+      "collectorNumber": "082",
+      "rarity": "R",
+      "image": "unstable-bot.jpg",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 1,
+      "life": 2,
+      "speed": null,
+      "effect": "On Enter: Depending on D6+D6—\n• 2 to 5— Nothing happens.\n• 6 to 8— Put a buff counter on Unstable Bot.\n• 9 to 11— Put two buff counters on Unstable Bot.\n• 12 or more— Put two buff counters on Unstable Bot. Then Unstable Bot’s next attack this turn gets +2 POWER.\n(Roll a six-sided die to determine each instance of D6 as this effect resolves.)",
+      "sourceImageUrl": "https://shoutatyourdecks.com/images/unstable-bot-cbl.jpg",
+      "addedAt": "2026-11-24"
     }
   ],
   "deckSections": {
