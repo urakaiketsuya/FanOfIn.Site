@@ -181,10 +181,15 @@ export default function CompareIndex() {
 
     const parsed = decodeCustomDecks(custom);
     if (parsed.length > 0) {
-      setDecks((prev) => [
-        ...prev,
-        ...parsed.map((d, i) => ({ key: `custom-shared-${i}`, label: d.label, source: { kind: "custom" as const, decklist: d.decklist }, format: d.format })),
-      ]);
+      const ownedDeckId = location.state?.compareOwnedDeckId;
+      const ownedKey = parsed.length === 1 && typeof ownedDeckId === "string" ? `mine-${ownedDeckId}` : null;
+      const seeded = parsed.map((deck, index): ComparedDeck => ({
+        key: ownedKey ?? `custom-shared-${index}`,
+        label: deck.label,
+        source: { kind: "custom", decklist: deck.decklist },
+        format: deck.format,
+      }));
+      setDecks(previous => [...previous.filter(deck => deck.key !== ownedKey), ...seeded]);
     }
 
     // Combined into one setSearchParams call for the same reason the ?add= effect above avoids a
