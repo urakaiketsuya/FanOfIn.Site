@@ -1,7 +1,37 @@
 {
+  "matchSources": [
+    {
+      "sourceId": "gao",
+      "matches": 448,
+      "draws": 0,
+      "decks": 896,
+      "games": 448,
+      "gamesWithTurns": 448,
+      "avgTurns": 10.321428571428571,
+      "firstPlayer": {
+        "games": 448,
+        "wins": 244,
+        "winRate": 0.5446428571428571
+      }
+    },
+    {
+      "sourceId": "clarent",
+      "matches": 0,
+      "draws": 0,
+      "decks": 0,
+      "games": 0,
+      "gamesWithTurns": 0,
+      "avgTurns": null,
+      "firstPlayer": {
+        "games": 0,
+        "wins": 0,
+        "winRate": null
+      }
+    }
+  ],
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-11-24T17:00:20.922Z",
+  "generatedAt": "2026-11-25T16:48:52.664Z",
   "games": 32,
   "firstPlayer": {
     "games": 32,
