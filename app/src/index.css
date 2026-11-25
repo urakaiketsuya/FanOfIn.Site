@@ -142,6 +142,14 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 .motion-sheet[open]::backdrop { animation: backdrop-enter 200ms ease-out; }
 .motion-sheet[data-closing="true"] { animation: sheet-exit 160ms ease-in forwards; }
 .motion-sheet[data-closing="true"]::backdrop { animation: backdrop-exit 160ms ease-in forwards; }
+
+/* Small form text can trigger iOS focus zoom that outlives the sheet. */
+@media (any-pointer: coarse) {
+  .motion-sheet :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"]), select, textarea, [contenteditable="true"]) {
+    font-size: max(16px, 1rem);
+  }
+}
+
 @media (min-width: 640px) {
   @keyframes sheet-enter { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
   @keyframes sheet-exit { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(16px); } }
