@@ -7,7 +7,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckVisualStrip from "../account/DeckVisualStrip";
 import { InlineState } from "../../components/ui/ContentState";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "../deckbuilder/useSuggestedBuild";
 import { useDeckBuilderData } from "../deckbuilder/data/useDeckBuilderData";
@@ -24,6 +26,7 @@ import { DECK_REVIEW_SESSION_KEY, loadBuilderSession } from "../deckbuilder/pers
 import { loadActiveDeckWorkspace, saveActiveDeckWorkspace, type DeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
 import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
 import DeckToolWorkspaceHeader from "../deckbuilder/components/DeckToolWorkspaceHeader";
+import DeckToolNav from "../deckbuilder/components/DeckToolNav";
 import { selectionsToMaps, type LockedSection } from "../deckbuilder/model/builderTypes";
 import { formatUsd } from "../../lib/format";
 import type { BuildCounters } from "../deckbuilder/useBuildCounters";
@@ -111,20 +114,33 @@ export default function DeckReviewIndex() {
   const { setChampionName, setSpiritFilter, setLockedCards, setLockedSections, setRejectedCards, setPopulationSource } = workflow;
   const [deckFormat, setDeckFormat] = useState(sessionSeed?.format ?? "STANDARD");
   useBuilderSessionPersistence(deckFormat, workflow.state, DECK_REVIEW_SESSION_KEY);
+  const selectedDeck = useMemo(() => {
+    const main: { name: string; quantity: number }[] = [];
+    const material: typeof main = [];
+    const song: typeof main = [];
+    const sideboard: typeof main = [];
+    const sections = { main, material, song, sideboard };
+    for (const [name, quantity] of lockedCards) {
+      sections[lockedSections.get(name) ?? "main"].push({ name, quantity });
+    }
+    for (const [name, quantity] of splitSideboard) sideboard.push({ name, quantity });
+    return sections;
+  }, [lockedCards, lockedSections, splitSideboard]);
+  const selectedDecklist = useMemo(() => ({
+    main: selectedDeck.main.map(({ name, quantity }) => ({ card: name, quantity })),
+    material: selectedDeck.material.map(({ name, quantity }) => ({ card: name, quantity })),
+    sideboard: selectedDeck.sideboard.map(({ name, quantity }) => ({ card: name, quantity })),
+  }), [selectedDeck]);
   useEffect(() => {
     if (!championName || lockedCards.size === 0) return;
-    const lines = Array.from(lockedCards, ([name, quantity]) => ({ name, quantity, section: lockedSections.get(name) ?? "main" }));
     const previous = loadActiveDeckWorkspace(sessionStorage);
     saveActiveDeckWorkspace(sessionStorage, reviewWorkspace(previous, {
       format: deckFormat,
       championName,
       spiritName: spiritFilter,
-      main: lines.filter((line) => line.section === "main").map(({ name, quantity }) => ({ name, quantity })),
-      song: lines.filter((line) => line.section === "song").map(({ name, quantity }) => ({ name, quantity })),
-      material: lines.filter((line) => line.section === "material").map(({ name, quantity }) => ({ name, quantity })),
-      sideboard: [...lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })), ...Array.from(splitSideboard, ([name, quantity]) => ({ name, quantity }))],
+      ...selectedDeck,
     }));
-  }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat, splitSideboard]);
+  }, [championName, spiritFilter, lockedCards.size, selectedDeck, deckFormat]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
@@ -386,38 +402,32 @@ export default function DeckReviewIndex() {
 
   const nearestDeckCompareLink = (_deck: NearestDeck) => "/compare";
   const activeWorkspace = loadActiveDeckWorkspace(sessionStorage);
+  const reviewSetup = <DeckReviewSetup championName={championName} spiritFilter={spiritFilter} spiritElement={spiritElement} champions={championsPresent} spiritElements={spiritElements} spirits={spiritsForElement} catalogByName={catalogByName} spiritCatalogByName={liveCatalogByName} populationSource={populationSource} pending={isPending} onChampionChange={(value) => { setChampionName(value); setSpiritFilter(null); setSpiritElement(null); }} onSpiritChange={(value) => startTransition(() => setSpiritFilter(value))} onElementChange={(value) => { setSpiritElement(value); if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null); }} onPopulationSourceChange={setPopulationSource} onStartOver={startOver} onLoadWorkspace={loadWorkspace} spiritLabel={spiritOptionLabel} />;
 
   return (
     <PageLayout data-component="DeckReviewIndex">
-      <PageHeader
-        title="Improve Deck"
-        description="Choose card changes to improve your deck."
-      />
+      <PageHeader title="Improve Deck" />
 
-      <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />
+      {championName ? <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={selectedDeck.main.reduce((total, line) => total + line.quantity, 0)} materialTotal={selectedDeck.material.reduce((total, line) => total + line.quantity, 0)} sideboardTotal={selectedDeck.sideboard.reduce((total, line) => total + line.quantity, 0)} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} /> : <DeckToolNav activeTool="review" />}
 
-      <DeckReviewSetup championName={championName} spiritFilter={spiritFilter} spiritElement={spiritElement} champions={championsPresent} spiritElements={spiritElements} spirits={spiritsForElement} catalogByName={catalogByName} spiritCatalogByName={liveCatalogByName} populationSource={populationSource} pending={isPending} onChampionChange={(value) => { setChampionName(value); setSpiritFilter(null); setSpiritElement(null); }} onSpiritChange={(value) => startTransition(() => setSpiritFilter(value))} onElementChange={(value) => { setSpiritElement(value); if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null); }} onPopulationSourceChange={setPopulationSource} onStartOver={startOver} onLoadWorkspace={loadWorkspace} spiritLabel={spiritOptionLabel} />
+      {!championName && reviewSetup}
 
       {!championName ? (
         <InlineState className="mt-6">Choose a Champion above (or paste a decklist) to see ranked suggestions.</InlineState>
       ) : (
         <div className="mt-4">
-          <details className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm sm:p-4">
-            <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-ctp-text">Your deck · {mainTotal} main · {materialTotal} material · {sideboardTotal} sideboard</summary>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 id="deck-review-deck-heading" className="text-base font-semibold text-ctp-text">Your deck</h2>
-              <span className="text-xs text-ctp-subtext0">
-                {keptCount === 0
-                  ? "Nothing accepted yet"
-                  : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""}`}
-              </span>
-            </div>
-            <details className="mt-2 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-ctp-subtext1">Price and collection</summary><p>Estimated total: {formatUsd(totalPrice.sum + sideboardPrice.sum)}</p>
-            {!collectionLoaded && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{collectionError ?? "Loading collection coverage…"}</p>}
-            {collectionStatus && collectionStatus.missingCopies > 0 && <details className="mt-3 rounded-lg border border-ctp-yellow/35 bg-ctp-yellow/10 p-3 text-sm"><summary className="cursor-pointer font-medium text-ctp-yellow">{collectionStatus.missingCopies} missing cop{collectionStatus.missingCopies === 1 ? "y" : "ies"}</summary><ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
-            </details>
+          {(lockedCards.size > 0 || splitSideboard.size > 0) && <Panel>
+            <h2 className="text-base font-semibold text-ctp-text">Your deck</h2>
+            <DeckVisualStrip compact newTab decklist={selectedDecklist} championName={championName} />
+          </Panel>}
+          {reviewSetup}
+          <details className="group mt-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle px-3 sm:px-4">
+            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden">
+              Edit card quantities
+              <DisclosureChevron className="group-open:rotate-180" />
+            </summary>
             <div>{keptCount === 0 ? (
-              <InlineState className="mt-2 text-sm">Nothing here yet – accept a suggestion below to start building.</InlineState>
+              <InlineState className="mt-2 text-sm">{lockedCards.size > 0 ? "Card quantities are unavailable while deck data loads." : "Accept a suggestion to start building."}</InlineState>
             ) : (
               <div className="mt-2 space-y-4">
                 {keptMaterial.length > 0 && (
@@ -450,6 +460,17 @@ export default function DeckReviewIndex() {
               </div>
             )}</div>
           </details>
+          <details className="group mt-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle px-3 sm:px-4">
+            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden">
+              <span>Price and collection{collectionStatus?.missingCopies ? ` · ${collectionStatus.missingCopies} missing` : ""}</span>
+              <DisclosureChevron className="group-open:rotate-180" />
+            </summary>
+            <div className="space-y-2 pb-3 text-sm">
+              <p>Estimated total: {formatUsd(totalPrice.sum + sideboardPrice.sum)}</p>
+              {!collectionLoaded && <p role="status" className="text-ctp-subtext1">{collectionError ?? "Loading collection coverage…"}</p>}
+              {collectionStatus && collectionStatus.missingCopies > 0 && <ul aria-label="Missing copies" className="space-y-1 text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul>}
+            </div>
+          </details>
 
           <div className="mt-4">
             <Tabs
@@ -462,10 +483,12 @@ export default function DeckReviewIndex() {
               onChange={setTab}
               label="Improve Deck sections"
               baseId="deck-review"
+              variant="pill"
+              wrap
             />
           </div>
 
-          {tab === "review" && (
+          <TabPanel baseId="deck-review" tab="review" active={tab}>
             <BuilderReviewPanel
               decklist={keptDecklist}
               build={build}
@@ -502,15 +525,15 @@ export default function DeckReviewIndex() {
               viewMode={viewMode}
               onViewModeChange={setViewMode}
             />
-          )}
+          </TabPanel>
 
-          {tab === "matchups" && (
-            keptSideboardLines.length > 0
+          <TabPanel baseId="deck-review" tab="matchups" active={tab}>
+            {keptSideboardLines.length > 0
               ? <SideboardImpact mainLines={keptMainLines} sideboardLines={keptSideboardLines} catalogByName={catalogByName} matchups={deckTestResult?.matchups} />
-              : <Panel className="mt-4"><InlineState>Add or accept Sideboard cards before building a matchup plan.</InlineState></Panel>
-          )}
+              : <Panel className="mt-4"><InlineState>Add or accept Sideboard cards before building a matchup plan.</InlineState></Panel>}
+          </TabPanel>
 
-          {tab === "save" && (
+          <TabPanel baseId="deck-review" tab="save" active={tab}>
             <BuilderCopyPanel
               validation={validation}
               validationComplete={validation.status === "Legal"}
@@ -542,7 +565,7 @@ export default function DeckReviewIndex() {
               shareCopyState={copyState.shareCopyState}
               hideFullDeckOption
             />
-          )}
+          </TabPanel>
         </div>
       )}
     </PageLayout>

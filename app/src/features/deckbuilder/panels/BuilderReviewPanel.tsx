@@ -66,7 +66,7 @@ export default function BuilderReviewPanel({
   const showMatchupsTab = buildCounters.sourceDeck !== null && buildCounters.clusterMatchups.length > 0;
   const { tabs: subTabs, activeTab: activeSubTab, setActiveTab: setSubTab } = useBuilderReviewTabs({ reviewItemCount, showMatchups: showMatchupsTab, showSimilarDecks: showNearestDecks });
   return (
-    <div data-component="BuilderReviewPanel" role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
+    <div data-component="BuilderReviewPanel" role={standaloneReview ? undefined : "tabpanel"} id={standaloneReview ? undefined : "deck-builder-panel-review"} aria-labelledby={standaloneReview ? undefined : "deck-builder-tab-review"} className="mt-4">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-ctp-surface0 p-3 shadow-sm sm:p-4">
         <div>
           <h2 className="font-semibold text-ctp-text">{reviewComplete ? "Review complete" : `${reviewItemCount} change${reviewItemCount === 1 ? "" : "s"} to review`}</h2>
