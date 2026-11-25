@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CardEdition } from "@gatcg/shared";
-import CardImage from "../../components/CardImage";
+import CardArtTile from "../../components/CardArtTile";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -42,21 +43,19 @@ function RequestedCard({ entry, card, editable, onEditionChange }: {
   return (
     <Panel as="article" padding="sm">
       <div className="flex gap-3">
-        {displayEdition ? (
-          <CardImage image={displayEdition.image} alt={entry.name} className="h-28 w-20 shrink-0 rounded object-cover" />
-        ) : (
-          <div className="flex h-28 w-20 shrink-0 items-center justify-center rounded border border-ctp-surface1 bg-ctp-surface0 px-2 text-center text-xs text-ctp-subtext0">No image</div>
-        )}
+        <div className="w-20 shrink-0">
+          <CardArtTile card={card} name={entry.name} editionUuid={displayEdition?.uuid} />
+        </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            {card ? <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-blue hover:underline">{card.name}</Link> : <p className="font-semibold text-ctp-red">{entry.name}</p>}
+            {card ? <Link to={`/cards/${card.slug}`} className="inline-flex min-h-control items-center rounded font-semibold text-ctp-blue hover:underline focus-visible:outline-2">{card.name}</Link> : <p className="font-semibold text-ctp-red">{entry.name}</p>}
             <span className="shrink-0 rounded-full bg-ctp-surface0 px-2 py-0.5 text-sm font-semibold text-ctp-text">×{entry.quantity}</span>
           </div>
           {!card && <p className="mt-1 text-xs text-ctp-red">Card name not found in the synced catalog.</p>}
           {card && editable && (
             <label className="mt-3 block text-xs text-ctp-subtext0">
               Printing preference
-              <select value={entry.editionUuid ?? ""} onChange={(event) => onEditionChange?.(event.target.value || undefined)} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-sm text-ctp-text">
+              <select value={entry.editionUuid ?? ""} onChange={(event) => onEditionChange?.(event.target.value || undefined)} className="mt-1 block min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-sm text-ctp-text">
                 <option value="">Any printing</option>
                 {card.editions.map((edition) => <option key={edition.uuid} value={edition.uuid}>{editionLabel(edition)}</option>)}
               </select>
@@ -90,6 +89,7 @@ export default function LookingForIndex() {
   const [skippedLines, setSkippedLines] = useState<string[]>([]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
+  const [personalView, setPersonalView] = useState<"binder" | "quick">("binder");
 
   const visibleEntries = shared?.entries ?? entries;
   const resolved = useMemo(() => visibleEntries.map((entry) => ({ entry, card: cardsByLowerName.get(entry.name.toLocaleLowerCase()) })), [visibleEntries, cardsByLowerName]);
@@ -125,6 +125,7 @@ export default function LookingForIndex() {
 
   function startNewList() {
     setSearchParams({}, { replace: true });
+    setPersonalView("binder");
     setTitle("");
     setPasteText("");
     setEntries([]);
@@ -141,35 +142,59 @@ export default function LookingForIndex() {
     return [...groups.entries()].sort(([a], [b]) => a === "Any printing" ? 1 : b === "Any printing" ? -1 : a.localeCompare(b));
   }, [resolved]);
 
+  const cardList = <div className="mt-4 grid gap-4 sm:grid-cols-2">
+    {resolved.map(({ entry, card }, index) => (
+      <RequestedCard key={`${entry.name}-${index}`} entry={entry} card={card} editable={!isSharedView}
+        onEditionChange={uuid => changeEdition(index, uuid)} />
+    ))}
+  </div>;
+
   return (
     <PageLayout data-component="LookingForIndex" width="wide">
       <PageHeader title={shared?.title ?? (publicBinderSlug ? "Public Trading Binder" : "Trading Binder")} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : publicBinderSlug ? "Cards this player has made public for trading." : "Publish only the cards you choose, find reciprocal wants, and manage trade offers without exposing your private collection."} actions={(isSharedView || publicBinderSlug) ? <Button variant="secondary" onClick={startNewList}>Open your binder</Button> : undefined} />
 
-      {!isSharedView && <TradingBinder publicSlug={publicBinderSlug} />}
+      {!isSharedView && !publicBinderSlug && <Tabs baseId="trade-workspace" label="Trading workspace" variant="pill" wrap
+        tabs={[{ key: "binder", label: "My binder" }, { key: "quick", label: "Quick share list" }]}
+        active={personalView} onChange={setPersonalView} />}
+      {publicBinderSlug && !isSharedView && <TradingBinder publicSlug={publicBinderSlug} />}
+      {!isSharedView && !publicBinderSlug && <TabPanel baseId="trade-workspace" tab="binder" active={personalView} keepMounted>
+        <TradingBinder />
+      </TabPanel>}
 
-      {!isSharedView && !publicBinderSlug && (
-        <details className="mt-8 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="cursor-pointer font-semibold text-ctp-text">Quick share list <span className="ml-2 text-xs font-normal text-ctp-subtext0">No account required</span></summary><Panel className="mt-4">
-          <label className="block text-sm font-medium text-ctp-text">List title <span className="font-normal text-ctp-subtext0">(optional)</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Looking For List" className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /></label>
-          <label className="mt-4 block text-sm font-medium text-ctp-text">Card list<textarea value={pasteText} onChange={(event) => setPasteText(event.target.value)} rows={9} placeholder={'# Main Deck\n1 Aenean Ward\n2 Angel Attendant\n4 Fireball'} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 font-mono text-sm text-ctp-text" /></label>
-          <p className="mt-2 text-xs text-ctp-subtext0">Use one card per line: “4 Fireball” or “4x Fireball”. Main, Material, and Sideboard headers are accepted but combined into one wishlist.</p>
+      {!isSharedView && !publicBinderSlug && <TabPanel baseId="trade-workspace" tab="quick" active={personalView} keepMounted>
+        <Panel className="mt-4">
+          <label className="block text-sm font-medium text-ctp-text">List title <span className="font-normal text-ctp-subtext0">(optional)</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Looking For List" className="mt-1 block min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /></label>
+          <label className="mt-4 block text-sm font-medium text-ctp-text">Card list<textarea value={pasteText} onChange={(event) => setPasteText(event.target.value)} rows={6} placeholder={'4 Fireball\n2 Angel Attendant'} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 font-mono text-sm text-ctp-text" /></label>
           <Button variant="primary" onClick={importList} disabled={!pasteText.trim()} className="mt-4">Review list</Button>
-        </Panel></details>
-      )}
-
-      {skippedLines.length > 0 && !isSharedView && <Panel tone="warning" padding="sm" className="mt-4 text-sm text-ctp-subtext1"><p className="font-medium text-ctp-yellow">Some lines could not be imported:</p><p className="mt-1 font-mono text-xs">{skippedLines.join(" · ")}</p></Panel>}
-
-      {visibleEntries.length > 0 && (
-        <section className="mt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-ctp-subtext1">{totalCards} cards · {visibleEntries.length} unique requests</p>
-            {isSharedView && <div className="flex rounded-md border border-ctp-surface1 p-0.5">{(["cards", "sets"] as const).map((mode) => <button key={mode} type="button" onClick={() => setViewMode(mode)} className={`rounded px-3 py-1 text-xs ${viewMode === mode ? "bg-ctp-surface1 text-ctp-text" : "text-ctp-subtext0"}`}>{mode === "cards" ? "Cards" : "By Set"}</button>)}</div>}
+        </Panel>
+        {skippedLines.length > 0 && <Panel tone="warning" padding="sm" className="mt-4 text-sm text-ctp-subtext1">
+          <p className="font-medium text-ctp-yellow">Some lines could not be imported</p>
+          <p className="mt-1 break-words font-mono text-xs">{skippedLines.join(" · ")}</p>
+        </Panel>}
+        {visibleEntries.length > 0 && <section className="mt-6" aria-label="List review">
+          <p className="text-sm text-ctp-subtext1">{totalCards} cards · {visibleEntries.length} unique requests</p>
+          {cardList}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button variant="primary" onClick={copyShareLink}>Copy share link</Button>
+            {copyState !== "idle" && <span role="status" className="text-sm">{copyState === "copied" ? "Link copied" : "Couldn’t copy link"}</span>}
           </div>
+        </section>}
+      </TabPanel>}
 
-          {viewMode === "cards" || !isSharedView ? <div className="mt-4 grid gap-4 sm:grid-cols-2">{resolved.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${entry.editionUuid ?? "any"}-${index}`} entry={entry} card={card} editable={!isSharedView} onEditionChange={(uuid) => changeEdition(index, uuid)} />)}</div> : <div className="mt-5 space-y-7">{grouped.map(([group, items]) => <Section key={group} heading="compact" title={group}><div className="mt-3 grid gap-4 sm:grid-cols-2">{items.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${index}`} entry={entry} card={card} editable={false} />)}</div></Section>)}</div>}
-
-          {!isSharedView && <div className="mt-6 flex items-center gap-3"><button type="button" onClick={copyShareLink} className="rounded-md bg-ctp-green px-4 py-2 text-sm font-semibold text-ctp-base">{copyState === "copied" ? "Link copied!" : copyState === "failed" ? "Couldn't copy link" : "Copy share link"}</button><span className="text-xs text-ctp-subtext0">The link contains the list; no account or server storage is needed.</span></div>}
-        </section>
-      )}
+      {isSharedView && visibleEntries.length > 0 && <section className="mt-6" aria-label="Requested cards">
+        <Tabs baseId="wishlist-view" label="Wishlist view" variant="pill" wrap
+          active={viewMode} onChange={setViewMode} tabs={[{ key: "cards", label: "Cards" }, { key: "sets", label: "By set" }]} />
+        <TabPanel baseId="wishlist-view" tab="cards" active={viewMode}>{cardList}</TabPanel>
+        <TabPanel baseId="wishlist-view" tab="sets" active={viewMode}>
+          <div className="mt-5 space-y-7">
+            {grouped.map(([group, items]) => <Section key={group} heading="compact" title={group}>
+              <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                {items.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${index}`} entry={entry} card={card} editable={false} />)}
+              </div>
+            </Section>)}
+          </div>
+        </TabPanel>
+      </section>}
 
       {isSharedView && resolved.some(({ card }) => !card) && <p className="mt-5 text-sm text-ctp-yellow">Some requested names could not be matched to the current card catalog. They remain visible so nothing is silently lost.</p>}
     </PageLayout>
