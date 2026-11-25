@@ -4,6 +4,7 @@ import ChampionRelationships from "./ChampionRelationships";
 import ChampionDecks from "./ChampionDecks";
 import ChampionSeasonSnapshot from "./ChampionSeasonSnapshot";
 import ChampionStaples from "./ChampionStaples";
+import ChampionPageLinks from "./ChampionPageLinks";
 import ChampionPackage from "./ChampionPackage";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import Button from "../../components/ui/Button";
@@ -263,7 +264,6 @@ export default function ChampionSynergy() {
           <PageHeader
             spacing="contained"
             title={champ.signature}
-            eyebrow={<Link to="/champions" className="inline-flex min-h-control items-center rounded focus-visible:outline-2">&larr; All Champions</Link>}
             description={
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                 <span className="flex flex-wrap items-center gap-1.5">
@@ -288,9 +288,9 @@ export default function ChampionSynergy() {
             }
             actions={<div id="archetypes" className="flex scroll-mt-24 flex-wrap gap-x-4">
               <Link to={archetypesPath} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Browse archetypes</Link>
-              <Link to={`/champions/${championNameToSlug(championName)}/stats`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Tournament stats</Link>
             </div>}
           />
+          <ChampionPageLinks championName={championName} />
           <ChampionIdentity championName={championName} fallbackNames={champ.topCards.material.map((card) => card.name)} contained />
           </div>
 
