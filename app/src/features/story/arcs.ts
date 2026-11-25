@@ -38,7 +38,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "azoth",
-    championsMentioned: ["Diana", "Arisanna", "Tonoris", "Tristan", "Vanitas"],
+    championsMentioned: ["Diana", "Arisanna", "Tonoris", "Tristan", "Vanitas", "Nico", "Polkhawk"],
     name: "Azoth",
     sets: "Alchemical Revolution · Mercurial Heart",
     summary: "Claude’s discovery of automaton alchemy transforms Dorumegia. Diana joins the Resistance and faces a choice about how far she will go to protect the people she has come to know.",
@@ -65,7 +65,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "radiant-origins",
-    championsMentioned: ["Merlin", "Tristan", "Jin"],
+    championsMentioned: ["Beatrice", "Merlin", "Tristan", "Jin"],
     name: "Return to Homeworld",
     sets: "Radiant Origins",
     summary: "The Champions return to Homeworld and trade stories of their missions as Pantheon approaches. Behind the celebrations, discoveries from other worlds give Beatrice a new direction for her research.",
@@ -73,7 +73,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "asphodel",
-    championsMentioned: ["Lorraine", "Dante"],
+    championsMentioned: ["Lorraine", "Dante", "Casella", "Beatrice"],
     name: "Asphodel",
     sets: ".asphodel/paradise · .asphodel/cantabile",
     summary: "Dis built its prosperity by redirecting Asphodel’s leylines. As the cost of that prosperity comes due, Dante investigates a disorder tied to his powers and Casella struggles to control her magic on her first mission.",
