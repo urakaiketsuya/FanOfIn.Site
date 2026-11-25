@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PUBLIC_PAGE_ROUTES, STATIC_SITEMAP_ROUTES, canonicalSiteUrl } from '../shared/src/seo.ts';
+import { PUBLIC_PAGE_ROUTES, STORY_PAGE_PATHS, STATIC_SITEMAP_ROUTES, canonicalSiteUrl } from '../shared/src/seo.ts';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const decode = text => text.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 function attrs(tag) { return Object.fromEntries([...tag.matchAll(/([\w-]+)\s*=\s*(["'])(.*?)\2/g)].map(([, key, , value]) => [key.toLowerCase(), decode(value)])); }
@@ -38,7 +38,7 @@ export async function expectedPublicUrls({ dataDir = path.join(root, 'data'), ap
     readFile(path.join(dataDir, 'omnidex/index.json'), 'utf8').then(JSON.parse),
     readFile(path.join(appDir, 'features/official-products/primers/guides.json'), 'utf8').then(JSON.parse),
   ]);
-  return [...new Set(['/', ...PUBLIC_PAGE_ROUTES.map(([route]) => route), ...index.seasons.map(season => `/seasons/${season.slug}`), ...primers.map(guide => `/official-decks/${guide.slug}/primer`)].map(canonicalSiteUrl))];
+  return [...new Set(['/', ...STORY_PAGE_PATHS, ...PUBLIC_PAGE_ROUTES.map(([route]) => route), ...index.seasons.map(season => `/seasons/${season.slug}`), ...primers.map(guide => `/official-decks/${guide.slug}/primer`)].map(canonicalSiteUrl))];
 }
 export async function checkBuiltIndexing({ outDir = path.join(root, 'app/dist'), publicUrls } = {}) {
   const urls = sitemapUrls(await readFile(path.join(outDir, 'sitemap.xml'), 'utf8'));

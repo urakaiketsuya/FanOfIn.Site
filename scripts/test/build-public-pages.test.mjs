@@ -33,6 +33,18 @@ test('build supplies readable content for every public URL, preserves detail ent
       assertIndexableHtml(html, url);
       assert.equal((html.match(/public-entry-start/g) ?? []).length, url === 'https://fanofin.site/' ? 0 : 1);
     }
+    const story = await readFile(path.join(outDir, 'story/index.html'), 'utf8');
+    const homeworld = await readFile(path.join(outDir, 'story/homeworld/index.html'), 'utf8');
+    const asphodel = await readFile(path.join(outDir, 'story/asphodel/index.html'), 'utf8');
+    assert.match(story, /og:description" content="Follow the Champions through the worlds/);
+    assert.match(homeworld, /og:description" content="The Grand Archive watches over worlds/);
+    for (const html of [story, homeworld]) {
+      assert.match(html, /og:image" content="https:\/\/content\.gatcg\.com\/uploads\/The_Homeword_Title_Image/);
+      assert.match(html, /og:image:width" content="1300"/);
+      assert.match(html, /twitter:card" content="summary_large_image"/);
+    }
+    assert.match(asphodel, /og:image" content="[^"]*Tower_of_Dis[^"]*\.png"/);
+    assert.match(asphodel, /og:image:type" content="image\/png"/);
     const primer = await readFile(path.join(outDir, 'official-decks/ciel-mirages-grave/primer/index.html'), 'utf8');
     assert.match(primer, /Opening turns/); assert.match(primer, /Ombreux Chevalier/); assert.match(primer, /<img/);
     await buildPublicPages({ outDir });

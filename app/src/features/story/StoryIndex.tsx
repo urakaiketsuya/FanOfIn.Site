@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { storyArcs, storyHooks } from "./arcs";
 import { arcArtwork } from "./artwork";
+import { storyIntro, storySocialImage } from "./storySeo";
 
 const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
 const stopId = (id: string) => `story-stop-${id}`;
@@ -163,7 +164,7 @@ function WorldTimeline() {
 }
 
 export function StoryIndex() {
-  useDocumentTitle("Grand Archive Story", "Follow the Champions through the worlds of Grand Archive.");
+  useDocumentTitle("Grand Archive Story", storyIntro, "/story", storySocialImage("homeworld"));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">

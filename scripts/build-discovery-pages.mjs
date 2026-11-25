@@ -15,7 +15,8 @@ export function renderDiscoveryPage(shell, meta, body) {
     ['name', 'description', meta.description], ['property', 'og:title', meta.title], ['property', 'og:description', meta.description],
     ['property', 'og:url', meta.url], ['property', 'og:type', 'website'], ['name', 'twitter:title', meta.title], ['name', 'twitter:description', meta.description],
     ['name', 'twitter:card', 'summary_large_image'], ['property', 'og:image', meta.image], ['name', 'twitter:image', meta.image],
-    ['property', 'og:image:alt', meta.title], ['name', 'twitter:image:alt', meta.title], ['property', 'og:image:width', '1200'], ['property', 'og:image:height', '630'], ['property', 'og:image:type', 'image/jpeg'],
+    ['property', 'og:image:alt', meta.imageAlt ?? meta.title], ['name', 'twitter:image:alt', meta.imageAlt ?? meta.title],
+    ['property', 'og:image:width', String(meta.imageWidth ?? 1200)], ['property', 'og:image:height', String(meta.imageHeight ?? 630)], ['property', 'og:image:type', meta.imageType ?? 'image/jpeg'],
   ];
   for (const [attr, key, value] of fields) {
     html = html.replace(new RegExp(`<meta\\b[^>]*\\b${attr}=["']${key}["'][^>]*>`, 'gi'), '');

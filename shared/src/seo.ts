@@ -30,12 +30,17 @@ export const PUBLIC_PAGE_ROUTES = [
   ['/timelines/combos', 'Grand Archive Match Combos', 'Explore card combinations in reviewed Grand Archive match timelines.'],
 ] as const;
 export const PUBLIC_PAGE_PATHS: ReadonlySet<string> = new Set(PUBLIC_PAGE_ROUTES.map(([route]) => route));
+export const STORY_PAGE_PATHS: ReadonlySet<string> = new Set([
+  "/story", "/story/homeworld", "/story/cambria", "/story/azoth", "/story/sanguo",
+  "/story/underland", "/story/radiant-origins", "/story/asphodel",
+]);
 export function isPublicEntryPath(path: string): boolean {
-  return PUBLIC_PAGE_PATHS.has(path) || /^\/seasons\/[a-z0-9-]+$/.test(path) || /^\/official-decks\/[a-z0-9-]+\/primer$/.test(path);
+  return PUBLIC_PAGE_PATHS.has(path) || STORY_PAGE_PATHS.has(path) || /^\/seasons\/[a-z0-9-]+$/.test(path) || /^\/official-decks\/[a-z0-9-]+\/primer$/.test(path);
 }
 
 export const STATIC_SITEMAP_ROUTES = [...new Set([
   "/", "/artists", "/events", "/archetypes", "/champions", "/timelines",
+  ...STORY_PAGE_PATHS,
   ...PUBLIC_PAGE_ROUTES.map(([route]) => route),
 ])];
 

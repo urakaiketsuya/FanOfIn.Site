@@ -9,6 +9,7 @@ import { storyCards } from "./cards";
 import { ChapterList } from "./ChapterList";
 import { CardGallery, FeaturedCards } from "./StoryGallery";
 import { StoryIndex } from "./StoryIndex";
+import { storySocialImage } from "./storySeo";
 
 const storyLink = "inline-flex min-h-control min-w-control items-center rounded text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2";
 const firstCambriaCards = ["lorraine-wandering-warrior", "silvie-wilds-whisperer", "camelot-impenetrable"];
@@ -127,7 +128,7 @@ function ArcPage({ arc, index }: { arc: (typeof storyArcs)[number]; index: numbe
   const featuredCards = arc.id === "cambria"
     ? cards.filter(card => firstCambriaCards.includes(card.slug))
     : cards.length >= 3 ? cards.slice(0, 3) : [];
-  useDocumentTitle(`${arc.name} · Grand Archive Story`, arc.summary);
+  useDocumentTitle(`${arc.name} · Grand Archive Story`, arc.summary, `/story/${arc.id}`, storySocialImage(arc.id));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-8">

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { PUBLIC_PAGE_ROUTES, canonicalSiteUrl } from '../shared/src/seo.ts';
 import { renderDiscoveryPage } from './build-discovery-pages.mjs';
 import { escapeHtml as escape } from './discovery-social-image.mjs';
+import { storyArcs } from '../app/src/features/story/arcs.ts';
+import { storyIntro, storySocialImage } from '../app/src/features/story/storySeo.ts';
 import { PRODUCTS } from '../app/src/features/products/data.ts';
 import { normalizeCardTags } from '../shared/src/cardTags.ts';
 import { merchandiseCatalog } from '../shared/src/merchandiseCollectionCatalog.ts';
@@ -15,6 +17,24 @@ const list = rows => `<ul>${rows.map(row => `<li>${row}</li>`).join('')}</ul>`;
 const section = (title, body) => `<section><h2>${escape(title)}</h2>${body}</section>`;
 const paragraph = text => `<p>${escape(text)}</p>`;
 const page = (route, title, description, body) => ({ route, meta: { title, description, url: canonicalSiteUrl(route), image: 'https://fanofin.site/media/social/fan-of-insight-v1.jpg' }, body: paragraph(description) + body });
+function storyPage(route, title, description, body, artworkId) {
+  const entry = page(route, title, description, body);
+  const { src, alt, width, height, type } = storySocialImage(artworkId);
+  Object.assign(entry.meta, { image: src, imageAlt: alt, imageWidth: width, imageHeight: height, imageType: type });
+  return entry;
+}
+
+export function storyEntries() {
+  const worldLinks = list(storyArcs.map(arc => link(canonicalSiteUrl(`/story/${arc.id}`), arc.name)));
+  const index = storyPage('/story', 'Grand Archive Story', storyIntro, section('The journey', worldLinks), 'homeworld');
+  const worlds = storyArcs.map(arc => {
+    const articles = list(arc.articles.map(article => link(`https://www.gatcg.com/article/${article.slug}`, article.title)));
+    const body = section('Official reading order', articles) + link(canonicalSiteUrl('/story'), 'All worlds');
+    return storyPage(`/story/${arc.id}`, `${arc.name} · Grand Archive Story`, arc.summary, body, arc.id);
+  });
+  return [index, ...worlds];
+}
+
 function tiles(cards) {
   return `<div class="cards">${cards.map(card => {
     const image = card.image ? `/images/spoilers/${card.image}` : card.editions?.[0]?.image;
@@ -66,6 +86,7 @@ export function publicEntries(data) {
     if (!bodies[route]) throw new Error(`Missing public content for ${route}`);
     return page(route, title, description, bodies[route]);
   });
+  entries.push(...storyEntries());
   for (const season of index.seasons) {
     const events = index.events.filter(event => event.seasonId === season.id);
     entries.push(page(`/seasons/${season.slug}`, `${season.name} · Grand Archive Season`, `Grand Archive tournament events and results for ${season.name}.`, paragraph(`${events.length} recorded events`) + list(events.slice(-60).reverse().map(event => `${link(canonicalSiteUrl(`/events/${event.id}`), event.name)} · ${escape(event.date.slice(0, 10))}`)) + section('All seasons', seasons)));

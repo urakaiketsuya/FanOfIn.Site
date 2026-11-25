@@ -15,11 +15,15 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
 }
 
 /** Keep client navigation aligned with metadata in generated entry pages. */
-export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string, social?: { src: string; alt: string; portrait?: boolean }) {
+export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string, social?: { src: string; alt: string; portrait?: boolean; width?: number; height?: number; type?: string }) {
   const location = useLocation();
   const socialSrc = social?.src;
   const socialAlt = social?.alt;
   const socialPortrait = social?.portrait ?? false;
+
+  const socialWidth = social?.width ?? 1200;
+  const socialHeight = social?.height ?? 630;
+  const socialType = social?.type ?? "image/jpeg";
 
   useEffect(() => {
     if (title) {
@@ -58,11 +62,11 @@ export function useDocumentTitle(title?: string | null, description?: string | n
       if (socialPortrait) {
         document.head.querySelectorAll('meta[property^="og:image:"]:not([property="og:image:alt"])').forEach((el) => el.remove());
       } else {
-        setMetaByAttr("property", "og:image:width", "1200");
-        setMetaByAttr("property", "og:image:height", "630");
-        setMetaByAttr("property", "og:image:type", "image/jpeg");
+        setMetaByAttr("property", "og:image:width", String(socialWidth));
+        setMetaByAttr("property", "og:image:height", String(socialHeight));
+        setMetaByAttr("property", "og:image:type", socialType);
       }
       setMetaByAttr("name", "twitter:card", socialPortrait ? "summary" : "summary_large_image");
     }
-  }, [location.pathname, canonicalPath, socialSrc, socialAlt, socialPortrait]);
+  }, [location.pathname, canonicalPath, socialSrc, socialAlt, socialPortrait, socialWidth, socialHeight, socialType]);
 }
