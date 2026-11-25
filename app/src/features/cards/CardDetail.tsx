@@ -36,6 +36,7 @@ import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
 import CardCollectionSummary from "../collection/CardCollectionSummary";
 import CardHero from "./CardHero";
+import CardTrivia from "./CardTrivia";
 import CardCommunityTags from "./CardCommunityTags";
 import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
@@ -354,6 +355,7 @@ export default function CardDetail() {
           <CardInfoPanel loading={!cardStatsData || !cardQuantityStatsData} card={card} cardStat={cardStat} adoptionPeriods={cardStatsData?.adoptionPeriods} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
         )}
 
+        <CardTrivia slug={card.slug} />
         <CardCollectionSummary key={`collection:${card.uuid}`} card={card} />
         <CardCommunityTags key={`tags:${card.uuid}`} cardUuid={card.uuid} editionUuid={edition?.uuid} />
       </TabPanel>

@@ -211,30 +211,30 @@ export default function ArchetypesIndex() {
 
   return (
     <PageLayout width="fluid" data-component="ArchetypesIndex">
-      <PageHeader
-        title="Archetypes"
-        actions={
-          <Link to="/battle-chart" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">
-            Battle chart &rarr;
-          </Link>
-        }
-      />
-      <nav aria-label="Archetype resources" className="flex flex-wrap gap-x-4">
-        <Link to="/archetypes/strategies" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Reviewed strategies</Link>
-        <Link to="/archetypes/mine" className="inline-flex min-h-control items-center text-sm text-ctp-blue">My archetypes</Link>
-        <Link to="/archetypes/mine/themes" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Themes</Link>
-        <Link to="/methodology#coverage" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Data coverage</Link>
-      </nav>
+      <PageHeader title="Archetypes" />
       <PublishedSourceStatus label="Archetype data" status={status} hasData={!!data} />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
       <div className="mt-4">
         <Tabs<ViewMode> variant="pill" wrap baseId="archetype-view" label="Archetype view" active={view}
-          tabs={[{key: "archetypes", label: "Archetypes"}, {key: "builds", label: "Builds"}, {key: "validation", label: "Validation"}, {key: "hurtYou", label: "Cards That Hurt You"}]}
+          tabs={[{key: "archetypes", label: "Archetypes"}, {key: "builds", label: "Builds"}, {key: "validation", label: "Validation"}, {key: "hurtYou", label: "Cards that hurt you"}]}
           onChange={value => { setView(value); setSelectedCompareIds(new Set()); }} />
       </div>
 
+      <details className="group mt-2">
+        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 text-sm text-ctp-subtext1 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">
+          Archetype resources <DisclosureChevron className="group-open:rotate-180" />
+        </summary>
+        <nav aria-label="Archetype resources" className="flex flex-wrap gap-x-4 text-sm text-ctp-blue">
+          <Link to="/archetypes/strategies" className="inline-flex min-h-control items-center hover:underline">Reviewed strategies</Link>
+          <Link to="/archetypes/mine" className="inline-flex min-h-control items-center hover:underline">My archetypes</Link>
+          <Link to="/archetypes/mine/themes" className="inline-flex min-h-control items-center hover:underline">Themes</Link>
+          <Link to="/battle-chart" className="inline-flex min-h-control items-center hover:underline">Battle chart</Link>
+          <Link to="/methodology#coverage" className="inline-flex min-h-control items-center hover:underline">Data coverage</Link>
+        </nav>
+      </details>
+
       <TabPanel baseId="archetype-view" tab="archetypes" active={view}>
-          <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+          <div className="mt-4 grid grid-cols-1 gap-2 text-sm sm:max-w-xl sm:grid-cols-2">
             <label className="sr-only" htmlFor="archetype-champion">Champion</label>
             <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => { setChampionFilter(event.target.value || null); setBuildVisibleCount(BUILD_PAGE_SIZE); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
               <option value="">All champions</option>
@@ -262,7 +262,7 @@ export default function ArchetypesIndex() {
       </TabPanel>
 
       <TabPanel baseId="archetype-view" tab="builds" active={view}>
-      <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+      <div className="mt-4 grid grid-cols-1 gap-2 text-sm sm:max-w-xl sm:grid-cols-2">
         <select
           value={championFilter ?? ""}
           aria-label="Champion"
@@ -285,8 +285,8 @@ export default function ArchetypesIndex() {
           {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
         </select>
       </div>
-      <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">More filters{seasonId !== null || confidenceFilter === "all" ? " · active" : ""}<DisclosureChevron /></summary>
+      <details className="group mt-2 text-xs text-ctp-subtext0">
+        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">More filters{seasonId !== null || confidenceFilter === "all" ? " · active" : ""}<DisclosureChevron className="group-open:rotate-180" /></summary>
         <div className="mt-2 flex flex-wrap gap-2">
         <select
           value={seasonId ?? ""}
@@ -320,12 +320,13 @@ export default function ArchetypesIndex() {
 
         </div>
       </details>
+
       {seasonId !== null && (
-        <p className="mt-2 text-xs text-ctp-subtext0">Season view uses season-specific results; top cut, placement, and price are only available all-time.</p>
+        <p className="mt-2 text-xs text-ctp-subtext0">Top cut, placement, and price are available for all-season results.</p>
       )}
 
       {rows.length > 1 && (
-        <details className="mt-4 text-xs text-ctp-subtext0"><summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">Build metagame map<DisclosureChevron /></summary><ArchetypeMetaMap
+        <details className="group mt-4 text-xs text-ctp-subtext0"><summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">Build metagame map<DisclosureChevron className="group-open:rotate-180" /></summary><ArchetypeMetaMap
           builds={rows}
           scopeLabel={`${seasonId === null ? "all seasons" : seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? "selected season"}${championFilter ? ` · ${championFilter}` : ""}`}
         /></details>
@@ -333,7 +334,7 @@ export default function ArchetypesIndex() {
 
       {data && rows.length === 0 && (
         <InlineState className="mt-6">
-          {seasonId !== null ? "No builds were played in this season yet." : "No builds have cleared the sample-size threshold yet."}
+          {seasonId !== null ? "No builds match these filters for the selected season." : "No builds match these filters."}
         </InlineState>
       )}
 

@@ -32,6 +32,7 @@ import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
 import Chip from "../../components/ui/Chip";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import ReviewedStrategyRelationships from "./ReviewedStrategyRelationships";
 import ArchetypePreview from "./ArchetypePreview";
 import PageHeader from "../../components/ui/PageHeader";
@@ -233,7 +234,6 @@ export default function ArchetypeDetail() {
         <>
           <PageHeader
             title={cluster.name}
-            eyebrow={<Link to="/archetypes" className="hover:underline">&larr; All archetypes</Link>}
             description={
               <span className="flex flex-wrap items-center gap-2">
                 <ArchetypeElementIcon name={cluster.name} size={20} />
@@ -277,11 +277,11 @@ export default function ArchetypeDetail() {
                 </div>
                 {(materialArchetype || strategyArchetype || siblingBuilds.length > 1) && (
                   <details className="group mt-3 border-t border-ctp-surface0 pt-3">
-                    <summary className="cursor-pointer text-xs text-ctp-blue">Build family</summary>
+                    <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 text-sm text-ctp-blue [&::-webkit-details-marker]:hidden">Build family <DisclosureChevron className="group-open:rotate-180" /></summary>
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-ctp-subtext1">
                       {materialArchetype && <span>Material: <strong className="text-ctp-text">{materialArchetype.name}</strong></span>}
                       {strategyArchetype && <span>Main: <strong className="text-ctp-text">{strategyArchetype.name}</strong></span>}
-                      {siblingBuilds.length > 1 && siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}
+                      {siblingBuilds.length > 1 && siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="inline-flex min-h-control items-center text-ctp-blue hover:underline">{build.name}</Link>)}
                     </div>
                   </details>
                 )}
