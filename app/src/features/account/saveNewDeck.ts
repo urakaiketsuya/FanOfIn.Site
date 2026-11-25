@@ -13,13 +13,13 @@ export class ExistingDeckError extends Error {
 }
 
 /** Stable draft source IDs make unchanged retries converge on the same saved build. */
-export async function saveNewDeck(api: SaveApi, draft: NewDeckDraft, championName: string | null): Promise<string> {
+export async function saveNewDeck(api: SaveApi, draft: NewDeckDraft, championName: string | null, sourceLabel = "Deck editor"): Promise<string> {
   const titleError = newDeckTitleError(draft.title);
   if (titleError) throw new Error(titleError);
   const decklist = parseDecklist(draft.deckText).decklist;
   if (!decklist.main.length && !decklist.material.length) throw new Error("Add a Main or Material card before saving.");
   const maybeboard = parseDecklist(`Main\n${draft.maybeboardText}`).decklist.main;
-  const result = await api.saveDeck({ title: draft.title.trim(), format: draft.format, championName, decklist, maybeboard, source: { provider: "manual", externalDeckId: draft.sourceId, label: "Deck editor" } });
+  const result = await api.saveDeck({ title: draft.title.trim(), format: draft.format, championName, decklist, maybeboard, source: { provider: "manual", externalDeckId: draft.sourceId, label: sourceLabel } });
   if (!result.created) {
     const { deck } = await api.deck(result.id);
     // Creation deduplicates Main + Material. Never discard a differing local

@@ -1,4 +1,5 @@
 import { loadBuilderSessionSeed } from "../deckbuilder/persistence/builderSeed";
+import { ExistingDeckError, saveNewDeck } from "./saveNewDeck";
 import { readNewDeckDraft } from "./newDeckDraft";
 import { deckMatchesSearch, searchableDeckCards } from "@gatcg/shared";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
@@ -75,6 +76,8 @@ export default function MyDecksIndex() {
   const [title, setTitle] = useState("");
   const [format, setFormat] = useState<DeckFormat>("STANDARD");
   const [deckText, setDeckText] = useState("");
+  const pastedSourceId = useRef<{ key: string; id: string } | null>(null);
+  const [existingPasteId, setExistingPasteId] = useState<string | null>(null);
   const [addMode, setAddMode] = useState<AddMode>(null);
   const [hasEditorDraft] = useState(() => {
     try { const draft = readNewDeckDraft(localStorage); return Boolean(draft && (draft.deckText.trim() || draft.maybeboardText.trim() || draft.title !== "Untitled deck")); } catch { return false; }
@@ -147,7 +150,36 @@ export default function MyDecksIndex() {
   }
 
   function savePastedDeck() {
-    void run(async () => { const parsed = parseDecklist(deckText); if (parsed.decklist.main.length + parsed.decklist.material.length === 0) throw new Error("No main or material cards were recognized"); await accountApi.saveDeck({ title: title.trim() || "Untitled deck", format, championName: pastedChampionName, decklist: parsed.decklist, source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Pasted decklist" } }); trackEvent("deck_created", { source: "paste" }); setTitle(""); setDeckText(""); setAddMode(null); await refreshDecks(); const banned = new Set(deckCardIssues(parsed.decklist, pastedCardsByName, format).filter(issue => issue.code === "banned").map(issue => issue.card)); notify({ message: `Deck added to your library.${banned.size ? ` Contains ${banned.size} banned card${banned.size === 1 ? "" : "s"}.` : ""}`, tone: banned.size ? "warning" : "success", duration: banned.size ? null : undefined, key: "import" }); });
+    void run(async () => {
+      setExistingPasteId(null);
+      const key = JSON.stringify([title.trim(), format, deckText]);
+      if (pastedSourceId.current?.key !== key) pastedSourceId.current = { key, id: crypto.randomUUID() };
+      try {
+        await saveNewDeck(accountApi, {
+          title: title.trim() || "Untitled deck",
+          format,
+          deckText,
+          maybeboardText: "",
+          sourceId: pastedSourceId.current.id,
+        }, pastedChampionName, "Pasted decklist");
+      } catch (reason) {
+        if (reason instanceof ExistingDeckError) setExistingPasteId(reason.deckId);
+        throw reason;
+      }
+      trackEvent("deck_created", { source: "paste" });
+      pastedSourceId.current = null;
+      setTitle("");
+      setDeckText("");
+      setAddMode(null);
+      await refreshDecks();
+      const banned = new Set(deckCardIssues(pastedDeck, pastedCardsByName, format).filter(issue => issue.code === "banned").map(issue => issue.card));
+      notify({
+        message: `Deck saved to your library.${banned.size ? ` Contains ${banned.size} banned card${banned.size === 1 ? "" : "s"}.` : ""}`,
+        tone: banned.size ? "warning" : "success",
+        duration: banned.size ? null : undefined,
+        key: "import",
+      });
+    });
   }
 
   async function removeOfficialDeck(deck: OfficialProductDeckFavorite) {
@@ -172,7 +204,7 @@ export default function MyDecksIndex() {
     {libraryLoading && <p role="status" className="mt-4 text-sm">Refreshing your deck library…</p>}
     {libraryReady && <AccountChecklist user={user} decks={decks} />}
 
-    {addMode && <DialogSheet title="Add a deck" onDismiss={() => setAddMode(null)} dismissible={!busy} dirty={importDirty} footer={addMode === "paste" ? <div>{error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error} Your draft is still here.</p>}<div className="flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext1">{busy ? "Saving to My Decks…" : "Unsaved draft. Kept on this page when you close."}</p><Button variant="primary" disabled={busy || !deckText.trim()} onClick={savePastedDeck}>{busy ? "Saving…" : error ? "Retry save" : "Save deck"}</Button></div></div> : addMode === "import" ? <div ref={setImportFooter} /> : undefined}>
+    {addMode && <DialogSheet title="Add a deck" onDismiss={() => setAddMode(null)} dismissible={!busy} dirty={importDirty} footer={addMode === "paste" ? <div>{error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error} {existingPasteId && <Link to={`/decks/${encodeURIComponent(existingPasteId)}`} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center underline">Open existing deck</Link>}</p>}<div className="flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext1">{busy ? "Saving to My Decks…" : "Unsaved draft. Kept on this page when you close."}</p><Button variant="primary" disabled={busy || !deckText.trim()} onClick={savePastedDeck}>{busy ? "Saving…" : error ? "Retry save" : "Save deck"}</Button></div></div> : addMode === "import" ? <div ref={setImportFooter} /> : undefined}>
 
     {addMode === "choose" && <section><div><h2 className="text-xl font-semibold text-ctp-text">Add a deck</h2><p className="mt-1 text-sm text-ctp-subtext1">Choose how to start.</p></div><div className="mt-4 grid gap-3 sm:grid-cols-2"><Link to="/decks/new" className="rounded-lg border border-ctp-blue/60 bg-ctp-blue/10 p-4 hover:bg-ctp-blue/15"><span className="font-semibold text-ctp-blue">{hasEditorDraft ? "Resume deck draft →" : "Start empty deck →"}</span><p className="mt-1 text-sm text-ctp-subtext1">Add cards directly in the deck editor.</p></Link><button type="button" onClick={() => setAddMode("paste")} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 text-left hover:border-ctp-blue/60"><span className="font-semibold text-ctp-text">{hasPasteDraft ? "Resume pasted deck" : "Paste a decklist"}</span><p className="mt-1 text-sm text-ctp-subtext1">Create an editable deck from a list you already have.</p></button><button type="button" onClick={() => setAddMode("import")} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 text-left hover:border-ctp-blue/60"><span className="font-semibold text-ctp-text">Import public decks</span><p className="mt-1 text-sm text-ctp-subtext1">Use a Fractal deck link or import an Omnidex or Shout At Your Decks profile.</p></button></div></section>}
 
