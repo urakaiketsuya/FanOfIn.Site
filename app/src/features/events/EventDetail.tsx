@@ -16,7 +16,6 @@ import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import Button from "../../components/ui/Button";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import EventIdentityHeader from "./EventIdentityHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -148,45 +147,24 @@ export default function EventDetail() {
     (a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity),
   );
 
-  const primaryTabs: { key: EventTab; label: string }[] = [{ key: "report", label: "Report" }];
-  if (!isApiErrorBody(bundle.decklists)) primaryTabs.push({ key: "decklists", label: `Decks (${bundle.decklists.length})` });
-  primaryTabs.push({ key: "standings", label: `Results (${rankedPlayers.length})` });
-  const secondaryTabs: { key: EventTab; label: string }[] = [];
-  if (event.stages.length > 0) secondaryTabs.push({ key: "pairings", label: "Pairings" });
-  if (!isApiErrorBody(bundle.teams) && bundle.teams.length > 0) secondaryTabs.push({ key: "teams", label: `Teams (${bundle.teams.length})` });
-  if (!isApiErrorBody(bundle.judges) && bundle.judges.length > 0) secondaryTabs.push({ key: "judges", label: "Judges" });
-  if (!isApiErrorBody(bundle.statistics)) secondaryTabs.push({ key: "statistics", label: "Statistics" });
-  const availableTabs = [...primaryTabs, ...secondaryTabs];
-  const activeTab = availableTabs.some((item) => item.key === tab) ? tab : primaryTabs[0].key;
-  const secondaryActive = secondaryTabs.some((item) => item.key === activeTab);
+  const availableTabs: { key: EventTab; label: string }[] = [{ key: "report", label: "Report" }];
+  if (!isApiErrorBody(bundle.decklists)) availableTabs.push({ key: "decklists", label: `Decks (${bundle.decklists.length})` });
+  availableTabs.push({ key: "standings", label: `Results (${rankedPlayers.length})` });
+  if (event.stages.length > 0) availableTabs.push({ key: "pairings", label: "Pairings" });
+  if (!isApiErrorBody(bundle.teams) && bundle.teams.length > 0) availableTabs.push({ key: "teams", label: `Teams (${bundle.teams.length})` });
+  if (!isApiErrorBody(bundle.judges) && bundle.judges.length > 0) availableTabs.push({ key: "judges", label: "Judges" });
+  if (!isApiErrorBody(bundle.statistics)) availableTabs.push({ key: "statistics", label: "Statistics" });
+  const activeTab = availableTabs.some((item) => item.key === tab) ? tab : availableTabs[0].key;
 
   return (
     <PageLayout width="fluid" data-component="EventDetail">
       <EventIdentityHeader event={event} players={players} decklists={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists} teams={isApiErrorBody(bundle.teams) ? undefined : bundle.teams} storeLink={!!omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical")} />
 
-
-
-      {!secondaryActive && primaryTabs.length > 1 && (
-        <div className="mt-4">
-          <Tabs tabs={primaryTabs} active={activeTab} onChange={setTab} label="Event results" baseId="event-results" />
-        </div>
-      )}
-
-      {secondaryActive && <Button onClick={() => setTab(primaryTabs[0].key)} className="mt-5">← Back to event results</Button>}
-
-      {activeTab !== "report" && !(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+      <div className="mt-4">
+        <Tabs tabs={availableTabs} active={activeTab} onChange={setTab} label="Event results" baseId="event-results" variant="pill" wrap />
+      </div>
 
       <TabPanel baseId="event-results" tab="report" active={activeTab}><EventReport event={event} players={players} decks={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists} teamEvent={!isApiErrorBody(bundle.teams) && bundle.teams.length > 0} /></TabPanel>
-
-      {(event.description || vods.length > 0 || venueEvents.length > 0 || secondaryTabs.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
-        <div className="border-t border-ctp-surface1 pb-2 pt-3">
-          {event.description && <p className="text-sm text-ctp-subtext0">{event.description}</p>}
-          {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue">▶ {vod.label}</a>)}</div>}
-          {secondaryTabs.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{secondaryTabs.map((item) => <Button key={item.key} onClick={() => setTab(item.key)} aria-pressed={activeTab === item.key} className={activeTab === item.key ? "border-ctp-blue text-ctp-blue" : ""}>{item.label}</Button>)}</div>}
-          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical") ? <Link className="inline-flex min-h-control items-center text-ctp-blue underline focus-visible:outline-2" to={`/stores/${event.host.id}`}>{event.host.name}</Link> : event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-3 py-2 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
-        </div>
-      </details>}
 
       <TabPanel baseId="event-results" tab="standings" active={activeTab}>
         <Section className="mt-6" heading="compact" title={`Standings (${rankedPlayers.length} players)`}>
@@ -196,10 +174,11 @@ export default function EventDetail() {
               {decklistSubmissionRate.total > 0 && ` (${Math.round((decklistSubmissionRate.submitted / decklistSubmissionRate.total) * 100)}%)`}
             </p>
           )}
+          {rankedPlayers.length === 0 && <InlineState className="mt-3">No standings are available yet.</InlineState>}
           <div className="mt-3 space-y-2 sm:hidden">
             {rankedPlayers.map((player) => { const standing = standingsById.get(player.id); return <div key={player.id} className="flex items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><span className="w-9 shrink-0 text-center text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</span><div className="min-w-0 flex-1"><PlayerLink id={player.id} username={player.username} className="flex min-h-control items-center break-words font-medium text-ctp-text" /><p className="mt-0.5 text-xs text-ctp-subtext0">{standing ? `${standing.statsWins}-${standing.statsLosses}-${standing.statsTies}` : "Record unavailable"}{standing ? ` · ${standing.statsPercentGW}% games` : ""}</p></div>{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id) && <Link to={`?tab=decklists&player=${player.id}`} className="inline-flex min-h-control min-w-control shrink-0 items-center justify-center rounded-md px-2 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Deck</Link>}</div>; })}
           </div>
-          <div className="hidden overflow-x-auto sm:block">
+          <div className={rankedPlayers.length ? "hidden overflow-x-auto sm:block" : "hidden"}>
             <table className="mt-2 w-max min-w-full text-sm">
               <thead>
                 <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -243,8 +222,8 @@ export default function EventDetail() {
         </Section>
       </TabPanel>
 
-      {activeTab === "pairings" && event.stages.length > 0 && (
-        <div className="mt-6">
+      {event.stages.length > 0 && (
+        <TabPanel baseId="event-results" tab="pairings" active={activeTab} className="mt-6">
           <EventPairings
             eventId={eventId}
             players={players}
@@ -253,7 +232,7 @@ export default function EventDetail() {
             singleEliminationCutSize={event.singleEliminationCutSize}
             decklists={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists}
           />
-        </div>
+        </TabPanel>
       )}
 
       {!isApiErrorBody(bundle.decklists) && (
@@ -262,25 +241,36 @@ export default function EventDetail() {
         </TabPanel>
       )}
 
-      {activeTab === "teams" && !isApiErrorBody(bundle.teams) && (
-        <div className="mt-6">
+      {!isApiErrorBody(bundle.teams) && (
+        <TabPanel baseId="event-results" tab="teams" active={activeTab} className="mt-6">
           <EventTeamsSection teams={bundle.teams} players={players} />
-        </div>
+        </TabPanel>
       )}
 
-      {activeTab === "judges" && !isApiErrorBody(bundle.judges) && (
-        <div className="mt-6">
+      {!isApiErrorBody(bundle.judges) && (
+        <TabPanel baseId="event-results" tab="judges" active={activeTab} className="mt-6">
           <JudgesSection judges={bundle.judges} />
-        </div>
+        </TabPanel>
       )}
 
-      {activeTab === "statistics" && !isApiErrorBody(bundle.statistics) && (
-        <Section className="mt-6" heading="compact" title="Statistics">
-          <div className="mt-2">
-            <RawObject data={bundle.statistics} />
-          </div>
-        </Section>
+      {!isApiErrorBody(bundle.statistics) && (
+        <TabPanel baseId="event-results" tab="statistics" active={activeTab} className="mt-6">
+          <Section heading="compact" title="Statistics">
+            <div className="mt-2"><RawObject data={bundle.statistics} /></div>
+          </Section>
+        </TabPanel>
       )}
+      {activeTab === "standings" && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+
+      {(event.description || vods.length > 0 || venueEvents.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>Event details and videos</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
+        <div className="border-t border-ctp-surface1 pb-2 pt-3">
+          {event.description && <p className="text-sm text-ctp-subtext0">{event.description}</p>}
+          {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue">▶ {vod.label}</a>)}</div>}
+          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical") ? <Link className="inline-flex min-h-control items-center text-ctp-blue underline focus-visible:outline-2" to={`/stores/${event.host.id}`}>{event.host.name}</Link> : event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-3 py-2 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
+        </div>
+      </details>}
+
     </PageLayout>
   );
 }

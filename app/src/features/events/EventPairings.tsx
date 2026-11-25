@@ -6,6 +6,7 @@ import { gatcgApi, isApiErrorBody } from "../../lib/api/client";
 import PlayerLink from "../players/PlayerLink";
 import { buildCompareLink } from "../compare/deepLink";
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
+import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
@@ -67,6 +68,9 @@ export default function EventPairings({
     enabled: stageId !== undefined,
   });
 
+  const pairingRows = pairings.data && !isApiErrorBody(pairings.data) ? pairings.data.pairings : undefined;
+  const failed = pairings.isError || (pairings.data && isApiErrorBody(pairings.data));
+
   function handleStageChange(id: number) {
     setStageId(id);
     setRound(1);
@@ -78,13 +82,13 @@ export default function EventPairings({
       heading="compact"
       title="Pairings"
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {sortedStages.length > 1 && (
             <select
               value={stageId}
               aria-label="Stage"
               onChange={(e) => handleStageChange(Number(e.target.value))}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+              className="min-h-control rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text"
             >
               {sortedStages.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -98,7 +102,7 @@ export default function EventPairings({
               value={round}
               aria-label="Round"
               onChange={(e) => setRound(Number(e.target.value))}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+              className="min-h-control rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text"
             >
               {Array.from({ length: totalRounds }, (_, i) => i + 1).map((r) => (
                 <option key={r} value={r}>
@@ -110,11 +114,18 @@ export default function EventPairings({
         </div>
       }
     >
-      {pairings.isPending && <InlineState className="mt-2 text-sm">Loading…</InlineState>}
+      {pairings.isPending && <InlineState className="mt-2 text-sm">Loading pairings…</InlineState>}
+      {failed && <div className="mt-2">
+        <InlineState tone="danger">Pairings could not be loaded.</InlineState>
+        <Button className="mt-2" disabled={pairings.isFetching} onClick={() => void pairings.refetch()}>
+          {pairings.isFetching ? "Retrying…" : "Retry pairings"}
+        </Button>
+      </div>}
+      {pairingRows?.length === 0 && <InlineState className="mt-2">No pairings are available for this round.</InlineState>}
 
-      {pairings.data && !isApiErrorBody(pairings.data) && (
-        <div className="mt-2 space-y-1">
-          {pairings.data.pairings.map((p) => {
+      {pairingRows && pairingRows.length > 0 && (
+        <div className="mt-3 grid gap-2 lg:grid-cols-2">
+          {pairingRows.map((p) => {
             const bothNumeric = p.pairing.length === 2 && p.pairing.every((side) => typeof side.id === "number");
             const matchupDecks = bothNumeric
               ? p.pairing.map((side) => decklists?.find((entry) => entry.player === side.id)?.decklist)
@@ -123,52 +134,52 @@ export default function EventPairings({
               ? buildClarentPlaytestUrl(matchupDecks[0], matchupDecks[1])
               : null;
             return (
-              <div key={p.id} className="flex items-center gap-2 text-sm">
-                {p.pairing.map((side, i) => {
+              <div key={p.id} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm">
+                {p.pairing.map((side) => {
                   const player = findPlayer(players, side.id);
                   const colorClass = side.status === "winner" ? "text-ctp-green" : "text-ctp-subtext1";
                   return (
-                    <span key={side.id} className={colorClass}>
-                      {i > 0 && <span className="mx-1 text-ctp-subtext0">vs</span>}
+                    <div key={side.id} className={`flex min-h-control flex-wrap items-center gap-x-2 border-b border-ctp-surface0 last:border-0 ${colorClass}`}>
                       {player ? (
-                        <PlayerLink id={side.id} username={player.username} className={`hover:underline ${colorClass}`} />
+                        <PlayerLink id={side.id} username={player.username} className={`inline-flex min-h-control min-w-control items-center rounded [overflow-wrap:anywhere] hover:underline focus-visible:outline-2 ${colorClass}`} />
                       ) : (
                         `Player #${side.id}`
-                      )}{" "}
-                      ({side.score})
+                      )}
+                      <span className="font-medium tabular-nums">{side.score}</span>
+                      {side.status === "winner" && <span className="text-xs font-semibold">Winner</span>}
                       {side.dropped && (
                         <span className="ml-1 rounded-full border border-ctp-red px-1.5 text-[10px] text-ctp-red">Dropped</span>
                       )}
-                    </span>
+                    </div>
                   );
                 })}
-                {bothNumeric && (
-                  <Link
-                    to={buildCompareLink(p.pairing.map((side) => ({ eventId, player: side.id })))}
-                    className="ml-1 text-xs text-ctp-blue hover:underline"
-                  >
-                    Compare decklists &rarr;
-                  </Link>
-                )}
-                {clarentUrl && (
-                  <a
-                    href={clarentUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="ml-1 text-xs text-ctp-green hover:underline"
-                    title="Opens both public decklists in Clarent Hotseat mode"
-                  >
-                    Playtest matchup &rarr;
-                  </a>
+                {(bothNumeric || clarentUrl) && (
+                  <div className="flex flex-wrap gap-x-4">
+                    {bothNumeric && (
+                      <Link
+                        to={buildCompareLink(p.pairing.map((side) => ({ eventId, player: side.id })))}
+                        className="inline-flex min-h-control items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2"
+                      >
+                        Compare decklists &rarr;
+                      </Link>
+                    )}
+                    {clarentUrl && (
+                      <a
+                        href={clarentUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex min-h-control items-center rounded text-xs text-ctp-green hover:underline focus-visible:outline-2"
+                        title="Opens both public decklists in Clarent Hotseat mode"
+                      >
+                        Playtest matchup &rarr;
+                      </a>
+                    )}
+                  </div>
                 )}
               </div>
             );
           })}
         </div>
-      )}
-
-      {pairings.data && isApiErrorBody(pairings.data) && (
-        <InlineState className="mt-2 text-sm">{pairings.data.error}</InlineState>
       )}
     </Section>
   );
