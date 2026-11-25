@@ -137,6 +137,18 @@ function WorldTimeline() {
                   <p className={`text-sm ${isArchive ? "font-medium text-ctp-yellow" : "text-ctp-subtext0"}`}>{isPrologue ? "Prologue" : world.sets}</p>
                   <h3 id={`${stopId(world.id)}-title`} className={`mt-1 font-bold leading-tight tracking-tight text-balance ${isPrologue ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"}`}>{world.name}</h3>
                   <p className="mt-2 max-w-prose leading-relaxed text-ctp-subtext1">{storyHooks[world.id]}</p>
+                  {world.travelers && (
+                    <div className="mt-4">
+                      <p id={`${stopId(world.id)}-travelers`} className="text-sm font-semibold text-ctp-subtext1">
+                        {isArchive ? "Who returns" : "Who travels here"}
+                      </p>
+                      <ul aria-labelledby={`${stopId(world.id)}-travelers`} role="list" className="mt-2 flex flex-wrap gap-2">
+                        {world.travelers.map(name => (
+                          <li key={name} className="rounded-2xl bg-ctp-mauve/15 px-3 py-1 text-sm font-medium text-ctp-text">{name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <Link to={`/story/${world.id}`} className={`mt-3 inline-flex min-h-control items-center rounded-full px-4 py-2 font-semibold leading-snug ${actionTone} ${focusRing}`}>
                     {isPrologue ? "Read the prologue" : `Read ${world.name}`}
                   </Link>
