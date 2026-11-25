@@ -104,16 +104,16 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
           <div className="relative col-start-1 row-start-1 min-w-0 self-end p-4 pt-12 text-white">
-            <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source?.label}{model.format && `${model.source ? " · " : ""}${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</>}</p>
+            <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source?.label}{model.format && `${model.source ? " · " : ""}${model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}`}</>}</p>
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
             {elementIcons}
+            <span aria-hidden="true" className="mt-2 block text-sm font-medium text-white/90">Open deck →</span>
           </div>
         </div>
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
         {leadCard ? <Link to={`/cards/${leadCard.slug}`} target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} className="flex min-h-control items-center break-words text-xs text-ctp-subtext0 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{label}</Link> : <p className="break-words text-xs text-ctp-subtext0">{label}</p>}
         {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
-        <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} aria-label={`Open deck: ${model.title}`} className="mt-auto flex min-h-12 items-center font-medium text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Open deck <span aria-hidden="true" className="ml-2">→</span></Link>
       </div>
     </Panel>
   );

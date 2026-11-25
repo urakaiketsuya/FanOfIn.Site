@@ -12,7 +12,7 @@ import DeckContentFilterControls from "./DeckContentFilterControls";
 import { deckContentFilterCount, deckMatchesContentFilters } from "./deckContentFilters";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
-import { useEffect, useEffectEvent, useMemo, useState, useTransition } from "react";
+import { useEffect, useEffectEvent, useMemo, useRef, useState, useTransition } from "react";
 import { useBrowseParams } from "../../lib/useBrowseParams";
 import { DECK_QUERY_DELAY_MS } from "../../components/deck-search/useDeckSearch";
 import type { PublicDeckSummary } from "@gatcg/shared";
@@ -36,6 +36,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
 }) {
   const [params, setParams] = useBrowseParams();
   const source = ["shared", "tournament", "collected"].includes(params.get("source") ?? "") ? params.get("source")! : "all";
+  const showShared = source === "all" || source === "shared";
   const showCollected = source === "all" || source === "collected";
   const collected = useCollectedDecks(showCollected);
   const collectedStatus = useCollectedStatus(showCollected);
@@ -64,6 +65,11 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   const format = params.get("format") ?? "";
   const champion = params.get("champion") ?? "";
   const [shared, setShared] = useState<PublicDeckSummary[]>([]);
+  const sharedPages = useRef({
+    next: 1 as number | null,
+    decks: new Map<string, PublicDeckSummary>(),
+    pending: null as ReturnType<typeof accountApi.discoverDecks> | null,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
@@ -87,21 +93,30 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   const status = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
   const playerName = usePlayerNameById();
   useEffect(() => {
+    const progress = sharedPages.current;
+    if (!showShared || progress.next === null) return;
+
     let active = true;
-    setLoading(true); setError(null);
-    // Finish discovery pagination before sorting so newest order spans both sources.
+    setLoading(true);
+    setError(null);
     void (async () => {
-      const decks: PublicDeckSummary[] = [];
-      let page: number | null = 1;
-      while (page !== null && active) {
-        const result = await accountApi.discoverDecks(new URLSearchParams({ page: String(page) }));
-        decks.push(...result.decks); page = result.nextPage;
+      while (active && progress.next !== null) {
+        const pending = progress.pending ??= accountApi.discoverDecks(new URLSearchParams({ page: String(progress.next) }));
+        const result = await pending.finally(() => {
+          if (progress.pending === pending) progress.pending = null;
+        });
+        if (!active) return;
+        for (const deck of result.decks) progress.decks.set(deck.publicSlug, deck);
+        progress.next = result.nextPage;
+        setShared([...progress.decks.values()]);
       }
-      if (active) setShared(decks);
-    })().catch((reason: unknown) => { if (active) setError(reason instanceof Error ? reason.message : "Shared decks could not be loaded."); })
-      .finally(() => { if (active) setLoading(false); });
+    })().catch((reason: unknown) => {
+      if (active) setError(reason instanceof Error ? reason.message : "Shared decks could not be loaded.");
+    }).finally(() => {
+      if (active) setLoading(false);
+    });
     return () => { active = false; };
-  }, [retry]);
+  }, [retry, showShared]);
   const champions = useMemo(() => [...new Set([...collectedBuilds.map(d => d.championName), ...shared.map(d => d.championName), ...(sightings?.sightings ?? []).map(d => d.championName)].filter((name): name is string => Boolean(name)))].sort(), [shared, sightings, collectedBuilds]);
   const rows = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -139,8 +154,8 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
       setVisibleCount(30);
     });
   }
-  const waiting = (showCollected && !sightings && status.phase !== "error") || (showCollected && !collected && collectedStatus.phase !== "error") || ((source === "all" || source === "shared") && loading);
-  const failed = (showCollected && !sightings && status.phase === "error") || (showCollected && !collected && collectedStatus.phase === "error") || ((source === "all" || source === "shared") && Boolean(error));
+  const waiting = (showCollected && !sightings && status.phase !== "error") || (showCollected && !collected && collectedStatus.phase !== "error") || (showShared && loading);
+  const failed = (showCollected && !sightings && status.phase === "error") || (showCollected && !collected && collectedStatus.phase === "error") || (showShared && Boolean(error));
   return <>
     <div className="mt-4">
       <label className="flex flex-col gap-1 text-xs">Source<Select aria-label="Deck source" value={source} onChange={e => update("source", e.target.value)}><option value="all">All sources</option><option value="shared">Shared decks</option><option value="collected">Collected builds</option><option value="tournament">Tournament decks</option></Select></label>
@@ -176,8 +191,11 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     {contentActive && source === "all" && <PublishedSourceStatus label="Deck card index" status={cardStatus} hasData={!!cardIndex} />}
     {source !== "collected" && contentActive && shared.some(deck => !deck.cardNames) && <InlineState>Card lists are unavailable for some shared decks.</InlineState>}
     {showCollected && <PublishedSourceStatus label="Tournament decks" status={status} hasData={Boolean(sightings)} />}
-    {(source === "all" || source === "shared") && loading && <InlineState className="mt-4">Loading shared decks…</InlineState>}
-    {(source === "all" || source === "shared") && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
+    {showShared && loading && <InlineState className="mt-4">{shared.length > 0 ? "Loading more shared decks…" : "Loading shared decks…"}</InlineState>}
+    {showShared && error && <InlineState tone="danger" className="mt-4">
+      <p>{shared.length > 0 ? "Some shared decks could not be loaded." : "Shared decks could not be loaded."}</p>
+      <Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button>
+    </InlineState>}
     {showCollected && <PublishedSourceStatus label="Collected builds" status={collectedStatus} hasData={!!collected} />}
     <DeckResultsOrder summary={<>{waiting && !rows.length ? "Loading decks…" : `${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}{pending ? " · Recalculating…" : ""}</>} label={sort === 'oldest' ? 'Oldest first' : sort === 'champion' ? 'Champion A–Z' : 'Newest first'}>
       <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">Sort by
