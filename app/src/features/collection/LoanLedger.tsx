@@ -1,7 +1,8 @@
 import { useBrowseState } from "../../lib/useBrowseState";
 import { useState } from "react";
 import type { Card, CollectionCardTracking } from "@gatcg/shared";
-import CardArtTile from "../../components/CardArtTile";
+import CardResult from "../../components/CardResult";
+import Button from "../../components/ui/Button";
 import DisclosureChevron from "../../components/DisclosureChevron";
 
 export default function LoanLedger({ records, cards, onEdit, onAdd }: {
@@ -25,7 +26,13 @@ export default function LoanLedger({ records, cards, onEdit, onAdd }: {
     {!groups.size && <p role="status" className="py-4 text-sm text-ctp-subtext1">{query ? "No matching loans." : history ? "No returned loans yet." : "No cards lent out. Record a loan to keep track of who has your cards."}</p>}
     <div className="space-y-4">{[...groups].sort((a,b) => a[1].borrower.localeCompare(b[1].borrower)).map(([key, group]) => <section key={key} className="rounded-xl border border-ctp-surface1 p-3">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold">{group.borrower} · {group.rows.reduce((sum,row) => sum + row.loan.quantity, 0)} {group.rows.reduce((sum,row) => sum + row.loan.quantity, 0) === 1 ? "copy" : "copies"}</h3>{!history && <button type="button" onClick={() => onAdd(group.borrower)} className="min-h-12 px-3 text-sm text-ctp-blue">Lend another card</button>}</div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{group.rows.map(({ record, loan }) => <article key={`${record.cardUuid}:${loan.id}`} className="min-w-0 rounded-xl bg-ctp-mantle p-2"><button type="button" aria-label={`Manage loan of ${record.cardName} to ${loan.borrower}`} onClick={() => onEdit(record.cardUuid)} className="w-full text-left"><CardArtTile card={cards.find(card => card.uuid === record.cardUuid)} name={record.cardName}/><span className="flex min-h-12 items-center text-sm font-medium">{record.cardName}</span></button><p className="text-sm">{loan.quantity} {loan.quantity === 1 ? "copy" : "copies"}</p><p className="mt-1 text-xs text-ctp-subtext1">{history ? "Returned" : "Lent"} {new Date(loan.returnedAt ?? loan.lentAt).toLocaleDateString()}</p><button type="button" onClick={() => onEdit(record.cardUuid)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 px-2 text-sm">{history ? "View loan" : "Return / edit"}</button></article>)}</div>
+      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">{group.rows.map(({ record, loan }) => (
+        <CardResult key={`${record.cardUuid}:${loan.id}`} card={cards.find(card => card.uuid === record.cardUuid)} name={record.cardName} compactOnMobile>
+          <p className="text-sm">{loan.quantity} {loan.quantity === 1 ? "copy" : "copies"}</p>
+          <p className="mt-1 text-xs text-ctp-subtext1">{history ? "Returned" : "Lent"} {new Date(loan.returnedAt ?? loan.lentAt).toLocaleDateString()}</p>
+          <Button className="mt-2 w-full" aria-label={`Manage loan of ${record.cardName} to ${loan.borrower}`} onClick={() => onEdit(record.cardUuid)}>{history ? "View loan" : "Return / edit"}</Button>
+        </CardResult>
+      ))}</div>
     </section>)}</div>
   </section>;
 }
