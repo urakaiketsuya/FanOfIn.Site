@@ -8,7 +8,7 @@ import ChampionDecks from "./ChampionDecks";
 import ChampionIdentity from "./ChampionIdentity";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { slugToChampionName } from "../../lib/championSlug";
+import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
 import { titleCase } from "../../lib/format";
 import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
@@ -24,7 +24,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
-import ChampionStaples from "./ChampionStaples";
+import ChampionPageLinks from "./ChampionPageLinks";
 import { ChampionBonusSection, ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
 
@@ -256,10 +256,10 @@ export default function ChampionDetail() {
         <>
           <PageHeader
             title={champion.signature}
-            eyebrow={<Link to="/champions" className="hover:underline">&larr; All champions</Link>}
             description={<span className="flex flex-wrap gap-2"><span>{champion.classes.join(" / ")}</span><span aria-hidden="true">·</span><span>{champion.elements.join(" / ")}</span></span>}
           />
 
+          <ChampionPageLinks championName={championName} />
           <ChampionIdentity championName={championName} fallbackNames={champion.topCards.material.map((card) => card.name)} />
 
           <details className="group mb-6 rounded-2xl border border-ctp-surface1 bg-ctp-mantle px-4">
@@ -277,7 +277,7 @@ export default function ChampionDetail() {
           <Tabs baseId="champion-statistics" tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "matchups" ? "matchups" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" wrap />
 
           <TabPanel baseId="champion-statistics" tab="overview" active={surface}>
-          <Tabs baseId="champion-overview" label="Overview sections" wrap active={tab} onChange={setTab} tabs={[{ key: "season", label: "Season" }, { key: "cards", label: "Cards" }, { key: "builds", label: "Builds" }]} />
+          <Tabs baseId="champion-overview" label="Overview sections" wrap active={tab} onChange={setTab} tabs={[{ key: "season", label: "Season" }, { key: "cards", label: "Cards by Spirit" }, { key: "builds", label: "Build results" }]} />
           <TabPanel baseId="champion-overview" tab="season" active={tab}>
           {tab === "season" && <>
             <PublishedSourceStatus label="Season statistics" status={trendStatus} hasData={!!trendsData} />
@@ -286,7 +286,7 @@ export default function ChampionDetail() {
 
           </TabPanel>
           <TabPanel baseId="champion-overview" tab="cards" active={tab}>
-          {tab === "cards" && <ChampionStaples key={championName} championName={championName} />}
+          <Link to={`/champions/${championNameToSlug(championName)}#cards`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">See staples</Link>
 
           {tab === "cards" && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards by Spirit">
