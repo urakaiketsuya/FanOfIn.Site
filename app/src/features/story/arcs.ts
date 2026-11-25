@@ -33,7 +33,7 @@ export const storyArcs: StoryArc[] = [
     sets: "Dawn of Ashes · Fractured Crown",
     summary: "A mysterious mage wins Aesa’s nobles over with promises of wealth and power, and rival houses raise armies against House Pendragon. On their first mission, the Archive’s Champions scatter across Cambria. Lorraine searches for Silvie as unrest turns to open war around Camelot.",
     articles: cambriaArticles,
-    readingNote: "Lorraine I, Silvie I, Rai I, and Zander I overlap around the same deployment. Read each second chapter after its first.",
+    readingNote: "Read each second chapter after its first.",
     related: [{ to: "/story/azoth#diana-i-creeping-torment", label: "Follow Tristan to Azoth" }],
   },
   {
