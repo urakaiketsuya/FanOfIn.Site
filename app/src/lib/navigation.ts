@@ -23,6 +23,7 @@ export const NAV_ENTRIES: NavEntry[] = [
     ],
   },
   { kind: "link", to: "/champions", label: "Champions" },
+  { kind: "link", to: "/story", label: "Story" },
   { kind: "link", to: "/archetypes", label: "Archetypes" },
   {
     kind: "group", label: "Decks",

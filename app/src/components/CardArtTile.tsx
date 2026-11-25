@@ -19,10 +19,13 @@ export default function CardArtTile({
   tags,
   artworkOnly = false,
   editionUuid,
+  imagePath,
   loading,
 }: {
   loading?: "eager" | "lazy";
   editionUuid?: string;
+  /** An exact catalog image path when the caller already knows the printing. */
+  imagePath?: string;
   card: Card | undefined;
   name: string;
   cornerBadge?: ReactNode;
@@ -32,11 +35,12 @@ export default function CardArtTile({
 }) {
   const [failedPreview, setFailedPreview] = useState<string>();
   card = cardWithPrinting(card, editionUuid);
+  const image = imagePath ?? card?.editions[0]?.image;
   const previewImage = previewCardImage(card);
   return (
     <div data-component="CardArtTile" className={`relative overflow-hidden rounded bg-ctp-surface0 ${artworkOnly ? "aspect-[16/10]" : "aspect-[5/7]"}`}>
-      {card?.editions[0] ? (
-        <CardImage image={card.editions[0].image} alt={name} loading={loading} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
+      {image ? (
+        <CardImage image={image} alt={name} loading={loading} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
       ) : previewImage && failedPreview !== previewImage ? (
         <img src={previewImage} alt={name} loading={loading ?? "lazy"} onError={() => setFailedPreview(previewImage)} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-contain"} />
       ) : (

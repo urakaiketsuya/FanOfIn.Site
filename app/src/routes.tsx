@@ -139,6 +139,7 @@ const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
 const PackOpener = lazy(() => import("./features/packs/PackOpener"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
 const ApiDocs = lazy(() => import("./pages/ApiDocs"));
+const StoryPage = lazy(() => import("./features/story/StoryPage"));
 const Methodology = lazy(() => import("./pages/Methodology"));
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 const CommunityDeckSearchIndex = lazy(() => import("./features/community/CommunityDeckSearchIndex"));
@@ -200,6 +201,7 @@ export default function AppRoutes() {
     <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<About />} />
+        <Route path="/story/:arc?" element={<StoryPage />} />
         <Route path="/artists" element={<Artists />} />
         <Route path="/artists/:slug" element={<Artists />} />
         <Route path="/cards" element={<CardsBrowse />} />
