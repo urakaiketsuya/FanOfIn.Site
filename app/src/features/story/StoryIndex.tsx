@@ -49,7 +49,7 @@ function WorldOutline() {
               <Link
                 to={`#${stopId(arc.id)}`}
                 aria-current={arc.id === activeId ? "location" : undefined}
-                className={`flex min-h-control items-center rounded-md border-l-2 border-transparent px-3 py-2 text-sm leading-snug hover:bg-ctp-surface0 aria-[current=location]:border-ctp-blue aria-[current=location]:bg-ctp-surface0 aria-[current=location]:font-semibold ${focusRing}`}
+                className={`flex min-h-control items-center rounded-full px-4 py-2 text-sm leading-snug hover:bg-ctp-surface0 aria-[current=location]:bg-ctp-lavender/20 aria-[current=location]:font-semibold aria-[current=location]:text-ctp-lavender ${focusRing}`}
               >
                 {arc.name}
               </Link>
@@ -66,7 +66,7 @@ function WorldArt({ id, compact }: { id: string; compact: boolean }) {
   if (!src) return null;
 
   return (
-    <div className={`relative overflow-hidden rounded-xl bg-ctp-surface0 [&:has(>img[hidden])]:hidden ${compact ? "h-20 w-20 shrink-0 sm:h-24 sm:w-24" : "aspect-[2.25/1] sm:aspect-[2.8/1]"}`}>
+    <div className={`relative overflow-hidden bg-ctp-surface0 [&:has(>img[hidden])]:hidden ${compact ? "h-20 w-20 shrink-0 rounded-[1.25rem] rounded-br-[2rem] sm:h-28 sm:w-28" : "aspect-[2.25/1] sm:aspect-[2.8/1]"}`}>
       <img
         src={src}
         alt=""
@@ -78,36 +78,70 @@ function WorldArt({ id, compact }: { id: string; compact: boolean }) {
   );
 }
 
+function WorldTransition({ from, to }: { from: string; to: string }) {
+  const isFirstMission = from === "homeworld";
+  const isReturn = to === "radiant-origins";
+  const branch = from === "cambria" ? tristanLink : undefined;
+  const tone = isFirstMission || isReturn ? "bg-ctp-yellow/20 text-ctp-yellow" : "bg-ctp-lavender/20 text-ctp-lavender";
+
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center">
+      <div className="col-start-2 flex flex-col items-center" aria-hidden="true">
+        <span className="h-5 w-0.5 bg-ctp-lavender/40" />
+        <span className={`grid size-10 place-items-center rounded-[0.9rem_1.3rem] ${tone}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
+        <span className="h-5 w-0.5 bg-ctp-lavender/40" />
+      </div>
+      {isFirstMission && (
+        <p className="ml-2 text-sm font-medium leading-snug text-ctp-yellow sm:ml-4">The Champions’ first mission</p>
+      )}
+      {branch && (
+        <div className="col-span-3 row-start-2 flex flex-col items-center">
+          <Link to={branch.to} className={`inline-flex min-h-control items-center rounded-full bg-ctp-mauve/15 px-4 py-2 text-center text-sm font-semibold text-ctp-mauve hover:bg-ctp-mauve/25 active:bg-ctp-mauve/35 ${focusRing}`}>
+            Follow Tristan to Diana I in Azoth
+          </Link>
+          <span aria-hidden="true" className="h-5 w-0.5 bg-ctp-lavender/40" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function WorldTimeline() {
   return (
     <section aria-labelledby="story-route-title" className="min-w-0">
-      <h2 id="story-route-title" className="text-2xl font-semibold">The journey</h2>
+      <h2 id="story-route-title" className="text-3xl font-semibold tracking-tight">The journey</h2>
       <p className="mt-1 text-sm text-ctp-subtext0">Recommended reading order</p>
-      <ol role="list" className="relative mt-6 pl-5 sm:pl-8">
-        {storyArcs.map(world => {
+      <ol role="list" className="mt-5">
+        {storyArcs.map((world, index) => {
+          const previous = storyArcs[index - 1];
           const isPrologue = world.id === "homeworld";
-          const isReturn = world.id === "radiant-origins";
-          const isArchive = isPrologue || isReturn;
+          const isArchive = isPrologue || world.id === "radiant-origins";
+          const actionTone = isArchive
+            ? "bg-ctp-yellow/15 text-ctp-yellow hover:bg-ctp-yellow/25 active:bg-ctp-yellow/35"
+            : "bg-ctp-lavender/15 text-ctp-lavender hover:bg-ctp-lavender/25 active:bg-ctp-lavender/35";
           return (
-            <li key={world.id} className="relative pb-8 after:pointer-events-none after:absolute after:top-4 after:-bottom-4 after:-left-4 after:w-px after:bg-ctp-lavender/40 last:pb-0 last:after:hidden sm:pb-12 sm:after:-left-6">
-              <span aria-hidden="true" className={`pointer-events-none absolute top-2 -left-[21px] z-10 size-[11px] border-2 border-ctp-base sm:-left-[29px] ${isArchive ? "rotate-45 rounded-xs bg-ctp-yellow" : "rounded-full bg-ctp-lavender"}`} />
-              <article id={stopId(world.id)} tabIndex={-1} aria-labelledby={`${stopId(world.id)}-title`} className={`scroll-mt-24 rounded-xl ${focusRing} ${isPrologue ? "flex items-start gap-4 rounded-xl bg-ctp-mantle p-3 sm:p-4" : ""}`}>
+            <li key={world.id}>
+              {previous && <WorldTransition from={previous.id} to={world.id} />}
+              <article
+                id={stopId(world.id)}
+                tabIndex={-1}
+                aria-labelledby={`${stopId(world.id)}-title`}
+                className={`scroll-mt-24 overflow-hidden rounded-[1.75rem] rounded-br-[2.5rem] border sm:rounded-[2rem] sm:rounded-br-[3.5rem] ${focusRing} ${isArchive ? "border-ctp-yellow/20 bg-ctp-yellow/5" : "border-ctp-surface0 bg-ctp-mantle"} ${isPrologue ? "flex items-start gap-3 p-3 sm:gap-5 sm:p-5" : ""}`}
+              >
                 <WorldArt id={world.id} compact={isPrologue} />
-                <div className={isPrologue ? "min-w-0" : "mt-3"}>
+                <div className={isPrologue ? "min-w-0 py-1" : "px-5 py-5 sm:px-8 sm:py-6"}>
                   <p className={`text-sm ${isArchive ? "font-medium text-ctp-yellow" : "text-ctp-subtext0"}`}>{isPrologue ? "Prologue" : world.sets}</p>
-                  <h3 id={`${stopId(world.id)}-title`} className={`mt-1 font-semibold tracking-tight ${isPrologue ? "text-xl" : "text-2xl sm:text-3xl"}`}>{world.name}</h3>
-                  <p className="mt-1 max-w-prose leading-relaxed text-ctp-subtext1">{storyHooks[world.id]}</p>
-                  <Link to={`/story/${world.id}`} className={`mt-1 inline-flex min-h-control items-center rounded font-semibold text-ctp-blue underline-offset-4 hover:underline ${focusRing}`}>
+                  <h3 id={`${stopId(world.id)}-title`} className={`mt-1 font-bold leading-tight tracking-tight text-balance ${isPrologue ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"}`}>{world.name}</h3>
+                  <p className="mt-2 max-w-prose leading-relaxed text-ctp-subtext1">{storyHooks[world.id]}</p>
+                  <Link to={`/story/${world.id}`} className={`mt-3 inline-flex min-h-control items-center rounded-full px-4 py-2 font-semibold leading-snug ${actionTone} ${focusRing}`}>
                     {isPrologue ? "Read the prologue" : `Read ${world.name}`}
                   </Link>
                 </div>
               </article>
-              {isPrologue && <p className="mt-3 text-sm font-medium text-ctp-lavender">The Champions’ first mission</p>}
-              {world.id === "cambria" && tristanLink && (
-                <Link to={tristanLink.to} className={`mt-3 inline-flex min-h-control items-center rounded border-l-2 border-dashed border-ctp-mauve px-3 text-sm font-medium text-ctp-mauve underline-offset-4 hover:underline ${focusRing}`}>
-                  Follow Tristan to Diana I in Azoth
-                </Link>
-              )}
             </li>
           );
         })}
@@ -122,8 +156,8 @@ export function StoryIndex() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <header>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Grand Archive Story</h1>
-        <Link to="/story/cambria" className={`mt-4 inline-flex min-h-control items-center rounded-md bg-ctp-blue px-4 font-semibold text-ctp-base hover:opacity-90 active:opacity-80 ${focusRing}`}>
+        <h1 className="text-4xl font-bold leading-tight tracking-tight text-balance sm:text-6xl">Grand Archive Story</h1>
+        <Link to="/story/cambria" className={`mt-4 inline-flex min-h-control items-center rounded-full bg-ctp-blue px-6 font-semibold text-ctp-base hover:opacity-90 active:opacity-80 ${focusRing}`}>
           Start with Cambria
         </Link>
       </header>
