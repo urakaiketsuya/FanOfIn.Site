@@ -5,12 +5,12 @@ import DeckStats from "../../components/DeckStats";
 import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { reportCounts, computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@gatcg/shared";
+import { reportCounts, computeDeckCollectionStatus, type OmnidexDecklist } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import CardArtTile from "../../components/CardArtTile";
+import DeckVisualStrip from "../account/DeckVisualStrip";
 import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
@@ -46,7 +46,7 @@ import { activeAnalysisPlan, analysisProfileKey, cacheSyncedAnalysisProfile, loa
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 import { accountApi } from "../../lib/accountApi";
 
-type AnalysisTab = "summary" | "explore" | "matchups";
+type AnalysisTab = "summary" | "stats" | "explore" | "matchups";
 
 
 export default function DeckAnalysisIndex() {
@@ -187,20 +187,27 @@ export default function DeckAnalysisIndex() {
     persistAnalysisProfile({ ...analysisProfile, reviewedAt: new Date().toISOString() });
   }
 
-  if (requestedDeck.pending) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
-  if (requestedDeck.error) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
+  if (requestedDeck.pending) return <PageLayout width="fluid"><PageHeader title="Deck Report" /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
+  if (requestedDeck.error) return <PageLayout width="fluid"><PageHeader title="Deck Report" /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><Button variant="primary" onClick={requestedDeck.retry} className="mt-4">Try again</Button></Panel></PageLayout>;
 
-  if (!workspace || mainTotal === 0) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckToolNav activeTool="analysis" /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
+  if (!workspace || mainTotal === 0) return <PageLayout width="fluid"><PageHeader title="Deck Report" /><DeckToolNav activeTool="analysis" /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
 
   return <PageLayout width="fluid">
-    <PageHeader title="Deck Report" description="Observed matchups, sample sizes, and deck findings." />
+    <PageHeader title="Deck Report" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, ...(CALCULATORS_ENABLED ? [{ key: "explore" as const, label: "Calculators" }] : []), { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
+    <Panel as="section" className="mt-4" aria-labelledby="analysis-deck-heading">
+      <h2 id="analysis-deck-heading" className="font-semibold text-ctp-text">Deck at a glance</h2>
+      <DeckVisualStrip compact decklist={collectionDecklist} championName={workspace.championName} />
+    </Panel>
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, { key: "stats", label: "Stats" }, ...(CALCULATORS_ENABLED ? [{ key: "explore" as const, label: "Calculators" }] : []), { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
     <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
       {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
-      <ObservedMatchupReport key={workspace.updatedAt} scope={matchupScope} onScope={setMatchupScope} compare={compareMatchupPeriods} onCompare={setCompareMatchupPeriods} preview result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} />
       <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} onApply={applyReportSwap} />
-      <DeckReport deck={workspace} cardsByName={catalogByName} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
+      <DeckReport deck={workspace} cardsByName={catalogByName} />
+    </TabPanel>
+    <TabPanel baseId="deck-analysis" tab="stats" active={tab} keepMounted>
+      <DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} />
+    </TabPanel>
     {CALCULATORS_ENABLED && <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
@@ -237,16 +244,3 @@ function CollectionShortageSummary({ status }: { status: ReturnType<typeof compu
 }
 
 function total(lines: { quantity: number }[] | undefined) { return lines?.reduce((sum, line) => sum + line.quantity, 0) ?? 0; }
-
-function DeckArtworkPreview({ material, main, catalogByName }: { material: { name: string; quantity: number }[]; main: { name: string; quantity: number }[]; catalogByName: Map<string, Card> }) {
-  return <section aria-labelledby="analysis-deck-heading" className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm">
-    <div className="flex items-center justify-between gap-2"><h2 id="analysis-deck-heading" className="text-sm font-semibold text-ctp-text">Deck at a glance</h2><span className="text-xs text-ctp-subtext0">{main.reduce((sum, line) => sum + line.quantity, 0)} main</span></div>
-    <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-7">
-      {[...material, ...main].slice(0, 14).map((line, index) => {
-        const card = catalogByName.get(line.name);
-        const tile = <><CardArtTile card={card} name={line.name} cornerBadge={`${line.quantity}x`} /><span className="mt-1 block break-words text-xs">{line.name}</span></>;
-        return card ? <Link className="min-w-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" key={`${line.name}:${index}`} to={`/cards/${card.slug}`}>{tile}</Link> : <div className="min-w-0" key={`${line.name}:${index}`}>{tile}</div>;
-      })}
-    </div>
-  </section>;
-}
