@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotFound from "../../pages/NotFound";
-import { storyArcs } from "./arcs";
+import { storyArcs, storyHooks } from "./arcs";
 import { arcArtwork } from "./artwork";
 import { storyCards } from "./cards";
 import { ChapterList } from "./ChapterList";
@@ -12,15 +12,6 @@ import { StoryIndex } from "./StoryIndex";
 const storyLink = "inline-flex min-h-control min-w-control items-center rounded text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2";
 const firstCambriaCards = ["lorraine-wandering-warrior", "silvie-wilds-whisperer", "camelot-impenetrable"];
 
-const nextWorldHooks: Record<string, string> = {
-  cambria: "Lorraine’s search for Silvie takes her to Camelot on the brink of war.",
-  azoth: "Diana joins a resistance movement in a world transformed by automaton alchemy.",
-  sanguo: "An empty throne sets rival states on a collision course.",
-  underland: "A queen vanishes, and the search leads through the Looking Glass.",
-  "radiant-origins": "The Champions return to the Archive as Pantheon approaches.",
-  asphodel: "A disorder tied to Dante’s powers leads him to the Epicurean Institute.",
-};
-
 function NextWorld({ arc }: { arc: (typeof storyArcs)[number] }) {
   const artwork = arcArtwork[arc.id];
   return (
@@ -29,7 +20,7 @@ function NextWorld({ arc }: { arc: (typeof storyArcs)[number] }) {
       <div className="p-4 sm:p-6">
         <p className="text-sm font-medium text-ctp-subtext0">Next world</p>
         <p className="mt-1 text-xl font-semibold text-ctp-blue group-hover:underline">{arc.name}</p>
-        <p className="mt-1 text-sm leading-relaxed">{nextWorldHooks[arc.id]}</p>
+        <p className="mt-1 text-sm leading-relaxed">{storyHooks[arc.id]}</p>
       </div>
     </Link>
   );

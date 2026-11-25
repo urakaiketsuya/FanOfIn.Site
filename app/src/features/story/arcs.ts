@@ -75,3 +75,13 @@ export const storyArcs: StoryArc[] = [
     related: [otherworldlyPossessions],
   },
 ];
+
+export const storyHooks: Record<string, string> = {
+  homeworld: "When a world’s relic starts to decay, the Archive sends Champions to find out why.",
+  cambria: "Lorraine’s search for Silvie takes her to Camelot on the brink of war.",
+  azoth: "Diana joins a resistance movement in a world transformed by automaton alchemy.",
+  sanguo: "An empty throne sets rival states on a collision course.",
+  underland: "A queen vanishes, and the search leads through the Looking Glass.",
+  "radiant-origins": "The Champions return to the Archive as Pantheon approaches.",
+  asphodel: "A disorder tied to Dante’s powers leads him to the Epicurean Institute.",
+};

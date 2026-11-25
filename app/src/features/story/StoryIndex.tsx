@@ -1,24 +1,76 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "../../components/ui/Button";
-import Panel from "../../components/ui/Panel";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { storyArcs } from "./arcs";
+import { storyArcs, storyHooks } from "./arcs";
 import { arcArtwork } from "./artwork";
 
 const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
-const [prologue] = storyArcs;
+const stopId = (id: string) => `story-stop-${id}`;
+const tristanLink = storyArcs.find(arc => arc.id === "cambria")?.related?.[0];
 
-function WorldArt({ id, className, eager = false }: { id: string; className: string; eager?: boolean }) {
+function WorldOutline() {
+  const [activeId, setActiveId] = useState(storyArcs[0].id);
+
+  useEffect(() => {
+    const stops = storyArcs.flatMap(arc => {
+      const stop = document.getElementById(stopId(arc.id));
+      return stop ? [{ id: arc.id, stop }] : [];
+    });
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const readingLine = Math.max(150, window.innerHeight * 0.25);
+      const current = stops.findLast(({ stop }) => stop.getBoundingClientRect().top <= readingLine);
+      const atBottom = window.scrollY > 0 && document.documentElement.scrollHeight - window.innerHeight - window.scrollY <= 2;
+      setActiveId((atBottom ? stops.at(-1) : current ?? stops[0])?.id ?? storyArcs[0].id);
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    scheduleUpdate();
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <nav aria-label="World timeline" className="hidden lg:block">
+      <div className="sticky top-24 max-h-[calc(100dvh-7rem)] overflow-y-auto p-1">
+        <p className="mb-2 px-3 text-sm font-semibold text-ctp-subtext0">Reading order</p>
+        <ul>
+          {storyArcs.map(arc => (
+            <li key={arc.id}>
+              <Link
+                to={`#${stopId(arc.id)}`}
+                aria-current={arc.id === activeId ? "location" : undefined}
+                className={`flex min-h-control items-center rounded-md border-l-2 border-transparent px-3 py-2 text-sm leading-snug hover:bg-ctp-surface0 aria-[current=location]:border-ctp-blue aria-[current=location]:bg-ctp-surface0 aria-[current=location]:font-semibold ${focusRing}`}
+              >
+                {arc.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
+function WorldArt({ id, compact }: { id: string; compact: boolean }) {
   const src = arcArtwork[id];
   if (!src) return null;
 
   return (
-    <div className={`relative overflow-hidden bg-ctp-surface0 [&:has(>img[hidden])]:hidden ${className}`}>
+    <div className={`relative overflow-hidden rounded-xl bg-ctp-surface0 [&:has(>img[hidden])]:hidden ${compact ? "h-20 w-20 shrink-0 sm:h-24 sm:w-24" : "aspect-[2.25/1] sm:aspect-[2.8/1]"}`}>
       <img
         src={src}
         alt=""
-        loading={eager ? "eager" : "lazy"}
+        loading={compact || id === "cambria" ? "eager" : "lazy"}
         className={`absolute inset-0 size-full object-cover ${id === "cambria" ? "object-[center_25%]" : ""}`}
         onError={event => { event.currentTarget.hidden = true; }}
       />
@@ -26,92 +78,40 @@ function WorldArt({ id, className, eager = false }: { id: string; className: str
   );
 }
 
-function WorldJourney() {
-  const railRef = useRef<HTMLOListElement>(null);
-  const [edges, setEdges] = useState({ previous: false, next: false });
-
-  useEffect(() => {
-    const rail = railRef.current;
-    if (!rail) return;
-
-    const updateEdges = () => {
-      const previous = rail.scrollLeft > 1;
-      const next = rail.scrollWidth - rail.clientWidth - rail.scrollLeft > 1;
-      setEdges(current => current.previous === previous && current.next === next ? current : { previous, next });
-    };
-
-    const observer = new ResizeObserver(updateEdges);
-    observer.observe(rail);
-    rail.addEventListener("scroll", updateEdges, { passive: true });
-    updateEdges();
-    return () => {
-      observer.disconnect();
-      rail.removeEventListener("scroll", updateEdges);
-    };
-  }, []);
-
-  function scrollWorld(direction: -1 | 1) {
-    const rail = railRef.current;
-    const first = rail?.children[0];
-    const second = rail?.children[1];
-    if (!rail || !first || !second) return;
-    const stride = second.getBoundingClientRect().left - first.getBoundingClientRect().left;
-    rail.scrollBy({
-      left: direction * stride,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
-    });
-  }
-
+function WorldTimeline() {
   return (
-    <section aria-labelledby="story-route-title" className="mt-9 sm:mt-12">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <div>
-          <h2 id="story-route-title" className="text-2xl font-semibold">The journey</h2>
-          <p className="mt-1 text-sm text-ctp-subtext0">Recommended reading order</p>
-        </div>
-        <div className="flex gap-2">
-          <Button aria-label="Scroll to earlier worlds" aria-controls="story-worlds" disabled={!edges.previous} onClick={() => scrollWorld(-1)}>
-            <span aria-hidden="true">←</span>
-          </Button>
-          <Button aria-label="Scroll to later worlds" aria-controls="story-worlds" disabled={!edges.next} onClick={() => scrollWorld(1)}>
-            <span aria-hidden="true">→</span>
-          </Button>
-        </div>
-      </div>
-      <div className="relative">
-        <ol
-          id="story-worlds"
-          role="list"
-          ref={railRef}
-          className="relative grid snap-x snap-proximity auto-cols-[82%] grid-flow-col items-start gap-4 overflow-x-auto overscroll-x-contain scroll-px-1 px-1 pt-1 pb-3 sm:auto-cols-[19rem] sm:gap-5 lg:auto-cols-[21rem]"
-        >
-          {storyArcs.map(world => (
-            <Panel
-              as="li"
-              key={world.id}
-              padding="none"
-              className="relative min-w-0 snap-start after:pointer-events-none after:absolute after:left-full after:top-16 after:w-4 after:border-t after:border-ctp-lavender/50 last:after:hidden sm:after:w-5"
-            >
-              <Link
-                to={`/story/${world.id}`}
-                aria-labelledby={`story-stop-${world.id}`}
-                className={`group flex min-h-control flex-col overflow-hidden rounded-xl hover:bg-ctp-surface0 active:bg-ctp-surface1 ${focusRing}`}
-              >
-                <WorldArt id={world.id} className="aspect-[16/9] w-full shrink-0" />
-                <div className="min-w-0 p-4 sm:p-5">
-                  <h3 id={`story-stop-${world.id}`} className="break-words text-xl font-semibold text-ctp-blue group-hover:underline group-focus-visible:underline">
-                    {world.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-ctp-subtext0">{world.sets ?? "Prologue"}</p>
-                  <p className="mt-2 leading-relaxed text-ctp-subtext1">{world.summary}</p>
+    <section aria-labelledby="story-route-title" className="min-w-0">
+      <h2 id="story-route-title" className="text-2xl font-semibold">The journey</h2>
+      <p className="mt-1 text-sm text-ctp-subtext0">Recommended reading order</p>
+      <ol role="list" className="relative mt-6 pl-5 sm:pl-8">
+        {storyArcs.map(world => {
+          const isPrologue = world.id === "homeworld";
+          const isReturn = world.id === "radiant-origins";
+          const isArchive = isPrologue || isReturn;
+          return (
+            <li key={world.id} className="relative pb-8 after:pointer-events-none after:absolute after:top-4 after:-bottom-4 after:-left-4 after:w-px after:bg-ctp-lavender/40 last:pb-0 last:after:hidden sm:pb-12 sm:after:-left-6">
+              <span aria-hidden="true" className={`pointer-events-none absolute top-2 -left-[21px] z-10 size-[11px] border-2 border-ctp-base sm:-left-[29px] ${isArchive ? "rotate-45 rounded-xs bg-ctp-yellow" : "rounded-full bg-ctp-lavender"}`} />
+              <article id={stopId(world.id)} tabIndex={-1} aria-labelledby={`${stopId(world.id)}-title`} className={`scroll-mt-24 rounded-xl ${focusRing} ${isPrologue ? "flex items-start gap-4 rounded-xl bg-ctp-mantle p-3 sm:p-4" : ""}`}>
+                <WorldArt id={world.id} compact={isPrologue} />
+                <div className={isPrologue ? "min-w-0" : "mt-3"}>
+                  <p className={`text-sm ${isArchive ? "font-medium text-ctp-yellow" : "text-ctp-subtext0"}`}>{isPrologue ? "Prologue" : world.sets}</p>
+                  <h3 id={`${stopId(world.id)}-title`} className={`mt-1 font-semibold tracking-tight ${isPrologue ? "text-xl" : "text-2xl sm:text-3xl"}`}>{world.name}</h3>
+                  <p className="mt-1 max-w-prose leading-relaxed text-ctp-subtext1">{storyHooks[world.id]}</p>
+                  <Link to={`/story/${world.id}`} className={`mt-1 inline-flex min-h-control items-center rounded font-semibold text-ctp-blue underline-offset-4 hover:underline ${focusRing}`}>
+                    {isPrologue ? "Read the prologue" : `Read ${world.name}`}
+                  </Link>
                 </div>
-              </Link>
-            </Panel>
-          ))}
-        </ol>
-        {edges.previous && <div aria-hidden="true" data-scroll-edge="previous" className="pointer-events-none absolute top-0 bottom-3 left-0 w-6 bg-linear-to-r from-ctp-base via-ctp-base/65 to-transparent sm:w-10" />}
-        {edges.next && <div aria-hidden="true" data-scroll-edge="next" className="pointer-events-none absolute top-0 right-0 bottom-3 w-6 bg-linear-to-l from-ctp-base via-ctp-base/65 to-transparent sm:w-10" />}
-      </div>
+              </article>
+              {isPrologue && <p className="mt-3 text-sm font-medium text-ctp-lavender">The Champions’ first mission</p>}
+              {world.id === "cambria" && tristanLink && (
+                <Link to={tristanLink.to} className={`mt-3 inline-flex min-h-control items-center rounded border-l-2 border-dashed border-ctp-mauve px-3 text-sm font-medium text-ctp-mauve underline-offset-4 hover:underline ${focusRing}`}>
+                  Follow Tristan to Diana I in Azoth
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
     </section>
   );
 }
@@ -120,28 +120,17 @@ export function StoryIndex() {
   useDocumentTitle("Grand Archive Story", "Follow the Champions through the worlds of Grand Archive.");
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <header>
         <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Grand Archive Story</h1>
-        <Panel padding="none" className="mt-5 grid overflow-hidden md:grid-cols-2 md:[&:not(:has(img:not([hidden])))]:grid-cols-1">
-          <WorldArt id={prologue.id} eager className="aspect-[2/1] md:aspect-auto" />
-          <div className="p-4 sm:p-6">
-            <p className="text-sm font-semibold text-ctp-lavender">Prologue</p>
-            <h2 className="mt-1 text-2xl font-semibold">{prologue.name}</h2>
-            <p className="mt-2 max-w-prose leading-relaxed text-ctp-subtext1">{prologue.summary}</p>
-            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
-              <Link to="/story/cambria" className={`inline-flex min-h-control items-center rounded-md bg-ctp-blue px-4 font-semibold text-ctp-base hover:opacity-90 active:opacity-80 ${focusRing}`}>
-                Start with Cambria
-              </Link>
-              <Link to="/story/homeworld" className={`inline-flex min-h-control items-center rounded px-2 text-sm font-semibold text-ctp-blue hover:underline ${focusRing}`}>
-                Read the prologue
-              </Link>
-            </div>
-          </div>
-        </Panel>
+        <Link to="/story/cambria" className={`mt-4 inline-flex min-h-control items-center rounded-md bg-ctp-blue px-4 font-semibold text-ctp-base hover:opacity-90 active:opacity-80 ${focusRing}`}>
+          Start with Cambria
+        </Link>
       </header>
-
-      <WorldJourney />
+      <div className="mt-8 lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-8">
+        <WorldOutline />
+        <WorldTimeline />
+      </div>
     </div>
   );
 }
