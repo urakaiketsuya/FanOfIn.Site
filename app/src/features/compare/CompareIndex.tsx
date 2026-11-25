@@ -87,6 +87,7 @@ export default function CompareIndex() {
   const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "forecasts", browseState);
   const [cardDataMode, setCardDataMode] = useState<"quantities" | "performance">("quantities");
   const effectiveViewMode = viewMode;
+  const canCompare = decks.length >= 2;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const playersData = useOmnidexPlayers();
@@ -221,6 +222,7 @@ export default function CompareIndex() {
   function handleClearAll() {
     if (confirmClear) {
       setDecks([]);
+      setShowAddDecks(true);
       setConfirmClear(false);
       if (confirmClearTimerRef.current !== null) window.clearTimeout(confirmClearTimerRef.current);
       confirmClearTimerRef.current = null;
@@ -267,11 +269,11 @@ export default function CompareIndex() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm font-semibold text-ctp-text">{decks.length === 0 ? "Choose decks" : `${decks.length} deck${decks.length === 1 ? "" : "s"} selected`}</p>
               <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" onClick={() => setShowAddDecks((value) => !value)}>
-                  {showAddDecks ? "Close deck picker" : "+ Add deck"}
+                <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" aria-expanded={showAddDecks} aria-controls={showAddDecks ? "compare-deck-picker" : undefined} onClick={() => setShowAddDecks((value) => !value)}>
+                  {showAddDecks ? "Close deck picker" : decks.length === 1 ? "Add second deck" : "Add deck"}
                 </Button>
                 {decks.length > 0 && <Button variant="ghost" size="sm" onClick={handleCopyShareLink} className={shareCopyState === "failed" ? "text-ctp-red" : ""}>{shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Share"}</Button>}
-                {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
+                {decks.length > 0 && <Button variant={confirmClear ? "danger" : "ghost"} size="sm" onClick={handleClearAll}>{confirmClear ? "Confirm clear all" : "Clear"}</Button>}
               </div>
             </div>
             {decks.length > 0 && <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1" aria-live="polite" aria-label={`${decks.length} decks selected`}>
@@ -281,8 +283,8 @@ export default function CompareIndex() {
                   deck={d}
                   championCard={championCardsByDeckKey.get(d.key)}
                   deckHref={d.source.kind === "sighting" ? deckPageByKey.get(d.key) : undefined}
-                  isBaseline={effectiveViewMode !== "forecasts" && effectiveViewMode !== "blend" && d.key === effectiveBaselineKey}
-                  onSetBaseline={(effectiveViewMode === "forecasts" || effectiveViewMode === "blend") ? undefined : () => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
+                  isBaseline={canCompare && effectiveViewMode !== "forecasts" && effectiveViewMode !== "blend" && d.key === effectiveBaselineKey}
+                  onSetBaseline={(!canCompare || effectiveViewMode === "forecasts" || effectiveViewMode === "blend") ? undefined : () => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
                   onRemove={() => removeDeck(d.key)}
                 />
               ))}
@@ -290,14 +292,13 @@ export default function CompareIndex() {
           </Panel>
 
           {showAddDecks && (
-            <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
-                  <div className="flex flex-wrap items-center gap-2 text-sm">
-                <label htmlFor="compare-deck-source" className="text-xs text-ctp-subtext0">Source:</label>
-                <select id="compare-deck-source" value={tab} onChange={(event) => setTab(event.target.value as SourceTab)} className="min-h-10 flex-1 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text sm:hidden">{SOURCE_TAB_KEYS.map((key) => <option key={key} value={key}>{TAB_LABELS[key]}</option>)}</select>
-                <div className="hidden sm:block"><Tabs active={tab} tabs={SOURCE_TAB_KEYS.map(key => ({ key, label: TAB_LABELS[key] }))} label="Add decks source" baseId="source" onChange={setTab} variant="pill" wrap /></div>
+            <div id="compare-deck-picker" className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
+              <div className="grid max-w-sm gap-1">
+                <label htmlFor="compare-deck-source" className="text-sm font-medium text-ctp-text">Deck source</label>
+                <select id="compare-deck-source" value={tab} onChange={(event) => setTab(event.target.value as SourceTab)} className="min-h-control min-w-0 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue">{SOURCE_TAB_KEYS.map((key) => <option key={key} value={key}>{TAB_LABELS[key]}</option>)}</select>
               </div>
 
-              <Panel as="div" role="tabpanel" id={`source-panel-${tab}`} aria-labelledby={`source-tab-${tab}`} className="mt-3">
+              <Panel className="mt-3">
                 {tab === "myDecks" && <ImportMyDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "users" && <ImportByUser comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "cards" && <SearchTournamentDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
@@ -309,14 +310,14 @@ export default function CompareIndex() {
           )}
 
             <div className="mt-5">
-              {decks.length === 0 && (
+              {!canCompare && (
                 <InlineState className="text-sm">
-                  Add at least two decks to start a comparison.
+                  {decks.length === 1 ? "Add one more deck to compare." : "Add two decks to compare."}
                 </InlineState>
               )}
 
               {decks.length > 0 && (
-                <>
+                <div hidden={!canCompare}>
                   <div className="mt-4"><Tabs active={effectiveViewMode} tabs={VIEW_MODE_KEYS.map(key => ({ key, label: VIEW_MODE_LABELS[key] }))} label="Comparison view" baseId="view" onChange={(mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }} variant="pill" wrap /></div>
 
                   <div role="tabpanel" id={`view-panel-${effectiveViewMode}`} aria-labelledby={`view-tab-${effectiveViewMode}`} className="mt-4">
@@ -332,15 +333,15 @@ export default function CompareIndex() {
                     {effectiveViewMode === "table" && (
                       <>
                         <div className="mb-4 inline-flex max-w-full flex-wrap rounded-lg bg-ctp-mantle p-1" aria-label="Card data">
-                          <button type="button" aria-pressed={cardDataMode === "quantities"} onClick={() => setCardDataMode("quantities")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "quantities" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Deck quantities</button>
-                          <button type="button" aria-pressed={cardDataMode === "performance"} onClick={() => setCardDataMode("performance")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "performance" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Performance</button>
+                          <button type="button" aria-pressed={cardDataMode === "quantities"} onClick={() => setCardDataMode("quantities")} className={`min-h-control min-w-control rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "quantities" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Deck quantities</button>
+                          <button type="button" aria-pressed={cardDataMode === "performance"} onClick={() => setCardDataMode("performance")} className={`min-h-control min-w-control rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "performance" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Performance</button>
                         </div>
                         {cardDataMode === "quantities" ? <ComparisonDifferences decks={decks} decklists={decklists} /> : <ComparisonCardStats decks={decks} decklists={decklists} />}
                       </>
                     )}
                     <ComparisonTools onRetryDecklists={() => setDecks(previous => [...previous])} active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
                   </div>
-                </>
+                </div>
               )}
             </div>
         </div>
