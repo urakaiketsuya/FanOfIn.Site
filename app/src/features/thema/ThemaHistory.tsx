@@ -6,12 +6,21 @@ import HistoryChart from "../../components/HistoryChart";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
+import CardArtTile from "../../components/CardArtTile";
+import Button from "../../components/ui/Button";
+import Panel from "../../components/ui/Panel";
+import PageHeader from "../../components/ui/PageHeader";
+import { useCardCatalog } from "../cards/useCardCatalog";
 
 export default function ThemaHistory() {
-  useDocumentTitle("Thema Price History", "Historical Thema price-rank chart for a Grand Archive TCG card edition.");
   const { editionUuid = "" } = useParams<{ editionUuid: string }>();
   const [searchParams] = useSearchParams();
-  const kind = (searchParams.get("kind") as ThemaKind | null) ?? "FOIL";
+  const kind: ThemaKind = searchParams.get("kind") === "NONFOIL" ? "NONFOIL" : "FOIL";
+  const cards = useCardCatalog();
+  const card = cards.find(item => item.editions.some(edition => edition.uuid === editionUuid));
+  const edition = card?.editions.find(item => item.uuid === editionUuid);
+  const finish = kind === "FOIL" ? "Foil" : "Nonfoil";
+  useDocumentTitle(card ? `${card.name} Thema History` : "Thema History", "Historical Thema rankings for a Grand Archive TCG card printing.");
 
   const history = useQuery({
     queryKey: ["thema-history", editionUuid, kind],
@@ -22,19 +31,24 @@ export default function ThemaHistory() {
 
   return (
     <PageLayout data-component="ThemaHistory">
-      <Link to="/thema" className="text-sm text-ctp-blue hover:underline">
-        &larr; Back to Rankings
-      </Link>
+      <PageHeader title="Thema history" actions={<Link to="/thema" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">Thema rankings</Link>} />
+      <Panel className="mt-4 flex items-center gap-4">
+        <div className="w-20 shrink-0">
+          {card ? <Link to={`/cards/${card.slug}?edition=${editionUuid}`} aria-label={`View ${card.name}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">
+            <CardArtTile card={card} name={card.name} editionUuid={editionUuid} />
+          </Link> : <CardArtTile card={undefined} name="Card printing" />}
+        </div>
+        <div className="min-w-0 break-words">
+          <h2 className="text-lg font-semibold">{card?.name ?? "Card printing"}</h2>
+          <p className="text-sm text-ctp-subtext1">{edition && `${edition.set.name} · #${edition.collector_number} · `}{finish}</p>
+        </div>
+      </Panel>
 
-      <h1 className="mt-2 text-2xl font-bold text-ctp-blue">
-        Thema history <span className="text-ctp-subtext0">({kind === "FOIL" ? "Foil" : "Non-foil"})</span>
-      </h1>
-
-      {history.isPending && <InlineState className="mt-6">Loading…</InlineState>}
-      {history.isError && <InlineState tone="danger" className="mt-6">Failed to load history.</InlineState>}
-      {!history.isPending && !history.isError && points.length === 0 && (
-        <InlineState className="mt-6">No price history recorded yet.</InlineState>
-      )}
+      {history.isPending && <InlineState className="mt-6">Loading history…</InlineState>}
+      {history.isError && <div role="alert" className="mt-6 flex flex-wrap items-center gap-3 text-sm text-ctp-red">
+        <p>History could not load.</p><Button disabled={history.isFetching} onClick={() => void history.refetch()}>Retry history</Button>
+      </div>}
+      {!history.isPending && !history.isError && points.length === 0 && <InlineState className="mt-6">No Thema history recorded yet.</InlineState>}
 
       {points.length > 1 && (
         <div className="mt-6 rounded-md border border-ctp-surface1 p-4">
@@ -43,21 +57,21 @@ export default function ThemaHistory() {
       )}
 
       {points.length > 0 && (
-        <div className="mt-6 overflow-x-auto">
-          <table className="w-max min-w-full text-sm">
+        <div className="mt-6">
+          <table className="w-full table-fixed text-sm">
             <thead>
               <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                <th className="py-1 pr-6">Date</th>
-                <th className="py-1 pr-6">Rank</th>
-                <th className="py-1 pr-6">Total</th>
+                <th className="px-1 py-3">Date</th>
+                <th className="px-1 py-3">Rank</th>
+                <th className="px-1 py-3">Total</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
               {[...points].reverse().map((p) => (
                 <tr key={p.created_at}>
-                  <td className="py-1 pr-6 whitespace-nowrap text-ctp-subtext1">{new Date(p.created_at).toLocaleDateString()}</td>
-                  <td className="py-1 pr-6 text-ctp-subtext1">{p.rank}</td>
-                  <td className="py-1 pr-6 text-ctp-text">{p.thema_total}</td>
+                  <td className="break-words px-1 py-3 text-ctp-subtext1">{new Date(p.created_at).toLocaleDateString()}</td>
+                  <td className="break-words px-1 py-3 text-ctp-subtext1">{p.rank}</td>
+                  <td className="break-words px-1 py-3 text-ctp-text">{p.thema_total}</td>
                 </tr>
               ))}
             </tbody>
