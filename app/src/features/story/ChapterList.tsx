@@ -1,45 +1,38 @@
 import { Fragment } from "react";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { articleArtwork } from "./artwork";
-import { storyCards } from "./cards";
+import { getChapterCards } from "./chapterCards";
 import { StoryCardTile } from "./StoryGallery";
 import type { StoryArticle } from "./types";
 
-const recapLocations: Partial<Record<string, { cardSlug: string; afterParagraph: number }>> = {
-  "silvie-i-an-accidental-tumble": { cardSlug: "avalon-cursed-isle", afterParagraph: 1 },
-  "rai-i-a-fiery-welcome": { cardSlug: "varuck-smoldering-spire", afterParagraph: 2 },
+const illustrationPositions: Partial<Record<string, number>> = {
+  "silvie-i-an-accidental-tumble": 1,
+  "rai-i-a-fiery-welcome": 2,
 };
 
 function RecapIllustration({ slug }: { slug: string }) {
   const artwork = articleArtwork[slug];
-  const location = recapLocations[slug];
-  const card = storyCards.cambria.find(item => item.slug === location?.cardSlug);
-
-  if (!artwork && !card) return null;
+  if (!artwork) return null;
 
   return (
-    <div className="flex flex-col items-start gap-3 md:flex-row">
-      {artwork && (
-        <figure className="w-full min-w-0 flex-1 overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle [&:has(img[hidden])]:hidden">
-          <img
-            src={artwork.src}
-            alt=""
-            loading="lazy"
-            className="aspect-[2/1] w-full bg-ctp-crust object-contain"
-            onError={event => { event.currentTarget.hidden = true; }}
-          />
-          <figcaption className="px-3 py-2 text-sm text-ctp-subtext0">{artwork.caption}</figcaption>
-        </figure>
-      )}
-      {card && <ul className="w-full min-w-0 max-w-md flex-1"><StoryCardTile card={card} /></ul>}
-    </div>
+    <figure className="max-w-prose overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle [&:has(img[hidden])]:hidden">
+      <img
+        src={artwork.src}
+        alt=""
+        loading="lazy"
+        className="aspect-[2/1] w-full bg-ctp-crust object-contain"
+        onError={event => { event.currentTarget.hidden = true; }}
+      />
+      <figcaption className="px-3 py-2 text-sm text-ctp-subtext0">{artwork.caption}</figcaption>
+    </figure>
   );
 }
 
 function ChapterEntry({ article }: { article: StoryArticle }) {
   const { slug, title, summary, quote, recap, kind, note } = article;
   const url = `https://www.gatcg.com/article/${slug}`;
-  const illustrationAfter = recapLocations[slug]?.afterParagraph ?? 0;
+  const illustrationAfter = illustrationPositions[slug] ?? 0;
+  const cards = getChapterCards(slug);
 
   return (
     <li id={slug} tabIndex={-1} className="relative min-w-0 scroll-mt-24 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue">
@@ -54,7 +47,7 @@ function ChapterEntry({ article }: { article: StoryArticle }) {
         </blockquote>
         <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle">
           <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-3 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue sm:px-4 [&::-webkit-details-marker]:hidden">
-            <span>Read recap <span className="text-ctp-subtext0">· spoilers</span></span>
+            <span>Read recap <span className="text-ctp-subtext0">· {cards.length ? `${cards.length} ${cards.length === 1 ? "card" : "cards"} · ` : ""}spoilers</span></span>
             <DisclosureChevron className="group-open:rotate-180" />
           </summary>
           <div className="space-y-4 border-t border-ctp-surface1 px-3 pt-4 leading-relaxed sm:px-4">
@@ -65,6 +58,14 @@ function ChapterEntry({ article }: { article: StoryArticle }) {
                 {illustrationAfter === index + 1 && <RecapIllustration slug={slug} />}
               </Fragment>
             ))}
+            {cards.length > 0 && (
+              <section aria-labelledby={`${slug}-cards`}>
+                <h4 id={`${slug}-cards`} className="mb-2 font-semibold">Article card gallery</h4>
+                <ul role="list" className="grid gap-2 lg:grid-cols-2">
+                  {cards.map(card => <StoryCardTile key={card.slug} card={card} />)}
+                </ul>
+              </section>
+            )}
             <a href={url} aria-label={`Read official article: ${title}`} className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2">
               Read official article
             </a>
