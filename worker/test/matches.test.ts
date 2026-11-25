@@ -72,6 +72,51 @@ describe("match and deck ingestion", () => {
     expect((await worker.fetch(new Request(request(fixture), { body: " ".repeat(1048577) }))).status).toBe(413);
     expect((await worker.fetch(new Request(request(fixture), { headers: { Authorization: `Bearer ${"a".repeat(32)}`, "Content-Type": "text/plain" } }))).status).toBe(400);
   });
+  it("rejects empty GAO submissions and deduplicates simultaneous anonymous retries", async () => {
+    expect((await worker.fetch(request({}, "b".repeat(32)))).status).toBe(422);
+    for (const empty of [{}, { source: {} }, { players: [{}] }, { schemaVersion: 1, source: { id: "gao" } }]) {
+      expect((await worker.fetch(request(empty))).status).toBe(422);
+    }
+    const body = { matchType: "playtest" };
+    const responses = await Promise.all([worker.fetch(request(body)), worker.fetch(request(body))]);
+    expect(responses.map(response => response.status).sort()).toEqual([200, 201]);
+    const bodies = await Promise.all(responses.map(response => response.json() as Promise<{ submissionId: string }>));
+    expect(bodies[0].submissionId).toBe(bodies[1].submissionId);
+    const stored = await db.prepare("SELECT payload_json FROM partial_match_submissions WHERE submission_id = ?")
+      .bind(bodies[0].submissionId).first();
+    expect(JSON.parse(String(stored?.payload_json))).toEqual(body);
+  });
+
+  it("stores supplied GAO fields, validates them, and keeps match IDs unique across both storage paths", async () => {
+    const partial = { source: { matchId: "partial-first" }, players: [{ deck: { sections: { main: [{ cardId: "example-card" }] } } }], result: { wins: { "1": 1 } } };
+    const created = await worker.fetch(request(partial));
+    expect(created.status).toBe(201);
+    expect(await created.json()).toMatchObject({ sourceId: "gao", submissionId: "partial-first" });
+    expect((await worker.fetch(request({ ...partial, source: { ...partial.source, id: "gao" } }))).status).toBe(200);
+    expect((await worker.fetch(request({ ...partial, format: "standard" }))).status).toBe(409);
+    expect((await worker.fetch(request(payload("partial-first")))).status).toBe(409);
+    expect((await worker.fetch(request({ ...partial, format: "unknown" }))).status).toBe(422);
+    expect((await worker.fetch(request({ source: { id: "clarent" } }))).status).toBe(422);
+    expect((await worker.fetch(request(payload("complete-first")))).status).toBe(201);
+    expect((await worker.fetch(request({ source: { matchId: "complete-first" } }))).status).toBe(409);
+
+    const outcomes = await Promise.all([
+      worker.fetch(request(payload("partial-complete-race"))),
+      worker.fetch(request({ source: { matchId: "partial-complete-race" } })),
+    ]);
+    expect(outcomes.map(response => response.status).sort()).toEqual([201, 409]);
+  });
+
+  it("permits retry after a partial submission write fails", async () => {
+    const partial = { submissionId: "partial-rollback" };
+    await db.exec("CREATE TRIGGER fail_partial_match BEFORE INSERT ON partial_match_submissions BEGIN SELECT RAISE(ABORT, 'test failure'); END");
+    try {
+      expect((await worker.fetch(request(partial))).status).toBe(500);
+      expect(await db.prepare("SELECT submission_id FROM partial_match_submissions WHERE submission_id = 'partial-rollback'").first()).toBeNull();
+    } finally { await db.exec("DROP TRIGGER fail_partial_match"); }
+    expect((await worker.fetch(request(partial))).status).toBe(201);
+  });
+
   it("validates series, deck lines, seats, URLs, and dates", () => {
     const mutate: Array<(m: any) => void> = [
       m => m.players[1].seat = 1,

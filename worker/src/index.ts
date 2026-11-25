@@ -1,5 +1,5 @@
-import { matchSubmissionV1Schema } from "./match-schema";
-import { ingestMatch } from "./match-storage";
+import { matchSubmissionV1Fields, matchSubmissionV1Schema, partialMatchSchema } from "./match-schema";
+import { ingestMatch, ingestPartialMatch } from "./match-storage";
 import { gameSubmissionV1Schema } from "./schema";
 import { buildSimulatorSummary } from "./analytics";
 import { ingestSubmission, purgeExpiredRawPayloads, sha256Hex, type Env } from "./storage";
@@ -95,15 +95,21 @@ async function handleSubmission(request: Request, env: Env, requestId: string): 
   }
 
   if (isMatch) {
+    const authenticatedSource = sourceId!;
     const parsed = matchSubmissionV1Schema.safeParse(unknownPayload);
-    if (!parsed.success) return errorResponse(requestId, 422, "validation_failed", "Payload does not satisfy match schema version 1",
-      parsed.error.issues.slice(0, 20).map(issue => ({ path: issue.path.join("."), message: issue.message })));
-    if (parsed.data.source.id !== undefined && parsed.data.source.id !== sourceId)
+    const allowsPartial = !parsed.success && authenticatedSource === "gao"
+      && !matchSubmissionV1Fields.safeParse(unknownPayload).success;
+    const submission = allowsPartial ? partialMatchSchema.safeParse(unknownPayload) : parsed;
+    if (!submission.success) return errorResponse(requestId, 422, "validation_failed", "Payload does not satisfy match schema version 1",
+      submission.error.issues.slice(0, 20).map(issue => ({ path: issue.path.join("."), message: issue.message })));
+    if (submission.data.source?.id !== undefined && submission.data.source.id !== authenticatedSource)
       return errorResponse(requestId, 422, "validation_failed", "Source does not match ingestion credential",
         [{ path: "source.id", message: "Must match the source assigned to your bearer key" }]);
-    const result = await ingestMatch(env, sourceId!, parsed.data);
+    const result = parsed.success
+      ? { ...await ingestMatch(env, authenticatedSource, parsed.data), submissionId: parsed.data.submissionId }
+      : await ingestPartialMatch(env, authenticatedSource, submission.data);
     if (result.outcome === "conflict") return errorResponse(requestId, 409, "submission_conflict", "Submission or source match ID already exists with different content");
-    return jsonResponse({ success: true, requestId, sourceId, submissionId: parsed.data.submissionId, outcome: result.outcome }, result.outcome === "created" ? 201 : 200);
+    return jsonResponse({ success: true, requestId, sourceId: authenticatedSource, submissionId: result.submissionId, outcome: result.outcome }, result.outcome === "created" ? 201 : 200);
   }
   const parsed = gameSubmissionV1Schema.safeParse(unknownPayload);
   if (!parsed.success) {

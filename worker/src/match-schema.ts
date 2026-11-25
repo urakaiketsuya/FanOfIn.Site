@@ -10,6 +10,7 @@ const section = z.array(line).max(250).superRefine((cards, ctx) => {
   if (new Set(cards.map(c => c.cardId)).size !== cards.length)
     ctx.addIssue({ code: "custom", message: "Duplicate cardId within section" });
 });
+const deckSections = z.object({ main: section.min(1), material: section.min(1), sideboard: section, song: section }).strict();
 export const deckSnapshotSchema = z.object({
   sourceDeckId: id.optional(),
   url: z.url().max(2048).refine(value => {
@@ -17,30 +18,67 @@ export const deckSnapshotSchema = z.object({
     return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password;
   }, "Use an HTTP(S) URL without credentials").optional(),
   name: z.string().trim().min(1).max(120).refine(validUserFacingName, "Deck name violates content policy").optional(),
-  sections: z.object({ main: section.min(1), material: section.min(1), sideboard: section, song: section }).strict(),
+  sections: deckSections,
 }).strict();
 
-export const matchSubmissionV1Schema = z.object({
+const source = z.object({ id: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,63}$/).optional(), matchId: id, version: id.optional() }).strict();
+const wins = z.object({ "1": count, "2": count }).strict();
+const result = z.object({ outcome, winnerSeat: seat.nullable(), wins }).strict();
+const player = z.object({ seat, participantType: z.enum(["human", "bot"]), deck: deckSnapshotSchema }).strict();
+const game = z.object({
+  gameNumber: z.number().int().min(1).max(3),
+  sourceGameId: id.optional(),
+  outcome,
+  winnerSeat: seat.nullable(),
+  endReason: z.enum(["normal", "concede", "timeout", "disconnect", "agreement", "unknown"]),
+  firstPlayerSeat: seat.optional(),
+  turns: count.optional(),
+}).strict();
+
+export const matchSubmissionV1Fields = z.object({
   schemaVersion: z.literal(1),
   submissionId: id,
-  source: z.object({ id: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,63}$/).optional(), matchId: id, version: id.optional() }).strict(),
+  source,
   startedAt: z.iso.datetime({ offset: true }).optional(),
   completedAt: z.iso.datetime({ offset: true }).optional(),
   format: z.enum(["standard", "pantheon"]),
   matchType: z.enum(["casual", "ranked", "tournament", "playtest"]),
   bestOf: z.union([z.literal(1), z.literal(3)]),
-  result: z.object({ outcome, winnerSeat: seat.nullable(), wins: z.object({ "1": count, "2": count }).strict() }).strict(),
-  players: z.array(z.object({ seat, participantType: z.enum(["human", "bot"]), deck: deckSnapshotSchema }).strict()).length(2),
-  games: z.array(z.object({
-    gameNumber: z.number().int().min(1).max(3),
-    sourceGameId: id.optional(),
-    outcome,
-    winnerSeat: seat.nullable(),
-    endReason: z.enum(["normal", "concede", "timeout", "disconnect", "agreement", "unknown"]),
-    firstPlayerSeat: seat.optional(),
-    turns: count.optional(),
-  }).strict()).min(1).max(3),
-}).strict().superRefine((m, ctx) => {
+  result,
+  players: z.array(player).length(2),
+  games: z.array(game).min(1).max(3),
+}).strict();
+
+const partialLine = line.partial();
+const partialSection = z.array(partialLine).max(250).superRefine((cards, ctx) => {
+  const ids = cards.flatMap(card => card.cardId === undefined ? [] : [card.cardId]);
+  if (new Set(ids).size !== ids.length) ctx.addIssue({ code: "custom", message: "Duplicate cardId within section" });
+});
+const partialDeck = deckSnapshotSchema.extend({
+  sections: deckSections.extend({
+    main: partialSection, material: partialSection, sideboard: partialSection, song: partialSection,
+  }).partial(),
+}).partial();
+
+function hasMatchData(value: unknown): boolean {
+  if (value === null) return true;
+  if (typeof value === "object") return Object.values(value).some(hasMatchData);
+  return value !== undefined;
+}
+
+export const partialMatchSchema = matchSubmissionV1Fields.extend({
+  source: source.partial(),
+  result: result.extend({ wins: wins.partial() }).partial(),
+  players: z.array(player.extend({ deck: partialDeck }).partial()).max(2),
+  games: z.array(game.partial()).max(3),
+}).partial().refine(({ source, schemaVersion: _version, ...fields }) => {
+  const { id: _attribution, ...sourceFields } = source ?? {};
+  return hasMatchData({ ...fields, source: sourceFields });
+}, "Provide at least one submission field with a value");
+
+export type PartialMatch = z.infer<typeof partialMatchSchema>;
+
+export const matchSubmissionV1Schema = matchSubmissionV1Fields.superRefine((m, ctx) => {
   const issue = (path: (string | number)[], message: string) => ctx.addIssue({ code: "custom", path, message });
   if (new Set(m.players.map(p => p.seat)).size !== 2) issue(["players"], "Exactly one player per seat is required");
   if (m.startedAt && m.completedAt && Date.parse(m.completedAt) < Date.parse(m.startedAt)) issue(["completedAt"], "Cannot precede startedAt");

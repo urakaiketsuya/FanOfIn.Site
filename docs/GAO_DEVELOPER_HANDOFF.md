@@ -1,6 +1,6 @@
 # GAO developer handoff: match and decklist submissions
 
-The Fan of Insight match submission API is live. It accepts one completed Grand Archive match, both players’ registered decklists, and individual game results.
+The Fan of Insight match submission API is live. It accepts completed Grand Archive matches with both players’ registered decklists and individual game results. After the optional-fields update is deployed, GAO can also submit partial records.
 
 ## Endpoint
 
@@ -125,7 +125,15 @@ curl --fail-with-body \
   --data-binary @match.json
 ```
 
-## Payload requirements
+## Partial GAO submissions
+
+After the optional-fields update is deployed, GAO can omit any JSON field, including nested fields. Include at least one match or submission value. An empty object, empty containers alone, or schema version and source attribution alone return `422`. Supplied fields must use the documented types and allowed values.
+
+A partial submission can be as small as `{"source":{"matchId":"match-123"},"matchType":"casual"}`. The response uses the supplied `submissionId`, then `source.matchId` if present, then an ID derived from the parsed payload. Without either ID, identical payloads from GAO count as retries. Include a stable ID to distinguish separate submissions with identical data.
+
+Partial records are retained separately from simulator statistics. A partial record reserves its supplied IDs, so a changed payload or a completed record reusing those IDs returns `409`.
+
+## Complete payload requirements
 
 - Submit completed matches only. `bestOf` supports `1` or `3`; game results must agree with the match score. A series must reach a winning majority or use all game slots. No games may follow a clinched majority.
 - Include exactly two players, with seats `1` and `2`. `participantType` supports `human` or `bot`.
@@ -174,7 +182,7 @@ Errors include `success: false`, `requestId`, and an `error` object with `code` 
 
 Keep `submissionId`, `source.matchId`, and the payload stable across retries. Retry network failures and server errors with backoff. Persist undelivered submissions and mark them delivered only after `200` or `201`. Do not generate a new ID to bypass a conflict. Save the returned `requestId` when reporting an issue.
 
-Object key order and player/game/card-line ordering do not affect retry identity. Adding or omitting a matching `source.id` also does not affect retry identity. IDs are scoped to your authenticated source. There is no update/delete API.
+Object key order does not affect retry identity. For complete records, player/game/card-line ordering also does not affect retry identity. Adding or omitting a matching `source.id` also does not affect retry identity. IDs are scoped to your authenticated source. There is no update/delete API.
 
 ## Storage and visibility
 

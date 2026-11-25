@@ -24,6 +24,14 @@ curl --fail-with-body "$MATCH_API_BASE/v1/grand-archive/matches" \
 canonical card IDs and the complete actual lists. The endpoint validates structure,
 not card-catalog membership, deck legality, or whether a reported result is truthful.
 
+### Partial GAO submissions
+
+The `gao` credential can submit partial JSON objects with omitted fields at any
+level. Supply at least one match or submission value. Empty objects and empty
+collections alone, or schema version and source attribution alone, return `422`.
+See the [GAO developer handoff](../docs/GAO_DEVELOPER_HANDOFF.md#partial-gao-submissions)
+for retry identity, ID conflicts, and how partial records are stored.
+
 ### Backend JavaScript example
 
 This Node.js example reads the same `match.json` used by curl. Set `MATCH_API_BASE`

@@ -12,7 +12,7 @@ export default defineConfig({
       miniflare: {
         bindings: {
           INGESTION_API_KEY: "worker-test-key",
-          MATCH_INGESTION_KEYS: JSON.stringify({ tool_a: "a".repeat(32), tool_b: "b".repeat(32) }),
+          MATCH_INGESTION_KEYS: JSON.stringify({ gao: "a".repeat(32), clarent: "b".repeat(32) }),
           TEST_MIGRATIONS: await readD1Migrations(path.join(directory, "migrations")),
         },
       },
