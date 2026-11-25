@@ -7,7 +7,7 @@ interface StoryArc {
   id: string;
   name: string;
   sets?: string;
-  travelers?: string[];
+  championsMentioned?: string[];
   summary: string;
   articles: StoryArticle[];
   readingNote?: string;
@@ -28,7 +28,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "cambria",
-    travelers: ["Lorraine", "Silvie", "Rai", "Zander", "Tristan", "Merlin"],
+    championsMentioned: ["Lorraine", "Silvie", "Rai", "Zander", "Tristan", "Merlin"],
     name: "Cambria",
     sets: "Dawn of Ashes · Fractured Crown",
     summary: "A mysterious mage wins Aesa’s nobles over with promises of wealth and power, and rival houses raise armies against House Pendragon. On their first mission, the Archive’s Champions scatter across Cambria. Lorraine searches for Silvie as unrest turns to open war around Camelot.",
@@ -38,7 +38,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "azoth",
-    travelers: ["Diana", "Arisanna", "Tonoris", "Tristan"],
+    championsMentioned: ["Diana", "Arisanna", "Tonoris", "Tristan", "Vanitas"],
     name: "Azoth",
     sets: "Alchemical Revolution · Mercurial Heart",
     summary: "Claude’s discovery of automaton alchemy transforms Dorumegia. Diana joins the Resistance and faces a choice about how far she will go to protect the people she has come to know.",
@@ -47,7 +47,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "sanguo",
-    travelers: ["Kongming", "Guo Jia", "Jin Mara", "Zuo Ci"],
+    championsMentioned: ["Kongming", "Guo Jia", "Jin"],
     name: "Sanguo",
     sets: "Mortal Ambition · Abyssal Heaven",
     summary: "With the throne empty, neighboring states turn on one another. As rivals vie to rule Sanguo, the world’s guardians and visitors from other realms are drawn into the conflict.",
@@ -56,7 +56,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "underland",
-    travelers: ["Diana", "Ciel", "Merlin"],
+    championsMentioned: ["Diana", "Ciel", "Alice", "Merlin"],
     name: "Underland",
     sets: "Distorted Reflections · Phantom Monarchs",
     summary: "The Looking Glass opens a passage between Lucenia and Wonderland. As a search for the missing Golden Queen takes the Champions through the mirror, the two worlds draw dangerously close.",
@@ -65,7 +65,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "radiant-origins",
-    travelers: ["Returning Champions", "Luxera"],
+    championsMentioned: ["Merlin", "Tristan", "Jin"],
     name: "Return to Homeworld",
     sets: "Radiant Origins",
     summary: "The Champions return to Homeworld and trade stories of their missions as Pantheon approaches. Behind the celebrations, discoveries from other worlds give Beatrice a new direction for her research.",
@@ -73,7 +73,7 @@ export const storyArcs: StoryArc[] = [
   },
   {
     id: "asphodel",
-    travelers: ["Lorraine", "Casella", "Beatrice", "Zuo Ci"],
+    championsMentioned: ["Lorraine", "Dante"],
     name: "Asphodel",
     sets: ".asphodel/paradise · .asphodel/cantabile",
     summary: "Dis built its prosperity by redirecting Asphodel’s leylines. As the cost of that prosperity comes due, Dante investigates a disorder tied to his powers and Casella struggles to control her magic on her first mission.",
