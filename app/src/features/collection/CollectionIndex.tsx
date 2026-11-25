@@ -4,6 +4,7 @@ import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import CollectionChangesReview from "./CollectionChangesReview";
+import CollectionImportReview from "./CollectionImportReview";
 import CollectionGoalPanel, { type CollectionSaveReceipt } from "./CollectionGoalPanel";
 import CollectionValueSummary from "./CollectionValueSummary";
 import { useCollectionSaveQueue } from "./useCollectionSaveQueue";
@@ -91,6 +92,8 @@ export default function CollectionIndex() {
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [csv, setCsv] = useState("");
   const [mode, setMode] = useState<CollectionUpdateMode>("at-least");
+  const [importLines, setImportLines] = useState<CollectionUpdateLine[] | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
   const [selectedDeckId, setSelectedDeckId] = useState(""); const [includeSideboard, setIncludeSideboard] = useState(false); const [deckMode, setDeckMode] = useState<"at-least" | "add">("at-least");
   const [selectedSet, setSelectedSet] = useState(""); const [rarityQuantities, setRarityQuantities] = useState<Record<number, number>>({ ...DEFAULT_SET_RARITY_QUANTITIES });
   const [notice, setNotice] = useState<string | null>(null); const [busy, setBusy] = useState(false);
@@ -135,13 +138,43 @@ export default function CollectionIndex() {
   });
   const shoppingBlocked = !collectionReady || collectionError ? "Load your collection before adding missing copies." : saveQueue.pending ? "Retry the unconfirmed save before adding more quantities." : crossDeckRequired.length !== crossDeckShortages.length ? "Some cards are still unavailable in the catalog. You can shop now; wait for them to load before adding." : undefined;
 
-  async function update(lines: CollectionUpdateLine[], _source: string, updateMode: CollectionUpdateMode = "set") {
-    if(saveQueue.pending) {setNotice("Retry the unconfirmed save before editing quantities.");return;}
+  const importBlocked = saveQueue.pending ? "Retry the unconfirmed save before staging an import."
+    : busy ? "Wait for the current save to finish."
+    : collectionError ?? (catalogPhase === "error" ? "Card data is unavailable. Reload to try again."
+      : !collectionReady || catalogPhase !== "done" || !cards.length ? "Wait for the collection and card catalog to load." : null);
+
+  function reviewImport() {
+    const { lines, unresolved } = parseCollectionCsv(csv, cards);
+    if (unresolved.length) {
+      setImportError(`Resolve ${unresolved.length} ${unresolved.length === 1 ? "row" : "rows"} before importing: ${unresolved.slice(0, 3).join(" · ")}`);
+      return;
+    }
+    if (!lines.length) { setImportError("Enter at least one card and quantity."); return; }
+    setImportError(null);
+    setImportLines(lines);
+  }
+
+  function stageImport() {
+    if (!importLines || importBlocked || savingRef.current) return;
+    if (!stageQuantities(importLines, mode)) return;
+    setImportLines(null);
+    setCsv("");
+    setReviewChanges(true);
+  }
+
+  function stageQuantities(lines: CollectionUpdateLine[], updateMode: CollectionUpdateMode) {
+    if (saveQueue.pending) { setNotice("Retry the unconfirmed save before editing quantities."); return false; }
     setDrafts(current => {
       return stageCollectionQuantities(current, savedEntries, lines, updateMode);
     });
     setNotice(null);
+    return true;
   }
+
+  async function update(lines: CollectionUpdateLine[], _source: string, updateMode: CollectionUpdateMode = "set") {
+    stageQuantities(lines, updateMode);
+  }
+
   async function saveQuantities() {
     if(savingRef.current) return;
     savingRef.current=true;
@@ -239,10 +272,29 @@ export default function CollectionIndex() {
       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-4"><h3 className="font-medium">Add by set and rarity</h3><p className="mt-1 text-xs text-ctp-subtext1">Card-level tracking: alternate printings of the same card are counted once.</p><select value={selectedSet} onChange={(event) => { setSelectedSet(event.target.value); setRarityQuantities({ ...DEFAULT_SET_RARITY_QUANTITIES }); }} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm"><option value="">Choose a set</option>{setOptions.map((set) => <option key={set.prefix} value={set.prefix}>{set.name} ({set.prefix})</option>)}</select>{selectedSet && <><div className="mt-3 grid grid-cols-[minmax(0,1fr)_5rem] gap-2 text-xs">{setRarities.map((rarity) => <label key={rarity} className="contents"><span className="self-center text-ctp-subtext1">{COLLECTION_RARITY_LABELS[rarity] ?? `Rarity ${rarity}`}{rarity === 6 || rarity === 9 ? " (promo)" : ""}</span><input aria-label={`${COLLECTION_RARITY_LABELS[rarity] ?? `Rarity ${rarity}`} copies per card`} type="number" min={0} max={99} value={rarityQuantities[rarity] ?? 0} onChange={(event) => setRarityQuantities((current) => ({ ...current, [rarity]: Math.max(0, Number(event.target.value) || 0) }))} className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-1 text-right" /></label>)}</div><div className="mt-3 rounded bg-ctp-mantle p-3 text-xs text-ctp-subtext1"><p>{setLines.length} cards selected · {setLines.reduce((sum, line) => sum + line.quantity, 0)} target copies</p><p className="mt-1">{setPreview.addedCopies} copies would be added across {setPreview.affectedCards} cards · {setPreview.coveredCards} already covered</p><details className="mt-2"><summary className="cursor-pointer text-ctp-blue">Preview cards</summary><ul className="mt-2 max-h-44 columns-1 overflow-auto sm:columns-2">{setLines.map((line) => <li key={line.cardUuid}>{line.quantity}× {line.cardName}</li>)}</ul></details></div></>}<button type="button" disabled={busy || !selectedSet || !setLines.length} onClick={() => { const set = setOptions.find((option) => option.prefix === selectedSet); if (!set || !window.confirm(`Set your collection to at least the selected quantities for ${setLines.length} cards from ${set.name}?`)) return; void update(setLines, `Set playset: ${set.name}`, "at-least"); }} className="mt-3 rounded bg-ctp-blue px-3 py-1.5 text-sm font-medium text-ctp-base disabled:opacity-50">Add set cards</button></div>
     </div></details>
     </div>
-    <div hidden={view !== "import"} className="[&_button]:min-h-12 [&_select]:min-h-12">
-<button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button>
-    <Panel className="mt-5"><h2 className="font-semibold">Import CSV or a quantity list</h2><p className="mt-1 text-xs text-ctp-subtext1">Accepts exported CSV or lines like <code>4,Dungeon Guide</code>. You’ll see unresolved rows before anything is saved.</p><textarea aria-label="Collection import text" rows={6} value={csv} onChange={(event) => setCsv(event.target.value)} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /><div className="mt-2 flex flex-wrap gap-2"><select aria-label="Import quantity mode" value={mode} onChange={(event) => setMode(event.target.value as CollectionUpdateMode)} className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-sm"><option value="at-least">Set to at least</option><option value="add">Add quantities</option><option value="set">Replace quantities</option></select><button disabled={busy || !csv.trim()} onClick={() => { const parsed = parseCollectionCsv(csv, cards); if (parsed.unresolved.length) { setNotice(`${parsed.unresolved.length} row${parsed.unresolved.length === 1 ? "" : "s"} could not be resolved. Fix them before importing: ${parsed.unresolved.slice(0, 3).join(" | ")}`); return; } const copies = parsed.lines.reduce((sum, line) => sum + line.quantity, 0); if (!parsed.lines.length || !window.confirm(`${mode === "add" ? "Add" : mode === "set" ? "Set" : "Set to at least"} ${copies} copies across ${parsed.lines.length} cards?`)) return; void update(parsed.lines, "CSV import", mode).then(() => setCsv("")); }} className="rounded bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Preview and import</button></div></Panel>
+    <div hidden={view !== "import"} className="mt-4">
+      <Panel className="max-w-2xl">
+        <h2 className="text-lg font-semibold">Import quantities</h2>
+        <label className="mt-4 block text-sm font-medium" htmlFor="collection-import-text">Collection import text</label>
+        <textarea id="collection-import-text" rows={6} value={csv} placeholder="4,Dungeon Guide" aria-describedby={importError ? "collection-import-error" : undefined} onChange={event => { setCsv(event.target.value); setImportError(null); }} className="mt-2 w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" />
+        <p className="mt-1 text-sm text-ctp-subtext1">Paste an exported CSV or enter one quantity and card name per line.</p>
+        {importError && <p id="collection-import-error" role="alert" className="mt-2 break-words text-sm text-ctp-red">{importError}</p>}
+        <label className="mt-4 block text-sm font-medium" htmlFor="collection-import-mode">Quantity mode</label>
+        <select id="collection-import-mode" value={mode} onChange={event => setMode(event.target.value as CollectionUpdateMode)} className="mt-2 block min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm sm:w-auto">
+          <option value="at-least">Set to at least</option>
+          <option value="add">Add quantities</option>
+          <option value="set">Replace quantities</option>
+        </select>
+        {importBlocked && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{importBlocked}</p>}
+        <div className="mt-4 grid gap-2 sm:flex">
+          <Button variant="primary" disabled={!!importBlocked || !csv.trim()} onClick={reviewImport}>Review import</Button>
+          <Button disabled={!entries.length} onClick={() => downloadCsv(entries)}>Export CSV</Button>
+        </div>
+      </Panel>
     </div>
+    {view === "import" && importLines && <CollectionImportReview lines={importLines} entries={entries} savedEntries={savedEntries}
+      nextDrafts={stageCollectionQuantities(drafts, savedEntries, importLines, mode)} cards={cards} blocked={importBlocked}
+      onConfirm={stageImport} onDismiss={() => setImportLines(null)} />}
     <div hidden={view !== "coverage"}>
     <Link to="/card-locations" className="mt-4 inline-flex min-h-12 items-center text-ctp-blue underline">Manage deck locations and loans →</Link>
     <details className="mt-4"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Build all decks simultaneously<DisclosureChevron/></summary>
