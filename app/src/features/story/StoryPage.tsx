@@ -6,6 +6,7 @@ import Panel from "../../components/ui/Panel";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotFound from "../../pages/NotFound";
 import { storyArcs } from "./arcs";
+import { arcArtwork, articleArtwork } from "./artwork";
 import { storyCards } from "./cards";
 import type { StoryArticle, StoryCard } from "./types";
 
@@ -15,6 +16,7 @@ const articleUrl = (slug: string) => `https://www.gatcg.com/article/${slug}`;
 function ArticleEntry({ article }: { article: StoryArticle }) {
   const { slug, title, summary, quote, recap, kind, note } = article;
   const url = articleUrl(slug);
+  const artwork = articleArtwork[slug];
 
   return (
     <li id={slug} tabIndex={-1} className="scroll-mt-24">
@@ -32,6 +34,18 @@ function ArticleEntry({ article }: { article: StoryArticle }) {
             <DisclosureChevron className="group-open:rotate-180" />
           </summary>
           <div className="space-y-3 pb-2 leading-relaxed">
+            {artwork && (
+              <figure className="overflow-hidden rounded-lg border border-ctp-surface1 [&:has(img[hidden])]:hidden">
+                <img
+                  src={artwork.src}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[2/1] w-full bg-ctp-crust object-contain"
+                  onError={event => { event.currentTarget.hidden = true; }}
+                />
+                <figcaption className="px-3 py-2 text-sm text-ctp-subtext0">{artwork.caption}</figcaption>
+              </figure>
+            )}
             {recap.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
           </div>
         </details>
@@ -109,6 +123,7 @@ function StoryIndex() {
 
 function ArcPage({ arc, index }: { arc: (typeof storyArcs)[number]; index: number }) {
   const nextArc = storyArcs[index + 1];
+  const artwork = arcArtwork[arc.id];
   useDocumentTitle(`${arc.name} · Grand Archive Story`, arc.summary);
 
   return (
@@ -122,8 +137,16 @@ function ArcPage({ arc, index }: { arc: (typeof storyArcs)[number]; index: numbe
       <div className="min-w-0">
         <header>
           <Link to="/story" className={`${storyLink} mb-1 text-sm lg:hidden`}>All worlds</Link>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">{arc.name}</h1>
-          {arc.sets && <p className="mt-2 text-sm text-ctp-subtext0">{arc.sets}</p>}
+          <div className={artwork ? "relative isolate flex min-h-44 flex-col justify-end overflow-hidden rounded-xl bg-ctp-crust p-4 text-white sm:min-h-64 sm:p-6" : undefined}>
+            {artwork && (
+              <>
+                <img src={artwork} alt="" className={`absolute inset-0 -z-20 size-full object-cover ${arc.id === "cambria" ? "object-[center_25%]" : ""}`} onError={event => { event.currentTarget.hidden = true; }} />
+                <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-black/95 via-black/55 to-black/5" />
+              </>
+            )}
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">{arc.name}</h1>
+            {arc.sets && <p className={`mt-2 text-sm ${artwork ? "text-white" : "text-ctp-subtext0"}`}>{arc.sets}</p>}
+          </div>
           <p className="mt-4 max-w-2xl leading-relaxed">{arc.summary}</p>
           <Link to="#official-reading" className={`${storyLink} mt-1 text-sm`}>Jump to reading order</Link>
         </header>
