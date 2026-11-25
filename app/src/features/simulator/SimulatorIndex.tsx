@@ -3,7 +3,10 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import CardArtTile from "../../components/CardArtTile";
 import Button from "../../components/ui/Button";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import PageHeader from "../../components/ui/PageHeader";
+import { useTabParam } from "../../lib/useTabParam";
 import { useSimulatorSummaryData } from "./data";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -30,10 +33,47 @@ function formatAvg(value: number): string {
   return value.toFixed(1);
 }
 
+const VIEWS = ["overview", "cards", "turns"] as const;
+const CARD_METRICS = ["Games", "Win rate", "Avg drawn", "Avg materialized", "Avg activated", "Avg discarded", "Avg reserved", "Attacks", "Avg damage dealt", "Lethal hits"];
+const TURN_METRICS = ["Games", "Avg cards played", "Avg memory spent", "Avg reserve spent", "Avg damage dealt", "Avg damage taken", "Avg healed", "Avg level", "Avg HP"];
+
+function SimulatorMetrics({ title, labels, rows }: {
+  title: string;
+  labels: string[];
+  rows: { id: string | number; identity: ReactNode; values: (string | number)[] }[];
+}) {
+  return <>
+    <ul className="mt-3 space-y-2 md:hidden">
+      {rows.map(row => <li key={row.id} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+        <div className="text-sm font-medium">{row.identity}</div>
+        <dl className="mt-2 grid grid-cols-2 gap-2 text-sm">
+          {labels.map((label, index) => <div key={label}>
+            <dt className="text-xs text-ctp-subtext1">{label}</dt>
+            <dd className="font-medium tabular-nums">{row.values[index]}</dd>
+          </div>)}
+        </dl>
+      </li>)}
+    </ul>
+    <div className="mt-3 hidden overflow-x-auto md:block">
+      <table className="w-full text-left text-sm">
+        <thead><tr className="text-xs text-ctp-subtext0">
+          <th scope="col" className="min-w-32 p-2 font-medium">{title}</th>
+          {labels.map(label => <th key={label} scope="col" className="p-2 font-medium">{label}</th>)}
+        </tr></thead>
+        <tbody>{rows.map(row => <tr key={row.id} className="border-t border-ctp-surface0">
+          <th scope="row" className="p-2 font-medium">{row.identity}</th>
+          {labels.map((label, index) => <td key={label} className="p-2 tabular-nums">{row.values[index]}</td>)}
+        </tr>)}</tbody>
+      </table>
+    </div>
+  </>;
+}
+
 export default function SimulatorIndex() {
   useDocumentTitle("Simulator Data", "Match statistics from GAO and Clarent.");
   const data = useSimulatorSummaryData();
   const [params, setParams] = useSearchParams();
+  const [view, setView] = useTabParam("tab", VIEWS, "overview");
   const source = params.get("source") === "gao" ? "gao" : "clarent";
   const sourceLabel = source === "gao" ? "GAO" : "Clarent";
   const submitted = data?.matchSources?.find(row => row.sourceId === source);
@@ -56,7 +96,7 @@ export default function SimulatorIndex() {
 
   return (
     <PageLayout data-component="SimulatorIndex">
-      <h1 className="text-2xl font-bold text-ctp-blue">Simulator Data</h1>
+      <PageHeader title="Simulator Data" />
       <label className="mt-4 flex max-w-xs flex-col gap-1 text-sm text-ctp-text">
         Source
         <select aria-label="Source" value={source}
@@ -67,13 +107,7 @@ export default function SimulatorIndex() {
         </select>
       </label>
 
-      <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
-        <p className="font-semibold text-ctp-peach">Experimental – very early data</p>
-        <p className="mt-1 text-ctp-subtext1">
-          A separate population from tournament results, never blended into them.{" "}
-          <Link to="/methodology#simulator-data" className="text-ctp-blue hover:underline">Learn more</Link>
-        </p>
-      </div>
+      <p className="mt-3 text-sm text-ctp-subtext1">Experimental data · <Link to="/methodology#simulator-data" className="inline-flex min-h-control items-center text-ctp-blue hover:underline">Data coverage</Link></p>
 
       {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-red"><p>{data ? "Showing saved data. " : ""}{status.error}</p><Button className="mt-2" onClick={status.retry}>Retry loading</Button></div>}
       {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
@@ -94,7 +128,10 @@ export default function SimulatorIndex() {
       )}
 
       {data && source === "clarent" && (
-        <div className="mt-6 space-y-6">
+        <div className="mt-6">
+          <Tabs baseId="simulator-view" label="Simulator statistics" active={view} onChange={setView} variant="pill" wrap
+            tabs={[{ key: "overview", label: "Overview" }, { key: "cards", label: "Cards and weapons" }, { key: "turns", label: "Turns" }]} />
+          <TabPanel baseId="simulator-view" tab="overview" active={view} className="mt-4 space-y-6">
           <div className="rounded-lg border border-ctp-surface1 p-4">
             <Section heading="dense" title="Clarent game telemetry">
             <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -134,7 +171,7 @@ export default function SimulatorIndex() {
                     <tr className="text-xs text-ctp-subtext0">
                       <th className="pb-1 pr-3 font-normal">Champion</th>
                       <th className="pb-1 pr-3 font-normal">Element</th>
-                      <th className="pb-1 pr-3 font-normal">Games</th>
+                      <th className="pb-1 pr-3 font-normal">Record</th>
                       <th className="pb-1 font-normal">Win rate</th>
                     </tr>
                   </thead>
@@ -176,136 +213,46 @@ export default function SimulatorIndex() {
             )}
           </Section>
 
-          <Section
-            heading="dense"
-            title="Card stats"
-            description="5-game minimum."
-          >
-            {cardStats.length === 0 ? (
-              <InlineState className="mt-2 text-sm">
-                No card has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </InlineState>
-            ) : (
-              <div className="mt-2 overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Card</th>
-                      <th className="pb-1 pr-3 font-normal">Games</th>
-                      <th className="pb-1 pr-3 font-normal">Win rate</th>
-                      <th className="pb-1 pr-3 font-normal">Avg drawn</th>
-                      <th className="pb-1 pr-3 font-normal">Avg materialized</th>
-                      <th className="pb-1 pr-3 font-normal">Avg activated</th>
-                      <th className="pb-1 pr-3 font-normal">Avg discarded</th>
-                      <th className="pb-1 pr-3 font-normal">Avg reserved</th>
-                      <th className="pb-1 pr-3 font-normal">Attack events</th>
-                      <th className="pb-1 pr-3 font-normal">Avg dmg dealt</th>
-                      <th className="pb-1 font-normal">Lethal hits</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cardStats.map((c) => (
-                      <tr key={c.cardId} className="border-t border-ctp-surface0">
-                        <td className="min-w-44 py-1.5 pr-3 text-ctp-text"><SimulatorCard id={c.cardId} cards={cards} /></td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{c.games}</td>
-                        <td className="py-1.5 pr-3 text-ctp-text">{formatPercent(c.winRate)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDrawn)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgMaterialized)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgActivated)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDiscarded)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgReserved)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{c.attackEvents}</td>
-                        <td className="py-1.5 pr-3 text-ctp-text">{formatAvg(c.avgDamageDealt)}</td>
-                        <td className="py-1.5 text-ctp-text">{c.lethalHits}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </Section>
-
-          <Section
-            heading="dense"
-            title="Weapons"
-            description="Same 5-game minimum. Cleave rate is the share of a weapon's attacks flagged as hitting multiple targets."
-          >
-            {weapons.length === 0 ? (
-              <InlineState className="mt-2 text-sm">
-                No weapon has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </InlineState>
-            ) : (
-              <div className="mt-2 overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Weapon</th>
-                      <th className="pb-1 pr-3 font-normal">Games</th>
-                      <th className="pb-1 pr-3 font-normal">Attack events</th>
-                      <th className="pb-1 font-normal">Cleave rate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {weapons.map((w) => (
-                      <tr key={w.weaponCardId} className="border-t border-ctp-surface0">
-                        <td className="min-w-44 py-1.5 pr-3 text-ctp-text"><SimulatorCard id={w.weaponCardId} cards={cards} /></td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{w.games}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{w.attackEvents}</td>
-                        <td className="py-1.5 text-ctp-text">{formatPercent(w.cleaveRate)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </Section>
-
-          <Section
-            heading="dense"
-            title="Turn stats"
-            description="Same 5-game minimum, per turn number – averaged across every seat that reported stats for that turn."
-          >
-            {turnStats.length === 0 ? (
-              <InlineState className="mt-2 text-sm">
-                No turn has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </InlineState>
-            ) : (
-              <div className="mt-2 overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Turn</th>
-                      <th className="pb-1 pr-3 font-normal">Games</th>
-                      <th className="pb-1 pr-3 font-normal">Avg cards played</th>
-                      <th className="pb-1 pr-3 font-normal">Avg memory spent</th>
-                      <th className="pb-1 pr-3 font-normal">Avg reserve spent</th>
-                      <th className="pb-1 pr-3 font-normal">Avg dmg dealt</th>
-                      <th className="pb-1 pr-3 font-normal">Avg dmg taken</th>
-                      <th className="pb-1 pr-3 font-normal">Avg healed</th>
-                      <th className="pb-1 pr-3 font-normal">Avg level</th>
-                      <th className="pb-1 font-normal">Avg HP</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {turnStats.map((t) => (
-                      <tr key={t.turn} className="border-t border-ctp-surface0">
-                        <td className="py-1.5 pr-3 text-ctp-text">{t.turn}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{t.games}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgCardsPlayed)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgMemorySpent)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgReserveSpent)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgDamageDealt)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgDamageTaken)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgHealed)}</td>
-                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgLevel)}</td>
-                        <td className="py-1.5 text-ctp-text">{formatAvg(t.avgHp)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </Section>
+          </TabPanel>
+          <TabPanel baseId="simulator-view" tab="cards" active={view} className="mt-4 space-y-6">
+            <Section heading="dense" title="Card stats" description="5-game minimum">
+              {cardStats.length === 0 ? <InlineState>No card has reached 5 games yet.</InlineState> : (
+                <SimulatorMetrics title="Card" labels={CARD_METRICS} rows={cardStats.map(card => ({
+                  id: card.cardId,
+                  identity: <SimulatorCard id={card.cardId} cards={cards} />,
+                  values: [
+                    card.games, formatPercent(card.winRate), formatAvg(card.avgDrawn), formatAvg(card.avgMaterialized),
+                    formatAvg(card.avgActivated), formatAvg(card.avgDiscarded), formatAvg(card.avgReserved),
+                    card.attackEvents, formatAvg(card.avgDamageDealt), card.lethalHits,
+                  ],
+                }))} />
+              )}
+            </Section>
+            <Section heading="dense" title="Weapons" description="5-game minimum">
+              {weapons.length === 0 ? <InlineState>No weapon has reached 5 games yet.</InlineState> : (
+                <SimulatorMetrics title="Weapon" labels={["Games", "Attacks", "Cleave rate"]} rows={weapons.map(weapon => ({
+                  id: weapon.weaponCardId,
+                  identity: <SimulatorCard id={weapon.weaponCardId} cards={cards} />,
+                  values: [weapon.games, weapon.attackEvents, formatPercent(weapon.cleaveRate)],
+                }))} />
+              )}
+            </Section>
+          </TabPanel>
+          <TabPanel baseId="simulator-view" tab="turns" active={view} className="mt-4">
+            <Section heading="dense" title="Turn stats" description="5-game minimum per turn">
+              {turnStats.length === 0 ? <InlineState>No turn has reached 5 games yet.</InlineState> : (
+                <SimulatorMetrics title="Turn" labels={TURN_METRICS} rows={turnStats.map(turn => ({
+                  id: turn.turn,
+                  identity: `Turn ${turn.turn}`,
+                  values: [
+                    turn.games, formatAvg(turn.avgCardsPlayed), formatAvg(turn.avgMemorySpent), formatAvg(turn.avgReserveSpent),
+                    formatAvg(turn.avgDamageDealt), formatAvg(turn.avgDamageTaken), formatAvg(turn.avgHealed), formatAvg(turn.avgLevel),
+                    formatAvg(turn.avgHp),
+                  ],
+                }))} />
+              )}
+            </Section>
+          </TabPanel>
         </div>
       )}
     </PageLayout>
