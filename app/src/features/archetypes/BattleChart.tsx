@@ -1,7 +1,6 @@
 import { cardImagePath } from "../../lib/previewCards";
 import BattlePeriodReport from "../competition/BattlePeriodReport";
 import { useMemo, useState, type CSSProperties } from "react";
-import { Link } from "react-router-dom";
 import type { BattleChartEntry } from "@gatcg/shared";
 import { useArchetypeData } from "./data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
@@ -17,10 +16,11 @@ import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
-type ViewTab = "matrix" | "champion" | "highlights" | "field";
+type ViewTab = "matrix" | "champion" | "highlights" | "field" | "recent";
 
 const TABS: { key: ViewTab; label: string }[] = [
   { key: "champion", label: "By Champion" },
+  { key: "recent", label: "Recent results" },
   { key: "field", label: "Explore a field" },
   { key: "highlights", label: "Highlights" },
   { key: "matrix", label: "Full Matrix" },
@@ -129,22 +129,24 @@ export default function BattleChart() {
 
   return (
     <PageLayout data-component="BattleChart" width="wide">
-      <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} />
-
-      <BattlePeriodReport />
-      <h2 className="mt-8 text-xl font-semibold">All-time matchup archive</h2>
-      {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
-      {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-subtext1">{status.error} {data && "Showing cached results."} <Button onClick={status.retry}>Retry</Button></div>}
-      {data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
+      <PageHeader title="Battle Chart" />
+      <div className="mt-4">
+        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" baseId="battle-chart" variant="pill" wrap />
+      </div>
+      <TabPanel baseId="battle-chart" tab="recent" active={tab} className="mt-4">
+        <BattlePeriodReport />
+      </TabPanel>
+      {tab !== "recent" && !data && status.phase !== "error" && <InlineState className="mt-6">Loading matchups…</InlineState>}
+      {tab !== "recent" && status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-subtext1">{status.error} {data && "Showing cached results."} <Button onClick={status.retry}>Retry</Button></div>}
+      {tab !== "recent" && data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
 
       {signatures.length > 0 && (
         <>
-          <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" baseId="battle-chart" variant="pill" wrap />
           {data && <TabPanel baseId="battle-chart" tab="field" active={tab} keepMounted><ScopedExpectedField enabled={tab === "field"} /></TabPanel>}
 
           <TabPanel baseId="battle-chart" tab="matrix" active={tab}>
             <div className="mt-6 overflow-x-auto">
-              <p className="mb-2 text-xs text-ctp-subtext0">Cell color and percentage show the row Champion's win rate against the column. Stronger color means a larger, better-supported advantage; hover for the full record.</p>
+              <p className="mb-2 text-xs text-ctp-subtext0">Row champion win rate against each column champion. Records show wins–losses–ties.</p>
               <div className="mb-3 flex flex-wrap items-center gap-2 text-[10px] text-ctp-subtext0" aria-label="Win-rate heatmap legend">
                 <span>Unfavored</span>
                 {["bg-ctp-red/40", "bg-ctp-red/20", "bg-ctp-surface0", "bg-ctp-green/20", "bg-ctp-green/40"].map((className) => (
@@ -158,8 +160,8 @@ export default function BattleChart() {
                     <th className="sticky left-0 z-20 bg-ctp-base p-2"></th>
                     {signatures.map((s) => (
                       <th key={s} className="sticky top-0 z-10 bg-ctp-base p-2 text-ctp-subtext0">
-                        <button type="button" onClick={() => goToChampion(s)} title={s} className="min-h-control min-w-control rounded hover:text-ctp-blue hover:underline focus-visible:outline-2">
-                          {s.slice(0, 4)}
+                        <button type="button" onClick={() => goToChampion(s)} title={s} className="min-h-control min-w-24 rounded px-1 hover:text-ctp-blue hover:underline focus-visible:outline-2">
+                          {s}
                         </button>
                       </th>
                     ))}
@@ -179,7 +181,7 @@ export default function BattleChart() {
                         return (
                           <td
                             key={col}
-                            className={`min-w-14 rounded-sm p-1.5 text-center ${isMirror ? "bg-ctp-surface0 text-ctp-subtext0" : heatmapTextColor(rate, games)}`}
+                            className={`min-w-24 rounded-sm p-1.5 text-center ${isMirror ? "bg-ctp-surface0 text-ctp-subtext0" : heatmapTextColor(rate, games)}`}
                             style={isMirror ? undefined : heatmapStyle(rate, games)}
                             title={isMirror ? `${row} mirror match` : rate === null ? `${row} vs ${col}: no qualifying matches` : `${row} vs ${col}: ${label} over ${games.toLocaleString()} matches`}
                           >
@@ -188,7 +190,8 @@ export default function BattleChart() {
                             ) : (
                               <>
                                 <span className="block font-semibold tabular-nums">{(rate * 100).toFixed(0)}%</span>
-                                <span className="block text-[9px] text-ctp-subtext0 tabular-nums">n={games.toLocaleString()}</span>
+                                <span className="block tabular-nums">{label}</span>
+                                <span className="block text-ctp-subtext0 tabular-nums">{games.toLocaleString()} matches</span>
                               </>
                             )}
                           </td>
