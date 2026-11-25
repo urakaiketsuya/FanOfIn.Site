@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMatch, Card } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import { EmptyState } from "../../components/ui/ContentState";
@@ -28,20 +29,16 @@ function ComboCard({ entry, cardsByName }: { entry: ComboEntry; cardsByName: Map
 
   return (
     <Panel elevation={1} padding="md">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <Link to={`/timelines/${match.id}?game=${game.gameNumber}`} className="text-sm font-medium text-ctp-text hover:text-ctp-blue hover:underline">
-          {match.event} – {match.round}
-        </Link>
-        <span className="text-xs text-ctp-subtext0">Game {game.gameNumber}</span>
-      </div>
-      <div className="mt-1 flex flex-wrap items-center gap-2">
-        <span className={`text-xs font-semibold uppercase tracking-wide ${ACTOR_TEXT[beat.actor]}`}>
-          {beat.actor === "both" ? "Both players" : actorPlayer?.name ?? beat.actor}
-        </span>
-        {actorPlayer && <span className="text-xs text-ctp-subtext0">({actorPlayer.deck})</span>}
-      </div>
-      <p className="mt-1.5 text-sm text-ctp-text">{beat.text}</p>
       {beat.cards && beat.cards.length > 0 && <CardMentions names={beat.cards} cardsByName={cardsByName} />}
+      <h2 className="mt-3 text-base font-semibold text-ctp-text">{match.event} · {match.round}</h2>
+      <div className="mt-1 flex flex-wrap items-center gap-2 text-sm">
+        <span className={ACTOR_TEXT[beat.actor]}>{beat.actor === "both" ? "Both players" : actorPlayer?.name ?? beat.actor}</span>
+        {actorPlayer && <span className="text-ctp-subtext1">{actorPlayer.deck}</span>}
+      </div>
+      <p className="mt-2 text-sm text-ctp-text">{beat.text}</p>
+      <Link to={`/timelines/${match.id}?game=${game.gameNumber}`} className="mt-1 inline-flex min-h-control items-center rounded text-sm font-medium text-ctp-blue hover:underline focus-visible:outline-2">
+        View game {game.gameNumber} replay
+      </Link>
     </Panel>
   );
 }
@@ -80,11 +77,7 @@ export default function CombosIndex() {
 
   return (
     <PageLayout width="fluid" data-component="CombosIndex">
-      <Link to="/timelines" className="mb-4 inline-flex min-h-control items-center text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
-        &larr; Match Timelines
-      </Link>
-      <h1 className="text-2xl font-bold text-ctp-blue">Notable Combos</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">Broadcast highlights</p>
+      <PageHeader title="Notable Combos" />
       <TimelineStatus loading={!data} />
 
 
