@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { articleArtwork } from "./artwork";
@@ -30,6 +30,7 @@ function RecapIllustration({ slug }: { slug: string }) {
 }
 
 function ChapterEntry({ article, next, grouped }: { article: StoryArticle; next?: StoryArticle; grouped?: boolean }) {
+  const [recapOpen, setRecapOpen] = useState(false);
   const { slug, title, summary, quote, recap, kind, note } = article;
   const url = `https://www.gatcg.com/article/${slug}`;
   const illustrationAfter = illustrationPositions[slug] ?? 0;
@@ -44,42 +45,52 @@ function ChapterEntry({ article, next, grouped }: { article: StoryArticle; next?
         <ChapterHeading id={`${slug}-title`} className="break-words text-2xl font-bold leading-tight tracking-tight sm:text-3xl">{title}</ChapterHeading>
         {note && <p className="mt-1 text-sm text-ctp-subtext0">{note}</p>}
         <p className="mt-2 max-w-prose leading-relaxed">{summary}</p>
-        <blockquote cite={url} className="mt-3 max-w-prose rounded-[1.25rem] rounded-br-[2rem] bg-ctp-mauve/10 px-4 py-3 font-serif text-lg leading-snug text-ctp-lavender">
+        <blockquote cite={url} className="mt-3 max-w-prose border-s-2 border-ctp-mauve/50 py-1 ps-3 font-serif text-lg leading-snug text-ctp-lavender">
           “{quote}”
         </blockquote>
-        <div className="relative mt-3">
-          <a href={url} aria-label={`Read official article: ${title}`} className="inline-flex min-h-control items-center rounded-full px-3 text-sm font-semibold text-ctp-blue hover:bg-ctp-blue/10 focus-visible:outline-2 sm:absolute sm:inset-e-1 sm:top-px sm:z-10">
-            Read official article
-          </a>
-          <details className="group mt-1 rounded-[1.25rem] border border-ctp-surface1 bg-ctp-base/65">
-            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded-[1.25rem] px-3 text-sm font-semibold text-ctp-blue hover:bg-ctp-blue/10 focus-visible:outline-2 focus-visible:outline-ctp-blue sm:mt-0 sm:ps-4 sm:pe-40 [&::-webkit-details-marker]:hidden">
-              <span>Read recap <span className="text-ctp-subtext0">· {cards.length ? `${cards.length} ${cards.length === 1 ? "card" : "cards"} · ` : ""}spoilers</span></span>
-              <DisclosureChevron className="group-open:rotate-180" />
-            </summary>
-            <div className="space-y-4 border-t border-ctp-surface1 p-3 pt-4 leading-relaxed sm:p-4">
-              {illustrationAfter === 0 && <RecapIllustration slug={slug} />}
-              {recap.map((paragraph, index) => (
-                <Fragment key={paragraph}>
-                  <p className="max-w-prose">{paragraph}</p>
-                  {illustrationAfter === index + 1 && <RecapIllustration slug={slug} />}
-                </Fragment>
-              ))}
-              {cards.length > 0 && (
-                <section aria-labelledby={`${slug}-cards`}>
-                  <GalleryHeading id={`${slug}-cards`} className="mb-2 font-semibold">Cards in this chapter</GalleryHeading>
-                  <ul role="list" className="grid gap-2 lg:grid-cols-2">
-                    {cards.map(card => <StoryCardTile key={card.slug} card={card} />)}
-                  </ul>
-                </section>
-              )}
-              {next && (
-                <Link to={`#${next.slug}`} className="inline-flex min-h-control flex-col justify-center rounded-2xl bg-ctp-lavender/15 px-4 py-2 text-left leading-snug text-ctp-lavender hover:bg-ctp-lavender/25 focus-visible:outline-2">
-                  <span className="text-sm">Next chapter</span>
-                  <span className="font-semibold">{next.title}</span>
-                </Link>
-              )}
-            </div>
-          </details>
+        <footer className="mt-4 border-t border-ctp-surface1 pt-2">
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-1 sm:gap-x-2">
+            <button
+              type="button"
+              aria-expanded={recapOpen}
+              aria-controls={`${slug}-recap`}
+              aria-describedby={`${slug}-recap-note`}
+              onClick={() => setRecapOpen(open => !open)}
+              className="inline-flex min-h-control items-center gap-1 rounded-full bg-ctp-lavender/15 px-2.5 sm:gap-2 sm:px-3 py-2 text-sm font-semibold text-ctp-lavender hover:bg-ctp-lavender/25 focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {recapOpen ? "Hide recap" : "Read recap"}
+              <DisclosureChevron className={recapOpen ? "rotate-180" : undefined} />
+            </button>
+            <a href={url} aria-label={`Read official article: ${title}`} className="inline-flex min-h-control items-center rounded-full px-2 py-2 text-sm font-semibold text-ctp-blue sm:px-3 hover:bg-ctp-blue/10 focus-visible:outline-2 focus-visible:outline-offset-2">
+              Official article
+            </a>
+          </div>
+          <p id={`${slug}-recap-note`} className="mt-1 px-3 text-sm text-ctp-subtext0">
+            {cards.length ? `Spoilers · ${cards.length} ${cards.length === 1 ? "card" : "cards"}` : "Spoilers"}
+          </p>
+        </footer>
+        <div id={`${slug}-recap`} hidden={!recapOpen} className="mt-3 space-y-4 rounded-[1.25rem] border border-ctp-surface1 bg-ctp-base/65 p-3 leading-relaxed sm:p-4">
+          {illustrationAfter === 0 && <RecapIllustration slug={slug} />}
+          {recap.map((paragraph, index) => (
+            <Fragment key={paragraph}>
+              <p className="max-w-prose">{paragraph}</p>
+              {illustrationAfter === index + 1 && <RecapIllustration slug={slug} />}
+            </Fragment>
+          ))}
+          {cards.length > 0 && (
+            <section aria-labelledby={`${slug}-cards`}>
+              <GalleryHeading id={`${slug}-cards`} className="mb-2 font-semibold">Cards in this chapter</GalleryHeading>
+              <ul role="list" className="grid gap-2 lg:grid-cols-2">
+                {cards.map(card => <StoryCardTile key={card.slug} card={card} />)}
+              </ul>
+            </section>
+          )}
+          {next && (
+            <Link to={`#${next.slug}`} className="inline-flex min-h-control flex-col justify-center rounded-2xl bg-ctp-lavender/15 px-4 py-2 text-left leading-snug text-ctp-lavender hover:bg-ctp-lavender/25 focus-visible:outline-2">
+              <span className="text-sm">Next chapter</span>
+              <span className="font-semibold">{next.title}</span>
+            </Link>
+          )}
         </div>
       </article>
     </li>
