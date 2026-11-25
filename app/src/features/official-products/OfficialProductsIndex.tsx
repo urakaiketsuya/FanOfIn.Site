@@ -217,7 +217,11 @@ export default function OfficialProductsIndex() {
   );
   const comparePath = useMemo(() => {
     if (comparedDecks.length < 2) return null;
-    const custom = encodeCustomDecks(comparedDecks.map((deck) => ({ label: deck.name, decklist: asDecklist(deck) })));
+    const custom = encodeCustomDecks(comparedDecks.map((deck) => ({
+      label: deck.name,
+      decklist: asDecklist(deck),
+      format: deck.productCode === "RDOPD" ? "PANTHEON" : "STANDARD",
+    })));
     return `/compare?${new URLSearchParams({ custom, panel: "compare" }).toString()}`;
   }, [comparedDecks]);
   const sectionLabel = section === "pantheon" ? "Pantheon" : section === "recollection" ? "Re:Collection" : "starter";
@@ -231,11 +235,9 @@ export default function OfficialProductsIndex() {
 
   return (
     <PageLayout data-component="OfficialProductsIndex" width="wide">
-      <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the deck editor to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
+      <PageHeader title="Official Product Decks" />
 
-      <Link to="/merchandise" className="mb-4 inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">Browse merchandise →</Link>
-
-      <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Official deck format">
+      <div className="mb-4 inline-flex flex-wrap rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Official deck format">
         {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" aria-pressed={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`min-h-12 rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}
       </div>
 
@@ -250,17 +252,17 @@ export default function OfficialProductsIndex() {
       <div className={`mb-6 rounded-xl border p-3 shadow-sm backdrop-blur transition-colors ${compareIds.length > 0 ? "border-ctp-blue/50 bg-ctp-base/95" : "border-ctp-surface0 bg-ctp-mantle/30"}`}>
         <div className="flex flex-wrap items-center gap-3">
           <div className="min-w-48 flex-1">
-            <p className="text-sm font-semibold text-ctp-text">Compare {sectionLabel} decks</p>
+            <p className="text-sm font-semibold text-ctp-text">Compare official decks</p>
             <p className="mt-0.5 text-xs text-ctp-subtext0">
-              {compareIds.length === 0 && `Select two to four ${sectionLabel.toLowerCase()} decks below.`}
+              {compareIds.length === 0 && "Select two to four decks across any product type."}
               {compareIds.length === 1 && "One selected. Choose one more."}
               {compareIds.length >= 2 && compareIds.length < 4 && `Ready to compare ${compareIds.length} decks. Add up to ${4 - compareIds.length} more.`}
               {compareIds.length === 4 && "Four selected. Ready to compare."}
             </p>
           </div>
           {comparedDecks.map((deck) => (
-            <button key={deck.id} type="button" onClick={() => toggleCompare(deck.id)} title={`Remove ${deck.name}`} className="min-h-12 rounded-full border border-ctp-blue/50 bg-ctp-base px-2.5 py-1 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red">
-              {deck.name} ×
+            <button key={deck.id} type="button" onClick={() => toggleCompare(deck.id)} aria-label={`Remove ${deck.name} from comparison`} className="min-h-12 rounded-full border border-ctp-blue/50 bg-ctp-base px-2.5 py-1 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red">
+              {deck.name} · {deck.productCode === "RDOPD" ? "Pantheon" : "Standard"} ×
             </button>
           ))}
           {comparePath && <Link to={comparePath} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:brightness-110">Compare selected →</Link>}
@@ -270,6 +272,10 @@ export default function OfficialProductsIndex() {
       <p className="mb-3 text-xs text-ctp-subtext0">Showing {visible.length} official deck{visible.length === 1 ? "" : "s"}</p>
       <div className="grid items-start gap-4 lg:grid-cols-2">{visible.map((deck) => <ProductDeckCard key={deck.id} deck={deck} cardsByName={cardsByName} compareSelected={compareIds.includes(deck.id)} compareDisabled={compareIds.length === 4 && !compareIds.includes(deck.id)} onToggleCompare={() => toggleCompare(deck.id)} />)}</div>
       {visible.length === 0 && <EmptyState title="No matching official decks" description={`Clear your search and product filter to browse ${sectionLabel.toLowerCase()} decks.`} action={<Button onClick={() => { setQuery(""); setProduct("all"); }}>Clear filters</Button>} />}
+      <nav aria-label="Product resources" className="mt-6 flex flex-wrap gap-x-4 text-sm text-ctp-blue">
+        <Link to="/merchandise" className="inline-flex min-h-control items-center hover:underline">Browse merchandise</Link>
+        <a href={officialProductsSource} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center hover:underline">Decklist source · GrandArchive on Silvie.org</a>
+      </nav>
     </PageLayout>
   );
 }
