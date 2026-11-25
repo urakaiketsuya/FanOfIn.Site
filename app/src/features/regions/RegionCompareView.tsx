@@ -14,7 +14,7 @@ import { championNameToSlug } from "../../lib/championSlug";
 import type { RegionOption } from "./useRegionalDecks";
 import DivergingBarChart, { type DivergingBarRow } from "../../components/DivergingBarChart";
 import FilterBar from "../../components/ui/FilterBar";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
@@ -163,6 +163,14 @@ function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; lab
   );
 }
 
+function RegionMetrics({ label, share, winRate, count }: { label: string; share: number; winRate: number; count: number }) {
+  return <div className="min-w-0 rounded-lg bg-ctp-base p-2 text-sm">
+    <p className="break-words font-medium">{label}</p>
+    <p className="mt-1 text-xs text-ctp-subtext1">{count ? `${(share * 100).toFixed(1)}% share` : "No decks"}</p>
+    {count > 0 && <p className="text-xs text-ctp-subtext1">{(winRate * 100).toFixed(0)}% win rate</p>}
+  </div>;
+}
+
 export default function RegionCompareView({ options, regionByDeckId }: { options: RegionOption[]; regionByDeckId: Map<string, string> }) {
   const [recalculating, startTransition] = useTransition();
   const [tab, setTab] = useState<ContentTab>("archetypes");
@@ -246,21 +254,33 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
         </label>
       </FilterBar>
 
-      <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={(next) => startTransition(() => setTab(next))} label="Regional comparison data" /></div>
+      <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={(next) => startTransition(() => setTab(next))} label="Regional comparison data" baseId="regional-comparison" variant="pill" wrap /></div>
 
       {recalculating && <p role="status" className="mt-4 text-sm text-ctp-subtext1">Recalculating…</p>}
       {loading && <InlineState className="mt-4">Loading…</InlineState>}
 
-      {!loading && (
-        <div className="mt-4">
+      <TabPanel baseId="regional-comparison" tab={tab} active={tab} className="mt-4">
+        {!loading && <>
           {tab === "archetypes" && (
             <>
               {archetypeRows.length === 0 ? (
                 <InlineState className="text-sm">Not enough data in either region yet.</InlineState>
               ) : (
                 <>
-                <DivergingBarChart labelA={labelA} labelB={labelB} rows={archetypeChartRows} />
-                <div className="mt-4 overflow-x-auto">
+                <div className="hidden md:block"><DivergingBarChart labelA={labelA} labelB={labelB} rows={archetypeChartRows} /></div>
+                <ul className="mt-4 grid gap-2 md:hidden">
+                  {archetypeRows.map((r) => (
+                    <li key={r.id} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 pb-3">
+                      <Link to={`/archetypes/${r.id}`} className="flex min-h-control items-center break-words font-medium text-ctp-blue hover:underline focus-visible:outline-2">{r.name}</Link>
+                      <Link to={`/champions/${championNameToSlug(r.championName)}`} className="flex min-h-control items-center text-sm text-ctp-subtext1 underline decoration-transparent hover:decoration-current focus-visible:outline-2">{r.championName}</Link>
+                      <div className="grid grid-cols-2 gap-2">
+                        <RegionMetrics label={labelA} share={r.shareA} winRate={r.winRateA} count={r.deckCountA} />
+                        <RegionMetrics label={labelB} share={r.shareB} winRate={r.winRateB} count={r.deckCountB} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 hidden overflow-x-auto md:block">
                   <table className="w-max min-w-full text-sm">
                     <thead>
                       <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -305,8 +325,19 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                 <InlineState className="text-sm">Not enough data in either region yet.</InlineState>
               ) : (
                 <>
-                <DivergingBarChart labelA={labelA} labelB={labelB} rows={championChartRows} />
-                <div className="mt-4 overflow-x-auto">
+                <div className="hidden md:block"><DivergingBarChart labelA={labelA} labelB={labelB} rows={championChartRows} /></div>
+                <ul className="mt-4 grid gap-2 md:hidden">
+                  {championRows.map((r) => (
+                    <li key={r.championName} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 pb-3">
+                      <Link to={`/champions/${championNameToSlug(r.championName)}`} className="flex min-h-control items-center break-words font-medium text-ctp-blue hover:underline focus-visible:outline-2">{r.championName}</Link>
+                      <div className="grid grid-cols-2 gap-2">
+                        <RegionMetrics label={labelA} share={r.shareA} winRate={r.winRateA} count={r.deckCountA} />
+                        <RegionMetrics label={labelB} share={r.shareB} winRate={r.winRateB} count={r.deckCountB} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 hidden overflow-x-auto md:block">
                   <table className="w-max min-w-full text-sm">
                     <thead>
                       <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -370,8 +401,8 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               </Section>
             </>
           )}
-        </div>
-      )}
+        </>}
+      </TabPanel>
     </div>
   );
 }

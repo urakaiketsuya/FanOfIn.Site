@@ -133,14 +133,16 @@ export default function RegionsIndex() {
     <PageLayout width="fluid" data-component="RegionsIndex">
       <PageHeader title="Regions" description={surface === "strength" ? "Compare US player results across seasons." : "See what players bring, then compare local metas."} />
 
+      <div className="mt-4"><Tabs tabs={SURFACES} active={surface} onChange={selectSurface} baseId="regional-analysis" label="Regional analysis" variant="pill" wrap /></div>
+
       {surface !== "strength" && <FilterBar>
-        <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto text-xs text-ctp-subtext0">
+        {surface !== "compare" && <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto text-xs text-ctp-subtext0">
           Area
-          <select value={selectedRegion ?? ""} onChange={(event) => selectRegion(event.target.value)} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text sm:max-w-xs">
+          <select value={selectedRegion ?? ""} onChange={(event) => selectRegion(event.target.value)} className="mt-1 block min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text sm:max-w-xs">
             {options.map((option) => <option key={option.code} value={option.code}>{option.label} · {option.deckCount} decks</option>)}
           </select>
-        </label>
-        <div className="flex gap-2">
+        </label>}
+        <div className="flex flex-wrap gap-2">
           {GROUP_MODES.map((mode) => (
             <Button key={mode} size="sm" variant={group === mode ? "primary" : "secondary"} aria-pressed={group === mode} onClick={() => {
               setRegionOverride(null);
@@ -159,7 +161,6 @@ export default function RegionsIndex() {
       {surface !== "strength" && loading && <InlineState className="mt-6">Loading…</InlineState>}
       {surface !== "strength" && !loading && options.length === 0 && <EmptyState className="mt-6" title="Not enough regional data yet" />}
 
-      <div className="mt-4"><Tabs tabs={SURFACES} active={surface} onChange={selectSurface} baseId="regional-analysis" label="Regional analysis" variant="pill" wrap /></div>
       <TabPanel baseId="regional-analysis" tab="strength" active={surface}><RegionalStrength /></TabPanel>
 
       {surface !== "strength" && !loading && options.length > 0 && (
