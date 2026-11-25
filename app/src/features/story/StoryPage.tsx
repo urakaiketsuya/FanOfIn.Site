@@ -1,137 +1,63 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import CardArtTile from "../../components/CardArtTile";
-import DisclosureChevron from "../../components/DisclosureChevron";
-import Panel from "../../components/ui/Panel";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotFound from "../../pages/NotFound";
 import { storyArcs } from "./arcs";
-import { arcArtwork, articleArtwork } from "./artwork";
+import { arcArtwork } from "./artwork";
 import { storyCards } from "./cards";
-import type { StoryArticle, StoryCard } from "./types";
+import { ChapterList } from "./ChapterList";
+import { CardGallery, FeaturedCards } from "./StoryGallery";
+import { StoryIndex } from "./StoryIndex";
 
 const storyLink = "inline-flex min-h-control min-w-control items-center rounded text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2";
-const articleUrl = (slug: string) => `https://www.gatcg.com/article/${slug}`;
+const firstCambriaCards = ["lorraine-wandering-warrior", "silvie-wilds-whisperer", "camelot-impenetrable"];
 
-function ArticleEntry({ article }: { article: StoryArticle }) {
-  const { slug, title, summary, quote, recap, kind, note } = article;
-  const url = articleUrl(slug);
-  const artwork = articleArtwork[slug];
+const nextWorldHooks: Record<string, string> = {
+  cambria: "Lorraine’s search for Silvie takes her to Camelot on the brink of war.",
+  azoth: "Diana joins a resistance movement in a world transformed by automaton alchemy.",
+  sanguo: "An empty throne sets rival states on a collision course.",
+  underland: "A queen vanishes, and the search leads through the Looking Glass.",
+  "radiant-origins": "The Champions return to the Archive as Pantheon approaches.",
+  asphodel: "A disorder tied to Dante’s powers leads him to the Epicurean Institute.",
+};
 
+function NextWorld({ arc }: { arc: (typeof storyArcs)[number] }) {
+  const artwork = arcArtwork[arc.id];
   return (
-    <li id={slug} tabIndex={-1} className="scroll-mt-24">
-      <Panel as="article" aria-labelledby={`${slug}-title`}>
-        {kind && <p className="text-xs font-medium text-ctp-subtext0">{kind}</p>}
-        <h3 id={`${slug}-title`} className="mt-1 break-words text-lg font-semibold">{title}</h3>
-        {note && <p className="mt-1 text-sm text-ctp-subtext0">{note}</p>}
-        <p className="mt-2 leading-relaxed">{summary}</p>
-        <blockquote cite={url} className="mt-3 border-l-2 border-ctp-mauve pl-3 font-serif text-lg leading-snug text-ctp-lavender">
-          “{quote}”
-        </blockquote>
-        <details className="group mt-3 border-t border-ctp-surface1">
-          <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-sm font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
-            <span>Full recap <span className="text-ctp-subtext0">· spoilers</span></span>
-            <DisclosureChevron className="group-open:rotate-180" />
-          </summary>
-          <div className="space-y-3 pb-2 leading-relaxed">
-            {artwork && (
-              <figure className="overflow-hidden rounded-lg border border-ctp-surface1 [&:has(img[hidden])]:hidden">
-                <img
-                  src={artwork.src}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-[2/1] w-full bg-ctp-crust object-contain"
-                  onError={event => { event.currentTarget.hidden = true; }}
-                />
-                <figcaption className="px-3 py-2 text-sm text-ctp-subtext0">{artwork.caption}</figcaption>
-              </figure>
-            )}
-            {recap.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-          </div>
-        </details>
-        <a href={url} aria-label={`Read official article: ${title}`} className={`${storyLink} text-sm`}>Read official article</a>
-      </Panel>
-    </li>
-  );
-}
-
-function StoryCardTile({ card }: { card: StoryCard }) {
-  return (
-    <Panel as="li" padding="sm">
-      <Link
-        to={`/cards/${card.slug}?edition=${card.editionUuid}`}
-        aria-label={card.name}
-        className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] items-center gap-3 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"
-      >
-        <CardArtTile card={undefined} imagePath={card.image} name={card.name} />
-        <div className="min-w-0">
-          <p className="break-words text-sm font-semibold text-ctp-blue">{card.name}</p>
-          <p className="mt-1 text-xs text-ctp-subtext0">{card.printing}</p>
-          <p className="mt-1 text-sm leading-snug">{card.caption}</p>
-        </div>
-      </Link>
-    </Panel>
-  );
-}
-
-function CardGallery({ cards }: { cards: StoryCard[] }) {
-  return (["Character", "Location", "Object"] as const).map(kind => {
-    const highlights = cards.filter(card => card.kind === kind);
-    if (!highlights.length) return null;
-    const id = `story-${kind.toLowerCase()}s`;
-    return (
-      <section key={kind} aria-labelledby={id} className="mt-8">
-        <h2 id={id} className="mb-3 text-xl font-semibold">{kind}s</h2>
-        <ul className="grid gap-3 md:grid-cols-2">
-          {highlights.map(card => <StoryCardTile key={card.slug} card={card} />)}
-        </ul>
-      </section>
-    );
-  });
-}
-
-function StoryIndex() {
-  useDocumentTitle("Grand Archive Story", "Explore the worlds, characters, and official stories of Grand Archive.");
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <header className="mb-8 max-w-2xl">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">Grand Archive Story</h1>
-        <p className="mt-3 text-ctp-subtext1">{storyArcs[0].summary}</p>
-        <Link to="/story/cambria" className="mt-4 inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Start with Cambria</Link>
-      </header>
-      <h2 className="mb-3 text-xl font-semibold">Explore by world</h2>
-      <ul className="grid gap-3 sm:grid-cols-2">
-        {storyArcs.map(arc => {
-          const cover = storyCards[arc.id]?.[0];
-          return (
-            <Panel as="li" key={arc.id} padding="sm">
-              <Link to={`/story/${arc.id}`} className="flex min-h-control items-center gap-4 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">
-                {cover && <div className="w-16 shrink-0"><CardArtTile card={undefined} imagePath={cover.image} name={cover.name} /></div>}
-                <div>
-                  <h3 className="font-semibold text-ctp-blue">{arc.name}</h3>
-                  {arc.sets && <p className="text-xs text-ctp-subtext0">{arc.sets}</p>}
-                  <p className="mt-1 text-sm leading-snug">{arc.summary}</p>
-                </div>
-              </Link>
-            </Panel>
-          );
-        })}
-      </ul>
-    </div>
+    <Link to={`/story/${arc.id}`} className="group mt-8 grid overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue sm:grid-cols-[2fr_3fr] sm:[&:not(:has(img:not([hidden])))]:grid-cols-1">
+      {artwork && <img src={artwork} alt="" loading="lazy" className="aspect-[3/1] h-full min-h-24 w-full object-cover sm:aspect-auto" onError={event => { event.currentTarget.hidden = true; }} />}
+      <div className="p-4 sm:p-6">
+        <p className="text-sm font-medium text-ctp-subtext0">Next world</p>
+        <p className="mt-1 text-xl font-semibold text-ctp-blue group-hover:underline">{arc.name}</p>
+        <p className="mt-1 text-sm leading-relaxed">{nextWorldHooks[arc.id]}</p>
+      </div>
+    </Link>
   );
 }
 
 function ArcPage({ arc, index }: { arc: (typeof storyArcs)[number]; index: number }) {
   const nextArc = storyArcs[index + 1];
   const artwork = arcArtwork[arc.id];
+  const cards = storyCards[arc.id] ?? [];
+  const featuredCards = arc.id === "cambria"
+    ? cards.filter(card => firstCambriaCards.includes(card.slug))
+    : cards.length >= 3 ? cards.slice(0, 3) : [];
   useDocumentTitle(`${arc.name} · Grand Archive Story`, arc.summary);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-8">
-      <nav aria-label="Story arcs" className="hidden lg:block">
-        <div className="sticky top-24">
-          <Link to="/story" className={`${storyLink} font-semibold`}>Grand Archive Story</Link>
-          <ul>{storyArcs.map(item => <li key={item.id}><Link to={`/story/${item.id}`} aria-current={item.id === arc.id ? "page" : undefined} className={`${storyLink} w-full px-2 text-sm ${item.id === arc.id ? "bg-ctp-surface0" : ""}`}>{item.name}</Link></li>)}</ul>
+      <nav aria-label="In this world" className="hidden lg:block">
+        <div className="sticky top-24 max-h-[calc(100dvh-7rem)] overflow-y-auto p-1">
+          <Link to="/story" className={`${storyLink} text-sm`}>All worlds</Link>
+          <p className="mt-2 font-semibold">In this world</p>
+          <ul className="mt-2">
+            {arc.articles.map(article => (
+              <li key={article.slug}>
+                <Link to={`#${article.slug}`} className={`${storyLink} w-full py-2 pr-2 text-sm leading-snug`}>{article.title}</Link>
+              </li>
+            ))}
+            {cards.length > 0 && <li><Link to="#story-gallery" className={`${storyLink} text-sm`}>Card gallery</Link></li>}
+          </ul>
         </div>
       </nav>
       <div className="min-w-0">
@@ -148,19 +74,24 @@ function ArcPage({ arc, index }: { arc: (typeof storyArcs)[number]; index: numbe
             {arc.sets && <p className={`mt-2 text-sm ${artwork ? "text-white" : "text-ctp-subtext0"}`}>{arc.sets}</p>}
           </div>
           <p className="mt-4 max-w-2xl leading-relaxed">{arc.summary}</p>
-          <Link to="#official-reading" className={`${storyLink} mt-1 text-sm`}>Jump to reading order</Link>
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              to={`#${arc.articles[0]?.slug ?? "official-reading"}`}
+              className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
+            >
+              Start reading
+            </Link>
+            {cards.length > 0 && featuredCards.length === 0 && <Link to="#story-gallery" className={`${storyLink} text-sm`}>Card gallery</Link>}
+          </div>
         </header>
-        <CardGallery cards={storyCards[arc.id] ?? []} />
-        <section aria-labelledby="reading-heading" id="official-reading" tabIndex={-1} className="mt-8 scroll-mt-24">
-          <h2 id="reading-heading" className="mb-3 text-xl font-semibold">Official reading order</h2>
-          {arc.readingNote && <p className="mb-3 text-sm text-ctp-subtext0">{arc.readingNote}</p>}
-          <ol className="space-y-3">{arc.articles.map(article => <ArticleEntry key={article.slug} article={article} />)}</ol>
-        </section>
+        {featuredCards.length > 0 && <FeaturedCards cards={featuredCards} />}
+        <ChapterList articles={arc.articles} readingNote={arc.readingNote} />
+        <CardGallery cards={cards} />
         {arc.related && <section aria-labelledby="related-stories" className="mt-6">
           <h2 id="related-stories" className="text-lg font-semibold">Related stories</h2>
           <ul>{arc.related.map(link => <li key={link.to}><Link to={link.to} className={storyLink}>{link.label}</Link></li>)}</ul>
         </section>}
-        {nextArc && <Link to={`/story/${nextArc.id}`} className={`${storyLink} mt-6 font-semibold`}>Next world · {nextArc.name}</Link>}
+        {nextArc && <NextWorld arc={nextArc} />}
       </div>
     </div>
   );
