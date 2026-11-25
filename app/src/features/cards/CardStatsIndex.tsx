@@ -22,6 +22,18 @@ import { InlineState } from "../../components/ui/ContentState";
 import { useCardCatalog } from "./useCardCatalog";
 import { CompositionStatsSection, KeywordStatsSection } from "./CardStatsSupplementalSections";
 import { primaryAlternateFace } from "../../lib/cardFaces";
+import Button from "../../components/ui/Button";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+
+type StatsView = "cards" | "combinations" | "keywords" | "composition";
+const STATS_TABS: { key: StatsView; label: string }[] = [
+  { key: "cards", label: "Cards" },
+  { key: "combinations", label: "Combinations" },
+  { key: "keywords", label: "Keywords" },
+  { key: "composition", label: "Composition" },
+];
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -37,11 +49,15 @@ const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
 
 export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
+  const [view, setView] = useState<StatsView>("cards");
   const cardStatsData = useCardStatsData();
+  const cardsStatus = usePublishedDataStatus("analysis-cards", "/data/analysis/cards.json", view === "cards");
+  const keywordsStatus = usePublishedDataStatus("analysis-keyword-stats", "/data/analysis/keyword-stats.json", view === "keywords");
+  const compositionStatus = usePublishedDataStatus("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json", view === "composition");
   const cardCatalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(cardCatalog.map(card => [card.name, card])), [cardCatalog]);
-  const keywordStatsData = useKeywordStatsData();
-  const compositionData = useCompositionWinRateData();
+  const keywordStatsData = useKeywordStatsData(view === "keywords");
+  const compositionData = useCompositionWinRateData(view === "composition");
   const communityCardInclusion = useCommunityBlendedCardInclusion();
   const communitySourceCounts = useCommunitySourceCounts();
   // Published data is cached in IndexedDB and can briefly outlive the schema that produced it.
@@ -64,7 +80,6 @@ export default function CardStatsIndex() {
   const [category, setCategory] = useBrowseState<string | null>('cards/CardStatsIndex.category', null);
   const [search, setSearch] = useBrowseState('cards/CardStatsIndex.search', "");
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
-  const [comboCollapsed, setComboCollapsed] = useState(false);
   const [keywordSortMode, setKeywordSortMode] = useBrowseState<"usage" | "adjusted" | "raw">('cards/CardStatsIndex.keywordSortMode', "usage");
   const [compositionType, setCompositionType] = useBrowseState<string | null>('cards/CardStatsIndex.compositionType', null);
 
@@ -145,7 +160,9 @@ export default function CardStatsIndex() {
     });
   }, [cardStatsData, adoptionPeriods, sortMode, minDecks, category, search, catalogByName, communityByName, totalTournamentDecks]);
 
-  const combination = useCardCombination(selectedCards);
+  const showCombination = view === "combinations" && selectedCards.length > 0;
+  const combination = useCardCombination(selectedCards, showCombination);
+  const combinationStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", showCombination);
   const comboNames = useMemo(
     () => [...combination.main, ...combination.material, ...combination.sideboard].map((c) => c.name),
     [combination],
@@ -160,6 +177,11 @@ export default function CardStatsIndex() {
     [combination, comboCardImages],
   );
 
+  function openStatsView(next: StatsView) {
+    setView(next);
+    document.getElementById(`card-stats-tab-${next}`)?.focus();
+  }
+
   function toggleSelected(name: string) {
     setSelectedCards((prev) => (prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]));
   }
@@ -169,54 +191,16 @@ export default function CardStatsIndex() {
       <PageHeader
         title="Card Stats"
         actions={
-          <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
+          <Link to="/cards" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">
             Browse the catalog &rarr;
           </Link>
         }
       />
 
-      {selectedCards.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-blue bg-ctp-mantle p-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-ctp-subtext0">Decks containing:</span>
-            {selectedCards.map((name) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => toggleSelected(name)}
-                className="flex items-center gap-1 rounded-full border border-ctp-blue bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-blue"
-              >
-                {name}
-                <span aria-hidden="true">&times;</span>
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setComboCollapsed((v) => !v)}
-              className="ml-auto text-xs text-ctp-subtext0 hover:text-ctp-text"
-            >
-              {comboCollapsed ? "Expand" : "Collapse"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedCards([])}
-              className="text-xs text-ctp-subtext0 hover:text-ctp-text"
-            >
-              Clear
-            </button>
-          </div>
-
-          <p className="mt-2 text-sm text-ctp-subtext1">
-            {combination.deckCount === undefined ? "Loading deck data…" : `${combination.deckCount} decks match`}
-          </p>
-
-          {!comboCollapsed && combination.deckCount !== undefined && combination.deckCount > 0 && (
-            <div className="mt-3">
-              <TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} />
-            </div>
-          )}
-        </div>
-      )}
+      <Tabs baseId="card-stats" active={view} tabs={STATS_TABS} onChange={setView} label="Card statistics views" variant="pill" wrap />
+      <TabPanel baseId="card-stats" tab="cards" active={view} keepMounted>
+      <PublishedSourceStatus label="Card stats" status={cardsStatus} hasData={!!cardStatsData} />
+      {selectedCards.length > 0 && <Button className="mt-3" onClick={() => openStatsView("combinations")}>View combination ({selectedCards.length} selected)</Button>}
 
       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div className="sm:col-span-2"><FilterQuery text={search} facets={{}} allowed={["classes", "types", "subtypes", "elements", "sets", "printingSets", "rarities"]} onChange={(text, facets) => setSearch(formatFilterQuery(text, facets))} /></div>
@@ -227,6 +211,12 @@ export default function CardStatsIndex() {
           <option value="">All tournaments</option>
           {categoriesPresent.map((value) => <option key={value} value={value}>{EVENT_CATEGORY_LABELS[value] ?? value}</option>)}
         </select>
+        <label className="flex min-h-control items-center justify-between gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 text-sm">
+          Minimum sample
+          <select value={minDecks} onChange={event => setMinDecks(Number(event.target.value))} className="min-h-control min-w-0 bg-ctp-mantle text-sm">
+            {MIN_DECKS_OPTIONS.map(count => <option key={count} value={count}>{count === 0 ? "Any" : `${count}+ decks`}</option>)}
+          </select>
+        </label>
       </div>
 
       {sortMode === "hot" && cardStatsData && (
@@ -243,18 +233,8 @@ export default function CardStatsIndex() {
         </section>
       )}
 
-      {sortMode === "hype" && (
-        <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">What is the hype gap?</summary><p className="mt-1">Community usage from {communitySourceLabel} minus tournament usage. These populations have different goals; the gap is not a performance rating.</p></details>
-      )}
+      {sortMode === "hype" && <p className="mt-2 text-xs text-ctp-subtext0">Usage gap between {communitySourceLabel} and tournament decks.</p>}
 
-      <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Minimum sample · {minDecks === 0 ? "Any" : `${minDecks}+ decks`}</summary>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {MIN_DECKS_OPTIONS.map((count) => <button key={count} type="button" onClick={() => setMinDecks(count)} aria-pressed={minDecks === count} className={`min-h-control rounded-lg border px-3 py-1.5 text-xs ${minDecks === count ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{count === 0 ? "Any" : `${count}+ decks`}</button>)}
-        </div>
-      </details>
-
-      {!cardStatsData && <InlineState className="mt-6">Loading…</InlineState>}
       {cardStatsData && rows.length === 0 && <InlineState className="mt-6">No cards match this filter yet.</InlineState>}
 
       {cardStatsData && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">{rows.length.toLocaleString()} matching cards</p>}
@@ -273,7 +253,7 @@ export default function CardStatsIndex() {
                   </div>
                 </CardHoverPreview>
                 <div className="min-w-0 flex-1 basis-36 break-words">
-                  {entry.slug ? <Link to={`/cards/${entry.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.name}</Link> : <span className="font-medium text-ctp-text">{entry.name}</span>}
+                  <h2 className="font-medium text-ctp-text">{entry.name}</h2>
                   {sortMode === "hot" && <div className="mt-2" aria-label="Deck inclusion change">
                     {entry.adoption ? <>
                       <div className="text-lg font-semibold tabular-nums">{(entry.adoption.prior * 100).toFixed(1)}% → {(entry.adoption.recent * 100).toFixed(1)}%</div>
@@ -286,26 +266,42 @@ export default function CardStatsIndex() {
               </div>
               <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
                 <button type="button" onClick={() => toggleSelected(entry.name)} aria-pressed={isSelected} className={`min-h-control rounded-lg border px-3 py-2 text-xs font-medium ${isSelected ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>
-                  {isSelected ? "Remove from filter" : "Filter with card"}
+                  {isSelected ? "Remove from combination" : "Add to combination"}
                 </button>
-                {entry.slug && <Link to={`/cards/${entry.slug}`} className="inline-flex min-h-control items-center text-xs text-ctp-blue hover:underline">View card →</Link>}
               </div>
-              <details className="mt-2 text-xs text-ctp-subtext0">
-                <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More statistics</summary>
-                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
-                  <span>{entry.eventCount.toLocaleString()} events</span>
-                  <span>{(entry.avgWinRate * 100).toFixed(0)}% raw win rate</span>
-                  {entry.communityPercent !== null && <span>{(entry.communityPercent * 100).toFixed(0)}% community usage</span>}
-                </div>
-                {packages.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{packages.map((packageEntry) => <Link key={packageEntry.id} to={`/cards/packages#${packageEntry.id}`} className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-1 text-ctp-teal" title={`${packageEntry.activation} Registry membership does not mean the package is active in every deck containing this card.`}>{packageEntry.label}</Link>)}</div>}
-              </details>
+              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ctp-subtext0">
+                <span>{entry.eventCount.toLocaleString()} events</span>
+                <span>{(entry.avgWinRate * 100).toFixed(0)}% raw win rate</span>
+                {entry.communityPercent !== null && <span>{(entry.communityPercent * 100).toFixed(0)}% community usage</span>}
+              </div>
+              {packages.length > 0 && <div className="mt-1 flex flex-wrap gap-x-3">{packages.map(packageEntry => <Link key={packageEntry.id} to={`/cards/packages#${packageEntry.id}`} className="inline-flex min-h-control items-center text-xs text-ctp-teal hover:underline">{packageEntry.label}</Link>)}</div>}
             </article>
           );
         })}
       </div>}</GroupedCardResults>
 
-      <KeywordStatsSection rows={keywordRows} loading={!keywordStatsData} sortMode={keywordSortMode} onSortChange={setKeywordSortMode} />
-      <CompositionStatsSection rows={compositionRows} types={compositionTypesPresent} activeType={activeCompositionType} bestIndex={compositionBestIndex} loading={!compositionData} onTypeChange={setCompositionType} />
+      </TabPanel>
+      <TabPanel baseId="card-stats" tab="combinations" active={view} className="mt-4">
+        {!selectedCards.length ? <InlineState>Select one or more cards in <Button onClick={() => openStatsView("cards")}>Cards</Button> to find decks that play them together.</InlineState> : <>
+          <div className="flex flex-wrap items-center gap-2">
+            {selectedCards.map(name => <Button key={name} aria-label={`Remove ${name}`} onClick={() => toggleSelected(name)}>{name} ×</Button>)}
+            <Button onClick={() => setSelectedCards([])}>Clear selection</Button>
+          </div>
+          <PublishedSourceStatus label="Deck data" status={combinationStatus} hasData={combination.deckCount !== undefined} />
+          {combination.deckCount !== undefined && <p className="mt-3 text-sm text-ctp-subtext1" role="status">
+            {combination.deckCount ? `${combination.deckCount} decks match` : "No decks match this combination."}
+          </p>}
+          {!!combination.deckCount && <div className="mt-3"><TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} /></div>}
+        </>}
+      </TabPanel>
+      <TabPanel baseId="card-stats" tab="keywords" active={view}>
+        <PublishedSourceStatus label="Keyword statistics" status={keywordsStatus} hasData={!!keywordStatsData} />
+        {keywordStatsData && <KeywordStatsSection rows={keywordRows} sortMode={keywordSortMode} onSortChange={setKeywordSortMode} />}
+      </TabPanel>
+      <TabPanel baseId="card-stats" tab="composition" active={view}>
+        <PublishedSourceStatus label="Deck composition" status={compositionStatus} hasData={!!compositionData} />
+        {compositionData && <CompositionStatsSection rows={compositionRows} types={compositionTypesPresent} activeType={activeCompositionType} bestIndex={compositionBestIndex} onTypeChange={setCompositionType} />}
+      </TabPanel>
     </PageLayout>
   );
 }
