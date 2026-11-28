@@ -2,16 +2,16 @@
   "matchSources": [
     {
       "sourceId": "gao",
-      "matches": 462,
+      "matches": 470,
       "draws": 0,
-      "decks": 924,
-      "games": 462,
-      "gamesWithTurns": 462,
-      "avgTurns": 10.274891774891774,
+      "decks": 940,
+      "games": 470,
+      "gamesWithTurns": 470,
+      "avgTurns": 10.23404255319149,
       "firstPlayer": {
-        "games": 462,
-        "wins": 253,
-        "winRate": 0.5476190476190477
+        "games": 470,
+        "wins": 258,
+        "winRate": 0.548936170212766
       }
     },
     {
@@ -31,7 +31,7 @@
   ],
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-11-27T16:10:59.958Z",
+  "generatedAt": "2026-11-28T15:05:22.892Z",
   "games": 33,
   "firstPlayer": {
     "games": 33,
